@@ -427,8 +427,10 @@ private:
 
   PoseSE2 robot_pose_; //!< Store current robot pose
   PoseSE2 robot_goal_; //!< Store current robot goal
+  PoseSE2 last_goal_; //!< Store previous goal pose to detect goal switches
   geometry_msgs::Twist robot_vel_; //!< Store current robot translational and angular velocity (vx, vy, omega)
   bool goal_reached_; //!< store whether the goal is reached or not
+  bool has_last_goal_; //!< Store whether last_goal_ has been initialized
   ros::Time time_last_infeasible_plan_; //!< Store at which time stamp the last infeasible plan was detected
   int no_infeasible_plans_; //!< Store how many times in a row the planner failed to find a feasible plan.
   ros::Time time_last_oscillation_; //!< Store at which time stamp the last oscillation was detected
@@ -462,5 +464,4 @@ public:
 }; // end namespace teb_local_planner
 
 #endif // TEB_LOCAL_PLANNER_ROS_H_
-
 

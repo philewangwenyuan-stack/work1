@@ -125,7 +125,7 @@ class SchedulerNode:
         self._task_enable_topic = rospy.get_param("~task_enable_topic", "/chassis/task_enable")
         self._task_enable_runtime_active = False
         self._path_plan_request_use_all_regions = bool(rospy.get_param("~path_plan_request_use_all_regions", True))
-        self._exec_goal_reach_dist = max(0.05, float(rospy.get_param("~path_goal_reach_dist", 0.25)))
+        self._exec_goal_reach_dist = max(0.05, float(rospy.get_param("~path_goal_reach_dist", 0.12)))
         self._exec_goal_interval = max(0.1, float(rospy.get_param("~path_goal_interval", 1.0)))
         self._exec_segment_timeout = max(2.0, float(rospy.get_param("~path_segment_timeout", 60.0)))
         self._exec_max_linear = max(0.05, float(rospy.get_param("~path_exec_max_linear", 0.35)))

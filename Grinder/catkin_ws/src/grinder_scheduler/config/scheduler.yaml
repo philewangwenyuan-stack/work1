@@ -152,7 +152,7 @@ scheduler_tick_hz: 5
 # 调度发布全局路径频率（Hz）
 global_plan_publish_hz: 2
 # 目标点到达阈值（米）：小于该值判定“到达当前 goal”，建议小于路径点间距（如 0.03）
-path_goal_reach_dist: 0.03
+path_goal_reach_dist: 0.12
 # 当前段目标超时时间（秒）：超过后重发当前段终点（不切下一段）
 path_segment_timeout: 60.0
 # PathPlanRequest 是否按“所有已选区域”规划（true=有几个区域规划几次；false=仅按当前激活区域）

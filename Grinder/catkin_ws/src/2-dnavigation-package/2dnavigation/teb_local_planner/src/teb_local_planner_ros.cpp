@@ -68,7 +68,7 @@ namespace teb_local_planner
 
 TebLocalPlannerROS::TebLocalPlannerROS() : costmap_ros_(NULL), tf_(NULL), costmap_model_(NULL),
                                            costmap_converter_loader_("costmap_converter", "costmap_converter::BaseCostmapToPolygons"),
-                                           dynamic_recfg_(NULL), custom_via_points_active_(false), goal_reached_(false), no_infeasible_plans_(0),
+                                           dynamic_recfg_(NULL), custom_via_points_active_(false), goal_reached_(false), has_last_goal_(false), no_infeasible_plans_(0),
                                           //  last_preferred_rotdir_(RotType::none), initialized_(false), count_(0)
                                            last_preferred_rotdir_(RotType::none), initialized_(false), count_(0), track_state_(TrackState::ALIGNING)
 {
@@ -219,6 +219,36 @@ bool TebLocalPlannerROS::setPlan(const std::vector<geometry_msgs::PoseStamped>& 
             
   // reset goal_reached_ flag
   goal_reached_ = false;
+
+  if (!orig_global_plan.empty())
+  {
+    const geometry_msgs::PoseStamped& back = orig_global_plan.back();
+    const double goal_x = back.pose.position.x;
+    const double goal_y = back.pose.position.y;
+    const double goal_yaw = tf2::getYaw(back.pose.orientation);
+    bool goal_changed = !has_last_goal_;
+    if (has_last_goal_)
+    {
+      const double goal_distance = std::sqrt(
+          (goal_x - last_goal_.x()) * (goal_x - last_goal_.x()) +
+          (goal_y - last_goal_.y()) * (goal_y - last_goal_.y()));
+      const double goal_yaw_delta = std::fabs(g2o::normalize_theta(goal_yaw - last_goal_.theta()));
+      goal_changed = goal_distance > 0.05 || goal_yaw_delta > 0.1;
+    }
+
+    if (goal_changed)
+    {
+      track_state_ = TrackState::ALIGNING;
+      count_ = 0;
+      last_goal_ = PoseSE2(goal_x, goal_y, goal_yaw);
+      has_last_goal_ = true;
+      ROS_DEBUG(
+          "TebLocalPlannerROS: goal switch detected, reset to ALIGNING: x=%.3f y=%.3f yaw=%.3f",
+          goal_x,
+          goal_y,
+          goal_yaw);
+    }
+  }
   
   return true;
 }
@@ -1307,5 +1337,3 @@ double TebLocalPlannerROS::getNumberFromXMLRPC(XmlRpc::XmlRpcValue& value, const
 }
 
 } // end namespace teb_local_planner
-
-
