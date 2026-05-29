@@ -634,6 +634,18 @@ class SchedulerNode:
         shrink_factor = (max_wh / float(max(preview_w, preview_h))) if scale < 1.0 else 1.0
         return preview_w, preview_h, shrink_factor
 
+    @staticmethod
+    def _apply_response_map_info(response, map_info):
+        if not isinstance(map_info, dict):
+            return
+        response.width = int(map_info.get("width", 0))
+        response.height = int(map_info.get("height", 0))
+        response.resolution = float(map_info.get("resolution", 0.0))
+        response.origin.x = float(map_info.get("origin_x", 0.0))
+        response.origin.y = float(map_info.get("origin_y", 0.0))
+        response.origin.heading_deg = 0.0
+        response.frame_id = str(map_info.get("frame_id", ""))
+
     def _load_robot_config_from_params(self):
         self.task_config.vehicle_width = max(
             0.1, float(rospy.get_param("~vehicle_width", self.task_config.vehicle_width))
@@ -972,6 +984,35 @@ class SchedulerNode:
         except Exception:
             source_pose["heading_deg"] = 0.0
         return source_pose
+
+    def _map_point_to_render_frame(self, point, render_map_info):
+        try:
+            point_x = float(point.get("x", 0.0))
+            point_y = float(point.get("y", 0.0))
+        except Exception:
+            point_x = 0.0
+            point_y = 0.0
+        try:
+            alignment_yaw = render_map_info.get("alignment_yaw", None)
+            if alignment_yaw is not None:
+                yaw = float(alignment_yaw)
+                if math.isfinite(yaw) and abs(yaw) > 1e-6:
+                    point_x, point_y = self._transform_point_by_yaw(point_x, point_y, yaw)
+        except Exception:
+            pass
+        return point_x, point_y
+
+    def _map_point_to_preview_pixel(self, point, render_map_info, scale_x, scale_y, preview_w, preview_h):
+        point_x, point_y = self._map_point_to_render_frame(point, render_map_info)
+        resolution = max(float(render_map_info["resolution"]), 1e-6)
+        col = (point_x - float(render_map_info["origin_x"])) / resolution
+        row = (point_y - float(render_map_info["origin_y"])) / resolution
+        row = float(render_map_info["height"] - 1) - row
+        pixel_x = int(round(col * float(scale_x)))
+        pixel_y = int(round(row * float(scale_y)))
+        pixel_x = max(0, min(int(preview_w) - 1, pixel_x))
+        pixel_y = max(0, min(int(preview_h) - 1, pixel_y))
+        return pixel_x, pixel_y
 
     @staticmethod
     def _rotate_grid_to_aligned_frame(grid, origin_x, origin_y, resolution, yaw):
@@ -1729,15 +1770,16 @@ class SchedulerNode:
         scale_x = float(preview_w) / float(max(1, map_info["width"]))
         scale_y = float(preview_h) / float(max(1, map_info["height"]))
         polygon = []
-        for p in crop_points:
-            col = (float(p["x"]) - float(map_info["origin_x"])) / max(float(map_info["resolution"]), 1e-6)
-            row = (float(p["y"]) - float(map_info["origin_y"])) / max(float(map_info["resolution"]), 1e-6)
-            row = float(map_info["height"] - 1) - row
-            px = int(round(col * scale_x))
-            py = int(round(row * scale_y))
-            px = max(0, min(preview_w - 1, px))
-            py = max(0, min(preview_h - 1, py))
-            polygon.append([px, py])
+        for point in crop_points:
+            pixel_x, pixel_y = self._map_point_to_preview_pixel(
+                point,
+                map_info,
+                scale_x,
+                scale_y,
+                preview_w,
+                preview_h,
+            )
+            polygon.append([pixel_x, pixel_y])
         if len(polygon) < 3:
             return image
         arr = np.array(polygon, dtype=np.int32)
@@ -2026,12 +2068,14 @@ class SchedulerNode:
             selected_work_regions = self._resolve_plan_work_regions(force_use_all_regions=True)
         else:
             selected_work_regions = self._resolve_plan_work_regions(force_use_all_regions=False)
+        alignment_kwargs = self._map_preview_alignment_kwargs()
+        alignment_yaw = alignment_kwargs.get("alignment_yaw", None)
         snapshot = self.map_service.create_preview(
             None,
             self._planned_path_preview_max_edge,
             self._planned_path_preview_format,
             False,
-            **self._map_preview_alignment_kwargs()
+            **alignment_kwargs
         )
         image = cv2.imdecode(np.frombuffer(snapshot.preview_data, dtype=np.uint8), cv2.IMREAD_COLOR)
         if image is None:
@@ -2044,6 +2088,7 @@ class SchedulerNode:
             "resolution": float(snapshot.resolution),
             "map_version": int(snapshot.map_version),
             "frame_id": snapshot.frame_id,
+            "alignment_yaw": alignment_yaw,
         }
         preview_h, preview_w = image.shape[:2]
         scale_x = float(preview_w) / float(max(1, render_map_info["width"]))
@@ -2051,31 +2096,33 @@ class SchedulerNode:
 
         def _region_to_preview_polygon(region_points):
             polygon = []
-            for p in region_points:
-                col = (float(p["x"]) - float(render_map_info["origin_x"])) / max(float(render_map_info["resolution"]), 1e-6)
-                row = (float(p["y"]) - float(render_map_info["origin_y"])) / max(float(render_map_info["resolution"]), 1e-6)
-                row = float(render_map_info["height"] - 1) - row
-                px = int(round(col * scale_x))
-                py = int(round(row * scale_y))
-                px = max(0, min(preview_w - 1, px))
-                py = max(0, min(preview_h - 1, py))
-                polygon.append([px, py])
+            for point in region_points:
+                pixel_x, pixel_y = self._map_point_to_preview_pixel(
+                    point,
+                    render_map_info,
+                    scale_x,
+                    scale_y,
+                    preview_w,
+                    preview_h,
+                )
+                polygon.append([pixel_x, pixel_y])
             return polygon
 
         self._paint_region_overrides_for_path_preview(image, render_map_info, scale_x, scale_y, _region_to_preview_polygon)
 
         polyline = []
         for point in self.current_path.points:
-            col = (float(point["x"]) - float(render_map_info["origin_x"])) / max(float(render_map_info["resolution"]), 1e-6)
-            row = (float(point["y"]) - float(render_map_info["origin_y"])) / max(float(render_map_info["resolution"]), 1e-6)
-            row = float(render_map_info["height"] - 1) - row
-            px = int(round(col * scale_x))
-            py = int(round(row * scale_y))
-            px = max(0, min(preview_w - 1, px))
-            py = max(0, min(preview_h - 1, py))
+            pixel_x, pixel_y = self._map_point_to_preview_pixel(
+                point,
+                render_map_info,
+                scale_x,
+                scale_y,
+                preview_w,
+                preview_h,
+            )
             polyline.append({
-                "x": px,
-                "y": py,
+                "x": pixel_x,
+                "y": pixel_y,
                 "path_type": str(point.get("path_type", "") or ""),
             })
         # Display only selected work regions on path preview.
@@ -2183,20 +2230,22 @@ class SchedulerNode:
         ok, buffer = cv2.imencode(ext, image)
         if not ok:
             return None
-        return buffer.tobytes(), snapshot.preview_format
+        return buffer.tobytes(), snapshot.preview_format, render_map_info
 
     def _build_failed_plan_preview_payload(self, error_message):
         try:
+            alignment_kwargs = self._map_preview_alignment_kwargs()
+            alignment_yaw = alignment_kwargs.get("alignment_yaw", None)
             snapshot = self.map_service.create_preview(
                 None,
                 self._planned_path_preview_max_edge,
                 self._planned_path_preview_format,
                 self._planned_path_preview_include_overlay,
-                **self._map_preview_alignment_kwargs()
+                **alignment_kwargs
             )
             image = cv2.imdecode(np.frombuffer(snapshot.preview_data, dtype=np.uint8), cv2.IMREAD_COLOR)
             if image is None:
-                return snapshot.preview_data, snapshot.preview_format
+                return snapshot.preview_data, snapshot.preview_format, None
             render_map_info = {
                 "width": int(snapshot.width),
                 "height": int(snapshot.height),
@@ -2205,6 +2254,7 @@ class SchedulerNode:
                 "resolution": float(snapshot.resolution),
                 "map_version": int(snapshot.map_version),
                 "frame_id": snapshot.frame_id,
+                "alignment_yaw": alignment_yaw,
             }
             if render_map_info is not None:
                 preview_h, preview_w = image.shape[:2]
@@ -2213,15 +2263,16 @@ class SchedulerNode:
 
                 def _region_to_preview_polygon(region_points):
                     polygon = []
-                    for p in region_points:
-                        col = (float(p["x"]) - float(render_map_info["origin_x"])) / max(float(render_map_info["resolution"]), 1e-6)
-                        row = (float(p["y"]) - float(render_map_info["origin_y"])) / max(float(render_map_info["resolution"]), 1e-6)
-                        row = float(render_map_info["height"] - 1) - row
-                        px = int(round(col * scale_x))
-                        py = int(round(row * scale_y))
-                        px = max(0, min(preview_w - 1, px))
-                        py = max(0, min(preview_h - 1, py))
-                        polygon.append([px, py])
+                    for point in region_points:
+                        pixel_x, pixel_y = self._map_point_to_preview_pixel(
+                            point,
+                            render_map_info,
+                            scale_x,
+                            scale_y,
+                            preview_w,
+                            preview_h,
+                        )
+                        polygon.append([pixel_x, pixel_y])
                     return polygon
 
                 self._paint_region_overrides_for_path_preview(image, render_map_info, scale_x, scale_y, _region_to_preview_polygon)
@@ -2241,8 +2292,8 @@ class SchedulerNode:
             ext = ".png" if snapshot.preview_format.lower() == "png" else ".jpg"
             ok, buffer = cv2.imencode(ext, image)
             if not ok:
-                return snapshot.preview_data, snapshot.preview_format
-            return buffer.tobytes(), snapshot.preview_format
+                return snapshot.preview_data, snapshot.preview_format, render_map_info
+            return buffer.tobytes(), snapshot.preview_format, render_map_info
         except Exception:
             return None
 
@@ -3408,12 +3459,14 @@ class SchedulerNode:
         if self.current_path is None or not self.current_path.points:
             return "", b"", 0, 0
         try:
+            alignment_kwargs = self._map_preview_alignment_kwargs()
+            alignment_yaw = alignment_kwargs.get("alignment_yaw", None)
             snapshot = self.map_service.create_preview(
                 None,
                 self._planned_path_preview_max_edge,
                 self._planned_path_preview_format,
                 False,
-                **self._map_preview_alignment_kwargs()
+                **alignment_kwargs
             )
             image = cv2.imdecode(np.frombuffer(snapshot.preview_data, dtype=np.uint8), cv2.IMREAD_COLOR)
             if image is None:
@@ -3424,20 +3477,21 @@ class SchedulerNode:
                 "origin_x": float(snapshot.origin_x),
                 "origin_y": float(snapshot.origin_y),
                 "resolution": float(snapshot.resolution),
+                "alignment_yaw": alignment_yaw,
             }
             preview_h, preview_w = image.shape[:2]
             scale_x = float(preview_w) / float(max(1, render_map_info["width"]))
             scale_y = float(preview_h) / float(max(1, render_map_info["height"]))
 
-            def _to_px(py_point):
-                col = (float(py_point.get("x", 0.0)) - float(render_map_info["origin_x"])) / max(float(render_map_info["resolution"]), 1e-6)
-                row = (float(py_point.get("y", 0.0)) - float(render_map_info["origin_y"])) / max(float(render_map_info["resolution"]), 1e-6)
-                row = float(render_map_info["height"] - 1) - row
-                px = int(round(col * scale_x))
-                py = int(round(row * scale_y))
-                px = max(0, min(preview_w - 1, px))
-                py = max(0, min(preview_h - 1, py))
-                return px, py
+            def _to_px(path_point):
+                return self._map_point_to_preview_pixel(
+                    path_point,
+                    render_map_info,
+                    scale_x,
+                    scale_y,
+                    preview_w,
+                    preview_h,
+                )
 
             # Draw all work-region boundaries in task-result image for clearer context.
             for region in list(self.task_config.work_regions or []):
@@ -4954,6 +5008,16 @@ class SchedulerNode:
                 "y": float(request.end_pose.y),
                 "heading_deg": float(request.end_pose.heading_deg),
             }
+        plan_alignment_yaw = self._lookup_live_map_alignment_yaw() if self._live_map_align_to_initial_yaw else None
+        if plan_alignment_yaw is not None:
+            request_start_pose = self._pose_from_aligned_to_source_map(request_start_pose, plan_alignment_yaw)
+            request_end_pose = self._pose_from_aligned_to_source_map(request_end_pose, plan_alignment_yaw)
+            rospy.loginfo(
+                "PathPlanRequest poses converted: input_frame=%s output_frame=%s alignment_yaw=%.6f",
+                self._live_map_aligned_frame,
+                self._live_map_source_frame,
+                float(plan_alignment_yaw),
+            )
         rospy.loginfo(
             "PathPlanRequest: request_id=%s active_work_region_id=%s force_replan=%s use_all_regions=%s work_region_count=%d has_start=%s has_end=%s global_direction=%s",
             request.request_id or "<empty>",
@@ -5000,13 +5064,7 @@ class SchedulerNode:
         map_info = self.map_service.get_map_info()
         response.map_version = map_info["map_version"] if map_info else 0
         if map_info:
-            response.width = int(map_info.get("width", 0))
-            response.height = int(map_info.get("height", 0))
-            response.resolution = float(map_info.get("resolution", 0.0))
-            response.origin.x = float(map_info.get("origin_x", 0.0))
-            response.origin.y = float(map_info.get("origin_y", 0.0))
-            response.origin.heading_deg = 0.0
-            response.frame_id = str(map_info.get("frame_id", ""))
+            self._apply_response_map_info(response, map_info)
         else:
             response.width = 0
             response.height = 0
@@ -5034,6 +5092,8 @@ class SchedulerNode:
                 if preview_payload is not None:
                     response.preview_image = preview_payload[0]
                     response.preview_format = preview_payload[1]
+                    if len(preview_payload) > 2:
+                        self._apply_response_map_info(response, preview_payload[2])
                     if response.width > 0 and response.height > 0 and response.preview_image:
                         try:
                             decoded = cv2.imdecode(np.frombuffer(response.preview_image, dtype=np.uint8), cv2.IMREAD_COLOR)
@@ -5062,6 +5122,8 @@ class SchedulerNode:
                 if failed_preview is not None:
                     response.preview_image = failed_preview[0]
                     response.preview_format = failed_preview[1]
+                    if len(failed_preview) > 2:
+                        self._apply_response_map_info(response, failed_preview[2])
                     if response.width > 0 and response.height > 0 and response.preview_image:
                         try:
                             decoded = cv2.imdecode(np.frombuffer(response.preview_image, dtype=np.uint8), cv2.IMREAD_COLOR)
