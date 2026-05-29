@@ -74,7 +74,7 @@ namespace slamware_ros_sdk
         depth_image_colorized_topic_name = "/slamware_ros_sdk_server_node/depth_image_colorized";
         semantic_segmentation_topic_name = "/slamware_ros_sdk_server_node/semantic_segmentation";
         // 0528===========================================
-        slam_pose_is_laser_frame = true;
+        slam_pose_is_laser_frame = false;
         publish_laser_pose_tf = true;
         align_map_to_initial_yaw = false;
         aligned_map_frame = "map_aligned";

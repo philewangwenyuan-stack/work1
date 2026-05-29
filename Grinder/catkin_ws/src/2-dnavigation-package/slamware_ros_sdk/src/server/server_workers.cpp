@@ -248,8 +248,8 @@ namespace slamware_ros_sdk
             robotPoseTransform = robotPoseTransform * makeBaseToLaserTransform(srvParams).inverse();
         }
 
-        // Current SDK pose is usually the laser/SLAM sensor pose. Convert it to base_link
-        // so navigation and odom describe the vehicle motion center.
+        // When the SDK pose is reported at the laser frame, convert it to base_link.
+        // Otherwise keep the SDK pose as the vehicle motion center.
         wkDat->robotPose.header.stamp = ros::Time::now();
         // wkDat->robotPose.pose.position.x = pose.translation.x;
         // wkDat->robotPose.pose.position.y = pose.translation.y;

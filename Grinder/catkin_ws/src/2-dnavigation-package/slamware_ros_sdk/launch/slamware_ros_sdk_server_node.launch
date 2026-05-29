@@ -8,7 +8,7 @@
   <arg name="base_to_laser_roll" default="0.0" />
   <arg name="base_to_laser_pitch" default="0.0" />
   <arg name="base_to_laser_yaw" default="0.0" />
-  <arg name="slam_pose_is_laser_frame" default="true" />
+  <arg name="slam_pose_is_laser_frame" default="false" />
   <arg name="publish_laser_pose_tf" default="false" />
   <arg name="align_map_to_initial_yaw" default="true" />
   <arg name="aligned_map_frame" default="map_aligned" />
