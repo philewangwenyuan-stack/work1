@@ -9,7 +9,9 @@ namespace slamware_ros_sdk
 {
 
     ServerWorkData::ServerWorkData()
-        : syncMapRequested(true)
+        : syncMapRequested(true),
+          hasMapYawAlignment(false),
+          mapYawAlignmentYaw(0.0)
     {
         //
     }

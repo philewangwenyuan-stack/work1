@@ -78,6 +78,8 @@ namespace slamware_ros_sdk
         publish_laser_pose_tf = true;
         align_map_to_initial_yaw = false;
         aligned_map_frame = "map_aligned";
+        aligned_map_topic = "/slamware_ros_sdk_server_node/map_aligned";
+        aligned_map_info_topic = "/slamware_ros_sdk_server_node/map_aligned_metadata";
         base_to_laser_x = 0.0;
         base_to_laser_y = 0.0;
         base_to_laser_z = 0.0;
@@ -143,6 +145,8 @@ namespace slamware_ros_sdk
         nhRos.getParam("publish_laser_pose_tf", publish_laser_pose_tf);
         nhRos.getParam("align_map_to_initial_yaw", align_map_to_initial_yaw);
         nhRos.getParam("aligned_map_frame", aligned_map_frame);
+        nhRos.getParam("aligned_map_topic", aligned_map_topic);
+        nhRos.getParam("aligned_map_info_topic", aligned_map_info_topic);
         nhRos.getParam("base_to_laser_x", base_to_laser_x);
         nhRos.getParam("base_to_laser_y", base_to_laser_y);
         nhRos.getParam("base_to_laser_z", base_to_laser_z);

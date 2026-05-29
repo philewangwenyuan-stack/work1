@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include <atomic>
 #include <ros/ros.h>
 
 #include "server_map_holder.h"
@@ -20,6 +21,8 @@ namespace slamware_ros_sdk
         geometry_msgs::PoseStamped robotPose;
 
         std::atomic<bool> syncMapRequested;
+        std::atomic<bool> hasMapYawAlignment;
+        std::atomic<double> mapYawAlignmentYaw;
         ServerMapHolder exploreMapHolder;
 
     public:

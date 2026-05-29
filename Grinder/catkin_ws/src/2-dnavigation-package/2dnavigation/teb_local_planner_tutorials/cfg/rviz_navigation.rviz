@@ -62,7 +62,7 @@ Visualization Manager:
       Draw Behind: false
       Enabled: true
       Name: Map
-      Topic: /map
+      Topic: /map_aligned
       Unreliable: false
       Use Timestamp: false
       Value: true

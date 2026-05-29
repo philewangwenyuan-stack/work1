@@ -69,6 +69,8 @@ namespace slamware_ros_sdk
         bool publish_laser_pose_tf;
         bool align_map_to_initial_yaw;
         std::string aligned_map_frame;
+        std::string aligned_map_topic;
+        std::string aligned_map_info_topic;
         double base_to_laser_x;
         double base_to_laser_y;
         double base_to_laser_z;

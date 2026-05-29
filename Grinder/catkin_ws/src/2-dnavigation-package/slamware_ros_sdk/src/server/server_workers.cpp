@@ -13,6 +13,7 @@
 #include <cv_bridge/cv_bridge.h>
 #include <random>
 #include <cmath>
+#include <algorithm>
 #include <angles/angles.h>
 // 0528==================
 #include <tf/transform_datatypes.h>
@@ -75,6 +76,96 @@ namespace slamware_ros_sdk
             pose.position.z = transform.getOrigin().z();
             tf::quaternionTFToMsg(transform.getRotation(), pose.orientation);
             return pose;
+        }
+
+        nav_msgs::OccupancyGrid rotateMapToAlignedFrame(const nav_msgs::OccupancyGrid &srcMap,
+                                                        const std::string &alignedFrame,
+                                                        double yaw)
+        {
+            nav_msgs::OccupancyGrid dstMap = srcMap;
+            dstMap.header.frame_id = alignedFrame;
+            dstMap.info.origin.orientation = tf::createQuaternionMsgFromYaw(0.0);
+
+            const unsigned int srcWidth = srcMap.info.width;
+            const unsigned int srcHeight = srcMap.info.height;
+            if (srcWidth == 0 || srcHeight == 0 || srcMap.data.empty())
+            {
+                return dstMap;
+            }
+
+            const double resolution = std::max(static_cast<double>(srcMap.info.resolution), 1e-12);
+            if (std::abs(yaw) <= 1e-12)
+            {
+                return dstMap;
+            }
+
+            const double cosYaw = std::cos(yaw);
+            const double sinYaw = std::sin(yaw);
+            const double x0 = srcMap.info.origin.position.x;
+            const double y0 = srcMap.info.origin.position.y;
+            const double x1 = x0 + static_cast<double>(srcWidth) * resolution;
+            const double y1 = y0 + static_cast<double>(srcHeight) * resolution;
+
+            const double corners[4][2] = {
+                {x0, y0},
+                {x1, y0},
+                {x0, y1},
+                {x1, y1},
+            };
+            double minX = 0.0;
+            double maxX = 0.0;
+            double minY = 0.0;
+            double maxY = 0.0;
+            for (int idx = 0; idx < 4; ++idx)
+            {
+                const double rx = cosYaw * corners[idx][0] - sinYaw * corners[idx][1];
+                const double ry = sinYaw * corners[idx][0] + cosYaw * corners[idx][1];
+                if (idx == 0)
+                {
+                    minX = maxX = rx;
+                    minY = maxY = ry;
+                }
+                else
+                {
+                    minX = std::min(minX, rx);
+                    maxX = std::max(maxX, rx);
+                    minY = std::min(minY, ry);
+                    maxY = std::max(maxY, ry);
+                }
+            }
+
+            const unsigned int dstWidth = std::max(1, static_cast<int>(std::ceil((maxX - minX) / resolution)));
+            const unsigned int dstHeight = std::max(1, static_cast<int>(std::ceil((maxY - minY) / resolution)));
+            dstMap.info.width = dstWidth;
+            dstMap.info.height = dstHeight;
+            dstMap.info.origin.position.x = minX;
+            dstMap.info.origin.position.y = minY;
+            dstMap.data.assign(static_cast<std::size_t>(dstWidth) * static_cast<std::size_t>(dstHeight), -1);
+
+            for (unsigned int row = 0; row < dstHeight; ++row)
+            {
+                const double alignedY = minY + (static_cast<double>(row) + 0.5) * resolution;
+                for (unsigned int col = 0; col < dstWidth; ++col)
+                {
+                    const double alignedX = minX + (static_cast<double>(col) + 0.5) * resolution;
+                    const double mapX = cosYaw * alignedX + sinYaw * alignedY;
+                    const double mapY = -sinYaw * alignedX + cosYaw * alignedY;
+                    const int srcCol = static_cast<int>(std::floor((mapX - x0) / resolution));
+                    const int srcRow = static_cast<int>(std::floor((mapY - y0) / resolution));
+                    if (srcCol < 0 || srcCol >= static_cast<int>(srcWidth) ||
+                        srcRow < 0 || srcRow >= static_cast<int>(srcHeight))
+                    {
+                        continue;
+                    }
+                    const std::size_t srcIndex = static_cast<std::size_t>(srcRow) * srcWidth + static_cast<std::size_t>(srcCol);
+                    const std::size_t dstIndex = static_cast<std::size_t>(row) * dstWidth + static_cast<std::size_t>(col);
+                    if (srcIndex < srcMap.data.size() && dstIndex < dstMap.data.size())
+                    {
+                        dstMap.data[dstIndex] = srcMap.data[srcIndex];
+                    }
+                }
+            }
+            return dstMap;
         }
     }
     
@@ -177,10 +268,17 @@ namespace slamware_ros_sdk
             {
                 initialMapYaw_ = tf::getYaw(robotPoseTransform.getRotation());
                 hasMapYawAlignment_ = true;
+                wkDat->mapYawAlignmentYaw.store(-initialMapYaw_);
+                wkDat->hasMapYawAlignment.store(true);
                 ROS_INFO("Map yaw alignment initialized: %s -> %s yaw %.6f rad",
                          srvParams.aligned_map_frame.c_str(),
                          srvParams.map_frame.c_str(),
                          -initialMapYaw_);
+            }
+            else if (!wkDat->hasMapYawAlignment.load())
+            {
+                wkDat->mapYawAlignmentYaw.store(-initialMapYaw_);
+                wkDat->hasMapYawAlignment.store(true);
             }
 
             geometry_msgs::TransformStamped alignedMapTrans;
@@ -578,6 +676,11 @@ namespace slamware_ros_sdk
         auto &nhRos = rosNodeHandle();
         pubMapDat_ = nhRos.advertise<nav_msgs::OccupancyGrid>(srvParams.map_topic, 1, true);
         pubMapInfo_ = nhRos.advertise<nav_msgs::MapMetaData>(srvParams.map_info_topic, 1, true);
+        if (srvParams.align_map_to_initial_yaw && srvParams.aligned_map_frame != srvParams.map_frame)
+        {
+            pubAlignedMapDat_ = nhRos.advertise<nav_msgs::OccupancyGrid>(srvParams.aligned_map_topic, 1, true);
+            pubAlignedMapInfo_ = nhRos.advertise<nav_msgs::MapMetaData>(srvParams.aligned_map_info_topic, 1, true);
+        }
     }
 
     ServerExploreMapPublishWorker::~ServerExploreMapPublishWorker()
@@ -605,6 +708,19 @@ namespace slamware_ros_sdk
 
         pubMapDat_.publish(msgMap.map);
         pubMapInfo_.publish(msgMap.map.info);
+
+        if (srvParams.align_map_to_initial_yaw && srvParams.aligned_map_frame != srvParams.map_frame &&
+            wkDat->hasMapYawAlignment.load())
+        {
+            const double alignmentYaw = wkDat->mapYawAlignmentYaw.load();
+            nav_msgs::OccupancyGrid alignedMap = rotateMapToAlignedFrame(
+                msgMap.map,
+                srvParams.aligned_map_frame,
+                alignmentYaw);
+            alignedMap.header.stamp = msgMap.map.header.stamp;
+            pubAlignedMapDat_.publish(alignedMap);
+            pubAlignedMapInfo_.publish(alignedMap.info);
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////

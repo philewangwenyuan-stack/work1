@@ -7,6 +7,7 @@
 #include <std_srvs/Empty.h>
 #include <std_msgs/Float64.h>
 #include <nav_msgs/GetMap.h>
+#include <nav_msgs/OccupancyGrid.h>
 #include <nav_msgs/Path.h>
 #include <geometry_msgs/Twist.h>
 #include <nav_msgs/Odometry.h>
@@ -136,6 +137,8 @@ namespace slamware_ros_sdk
     private:
         ros::Publisher pubMapDat_;
         ros::Publisher pubMapInfo_;
+        ros::Publisher pubAlignedMapDat_;
+        ros::Publisher pubAlignedMapInfo_;
     };
 
     //////////////////////////////////////////////////////////////////////////

@@ -472,11 +472,7 @@ class SchedulerNode:
         try:
             if self.current_path is None or self.current_path.nav_path is None or not self.current_path.nav_path.poses:
                 return
-            now = rospy.Time.now()
-            self.current_path.nav_path.header.stamp = now
-            for pose in self.current_path.nav_path.poses:
-                pose.header.stamp = now
-            self.global_plan_pub.publish(self.current_path.nav_path)
+            self.global_plan_pub.publish(self._build_navigation_path_for_move_base())
         except Exception as exc:
             rospy.logwarn_throttle(2.0, "Failed to publish global plan periodically: %s", exc)
 
@@ -484,16 +480,102 @@ class SchedulerNode:
         try:
             if self.current_path is None or self.current_path.nav_path is None or not self.current_path.nav_path.poses:
                 return
-            msg = Path()
-            msg.header = self.current_path.nav_path.header
-            msg.header.stamp = rospy.Time.now()
-            msg.poses = list(self.current_path.nav_path.poses)
+            msg = self._build_navigation_path_for_move_base()
             self.global_plan_pub.publish(msg)
             if publish_goal:
                 self._publish_path_endpoint_goal(reason=reason or "sync_with_global_plan")
             rospy.loginfo_throttle(2.0, "Published planned path to navigation: points=%d", len(msg.poses))
         except Exception as exc:
             rospy.logwarn_throttle(2.0, "Failed to publish path to navigation: %s", exc)
+
+    def _navigation_alignment_yaw(self):
+        if not self._live_map_align_to_initial_yaw:
+            return None
+        yaw = self._lookup_live_map_alignment_yaw()
+        if yaw is None:
+            return None
+        return float(yaw)
+
+    @staticmethod
+    def _yaw_from_quaternion(quat):
+        try:
+            x = float(quat.get("x", 0.0))
+            y = float(quat.get("y", 0.0))
+            z = float(quat.get("z", 0.0))
+            w = float(quat.get("w", 1.0))
+        except Exception:
+            return 0.0
+        return math.atan2(2.0 * (w * z + x * y), 1.0 - 2.0 * (y * y + z * z))
+
+    def _quaternion_to_navigation_frame(self, quat, alignment_yaw):
+        if alignment_yaw is None:
+            return quat
+        return self._yaw_to_quaternion(self._yaw_from_quaternion(quat) + float(alignment_yaw))
+
+    def _point_to_navigation_frame(self, x, y, alignment_yaw):
+        if alignment_yaw is None:
+            return float(x), float(y)
+        return self._transform_point_by_yaw(x, y, float(alignment_yaw))
+
+    def _build_navigation_path_for_move_base(self):
+        nav_path = Path()
+        if self.current_path is None:
+            return nav_path
+        alignment_yaw = self._navigation_alignment_yaw()
+        source_frame = (
+            self.current_path.nav_path.header.frame_id
+            if self.current_path.nav_path is not None and self.current_path.nav_path.header.frame_id
+            else self._live_map_source_frame
+        )
+        nav_path.header.frame_id = self._live_map_aligned_frame if alignment_yaw is not None else source_frame
+        nav_path.header.stamp = rospy.Time.now()
+        points = list(self.current_path.points or [])
+        cached_xy = [(float(p.get("x", 0.0)), float(p.get("y", 0.0))) for p in points]
+        for index, point in enumerate(points):
+            raw_x = float(point.get("x", 0.0))
+            raw_y = float(point.get("y", 0.0))
+            nav_x, nav_y = self._point_to_navigation_frame(raw_x, raw_y, alignment_yaw)
+            quat = self._resolve_point_orientation(point, index, cached_xy)
+            quat = self._quaternion_to_navigation_frame(quat, alignment_yaw)
+            pose = PoseStamped()
+            pose.header = nav_path.header
+            pose.pose.position.x = float(nav_x)
+            pose.pose.position.y = float(nav_y)
+            pose.pose.orientation.x = float(quat["x"])
+            pose.pose.orientation.y = float(quat["y"])
+            pose.pose.orientation.z = float(quat["z"])
+            pose.pose.orientation.w = float(quat["w"])
+            nav_path.poses.append(pose)
+        return nav_path
+
+    def _build_navigation_goal_msg(self, point, index, quat=None):
+        alignment_yaw = self._navigation_alignment_yaw()
+        source_frame = (
+            self.current_path.nav_path.header.frame_id
+            if self.current_path is not None
+            and self.current_path.nav_path is not None
+            and self.current_path.nav_path.header.frame_id
+            else self._live_map_source_frame
+        )
+        if quat is None:
+            cached_xy = [(float(p.get("x", 0.0)), float(p.get("y", 0.0))) for p in self.current_path.points]
+            quat = self._resolve_point_orientation(point, index, cached_xy)
+        nav_x, nav_y = self._point_to_navigation_frame(
+            float(point.get("x", 0.0)),
+            float(point.get("y", 0.0)),
+            alignment_yaw,
+        )
+        quat = self._quaternion_to_navigation_frame(quat, alignment_yaw)
+        msg = PoseStamped()
+        msg.header.stamp = rospy.Time.now()
+        msg.header.frame_id = self._live_map_aligned_frame if alignment_yaw is not None else source_frame
+        msg.pose.position.x = float(nav_x)
+        msg.pose.position.y = float(nav_y)
+        msg.pose.orientation.x = float(quat["x"])
+        msg.pose.orientation.y = float(quat["y"])
+        msg.pose.orientation.z = float(quat["z"])
+        msg.pose.orientation.w = float(quat["w"])
+        return msg
 
     def _publish_path_endpoint_goal(self, reason=""):
         if self.current_path is None or not self.current_path.points:
@@ -517,23 +599,9 @@ class SchedulerNode:
         except Exception:
             target_index = endpoint_index
         endpoint = self.current_path.points[target_index]
-        frame_id = (
-            self.current_path.nav_path.header.frame_id
-            if self.current_path.nav_path is not None and self.current_path.nav_path.header.frame_id
-            else "map"
-        )
         cached_xy = [(float(p.get("x", 0.0)), float(p.get("y", 0.0))) for p in self.current_path.points]
         quat = self._resolve_point_orientation(endpoint, target_index, cached_xy)
-        msg = PoseStamped()
-        msg.header.stamp = rospy.Time.now()
-        msg.header.frame_id = frame_id
-        msg.pose.position.x = float(endpoint.get("x", 0.0))
-        msg.pose.position.y = float(endpoint.get("y", 0.0))
-        msg.pose.orientation.x = float(quat["x"])
-        msg.pose.orientation.y = float(quat["y"])
-        msg.pose.orientation.z = float(quat["z"])
-        msg.pose.orientation.w = float(quat["w"])
-        self.goal_pub.publish(msg)
+        self.goal_pub.publish(self._build_navigation_goal_msg(endpoint, target_index, quat))
 
     # Backward compatibility for older internal calls; keeps behavior periodic.
     def _publish_path_endpoint_goal_once(self, reason=""):
@@ -2894,25 +2962,11 @@ class SchedulerNode:
             return
         endpoint = self.current_path.points[path_index]
         self._apply_disc_state_for_path_point(endpoint)
-        frame_id = (
-            self.current_path.nav_path.header.frame_id
-            if self.current_path.nav_path is not None and self.current_path.nav_path.header.frame_id
-            else "map"
-        )
         quat = goal.get("orientation") if isinstance(goal, dict) else None
         if not isinstance(quat, dict):
             cached_xy = [(float(p.get("x", 0.0)), float(p.get("y", 0.0))) for p in self.current_path.points]
             quat = self._resolve_point_orientation(endpoint, path_index, cached_xy)
-        msg = PoseStamped()
-        msg.header.stamp = rospy.Time.now()
-        msg.header.frame_id = frame_id
-        msg.pose.position.x = float(endpoint.get("x", 0.0))
-        msg.pose.position.y = float(endpoint.get("y", 0.0))
-        msg.pose.orientation.x = float(quat["x"])
-        msg.pose.orientation.y = float(quat["y"])
-        msg.pose.orientation.z = float(quat["z"])
-        msg.pose.orientation.w = float(quat["w"])
-        self.goal_pub.publish(msg)
+        self.goal_pub.publish(self._build_navigation_goal_msg(endpoint, path_index, quat))
 
     def _apply_disc_state_for_path_point(self, path_point):
         if not bool(self._disc_follow_path_type):
@@ -2950,24 +3004,10 @@ class SchedulerNode:
                 nearest_distance = distance
                 nearest_index = index
         self.current_path_index = nearest_index
-        frame_id = (
-            self.current_path.nav_path.header.frame_id
-            if self.current_path.nav_path is not None and self.current_path.nav_path.header.frame_id
-            else "map"
-        )
         endpoint = self.current_path.points[nearest_index]
         cached_xy = [(float(p.get("x", 0.0)), float(p.get("y", 0.0))) for p in self.current_path.points]
         quat = self._resolve_point_orientation(endpoint, int(nearest_index), cached_xy)
-        msg = PoseStamped()
-        msg.header.stamp = rospy.Time.now()
-        msg.header.frame_id = frame_id
-        msg.pose.position.x = float(endpoint.get("x", 0.0))
-        msg.pose.position.y = float(endpoint.get("y", 0.0))
-        msg.pose.orientation.x = float(quat["x"])
-        msg.pose.orientation.y = float(quat["y"])
-        msg.pose.orientation.z = float(quat["z"])
-        msg.pose.orientation.w = float(quat["w"])
-        self.goal_pub.publish(msg)
+        self.goal_pub.publish(self._build_navigation_goal_msg(endpoint, int(nearest_index), quat))
 
     def _advance_goal_or_finish(self):
         if self.current_path is None or not self.current_path.points:
