@@ -24,6 +24,13 @@ from nav_msgs.srv import LoadMap
 from std_msgs.msg import Bool, Int16, UInt16
 from std_srvs.srv import Trigger, TriggerResponse
 
+try:
+    import tf2_ros
+    from tf.transformations import euler_from_quaternion
+except Exception:
+    tf2_ros = None
+    euler_from_quaternion = None
+
 from grinder_scheduler.aurora_bridge import AuroraBridge
 from grinder_scheduler.local_rtsp_server import LocalRtspStreamServer
 from grinder_scheduler.map_service import MapService
@@ -247,6 +254,28 @@ class SchedulerNode:
         ).strip().lower()
         if self._live_map_cache_clear_mode not in ("all", "memory_only"):
             self._live_map_cache_clear_mode = "all"
+        self._live_map_align_to_initial_yaw = bool(
+            rospy.get_param("~live_map_align_to_initial_yaw", True)
+        )
+        self._live_map_source_frame = str(rospy.get_param("~live_map_source_frame", "map")).strip() or "map"
+        self._live_map_aligned_frame = str(rospy.get_param("~live_map_aligned_frame", "map_aligned")).strip() or "map_aligned"
+        self._live_map_align_yaw_timeout = max(
+            0.01, float(rospy.get_param("~live_map_align_yaw_timeout", 0.05))
+        )
+        self._live_map_last_rotated_version = None
+        self._live_map_last_rotated_yaw = None
+        self._live_map_last_rotated_grid = None
+        self._live_map_last_rotated_origin = None
+        self._tf_buffer = None
+        self._tf_listener = None
+        if self._live_map_align_to_initial_yaw and tf2_ros is not None:
+            try:
+                self._tf_buffer = tf2_ros.Buffer(cache_time=rospy.Duration(10.0))
+                self._tf_listener = tf2_ros.TransformListener(self._tf_buffer)
+            except Exception as exc:
+                rospy.logwarn("Failed to init tf2 listener for live map alignment: %s", exc)
+                self._tf_buffer = None
+                self._tf_listener = None
         self._saved_map_thumb_max_edge = max(64, int(rospy.get_param("~saved_map_thumb_max_edge", 192)))
         self._saved_map_thumb_jpeg_quality = max(30, min(95, int(rospy.get_param("~saved_map_thumb_jpeg_quality", 70))))
         self._map_catalog_max_items = max(1, int(rospy.get_param("~map_catalog_max_items", 200)))
@@ -772,6 +801,7 @@ class SchedulerNode:
             origin_x = float(map_info_override["origin_x"])
             origin_y = float(map_info_override["origin_y"])
             resolution = float(map_info_override["resolution"])
+            map_version = int(map_info_override.get("map_version", -1))
         else:
             info = raw_map.info
             width = int(info.width)
@@ -780,6 +810,38 @@ class SchedulerNode:
             origin_x = float(info.origin.position.x)
             origin_y = float(info.origin.position.y)
             resolution = float(info.resolution)
+            map_version = -1
+
+        if (
+            self._live_map_align_to_initial_yaw
+            and self._tf_buffer is not None
+            and euler_from_quaternion is not None
+            and width > 0
+            and height > 0
+        ):
+            yaw = self._lookup_live_map_alignment_yaw()
+            if yaw is not None and abs(float(yaw)) > 1e-6:
+                cache_hit = (
+                    self._live_map_last_rotated_grid is not None
+                    and self._live_map_last_rotated_origin is not None
+                    and map_version >= 0
+                    and self._live_map_last_rotated_version == map_version
+                    and self._live_map_last_rotated_yaw is not None
+                    and abs(float(self._live_map_last_rotated_yaw) - float(yaw)) < 1e-9
+                )
+                if cache_hit:
+                    grid = self._live_map_last_rotated_grid
+                    origin_x, origin_y = self._live_map_last_rotated_origin
+                    height, width = grid.shape[:2]
+                else:
+                    grid, origin_x, origin_y = self._rotate_grid_to_aligned_frame(
+                        grid, origin_x, origin_y, resolution, float(yaw)
+                    )
+                    height, width = grid.shape[:2]
+                    self._live_map_last_rotated_version = map_version
+                    self._live_map_last_rotated_yaw = float(yaw)
+                    self._live_map_last_rotated_grid = grid
+                    self._live_map_last_rotated_origin = (float(origin_x), float(origin_y))
 
         if self._live_map_crop_to_free_space and width > 0 and height > 0:
             free_rows, free_cols = np.where(grid == 0)
@@ -825,6 +887,77 @@ class SchedulerNode:
             handle.write(yaml_text)
         os.replace(tmp_yaml, yaml_path)
         return yaml_path, image_path
+
+    def _lookup_live_map_alignment_yaw(self):
+        if self._tf_buffer is None:
+            return None
+        try:
+            transform = self._tf_buffer.lookup_transform(
+                self._live_map_aligned_frame,
+                self._live_map_source_frame,
+                rospy.Time(0),
+                rospy.Duration(self._live_map_align_yaw_timeout),
+            )
+            q = transform.transform.rotation
+            _, _, yaw = euler_from_quaternion([q.x, q.y, q.z, q.w])
+            if not math.isfinite(float(yaw)):
+                return None
+            return float(yaw)
+        except Exception as exc:
+            rospy.logwarn_throttle(2.0, "Failed to lookup live map alignment yaw: %s", exc)
+            return None
+
+    @staticmethod
+    def _rotate_grid_to_aligned_frame(grid, origin_x, origin_y, resolution, yaw):
+        height, width = grid.shape[:2]
+        if height <= 0 or width <= 0:
+            return grid, origin_x, origin_y
+        if abs(float(yaw)) <= 1e-12:
+            return grid, origin_x, origin_y
+
+        cos_yaw = math.cos(yaw)
+        sin_yaw = math.sin(yaw)
+        rot = np.array([[cos_yaw, -sin_yaw], [sin_yaw, cos_yaw]], dtype=np.float64)
+
+        x0 = float(origin_x)
+        y0 = float(origin_y)
+        x1 = x0 + float(width) * float(resolution)
+        y1 = y0 + float(height) * float(resolution)
+        corners = np.array([[x0, y0], [x1, y0], [x0, y1], [x1, y1]], dtype=np.float64)
+        rotated = corners @ rot.T
+
+        min_x = float(rotated[:, 0].min())
+        max_x = float(rotated[:, 0].max())
+        min_y = float(rotated[:, 1].min())
+        max_y = float(rotated[:, 1].max())
+
+        out_width = max(1, int(math.ceil((max_x - min_x) / max(float(resolution), 1e-12))))
+        out_height = max(1, int(math.ceil((max_y - min_y) / max(float(resolution), 1e-12))))
+
+        cols = np.arange(out_width, dtype=np.float64)
+        rows = np.arange(out_height, dtype=np.float64)
+        x_aligned = min_x + (cols + 0.5) * float(resolution)
+        y_aligned = min_y + (rows + 0.5) * float(resolution)
+
+        xx, yy = np.meshgrid(x_aligned, y_aligned)
+        # Inverse rotation: map = R(-yaw) * aligned.
+        x_map = cos_yaw * xx + sin_yaw * yy
+        y_map = -sin_yaw * xx + cos_yaw * yy
+
+        src_col = np.floor((x_map - x0) / max(float(resolution), 1e-12)).astype(np.int64)
+        src_row = np.floor((y_map - y0) / max(float(resolution), 1e-12)).astype(np.int64)
+
+        valid = (
+            (src_col >= 0)
+            & (src_col < int(width))
+            & (src_row >= 0)
+            & (src_row < int(height))
+        )
+        out_grid = np.full((out_height, out_width), -1, dtype=np.int16)
+        if int(np.count_nonzero(valid)) > 0:
+            out_grid[valid] = grid[src_row[valid], src_col[valid]]
+
+        return out_grid, float(min_x), float(min_y)
 
     def _reload_navigation_map(self, yaml_path):
         try:

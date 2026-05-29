@@ -75,6 +75,10 @@ live_map_yaml_name: map.yaml
 live_map_image_name: map1.pgm
 # LIVE_MAP 缓存清理策略：all(清理持久化+文件缓存) / memory_only(仅清理内存态覆盖层)
 live_map_cache_clear_mode: all
+live_map_align_to_initial_yaw: true
+live_map_source_frame: map
+live_map_aligned_frame: map_aligned
+live_map_align_yaw_timeout: 0.05
 
 # 导航栈使用的地图 yaml 路径
 navigation_map_yaml_path: catkin_ws/src/2-dnavigation-package/2dnavigation/teb_local_planner_tutorials/maps/map.yaml
