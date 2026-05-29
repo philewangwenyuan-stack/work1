@@ -10,6 +10,8 @@
   <arg name="base_to_laser_yaw" default="0.0" />
   <arg name="slam_pose_is_laser_frame" default="true" />
   <arg name="publish_laser_pose_tf" default="false" />
+  <arg name="align_map_to_initial_yaw" default="true" />
+  <arg name="aligned_map_frame" default="map_aligned" />
 
   <!-- 主节点 -->
   <node pkg="slamware_ros_sdk" type="slamware_ros_sdk_server_node" name="slamware_ros_sdk_server_node" output="screen">
@@ -26,6 +28,8 @@
     <param name="camera_right"             value="base_camera_right"/>
     <param name="slam_pose_is_laser_frame" value="$(arg slam_pose_is_laser_frame)"/>
     <param name="publish_laser_pose_tf"    value="$(arg publish_laser_pose_tf)"/>
+    <param name="align_map_to_initial_yaw" value="$(arg align_map_to_initial_yaw)"/>
+    <param name="aligned_map_frame"        value="$(arg aligned_map_frame)"/>
     <param name="base_to_laser_x"          value="$(arg base_to_laser_x)"/>
     <param name="base_to_laser_y"          value="$(arg base_to_laser_y)"/>
     <param name="base_to_laser_z"          value="$(arg base_to_laser_z)"/>

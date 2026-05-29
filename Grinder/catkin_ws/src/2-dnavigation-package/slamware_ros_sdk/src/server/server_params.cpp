@@ -76,6 +76,8 @@ namespace slamware_ros_sdk
         // 0528===========================================
         slam_pose_is_laser_frame = true;
         publish_laser_pose_tf = true;
+        align_map_to_initial_yaw = false;
+        aligned_map_frame = "map_aligned";
         base_to_laser_x = 0.0;
         base_to_laser_y = 0.0;
         base_to_laser_z = 0.0;
@@ -139,6 +141,8 @@ namespace slamware_ros_sdk
         // 0528=============================================Enhanced imaging topics
         nhRos.getParam("slam_pose_is_laser_frame", slam_pose_is_laser_frame);
         nhRos.getParam("publish_laser_pose_tf", publish_laser_pose_tf);
+        nhRos.getParam("align_map_to_initial_yaw", align_map_to_initial_yaw);
+        nhRos.getParam("aligned_map_frame", aligned_map_frame);
         nhRos.getParam("base_to_laser_x", base_to_laser_x);
         nhRos.getParam("base_to_laser_y", base_to_laser_y);
         nhRos.getParam("base_to_laser_z", base_to_laser_z);

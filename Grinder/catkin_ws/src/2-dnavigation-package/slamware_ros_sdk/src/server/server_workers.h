@@ -83,6 +83,8 @@ namespace slamware_ros_sdk
     private:
         ros::Publisher pubRobotPose_;
         uint64_t lastTimestamp_;
+        bool hasMapYawAlignment_;
+        double initialMapYaw_;
     };
 
     //////////////////////////////////////////////////////////////////////////

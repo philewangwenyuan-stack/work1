@@ -19,6 +19,8 @@
   <arg name="base_to_laser_yaw" default="0.0" />
   <arg name="slam_pose_is_laser_frame" default="true" />
   <arg name="publish_laser_pose_tf" default="false" />
+  <arg name="align_map_to_initial_yaw" default="true" />
+  <arg name="aligned_map_frame" default="map_aligned" />
   
 
   <!-- 1) Aurora driver: start independently in the system launch -->
@@ -32,6 +34,8 @@
     <arg name="base_to_laser_yaw" value="$(arg base_to_laser_yaw)" />
     <arg name="slam_pose_is_laser_frame" value="$(arg slam_pose_is_laser_frame)" />
     <arg name="publish_laser_pose_tf" value="$(arg publish_laser_pose_tf)" />
+    <arg name="align_map_to_initial_yaw" value="$(arg align_map_to_initial_yaw)" />
+    <arg name="aligned_map_frame" value="$(arg aligned_map_frame)" />
   </include>
 
   <!-- 2) chassis driver -->

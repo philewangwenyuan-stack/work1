@@ -104,7 +104,10 @@ namespace slamware_ros_sdk
         SlamwareRosSdkServer *pRosSdkServer,
         const std::string &wkName,
         const std::chrono::milliseconds &triggerInterval)
-        : ServerWorkerBase(pRosSdkServer, wkName, triggerInterval),lastTimestamp_(0)
+        : ServerWorkerBase(pRosSdkServer, wkName, triggerInterval),
+          lastTimestamp_(0),
+          hasMapYawAlignment_(false),
+          initialMapYaw_(0.0)
     {
         const auto &srvParams = serverParams();
         auto &nhRos = rosNodeHandle();
@@ -167,6 +170,29 @@ namespace slamware_ros_sdk
         // wkDat->robotPose.pose.orientation.w = pose.quaternion.w;
         wkDat->robotPose.header.frame_id = srvParams.map_frame;
         wkDat->robotPose.pose = toPoseMsg(robotPoseTransform);
+
+        if (srvParams.align_map_to_initial_yaw && srvParams.aligned_map_frame != srvParams.map_frame)
+        {
+            if (!hasMapYawAlignment_)
+            {
+                initialMapYaw_ = tf::getYaw(robotPoseTransform.getRotation());
+                hasMapYawAlignment_ = true;
+                ROS_INFO("Map yaw alignment initialized: %s -> %s yaw %.6f rad",
+                         srvParams.aligned_map_frame.c_str(),
+                         srvParams.map_frame.c_str(),
+                         -initialMapYaw_);
+            }
+
+            geometry_msgs::TransformStamped alignedMapTrans;
+            alignedMapTrans.header.stamp = wkDat->robotPose.header.stamp;
+            alignedMapTrans.header.frame_id = srvParams.aligned_map_frame;
+            alignedMapTrans.child_frame_id = srvParams.map_frame;
+            alignedMapTrans.transform.translation.x = 0.0;
+            alignedMapTrans.transform.translation.y = 0.0;
+            alignedMapTrans.transform.translation.z = 0.0;
+            alignedMapTrans.transform.rotation = tf::createQuaternionMsgFromYaw(-initialMapYaw_);
+            tfBroadcaster().sendTransform(alignedMapTrans);
+        }
 
         // ROS_INFO("vslam_pose - Translation: x=%f, y=%f, z=%f, Rotation: x=%f, y=%f, z=%f, w=%f",
         //  vslam_pose.getOrigin().x(), vslam_pose.getOrigin().y(), vslam_pose.getOrigin().z(),

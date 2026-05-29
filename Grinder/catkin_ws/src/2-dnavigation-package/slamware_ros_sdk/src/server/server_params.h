@@ -67,6 +67,8 @@ namespace slamware_ros_sdk
         // 0528修改==========================================================================
         bool slam_pose_is_laser_frame;
         bool publish_laser_pose_tf;
+        bool align_map_to_initial_yaw;
+        std::string aligned_map_frame;
         double base_to_laser_x;
         double base_to_laser_y;
         double base_to_laser_z;
