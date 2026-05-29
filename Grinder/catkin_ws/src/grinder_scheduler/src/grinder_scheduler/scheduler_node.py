@@ -3929,14 +3929,28 @@ class SchedulerNode:
         chunk_size = max(64, min(512, chunk_size))
 
         info = raw_map.info
+        width = int(info.width)
+        height = int(info.height)
+        resolution = float(info.resolution)
+        origin_x = float(info.origin.position.x)
+        origin_y = float(info.origin.position.y)
+        frame_id = str(raw_map.header.frame_id)
+        grid = np.array(raw_map.data, dtype=np.int16).reshape((height, width))
+        yaw = self._lookup_live_map_alignment_yaw() if self._live_map_align_to_initial_yaw else None
+        if yaw is not None and abs(float(yaw)) > 1e-6:
+            grid, origin_x, origin_y = self._rotate_grid_to_aligned_frame(
+                grid, origin_x, origin_y, resolution, float(yaw)
+            )
+            height, width = grid.shape[:2]
+            frame_id = self._live_map_aligned_frame
+
         # Default to image payload for Android-friendly rendering.
         # Fallback: set ~map_request_encoding:=grid to output raw OccupancyGrid bytes.
         if self._map_request_encoding in ("grid", "occupancy", "occupancy_grid"):
             encoding = pb.MAP_ENCODING_OCCUPANCY_GRID
-            data = np.array(raw_map.data, dtype=np.int8).tobytes()
+            data = grid.astype(np.int8).tobytes()
         else:
             encoding = pb.MAP_ENCODING_PNG
-            grid = np.array(raw_map.data, dtype=np.int16).reshape((int(info.height), int(info.width)))
             image = np.zeros((grid.shape[0], grid.shape[1], 3), dtype=np.uint8)
             image[:, :] = (180, 180, 180)
             image[grid == 0] = (245, 245, 245)
@@ -3946,7 +3960,7 @@ class SchedulerNode:
             if not ok:
                 rospy.logwarn("MapRequest PNG encode failed, fallback to OccupancyGrid bytes")
                 encoding = pb.MAP_ENCODING_OCCUPANCY_GRID
-                data = np.array(raw_map.data, dtype=np.int8).tobytes()
+                data = grid.astype(np.int8).tobytes()
             else:
                 data = buffer.tobytes()
         total = max(1, int(math.ceil(len(data) / float(chunk_size))))
@@ -3973,13 +3987,13 @@ class SchedulerNode:
             chunk.map_id = map_id
             chunk.utc_time = now_utc
             chunk.encoding = encoding
-            chunk.width = int(info.width)
-            chunk.height = int(info.height)
-            chunk.resolution = float(info.resolution)
-            chunk.origin.x = float(info.origin.position.x)
-            chunk.origin.y = float(info.origin.position.y)
+            chunk.width = int(width)
+            chunk.height = int(height)
+            chunk.resolution = float(resolution)
+            chunk.origin.x = float(origin_x)
+            chunk.origin.y = float(origin_y)
             chunk.origin.heading_deg = 0.0
-            chunk.frame_id = str(raw_map.header.frame_id)
+            chunk.frame_id = frame_id
             chunk.preview_scale_x = 1.0
             chunk.preview_scale_y = 1.0
             chunk.chunk_index = index

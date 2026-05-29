@@ -440,6 +440,7 @@ class MapService:
                 resolution,
                 frame_id,
                 display_yaw,
+                self._pose_to_display_pose(pose, display_yaw),
             )
             encode_ext = ".png" if image_format.lower() == "png" else ".jpg"
             ok, buffer = cv2.imencode(encode_ext, preview)
@@ -604,8 +605,18 @@ class MapService:
         if not pose or self._raw_msg is None:
             return
         row, col = self._world_to_grid_for(pose["x"], pose["y"], origin_x, origin_y, resolution, width, height, alignment_yaw)
-        row = image.shape[0] - 1 - row
-        cv2.circle(image, (col, row), 4, (255, 0, 0), thickness=-1)
+        image_row = image.shape[0] - 1 - row
+        display_yaw = math.radians(float(pose.get("heading_deg", 0.0)))
+        align_yaw = self._sanitize_alignment_yaw(alignment_yaw)
+        if align_yaw is not None:
+            display_yaw += align_yaw
+        arrow_len = max(10, min(28, int(round(min(image.shape[0], image.shape[1]) * 0.04))))
+        end_col = int(round(float(col) + math.cos(display_yaw) * arrow_len))
+        end_row = int(round(float(row) + math.sin(display_yaw) * arrow_len))
+        end_col = max(0, min(image.shape[1] - 1, end_col))
+        end_image_row = max(0, min(image.shape[0] - 1, image.shape[0] - 1 - end_row))
+        cv2.arrowedLine(image, (int(col), int(image_row)), (int(end_col), int(end_image_row)), (255, 0, 0), 2, cv2.LINE_AA, tipLength=0.35)
+        cv2.circle(image, (int(col), int(image_row)), 3, (255, 0, 0), thickness=-1)
 
     def _resize_with_aspect(self, image, max_edge):
         max_edge = max(64, int(max_edge))
@@ -636,6 +647,7 @@ class MapService:
         resolution=None,
         frame_id=None,
         alignment_yaw=None,
+        robot_pose=None,
     ):
         overlay_mask = np.where(self._overlay == UNKNOWN_MASK_VALUE, 0, 255).astype(np.uint8)
         raw_info = self._raw_msg.info if self._raw_msg is not None else None
@@ -669,6 +681,7 @@ class MapService:
             "origin_y": float(origin_y or 0.0),
             "resolution": float(resolution or 0.0),
             "alignment_yaw": float(display_yaw or 0.0),
+            "robot_pose": robot_pose or {},
             "regions": self._serialize_regions(),
             "overlay_mask_png_base64": mask_b64,
             "last_edit_message": self._last_edit_message,
@@ -692,6 +705,25 @@ class MapService:
         cos_yaw = math.cos(yaw)
         sin_yaw = math.sin(yaw)
         return cos_yaw * float(x) - sin_yaw * float(y), sin_yaw * float(x) + cos_yaw * float(y)
+
+    def _pose_to_display_pose(self, pose, alignment_yaw=None):
+        if not isinstance(pose, dict):
+            return {}
+        try:
+            x = float(pose.get("x", 0.0))
+            y = float(pose.get("y", 0.0))
+            heading_deg = float(pose.get("heading_deg", 0.0))
+        except Exception:
+            return {}
+        display_yaw = self._sanitize_alignment_yaw(alignment_yaw)
+        if display_yaw is not None:
+            x, y = self._transform_map_point_to_aligned(x, y, display_yaw)
+            heading_deg += math.degrees(display_yaw)
+        return {
+            "x": x,
+            "y": y,
+            "heading_deg": heading_deg,
+        }
 
     def _world_to_grid_for(self, x, y, origin_x=None, origin_y=None, resolution=None, width=None, height=None, alignment_yaw=None):
         if origin_x is None or origin_y is None or resolution is None or width is None or height is None:
