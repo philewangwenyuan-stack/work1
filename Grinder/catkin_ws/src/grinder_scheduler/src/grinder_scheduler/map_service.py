@@ -415,6 +415,7 @@ class MapService:
             origin_x = float(info.origin.position.x)
             origin_y = float(info.origin.position.y)
             frame_id = self._raw_msg.header.frame_id
+            has_alignment = alignment_yaw is not None
             display_yaw = self._sanitize_alignment_yaw(alignment_yaw)
             display_grid = composed
             if display_yaw is not None:
@@ -422,6 +423,7 @@ class MapService:
                     composed, origin_x, origin_y, resolution, display_yaw
                 )
                 height, width = display_grid.shape[:2]
+            if has_alignment:
                 frame_id = str(aligned_frame_id or frame_id)
 
             image = self._occupancy_to_bgr(display_grid)
@@ -627,13 +629,20 @@ class MapService:
             return image
         return cv2.resize(image, new_size, interpolation=cv2.INTER_AREA)
 
-    def _serialize_regions(self):
+    def _serialize_regions(self, alignment_yaw=None):
         work_regions = sorted(self._work_regions.values(), key=lambda item: int(item.get("order_index", 0)))
         obstacle_regions = sorted(self._obstacle_regions.values(), key=lambda item: int(item.get("order_index", 0)))
+        display_yaw = self._sanitize_alignment_yaw(alignment_yaw)
+        if display_yaw is not None:
+            work_regions = [self._region_to_display_region(region, display_yaw) for region in work_regions]
+            obstacle_regions = [self._region_to_display_region(region, display_yaw) for region in obstacle_regions]
+            crop_region = self._region_to_display_region(self._crop_region, display_yaw) if self._crop_region is not None else None
+        else:
+            crop_region = self._crop_region
         return {
             "work_regions": work_regions,
             "obstacle_regions": obstacle_regions,
-            "crop_region": self._crop_region,
+            "crop_region": crop_region,
         }
 
     def _build_overlay_json(
@@ -682,7 +691,7 @@ class MapService:
             "resolution": float(resolution or 0.0),
             "alignment_yaw": float(display_yaw or 0.0),
             "robot_pose": robot_pose or {},
-            "regions": self._serialize_regions(),
+            "regions": self._serialize_regions(display_yaw),
             "overlay_mask_png_base64": mask_b64,
             "last_edit_message": self._last_edit_message,
         }
@@ -724,6 +733,25 @@ class MapService:
             "y": y,
             "heading_deg": heading_deg,
         }
+
+    def _region_to_display_region(self, region, alignment_yaw):
+        if not isinstance(region, dict):
+            return region
+        display = dict(region)
+        display_points = []
+        for point in region.get("points", []) or []:
+            point_x, point_y = self._transform_map_point_to_aligned(
+                point.get("x", 0.0),
+                point.get("y", 0.0),
+                alignment_yaw,
+            )
+            display_points.append({"x": point_x, "y": point_y})
+        display["points"] = display_points
+        for key in ("start_pose", "end_pose"):
+            pose = self._pose_to_display_pose(region.get(key, {}), alignment_yaw)
+            if pose:
+                display[key] = pose
+        return display
 
     def _world_to_grid_for(self, x, y, origin_x=None, origin_y=None, resolution=None, width=None, height=None, alignment_yaw=None):
         if origin_x is None or origin_y is None or resolution is None or width is None or height is None:

@@ -906,7 +906,7 @@ class SchedulerNode:
                     return float(yaw)
             except Exception as exc:
                 rospy.logwarn_throttle(2.0, "Failed to lookup live map alignment yaw: %s", exc)
-        return self._initial_pose_alignment_yaw_from_pose(self.aurora_bridge.get_pose())
+        return self._initial_pose_alignment_yaw_from_pose(self.aurora_bridge.get_initial_pose())
 
     def _initial_pose_alignment_yaw_from_pose(self, pose):
         if self._initial_pose_alignment_yaw is not None:
@@ -933,6 +933,45 @@ class SchedulerNode:
             "alignment_yaw": yaw,
             "aligned_frame_id": self._live_map_aligned_frame,
         }
+
+    @staticmethod
+    def _transform_point_by_yaw(point_x, point_y, yaw):
+        cos_yaw = math.cos(yaw)
+        sin_yaw = math.sin(yaw)
+        return (
+            cos_yaw * float(point_x) - sin_yaw * float(point_y),
+            sin_yaw * float(point_x) + cos_yaw * float(point_y),
+        )
+
+    def _point_from_aligned_to_source_map(self, point, alignment_yaw):
+        source_x, source_y = self._transform_point_by_yaw(
+            point.get("x", 0.0),
+            point.get("y", 0.0),
+            -float(alignment_yaw),
+        )
+        return {"x": source_x, "y": source_y}
+
+    def _points_from_aligned_to_source_map(self, points, alignment_yaw):
+        if not points:
+            return []
+        return [self._point_from_aligned_to_source_map(point, alignment_yaw) for point in points]
+
+    def _pose_from_aligned_to_source_map(self, pose, alignment_yaw):
+        if not isinstance(pose, dict) or not pose:
+            return {}
+        source_x, source_y = self._transform_point_by_yaw(
+            pose.get("x", 0.0),
+            pose.get("y", 0.0),
+            -float(alignment_yaw),
+        )
+        source_pose = dict(pose)
+        source_pose["x"] = source_x
+        source_pose["y"] = source_y
+        try:
+            source_pose["heading_deg"] = float(pose.get("heading_deg", 0.0)) - math.degrees(float(alignment_yaw))
+        except Exception:
+            source_pose["heading_deg"] = 0.0
+        return source_pose
 
     @staticmethod
     def _rotate_grid_to_aligned_frame(grid, origin_x, origin_y, resolution, yaw):
@@ -3937,12 +3976,13 @@ class SchedulerNode:
         frame_id = str(raw_map.header.frame_id)
         grid = np.array(raw_map.data, dtype=np.int16).reshape((height, width))
         yaw = self._lookup_live_map_alignment_yaw() if self._live_map_align_to_initial_yaw else None
-        if yaw is not None and abs(float(yaw)) > 1e-6:
-            grid, origin_x, origin_y = self._rotate_grid_to_aligned_frame(
-                grid, origin_x, origin_y, resolution, float(yaw)
-            )
-            height, width = grid.shape[:2]
+        if yaw is not None:
             frame_id = self._live_map_aligned_frame
+            if abs(float(yaw)) > 1e-6:
+                grid, origin_x, origin_y = self._rotate_grid_to_aligned_frame(
+                    grid, origin_x, origin_y, resolution, float(yaw)
+                )
+                height, width = grid.shape[:2]
 
         # Default to image payload for Android-friendly rendering.
         # Fallback: set ~map_request_encoding:=grid to output raw OccupancyGrid bytes.
@@ -3967,18 +4007,28 @@ class SchedulerNode:
         map_info = self.map_service.get_map_info() or {}
         map_version = int(map_info.get("map_version", 0))
         if map_version > 0:
-            map_id = map_version
+            base_map_id = map_version
         else:
             # map_version is often 0 when only raw map is used.
             # Fallback to a stable non-zero id generated from stamp or map data.
             stamp = raw_map.header.stamp
             stamp_ms = int(getattr(stamp, "secs", 0)) * 1000 + int(getattr(stamp, "nsecs", 0)) // 1000000
             if stamp_ms > 0:
-                map_id = stamp_ms & 0xFFFFFFFF
+                base_map_id = stamp_ms & 0xFFFFFFFF
             else:
-                map_id = zlib.crc32(data) & 0xFFFFFFFF
-            if map_id == 0:
-                map_id = 1
+                base_map_id = zlib.crc32(data) & 0xFFFFFFFF
+        identity = "{}|{}|{}|{:.9f}|{:.9f}|{:.9f}|{:.9f}".format(
+            frame_id,
+            int(width),
+            int(height),
+            float(resolution),
+            float(origin_x),
+            float(origin_y),
+            float(yaw) if yaw is not None else 0.0,
+        )
+        map_id = zlib.crc32("{}|{}".format(int(base_map_id), identity).encode("utf-8")) & 0xFFFFFFFF
+        if map_id == 0:
+            map_id = 1
         now_utc = int(time.time())
 
         outputs = []
@@ -4654,6 +4704,18 @@ class SchedulerNode:
             region_type_value = crop_region_type
         if target_region_id_text == "crop_region_1":
             target_region_type_value = crop_region_type
+        edit_alignment_yaw = self._lookup_live_map_alignment_yaw() if self._live_map_align_to_initial_yaw else None
+        if edit_alignment_yaw is not None:
+            region_points = self._points_from_aligned_to_source_map(region_points, edit_alignment_yaw)
+            polygon_points = self._points_from_aligned_to_source_map(polygon_points, edit_alignment_yaw)
+            request_start_pose = self._pose_from_aligned_to_source_map(request_start_pose, edit_alignment_yaw)
+            request_end_pose = self._pose_from_aligned_to_source_map(request_end_pose, edit_alignment_yaw)
+            rospy.loginfo(
+                "MapEdit coordinates converted: input_frame=%s output_frame=%s alignment_yaw=%.6f",
+                self._live_map_aligned_frame,
+                self._live_map_source_frame,
+                float(edit_alignment_yaw),
+            )
 
         def _format_points(points, max_points=64):
             if not points:

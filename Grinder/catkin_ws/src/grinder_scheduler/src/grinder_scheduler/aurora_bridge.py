@@ -26,6 +26,7 @@ class AuroraBridge:
         self._bridge = CvBridge()
         self._map_msg = None
         self._pose = {"x": 0.0, "y": 0.0, "heading_deg": 0.0}
+        self._initial_pose = None
         self._left_image = None
         self._right_image = None
         self._depth_image = None
@@ -79,18 +80,21 @@ class AuroraBridge:
     def _odom_callback(self, msg):
         orientation = msg.pose.pose.orientation
         _, _, yaw = euler_from_quaternion([orientation.x, orientation.y, orientation.z, orientation.w])
+        pose = {
+            "x": msg.pose.pose.position.x,
+            "y": msg.pose.pose.position.y,
+            "heading_deg": yaw * 180.0 / 3.141592653589793,
+            "orientation": {
+                "x": float(orientation.x),
+                "y": float(orientation.y),
+                "z": float(orientation.z),
+                "w": float(orientation.w),
+            },
+        }
         with self._lock:
-            self._pose = {
-                "x": msg.pose.pose.position.x,
-                "y": msg.pose.pose.position.y,
-                "heading_deg": yaw * 180.0 / 3.141592653589793,
-                "orientation": {
-                    "x": float(orientation.x),
-                    "y": float(orientation.y),
-                    "z": float(orientation.z),
-                    "w": float(orientation.w),
-                },
-            }
+            self._pose = pose
+            if self._initial_pose is None:
+                self._initial_pose = dict(pose)
 
     def _left_image_callback(self, msg):
         try:
@@ -159,6 +163,10 @@ class AuroraBridge:
     def get_pose(self):
         with self._lock:
             return dict(self._pose)
+
+    def get_initial_pose(self):
+        with self._lock:
+            return None if self._initial_pose is None else dict(self._initial_pose)
 
     def get_latest_frames(self):
         with self._lock:

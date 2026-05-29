@@ -294,7 +294,7 @@ Visualization Manager:
   Enabled: true
   Global Options:
     Background Color: 255; 255; 255
-    Fixed Frame: map
+    Fixed Frame: map_aligned
     Frame Rate: 30
   Name: root
   Tools:

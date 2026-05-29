@@ -50,9 +50,4 @@
 	<!--  **************** Visualisation ****************  -->
 	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find teb_local_planner_tutorials)/cfg/rviz_navigation.rviz"/>
 	
-
-	<node pkg="tf2_ros" type="static_transform_publisher" name="odom2map" 
-			args="0 0 0 0 0 0 1 map odom"/>
-	<env name="ROS_TF_REPEATED_DATA" value="ignore" />
-
 </launch>
