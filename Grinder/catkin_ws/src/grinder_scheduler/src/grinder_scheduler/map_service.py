@@ -1,5 +1,6 @@
 import base64
 import json
+import math
 import os
 import threading
 import time
@@ -389,7 +390,15 @@ class MapService:
                 )
             return True, "Map overlay updated", self._map_version
 
-    def create_preview(self, pose, max_edge=512, image_format="jpg", include_overlay=True):
+    def create_preview(
+        self,
+        pose,
+        max_edge=512,
+        image_format="jpg",
+        include_overlay=True,
+        alignment_yaw=None,
+        aligned_frame_id=None,
+    ):
         with self._lock:
             if self._raw_msg is None:
                 raise RuntimeError("Raw map not available")
@@ -400,14 +409,37 @@ class MapService:
                 mask = overlay == value
                 composed[mask] = value
 
-            image = self._occupancy_to_bgr(composed)
+            width = int(info.width)
+            height = int(info.height)
+            resolution = float(info.resolution)
+            origin_x = float(info.origin.position.x)
+            origin_y = float(info.origin.position.y)
+            frame_id = self._raw_msg.header.frame_id
+            display_yaw = self._sanitize_alignment_yaw(alignment_yaw)
+            display_grid = composed
+            if display_yaw is not None:
+                display_grid, origin_x, origin_y = self._rotate_grid_to_aligned_frame(
+                    composed, origin_x, origin_y, resolution, display_yaw
+                )
+                height, width = display_grid.shape[:2]
+                frame_id = str(aligned_frame_id or frame_id)
+
+            image = self._occupancy_to_bgr(display_grid)
             if include_overlay:
-                self._draw_regions(image)
-            self._draw_pose(image, pose)
+                self._draw_regions(image, origin_x, origin_y, resolution, width, height, display_yaw)
+            self._draw_pose(image, pose, origin_x, origin_y, resolution, width, height, display_yaw)
 
             preview = self._resize_with_aspect(image, max_edge=max_edge)
             overlay_json = self._build_overlay_json(
-                preview.shape[1], preview.shape[0], info.width, info.height
+                preview.shape[1],
+                preview.shape[0],
+                width,
+                height,
+                origin_x,
+                origin_y,
+                resolution,
+                frame_id,
+                display_yaw,
             )
             encode_ext = ".png" if image_format.lower() == "png" else ".jpg"
             ok, buffer = cv2.imencode(encode_ext, preview)
@@ -415,12 +447,12 @@ class MapService:
                 raise RuntimeError("Failed to encode map preview image")
             return MapSnapshot(
                 map_version=self._map_version,
-                frame_id=self._raw_msg.header.frame_id,
-                resolution=info.resolution,
-                width=info.width,
-                height=info.height,
-                origin_x=info.origin.position.x,
-                origin_y=info.origin.position.y,
+                frame_id=frame_id,
+                resolution=resolution,
+                width=width,
+                height=height,
+                origin_x=origin_x,
+                origin_y=origin_y,
                 preview_data=buffer.tobytes(),
                 preview_format=encode_ext.lstrip("."),
                 overlay_json=overlay_json,
@@ -507,28 +539,34 @@ class MapService:
         image[grid < 0] = (180, 180, 180)
         return cv2.flip(image, 0)
 
-    def _draw_regions(self, image):
+    def _draw_regions(self, image, origin_x=None, origin_y=None, resolution=None, width=None, height=None, alignment_yaw=None):
         work_regions = sorted(self._work_regions.values(), key=lambda item: int(item.get("order_index", 0)))
         obstacle_regions = sorted(self._obstacle_regions.values(), key=lambda item: int(item.get("order_index", 0)))
         for region in work_regions:
             if not bool(region.get("enabled", True)):
                 continue
-            self._draw_polygon(image, region.get("points", []), (0, 200, 0), self._region_label(region, "work"))
+            self._draw_polygon(image, region.get("points", []), (0, 200, 0), self._region_label(region, "work"), origin_x, origin_y, resolution, width, height, alignment_yaw)
         for region in obstacle_regions:
             if not bool(region.get("enabled", True)):
                 continue
             region_type = int(region.get("region_type", 2))
             if region_type == 3:
                 # Erase-region visualization: orange
-                self._draw_polygon(image, region.get("points", []), (0, 165, 255), self._region_label(region, "erase"))
+                self._draw_polygon(image, region.get("points", []), (0, 165, 255), self._region_label(region, "erase"), origin_x, origin_y, resolution, width, height, alignment_yaw)
             else:
-                self._draw_polygon(image, region.get("points", []), (0, 0, 220), self._region_label(region, "obstacle"))
+                self._draw_polygon(image, region.get("points", []), (0, 0, 220), self._region_label(region, "obstacle"), origin_x, origin_y, resolution, width, height, alignment_yaw)
         if self._crop_region is not None and bool(self._crop_region.get("enabled", True)):
             self._draw_polygon(
                 image,
                 self._crop_region.get("points", []),
                 (255, 220, 0),
                 self._region_label(self._crop_region, "crop"),
+                origin_x,
+                origin_y,
+                resolution,
+                width,
+                height,
+                alignment_yaw,
             )
 
     def _region_label(self, region, fallback_name):
@@ -542,10 +580,19 @@ class MapService:
             return "{}({})".format(name, region_id) if name else region_id
         return name or region_id or str(fallback_name or "")
 
-    def _draw_polygon(self, image, points, color, name):
+    def _draw_polygon(self, image, points, color, name, origin_x=None, origin_y=None, resolution=None, width=None, height=None, alignment_yaw=None):
         if not points:
             return
-        polygon = np.array([[self._world_to_grid(pt["x"], pt["y"])[1], self._world_to_grid(pt["x"], pt["y"])[0]] for pt in points], dtype=np.int32)
+        polygon = np.array(
+            [
+                [
+                    self._world_to_grid_for(pt["x"], pt["y"], origin_x, origin_y, resolution, width, height, alignment_yaw)[1],
+                    self._world_to_grid_for(pt["x"], pt["y"], origin_x, origin_y, resolution, width, height, alignment_yaw)[0],
+                ]
+                for pt in points
+            ],
+            dtype=np.int32,
+        )
         polygon[:, 1] = image.shape[0] - 1 - polygon[:, 1]
         cv2.polylines(image, [polygon], isClosed=True, color=color, thickness=1)
         text = str(name or "").strip()
@@ -553,10 +600,10 @@ class MapService:
             x, y = polygon[0]
             cv2.putText(image, text[:12], (int(x), int(y)), cv2.FONT_HERSHEY_SIMPLEX, 0.35, color, 1, cv2.LINE_AA)
 
-    def _draw_pose(self, image, pose):
+    def _draw_pose(self, image, pose, origin_x=None, origin_y=None, resolution=None, width=None, height=None, alignment_yaw=None):
         if not pose or self._raw_msg is None:
             return
-        row, col = self._world_to_grid(pose["x"], pose["y"])
+        row, col = self._world_to_grid_for(pose["x"], pose["y"], origin_x, origin_y, resolution, width, height, alignment_yaw)
         row = image.shape[0] - 1 - row
         cv2.circle(image, (col, row), 4, (255, 0, 0), thickness=-1)
 
@@ -578,8 +625,30 @@ class MapService:
             "crop_region": self._crop_region,
         }
 
-    def _build_overlay_json(self, preview_width, preview_height, raw_width, raw_height):
+    def _build_overlay_json(
+        self,
+        preview_width,
+        preview_height,
+        raw_width,
+        raw_height,
+        origin_x=None,
+        origin_y=None,
+        resolution=None,
+        frame_id=None,
+        alignment_yaw=None,
+    ):
         overlay_mask = np.where(self._overlay == UNKNOWN_MASK_VALUE, 0, 255).astype(np.uint8)
+        raw_info = self._raw_msg.info if self._raw_msg is not None else None
+        display_yaw = self._sanitize_alignment_yaw(alignment_yaw)
+        if display_yaw is not None and raw_info is not None:
+            overlay_mask, _, _ = self._rotate_grid_to_aligned_frame(
+                overlay_mask,
+                float(raw_info.origin.position.x),
+                float(raw_info.origin.position.y),
+                float(raw_info.resolution),
+                display_yaw,
+                fill_value=0,
+            )
         overlay_mask = cv2.flip(overlay_mask, 0)
         overlay_mask = self._resize_with_aspect(overlay_mask, max(preview_width, preview_height))
         ok, buffer = cv2.imencode(".png", overlay_mask)
@@ -595,11 +664,94 @@ class MapService:
             "raw_height": int(raw_height),
             "preview_scale_x": scale_x,
             "preview_scale_y": scale_y,
+            "frame_id": str(frame_id or ""),
+            "origin_x": float(origin_x or 0.0),
+            "origin_y": float(origin_y or 0.0),
+            "resolution": float(resolution or 0.0),
+            "alignment_yaw": float(display_yaw or 0.0),
             "regions": self._serialize_regions(),
             "overlay_mask_png_base64": mask_b64,
             "last_edit_message": self._last_edit_message,
         }
         return json.dumps(payload, ensure_ascii=False)
+
+    @staticmethod
+    def _sanitize_alignment_yaw(alignment_yaw):
+        if alignment_yaw is None:
+            return None
+        try:
+            yaw = float(alignment_yaw)
+        except Exception:
+            return None
+        if not math.isfinite(yaw) or abs(yaw) <= 1e-6:
+            return None
+        return yaw
+
+    @staticmethod
+    def _transform_map_point_to_aligned(x, y, yaw):
+        cos_yaw = math.cos(yaw)
+        sin_yaw = math.sin(yaw)
+        return cos_yaw * float(x) - sin_yaw * float(y), sin_yaw * float(x) + cos_yaw * float(y)
+
+    def _world_to_grid_for(self, x, y, origin_x=None, origin_y=None, resolution=None, width=None, height=None, alignment_yaw=None):
+        if origin_x is None or origin_y is None or resolution is None or width is None or height is None:
+            return self._world_to_grid(x, y)
+        display_yaw = self._sanitize_alignment_yaw(alignment_yaw)
+        if display_yaw is not None:
+            x, y = self._transform_map_point_to_aligned(x, y, display_yaw)
+        resolution = max(float(resolution), 1e-6)
+        col = int(round((float(x) - float(origin_x)) / resolution))
+        row = int(round((float(y) - float(origin_y)) / resolution))
+        col = max(0, min(int(width) - 1, col))
+        row = max(0, min(int(height) - 1, row))
+        return row, col
+
+    @staticmethod
+    def _rotate_grid_to_aligned_frame(grid, origin_x, origin_y, resolution, yaw, fill_value=-1):
+        height, width = grid.shape[:2]
+        if height <= 0 or width <= 0:
+            return grid, origin_x, origin_y
+
+        resolution = max(float(resolution), 1e-12)
+        cos_yaw = math.cos(yaw)
+        sin_yaw = math.sin(yaw)
+        rot = np.array([[cos_yaw, -sin_yaw], [sin_yaw, cos_yaw]], dtype=np.float64)
+
+        x0 = float(origin_x)
+        y0 = float(origin_y)
+        x1 = x0 + float(width) * resolution
+        y1 = y0 + float(height) * resolution
+        corners = np.array([[x0, y0], [x1, y0], [x0, y1], [x1, y1]], dtype=np.float64)
+        rotated = corners @ rot.T
+
+        min_x = float(rotated[:, 0].min())
+        max_x = float(rotated[:, 0].max())
+        min_y = float(rotated[:, 1].min())
+        max_y = float(rotated[:, 1].max())
+        out_width = max(1, int(math.ceil((max_x - min_x) / resolution)))
+        out_height = max(1, int(math.ceil((max_y - min_y) / resolution)))
+
+        cols = np.arange(out_width, dtype=np.float64)
+        rows = np.arange(out_height, dtype=np.float64)
+        x_aligned = min_x + (cols + 0.5) * resolution
+        y_aligned = min_y + (rows + 0.5) * resolution
+        xx, yy = np.meshgrid(x_aligned, y_aligned)
+
+        x_map = cos_yaw * xx + sin_yaw * yy
+        y_map = -sin_yaw * xx + cos_yaw * yy
+        src_col = np.floor((x_map - x0) / resolution).astype(np.int64)
+        src_row = np.floor((y_map - y0) / resolution).astype(np.int64)
+        valid = (
+            (src_col >= 0)
+            & (src_col < int(width))
+            & (src_row >= 0)
+            & (src_row < int(height))
+        )
+
+        out_grid = np.full((out_height, out_width), fill_value, dtype=grid.dtype)
+        if int(np.count_nonzero(valid)) > 0:
+            out_grid[valid] = grid[src_row[valid], src_col[valid]]
+        return out_grid, float(min_x), float(min_y)
 
     def save_local_state(self, state_dir):
         with self._lock:

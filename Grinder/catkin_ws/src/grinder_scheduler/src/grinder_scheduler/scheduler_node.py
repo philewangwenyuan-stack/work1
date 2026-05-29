@@ -266,6 +266,7 @@ class SchedulerNode:
         self._live_map_last_rotated_yaw = None
         self._live_map_last_rotated_grid = None
         self._live_map_last_rotated_origin = None
+        self._initial_pose_alignment_yaw = None
         self._tf_buffer = None
         self._tf_listener = None
         if self._live_map_align_to_initial_yaw and tf2_ros is not None:
@@ -586,6 +587,7 @@ class SchedulerNode:
                 self._initial_map_preview_max_edge,
                 self._initial_map_preview_format,
                 True,
+                **self._map_preview_alignment_kwargs()
             )
             os.makedirs(self._initial_map_preview_dir, exist_ok=True)
             preview_width, preview_height, shrink_factor = self._preview_meta(
@@ -759,6 +761,7 @@ class SchedulerNode:
                 self._live_preview_max_edge,
                 self._live_preview_format,
                 True,
+                **self._map_preview_alignment_kwargs()
             )
             os.makedirs(os.path.dirname(self._live_preview_file) or ".", exist_ok=True)
             tmp_path = self._live_preview_file + ".tmp"
@@ -889,23 +892,47 @@ class SchedulerNode:
         return yaml_path, image_path
 
     def _lookup_live_map_alignment_yaw(self):
-        if self._tf_buffer is None:
+        if self._tf_buffer is not None:
+            try:
+                transform = self._tf_buffer.lookup_transform(
+                    self._live_map_aligned_frame,
+                    self._live_map_source_frame,
+                    rospy.Time(0),
+                    rospy.Duration(self._live_map_align_yaw_timeout),
+                )
+                q = transform.transform.rotation
+                _, _, yaw = euler_from_quaternion([q.x, q.y, q.z, q.w])
+                if math.isfinite(float(yaw)):
+                    return float(yaw)
+            except Exception as exc:
+                rospy.logwarn_throttle(2.0, "Failed to lookup live map alignment yaw: %s", exc)
+        return self._initial_pose_alignment_yaw_from_pose(self.aurora_bridge.get_pose())
+
+    def _initial_pose_alignment_yaw_from_pose(self, pose):
+        if self._initial_pose_alignment_yaw is not None:
+            return self._initial_pose_alignment_yaw
+        if not isinstance(pose, dict) or "orientation" not in pose:
             return None
         try:
-            transform = self._tf_buffer.lookup_transform(
-                self._live_map_aligned_frame,
-                self._live_map_source_frame,
-                rospy.Time(0),
-                rospy.Duration(self._live_map_align_yaw_timeout),
-            )
-            q = transform.transform.rotation
-            _, _, yaw = euler_from_quaternion([q.x, q.y, q.z, q.w])
-            if not math.isfinite(float(yaw)):
-                return None
-            return float(yaw)
-        except Exception as exc:
-            rospy.logwarn_throttle(2.0, "Failed to lookup live map alignment yaw: %s", exc)
+            heading_deg = float(pose.get("heading_deg", 0.0))
+        except Exception:
             return None
+        if not math.isfinite(heading_deg):
+            return None
+        self._initial_pose_alignment_yaw = -math.radians(heading_deg)
+        rospy.loginfo("Map preview yaw alignment initialized from odom: %.6f rad", self._initial_pose_alignment_yaw)
+        return self._initial_pose_alignment_yaw
+
+    def _map_preview_alignment_kwargs(self):
+        if not self._live_map_align_to_initial_yaw:
+            return {}
+        yaw = self._lookup_live_map_alignment_yaw()
+        if yaw is None:
+            return {}
+        return {
+            "alignment_yaw": yaw,
+            "aligned_frame_id": self._live_map_aligned_frame,
+        }
 
     @staticmethod
     def _rotate_grid_to_aligned_frame(grid, origin_x, origin_y, resolution, yaw):
@@ -1965,6 +1992,7 @@ class SchedulerNode:
             self._planned_path_preview_max_edge,
             self._planned_path_preview_format,
             False,
+            **self._map_preview_alignment_kwargs()
         )
         image = cv2.imdecode(np.frombuffer(snapshot.preview_data, dtype=np.uint8), cv2.IMREAD_COLOR)
         if image is None:
@@ -2125,6 +2153,7 @@ class SchedulerNode:
                 self._planned_path_preview_max_edge,
                 self._planned_path_preview_format,
                 self._planned_path_preview_include_overlay,
+                **self._map_preview_alignment_kwargs()
             )
             image = cv2.imdecode(np.frombuffer(snapshot.preview_data, dtype=np.uint8), cv2.IMREAD_COLOR)
             if image is None:
@@ -3194,6 +3223,7 @@ class SchedulerNode:
                 int(self._saved_map_thumb_max_edge),
                 "jpg",
                 True,
+                **self._map_preview_alignment_kwargs()
             )
             raw = bytes(snapshot.preview_data or b"")
             if not raw:
@@ -3344,6 +3374,7 @@ class SchedulerNode:
                 self._planned_path_preview_max_edge,
                 self._planned_path_preview_format,
                 False,
+                **self._map_preview_alignment_kwargs()
             )
             image = cv2.imdecode(np.frombuffer(snapshot.preview_data, dtype=np.uint8), cv2.IMREAD_COLOR)
             if image is None:
@@ -4536,6 +4567,7 @@ class SchedulerNode:
                 max_edge,
                 request.image_format or "jpg",
                 request.include_overlay,
+                **self._map_preview_alignment_kwargs()
             )
             response.result = pb.RESULT_SUCCESS
             response.message = "ok"
