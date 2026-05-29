@@ -1,0 +1,14 @@
+(cl:in-package grinder_chassis_driver-msg)
+(cl:export '(HEADER-VAL
+          HEADER
+          TARGET_LEFT_WHEEL_SPEED-VAL
+          TARGET_LEFT_WHEEL_SPEED
+          TARGET_RIGHT_WHEEL_SPEED-VAL
+          TARGET_RIGHT_WHEEL_SPEED
+          FEEDBACK_LEFT_WHEEL_SPEED-VAL
+          FEEDBACK_LEFT_WHEEL_SPEED
+          FEEDBACK_RIGHT_WHEEL_SPEED-VAL
+          FEEDBACK_RIGHT_WHEEL_SPEED
+          FEEDBACK_VALID-VAL
+          FEEDBACK_VALID
+))

@@ -1,0 +1,1173 @@
+... logging to /root/.ros/log/be263660-58d9-11f1-ba1d-c285ead2937b/roslaunch-LPA3588-4258.log
+Checking log directory for disk usage. This may take a while.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/neardi/work/Grinder/catkin_ws/src/grinder_scheduler/launch/grinder_system.launch
+[1mstarted roslaunch server http://LPA3588:39703/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /chassis_driver/baudrate: 19200
+ * /chassis_driver/cmd_source_hold_sec: 0.2
+ * /chassis_driver/cmd_vel_deadband_angular: 0.0
+ * /chassis_driver/cmd_vel_deadband_linear: 0.0
+ * /chassis_driver/cmd_vel_drive_left_sign: 1
+ * /chassis_driver/cmd_vel_drive_right_sign: 1
+ * /chassis_driver/cmd_vel_drive_swap_lr: False
+ * /chassis_driver/cmd_vel_enabled: True
+ * /chassis_driver/cmd_vel_filter_angular_accel: 0.2
+ * /chassis_driver/cmd_vel_filter_angular_deadband: 0.005
+ * /chassis_driver/cmd_vel_filter_enabled: True
+ * /chassis_driver/cmd_vel_filter_linear_accel: 0.2
+ * /chassis_driver/cmd_vel_filter_sign_confirm_count: 2
+ * /chassis_driver/cmd_vel_gear_ratio: 60.0
+ * /chassis_driver/cmd_vel_max_abs_wheel_rpm: 3000.0
+ * /chassis_driver/cmd_vel_max_angular: 0.1
+ * /chassis_driver/cmd_vel_max_input_v: 0.1
+ * /chassis_driver/cmd_vel_max_input_w: 0.1
+ * /chassis_driver/cmd_vel_max_linear: 0.1
+ * /chassis_driver/cmd_vel_scale: 1.0
+ * /chassis_driver/cmd_vel_topic: /cmd_vel
+ * /chassis_driver/cmd_vel_wheel_radius_m: 0.15
+ * /chassis_driver/cmd_vel_wheel_track_m: 0.79
+ * /chassis_driver/command_timeout: 5
+ * /chassis_driver/disc_speed_max: 32767
+ * /chassis_driver/disc_speed_min: -32768
+ * /chassis_driver/drive_left_sign: -1
+ * /chassis_driver/drive_right_sign: -1
+ * /chassis_driver/drive_swap_lr: False
+ * /chassis_driver/enable_cmd_ramp_limit: False
+ * /chassis_driver/enable_safe_stop_on_comm_error: False
+ * /chassis_driver/left_speed_max: 32767
+ * /chassis_driver/left_speed_min: -32768
+ * /chassis_driver/manual_drive_max_wheel_speed: 600
+ * /chassis_driver/manual_wheel_deadband_rpm: 30
+ * /chassis_driver/manual_wheel_hyst_enter_rpm: 60
+ * /chassis_driver/manual_wheel_hyst_exit_rpm: 30
+ * /chassis_driver/max_cmd_step_rpm: 50
+ * /chassis_driver/max_echo_deviation: 2000
+ * /chassis_driver/max_echo_failures: 20
+ * /chassis_driver/max_retries: 3
+ * /chassis_driver/poll_rate_hz: 20.0
+ * /chassis_driver/port: /dev/ttyS0
+ * /chassis_driver/right_speed_max: 32767
+ * /chassis_driver/right_speed_min: -32768
+ * /chassis_driver/rs485_raw_log_enabled: False
+ * /chassis_driver/rs485_raw_log_file: temp/chassis_rs48...
+ * /chassis_driver/safe_stop_on_error_interval: 2.0
+ * /chassis_driver/slave_id: 1
+ * /chassis_driver/startup_zero_output: True
+ * /chassis_driver/stop_on_timeout: True
+ * /chassis_driver/task_enable_default: False
+ * /chassis_driver/timeout: 0.1
+ * /chassis_driver/write_verify: False
+ * /grinder_scheduler/aurora_ip_address: 192.168.11.1
+ * /grinder_scheduler/aurora_no_preview_image: False
+ * /grinder_scheduler/aurora_raw_image_on: True
+ * /grinder_scheduler/change_map_service: /change_map
+ * /grinder_scheduler/default_path_spacing: 0.8
+ * /grinder_scheduler/depth_image_colorized_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/first_frame_save_dir: temp
+ * /grinder_scheduler/global_plan_publish_hz: 2
+ * /grinder_scheduler/inflation_radius: 0.65
+ * /grinder_scheduler/initial_map_preview_dir: temp
+ * /grinder_scheduler/initial_map_preview_format: jpg
+ * /grinder_scheduler/initial_map_preview_max_edge: 320
+ * /grinder_scheduler/left_image_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/live_map_dir: temp/live_map
+ * /grinder_scheduler/live_map_enabled: True
+ * /grinder_scheduler/live_map_hz: 1.0
+ * /grinder_scheduler/live_map_image_name: map1.pgm
+ * /grinder_scheduler/live_map_yaml_name: map.yaml
+ * /grinder_scheduler/live_preview_enabled: True
+ * /grinder_scheduler/live_preview_file: temp/aurora_map_p...
+ * /grinder_scheduler/live_preview_format: jpg
+ * /grinder_scheduler/live_preview_hz: 1.0
+ * /grinder_scheduler/live_preview_max_edge: 320
+ * /grinder_scheduler/local_rtsp_enabled: True
+ * /grinder_scheduler/local_rtsp_encoder: libx264
+ * /grinder_scheduler/local_rtsp_fps: 15
+ * /grinder_scheduler/local_rtsp_host: 0.0.0.0
+ * /grinder_scheduler/local_rtsp_log_dir: temp
+ * /grinder_scheduler/local_rtsp_mediamtx_path: /home/neardi/work...
+ * /grinder_scheduler/local_rtsp_port: 8554
+ * /grinder_scheduler/local_rtsp_public_host: auto
+ * /grinder_scheduler/local_rtsp_start_server: True
+ * /grinder_scheduler/local_rtsp_width: 640
+ * /grinder_scheduler/manual_reverse_guard_sec: 1.0
+ * /grinder_scheduler/map_topic: /map
+ * /grinder_scheduler/navigation_map_yaml_path: /home/neardi/work...
+ * /grinder_scheduler/odom_topic: /odom
+ * /grinder_scheduler/overlap_ratio: 0.1
+ * /grinder_scheduler/path_goal_reach_dist: 0.03
+ * /grinder_scheduler/path_segment_timeout: 60.0
+ * /grinder_scheduler/persist_state_dir: temp/grinder_sche...
+ * /grinder_scheduler/persist_state_enabled: True
+ * /grinder_scheduler/planned_path_preview_arrow_len_px: 12
+ * /grinder_scheduler/planned_path_preview_arrow_step: 10
+ * /grinder_scheduler/planned_path_preview_dir: temp
+ * /grinder_scheduler/planned_path_preview_format: jpg
+ * /grinder_scheduler/planned_path_preview_include_overlay: True
+ * /grinder_scheduler/planned_path_preview_max_edge: 320
+ * /grinder_scheduler/planned_path_preview_show_direction: True
+ * /grinder_scheduler/planner_script_path: third_party/path_...
+ * /grinder_scheduler/right_image_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/save_first_frame_on_startup: False
+ * /grinder_scheduler/scheduler_tick_hz: 5
+ * /grinder_scheduler/set_map_localization_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/set_map_update_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/sl_linka_host: 0.0.0.0
+ * /grinder_scheduler/sl_linka_port: 8002
+ * /grinder_scheduler/sl_linka_python_sdk_dir: third_party/sl_li...
+ * /grinder_scheduler/start_aurora_driver: False
+ * /grinder_scheduler/stcm_local_dir: maps/raw
+ * /grinder_scheduler/stream_enabled: True
+ * /grinder_scheduler/stream_fps: 8
+ * /grinder_scheduler/stream_push_hz: 20
+ * /grinder_scheduler/stream_url: rtmp://127.0.0.1:...
+ * /grinder_scheduler/stream_width: 1280
+ * /grinder_scheduler/sync_get_stcm_service: /slamware_ros_sdk...
+ * /grinder_scheduler/sync_set_stcm_service: /slamware_ros_sdk...
+ * /grinder_scheduler/turn_radius: 0.8
+ * /grinder_scheduler/use_depth_colorized_image: False
+ * /grinder_scheduler/vehicle_length: 0.5
+ * /grinder_scheduler/vehicle_width: 0.5
+ * /move_base/TebLocalPlannerROS/acc_lim_theta: 0.05
+ * /move_base/TebLocalPlannerROS/acc_lim_x: 0.1
+ * /move_base/TebLocalPlannerROS/allow_init_with_backwards_motion: False
+ * /move_base/TebLocalPlannerROS/complete_global_plan: True
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/cluster_max_distance: 0.2
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/cluster_min_pts: 2
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/convex_hull_min_pt_separation: 0.1
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_convert_outlier_pts: True
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_filter_remaining_outlier_pts: False
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_inlier_distance: 0.15
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_min_inliers: 10
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_no_iterations: 1500
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_remainig_outliers: 3
+ * /move_base/TebLocalPlannerROS/costmap_converter_plugin: 
+ * /move_base/TebLocalPlannerROS/costmap_converter_rate: 5
+ * /move_base/TebLocalPlannerROS/costmap_converter_spin_thread: True
+ * /move_base/TebLocalPlannerROS/costmap_obstacles_behind_robot_dist: 0.3
+ * /move_base/TebLocalPlannerROS/delete_detours_backwards: True
+ * /move_base/TebLocalPlannerROS/dt_hysteresis: 0.1
+ * /move_base/TebLocalPlannerROS/dt_ref: 0.4
+ * /move_base/TebLocalPlannerROS/dynamic_obstacle_inflation_dist: 0.3
+ * /move_base/TebLocalPlannerROS/enable_homotopy_class_planning: False
+ * /move_base/TebLocalPlannerROS/enable_multithreading: True
+ * /move_base/TebLocalPlannerROS/exact_arc_length: False
+ * /move_base/TebLocalPlannerROS/feasibility_check_no_poses: 5
+ * /move_base/TebLocalPlannerROS/footprint_model/type: polygon
+ * /move_base/TebLocalPlannerROS/footprint_model/vertices: [[-0.15, 0.5], [1...
+ * /move_base/TebLocalPlannerROS/free_goal_vel: False
+ * /move_base/TebLocalPlannerROS/global_plan_overwrite_orientation: True
+ * /move_base/TebLocalPlannerROS/global_plan_prune_distance: 1
+ * /move_base/TebLocalPlannerROS/global_plan_viapoint_sep: 0.2
+ * /move_base/TebLocalPlannerROS/h_signature_prescaler: 0.5
+ * /move_base/TebLocalPlannerROS/h_signature_threshold: 0.1
+ * /move_base/TebLocalPlannerROS/include_costmap_obstacles: True
+ * /move_base/TebLocalPlannerROS/include_dynamic_obstacles: False
+ * /move_base/TebLocalPlannerROS/inflation_dist: 0.35
+ * /move_base/TebLocalPlannerROS/max_global_plan_lookahead_dist: 1.0
+ * /move_base/TebLocalPlannerROS/max_number_classes: 4
+ * /move_base/TebLocalPlannerROS/max_ratio_detours_duration_best_duration: 3.0
+ * /move_base/TebLocalPlannerROS/max_samples: 200
+ * /move_base/TebLocalPlannerROS/max_vel_theta: 0.1
+ * /move_base/TebLocalPlannerROS/max_vel_x: 0.1
+ * /move_base/TebLocalPlannerROS/max_vel_x_backwards: 0.05
+ * /move_base/TebLocalPlannerROS/max_vel_y: 0.0
+ * /move_base/TebLocalPlannerROS/min_obstacle_dist: 0.25
+ * /move_base/TebLocalPlannerROS/min_turning_radius: 0.0
+ * /move_base/TebLocalPlannerROS/no_inner_iterations: 5
+ * /move_base/TebLocalPlannerROS/no_outer_iterations: 4
+ * /move_base/TebLocalPlannerROS/obstacle_cost_exponent: 4
+ * /move_base/TebLocalPlannerROS/obstacle_heading_threshold: 0.45
+ * /move_base/TebLocalPlannerROS/obstacle_poses_affected: 15
+ * /move_base/TebLocalPlannerROS/odom_topic: odom
+ * /move_base/TebLocalPlannerROS/optimization_activate: True
+ * /move_base/TebLocalPlannerROS/optimization_verbose: False
+ * /move_base/TebLocalPlannerROS/oscillation_filter_duration: 10
+ * /move_base/TebLocalPlannerROS/oscillation_omega_eps: 0.03
+ * /move_base/TebLocalPlannerROS/oscillation_recovery: True
+ * /move_base/TebLocalPlannerROS/oscillation_recovery_min_duration: 10
+ * /move_base/TebLocalPlannerROS/oscillation_v_eps: 0.03
+ * /move_base/TebLocalPlannerROS/penalty_epsilon: 0.03
+ * /move_base/TebLocalPlannerROS/publish_feedback: False
+ * /move_base/TebLocalPlannerROS/roadmap_graph_area_length_scale: 1.0
+ * /move_base/TebLocalPlannerROS/roadmap_graph_area_width: 5
+ * /move_base/TebLocalPlannerROS/roadmap_graph_no_samples: 15
+ * /move_base/TebLocalPlannerROS/selection_alternative_time_cost: False
+ * /move_base/TebLocalPlannerROS/selection_cost_hysteresis: 1.0
+ * /move_base/TebLocalPlannerROS/selection_obst_cost_scale: 100.0
+ * /move_base/TebLocalPlannerROS/selection_prefer_initial_plan: 0.9
+ * /move_base/TebLocalPlannerROS/shrink_horizon_backup: True
+ * /move_base/TebLocalPlannerROS/shrink_horizon_min_duration: 10
+ * /move_base/TebLocalPlannerROS/switching_blocking_period: 0.0
+ * /move_base/TebLocalPlannerROS/teb_autosize: True
+ * /move_base/TebLocalPlannerROS/viapoints_all_candidates: True
+ * /move_base/TebLocalPlannerROS/visualize_hc_graph: False
+ * /move_base/TebLocalPlannerROS/visualize_with_time_as_z_axis_scale: False
+ * /move_base/TebLocalPlannerROS/weight_acc_lim_theta: 1.0
+ * /move_base/TebLocalPlannerROS/weight_acc_lim_x: 1.0
+ * /move_base/TebLocalPlannerROS/weight_adapt_factor: 2
+ * /move_base/TebLocalPlannerROS/weight_dynamic_obstacle: 10
+ * /move_base/TebLocalPlannerROS/weight_dynamic_obstacle_inflation: 0.2
+ * /move_base/TebLocalPlannerROS/weight_inflation: 0.2
+ * /move_base/TebLocalPlannerROS/weight_kinematics_forward_drive: 800
+ * /move_base/TebLocalPlannerROS/weight_kinematics_nh: 1000
+ * /move_base/TebLocalPlannerROS/weight_kinematics_turning_radius: 1
+ * /move_base/TebLocalPlannerROS/weight_max_vel_theta: 1
+ * /move_base/TebLocalPlannerROS/weight_max_vel_x: 2
+ * /move_base/TebLocalPlannerROS/weight_obstacle: 100
+ * /move_base/TebLocalPlannerROS/weight_optimaltime: 1
+ * /move_base/TebLocalPlannerROS/weight_shortest_path: 1
+ * /move_base/TebLocalPlannerROS/weight_viapoint: 20
+ * /move_base/TebLocalPlannerROS/xy_goal_tolerance: 0.12
+ * /move_base/TebLocalPlannerROS/yaw_goal_tolerance: 0.05
+ * /move_base/base_global_planner: carrot_planner/Ca...
+ * /move_base/base_local_planner: teb_local_planner...
+ * /move_base/controller_frequency: 10.0
+ * /move_base/controller_patience: 10.0
+ * /move_base/global_costmap/always_send_full_costmap: True
+ * /move_base/global_costmap/footprint: [[-0.15, 0.5], [1...
+ * /move_base/global_costmap/footprint_padding: 0.0
+ * /move_base/global_costmap/global_frame: map
+ * /move_base/global_costmap/inflation_layer/cost_scaling_factor: 10.0
+ * /move_base/global_costmap/inflation_layer/enabled: True
+ * /move_base/global_costmap/inflation_layer/inflation_radius: 0.1
+ * /move_base/global_costmap/map_type: costmap
+ * /move_base/global_costmap/obstacle_layer/combination_method: 1
+ * /move_base/global_costmap/obstacle_layer/enabled: True
+ * /move_base/global_costmap/obstacle_layer/inflation_radius: 0.2
+ * /move_base/global_costmap/obstacle_layer/laser_scan_sensor/clearing: True
+ * /move_base/global_costmap/obstacle_layer/laser_scan_sensor/data_type: LaserScan
+ * /move_base/global_costmap/obstacle_layer/laser_scan_sensor/marking: True
+ * /move_base/global_costmap/obstacle_layer/laser_scan_sensor/topic: scan
+ * /move_base/global_costmap/obstacle_layer/observation_sources: laser_scan_sensor
+ * /move_base/global_costmap/obstacle_layer/obstacle_range: 3.0
+ * /move_base/global_costmap/obstacle_layer/raytrace_range: 4.0
+ * /move_base/global_costmap/obstacle_layer/track_unknown_space: True
+ * /move_base/global_costmap/plugins: [{'name': 'static...
+ * /move_base/global_costmap/publish_frequency: 2.0
+ * /move_base/global_costmap/robot_base_frame: base_link
+ * /move_base/global_costmap/robot_radius: 0.0
+ * /move_base/global_costmap/static_layer/enabled: True
+ * /move_base/global_costmap/static_layer/map_topic: map
+ * /move_base/global_costmap/static_map: True
+ * /move_base/global_costmap/transform_tolerance: 0.5
+ * /move_base/global_costmap/update_frequency: 2.0
+ * /move_base/local_costmap/always_send_full_costmap: True
+ * /move_base/local_costmap/footprint: [[-0.15, 0.5], [1...
+ * /move_base/local_costmap/footprint_padding: 0.0
+ * /move_base/local_costmap/global_frame: map
+ * /move_base/local_costmap/height: 5
+ * /move_base/local_costmap/inflation_layer/cost_scaling_factor: 10.0
+ * /move_base/local_costmap/inflation_layer/enabled: True
+ * /move_base/local_costmap/inflation_layer/inflation_radius: 0.1
+ * /move_base/local_costmap/map_type: costmap
+ * /move_base/local_costmap/obstacle_layer/combination_method: 1
+ * /move_base/local_costmap/obstacle_layer/enabled: True
+ * /move_base/local_costmap/obstacle_layer/inflation_radius: 0.2
+ * /move_base/local_costmap/obstacle_layer/laser_scan_sensor/clearing: True
+ * /move_base/local_costmap/obstacle_layer/laser_scan_sensor/data_type: LaserScan
+ * /move_base/local_costmap/obstacle_layer/laser_scan_sensor/marking: True
+ * /move_base/local_costmap/obstacle_layer/laser_scan_sensor/topic: scan
+ * /move_base/local_costmap/obstacle_layer/observation_sources: laser_scan_sensor
+ * /move_base/local_costmap/obstacle_layer/obstacle_range: 3.0
+ * /move_base/local_costmap/obstacle_layer/raytrace_range: 4.0
+ * /move_base/local_costmap/obstacle_layer/track_unknown_space: True
+ * /move_base/local_costmap/plugins: [{'name': 'static...
+ * /move_base/local_costmap/publish_frequency: 5.0
+ * /move_base/local_costmap/resolution: 0.1
+ * /move_base/local_costmap/robot_base_frame: base_link
+ * /move_base/local_costmap/robot_radius: 0.0
+ * /move_base/local_costmap/rolling_window: True
+ * /move_base/local_costmap/static_layer/enabled: True
+ * /move_base/local_costmap/static_layer/map_topic: map
+ * /move_base/local_costmap/static_map: False
+ * /move_base/local_costmap/transform_tolerance: 0.5
+ * /move_base/local_costmap/update_frequency: 5.0
+ * /move_base/local_costmap/width: 5
+ * /rosdistro: noetic
+ * /rosversion: 1.17.4
+ * /slamware_ros_sdk_server_node/angle_compensate: True
+ * /slamware_ros_sdk_server_node/camera_left: base_camera_left
+ * /slamware_ros_sdk_server_node/camera_right: base_camera_right
+ * /slamware_ros_sdk_server_node/imu_frame: base_imu_link
+ * /slamware_ros_sdk_server_node/imu_raw_data_period: 0.005
+ * /slamware_ros_sdk_server_node/ip_address: 192.168.11.1
+ * /slamware_ros_sdk_server_node/ladar_data_clockwise: True
+ * /slamware_ros_sdk_server_node/laser_frame: base_laser_link
+ * /slamware_ros_sdk_server_node/map_frame: map
+ * /slamware_ros_sdk_server_node/map_pub_period: 0.2
+ * /slamware_ros_sdk_server_node/no_preview_image: False
+ * /slamware_ros_sdk_server_node/odom_frame: odom
+ * /slamware_ros_sdk_server_node/raw_image_on: False
+ * /slamware_ros_sdk_server_node/robot_frame: base_link
+ * /slamware_ros_sdk_server_node/robot_pose_pub_period: 0.05
+ * /slamware_ros_sdk_server_node/robot_pose_topic: robot_pose
+ * /slamware_ros_sdk_server_node/scan_pub_period: 0.1
+ * /use_sim_time: False
+
+NODES
+  /
+    baselink2map (tf2_ros/static_transform_publisher)
+    chassis_driver (grinder_chassis_driver/chassis_driver_node.py)
+    grinder_scheduler (grinder_scheduler/scheduler_node.py)
+    move_base (move_base/move_base)
+    odom2map (tf2_ros/static_transform_publisher)
+    rviz (rviz/rviz)
+    slamware_ros_sdk_server_node (slamware_ros_sdk/slamware_ros_sdk_server_node)
+MoTTY X11 proxy: No authorisation provided
+qt.qpa.xcb: could not connect to display localhost:11.0
+qt.qpa.plugin: Could not load the Qt platform plugin "xcb" in "" even though it was found.
+This application failed to start because no Qt platform plugin could be initialized. Reinstalling the application may fix this problem.
+
+Available platform plugins are: eglfs, linuxfb, minimal, minimalegl, offscreen, vnc, xcb.
+
+[0m[INFO] [1779782777.416242178]: Trying to connect to Aurora, tryCnt: 1.[0m
+[0m[INFO] [1779782777.431114263]: Selected device: tcp/192.168.11.1:7447[0m
+[0m[INFO] [1779782777.431193596]: Connecting to the selected device...[0m
+[0m[INFO] [1779782777.544968982]: Connected to the selected device[0m
+[0m[INFO] [1779782777.596424529]: Connected to Aurora, OK, tryCnt: 1.[0m
+[0m[INFO] [1779782777.596815071]: Odometry:0.1000[0m
+[0m[INFO] [1779782777.605715488]: RobotPose:0.0500[0m
+[0m[INFO] [1779782777.608395614]: ExploreMapUpdate:0.2000[0m
+[0m[INFO] [1779782777.608450739]: ExploreMapPublish:0.2000[0m
+[0m[INFO] [1779782777.615402906]: LaserScan:0.1000[0m
+[0m[INFO] [1779782777.616383781]: ServerImuRawDataWorker:0.0050[0m
+[0m[INFO] [1779782777.617188198]: RosConnectWorker:0.1000[0m
+[0m[INFO] [1779782777.617864865]: SystemStatus:0.0500[0m
+[0m[INFO] [1779782777.619054281]: StereoImage:0.0500[0m
+[0m[INFO] [1779782777.621301282]: PointCloud:0.1000[0m
+[0m[INFO] [1779782777.641841909]: SlamwareRosSdkServer, work thread begin.[0m
+[0m[INFO] [1779782777.642093034]: reset all 12 workers on work loop begin.[0m
+[0m[INFO] [1779782777.642541325]: Depth camera supported, subscription enabled, post-filtering on[0m
+[0m[INFO] [1779782777.642822492]: Semantic segmentation supported and subscription enabled[0m
+[0m[INFO] [1779782777.642973867]: Semantic segmentation label set: coco80[0m
+[0m[INFO] [1779782777.643147701]: Label ID: 0, Name: (null)[0m
+[0m[INFO] [1779782777.643654034]: Label ID: 1, Name: person[0m
+[0m[INFO] [1779782777.643746201]: Label ID: 2, Name: bicycle[0m
+[0m[INFO] [1779782777.643812409]: Label ID: 3, Name: car[0m
+[0m[INFO] [1779782777.643863159]: Label ID: 4, Name: motorcycle[0m
+[0m[INFO] [1779782777.643918284]: Label ID: 5, Name: airplane[0m
+[0m[INFO] [1779782777.643970784]: Label ID: 6, Name: bus[0m
+[0m[INFO] [1779782777.644033492]: Label ID: 7, Name: train[0m
+[0m[INFO] [1779782777.644094451]: Label ID: 8, Name: truck[0m
+[0m[INFO] [1779782777.644159492]: Label ID: 9, Name: boat[0m
+[0m[INFO] [1779782777.644208784]: Label ID: 10, Name: traffic light[0m
+[0m[INFO] [1779782777.644254867]: Label ID: 11, Name: fire hydrant[0m
+[0m[INFO] [1779782777.644321076]: Label ID: 12, Name: stop sign[0m
+[0m[INFO] [1779782777.644372409]: Label ID: 13, Name: parking meter[0m
+[0m[INFO] [1779782777.644437742]: Label ID: 14, Name: bench[0m
+[0m[INFO] [1779782777.644485576]: Label ID: 15, Name: bird[0m
+[0m[INFO] [1779782777.644534284]: Label ID: 16, Name: cat[0m
+[0m[INFO] [1779782777.644596409]: Label ID: 17, Name: dog[0m
+[0m[INFO] [1779782777.644753617]: Label ID: 18, Name: horse[0m
+[0m[INFO] [1779782777.644833826]: Label ID: 19, Name: sheep[0m
+[0m[INFO] [1779782777.644900909]: Label ID: 20, Name: cow[0m
+[0m[INFO] [1779782777.644948742]: Label ID: 21, Name: elephant[0m
+[0m[INFO] [1779782777.645009701]: Label ID: 22, Name: bear[0m
+[0m[INFO] [1779782777.645058992]: Label ID: 23, Name: zebra[0m
+[0m[INFO] [1779782777.645108867]: Label ID: 24, Name: giraffe[0m
+[0m[INFO] [1779782777.645171867]: Label ID: 25, Name: backpack[0m
+[0m[INFO] [1779782777.645278034]: Label ID: 26, Name: umbrella[0m
+[0m[INFO] [1779782777.645374867]: Label ID: 27, Name: handbag[0m
+[0m[INFO] [1779782777.645427951]: Label ID: 28, Name: tie[0m
+[0m[INFO] [1779782777.645588951]: Label ID: 29, Name: suitcase[0m
+[0m[INFO] [1779782777.645665659]: Label ID: 30, Name: frisbee[0m
+[0m[INFO] [1779782777.645714659]: Label ID: 31, Name: skis[0m
+[0m[INFO] [1779782777.645782909]: Label ID: 32, Name: snowboard[0m
+[0m[INFO] [1779782777.645832492]: Label ID: 33, Name: sports ball[0m
+[0m[INFO] [1779782777.645894909]: Label ID: 34, Name: kite[0m
+[0m[INFO] [1779782777.645944492]: Label ID: 35, Name: baseball bat[0m
+[0m[INFO] [1779782777.645990867]: Label ID: 36, Name: baseball glove[0m
+[0m[INFO] [1779782777.646055034]: Label ID: 37, Name: skateboard[0m
+[0m[INFO] [1779782777.646103159]: Label ID: 38, Name: surfboard[0m
+[0m[INFO] [1779782777.646164118]: Label ID: 39, Name: tennis racket[0m
+[0m[[33m[WARN] [1779782777.849379263]: knownCellIdxRect: ((-2, -2), (4, 4)), nearRobotIdxRect : ((-3133,  591), ( 321,  321)), intersection is empty.[0m
+[33m[WARN] [1779782777.860634972]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1779782777.864238514]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1779782778.049381533]: knownCellIdxRect: ((-2, -2), (4, 4)), nearRobotIdxRect : ((-3133,  591), ( 321,  321)), intersection is empty.[0m
+[33m[WARN] [1779782778.421814862]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1779782778.424431987]: local_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[WARN] [1779782783.654492]: RTSP encoder probe failed, skip encoder=h264_v4l2m2m for stream left
+[WARN] [1779782783.895154]: RTSP encoder probe failed, skip encoder=h264_vaapi for stream left
+[WARN] [1779782784.116790]: RTSP encoder probe failed, skip encoder=h264_omx for stream left
+[WARN] [1779782784.860209]: RTSP encoder probe failed, skip encoder=h264_v4l2m2m for stream right
+[WARN] [1779782785.148102]: RTSP encoder probe failed, skip encoder=h264_vaapi for stream right
+[WARN] [1779782785.361772]: RTSP encoder probe failed, skip encoder=h264_omx for stream right
+[WARN] [1779782790.498496]: Drop stale left frame for RTSP: age=0.418s (max=0.400s)
+[WARN] [1779782790.526723]: Drop stale right frame for RTSP: age=0.416s (max=0.400s)
+[WARN] [1779782793.141386]: Drop stale left frame for RTSP: age=0.444s (max=0.400s)
+[WARN] [1779782793.164170]: Drop stale right frame for RTSP: age=0.443s (max=0.400s)
+[WARN] [1779782796.697822]: Drop stale left frame for RTSP: age=0.502s (max=0.400s)
+[WARN] [1779782796.710349]: Drop stale right frame for RTSP: age=0.503s (max=0.400s)
+[WARN] [1779782802.923056]: Drop stale left frame for RTSP: age=0.421s (max=0.400s)
+[WARN] [1779782802.933922]: Drop stale right frame for RTSP: age=0.422s (max=0.400s)
+[WARN] [1779782808.183654]: Drop stale left frame for RTSP: age=0.424s (max=0.400s)
+[WARN] [1779782808.203984]: Drop stale right frame for RTSP: age=0.423s (max=0.400s)
+[WARN] [1779782810.547313]: Drop stale left frame for RTSP: age=0.518s (max=0.400s)
+[WARN] [1779782810.578127]: Drop stale right frame for RTSP: age=0.518s (max=0.400s)
+[WARN] [1779782812.667956]: Manual reverse switch detected, applying 1000ms stop guard.
+[WARN] [1779782813.697201]: Drop stale left frame for RTSP: age=0.470s (max=0.400s)
+[WARN] [1779782813.756850]: Drop stale right frame for RTSP: age=0.469s (max=0.400s)
+[WARN] [1779782818.627880]: Drop stale left frame for RTSP: age=0.484s (max=0.400s)
+[WARN] [1779782818.643064]: Drop stale right frame for RTSP: age=0.486s (max=0.400s)
+[WARN] [1779782820.899601]: Manual reverse switch detected, applying 1000ms stop guard.
+[WARN] [1779782823.914544]: Drop stale left frame for RTSP: age=0.478s (max=0.400s)
+[WARN] [1779782826.677128]: Drop stale left frame for RTSP: age=0.420s (max=0.400s)
+[WARN] [1779782827.418956]: Drop stale right frame for RTSP: age=0.413s (max=0.400s)
+[WARN] [1779782829.989717]: Drop stale left frame for RTSP: age=0.544s (max=0.400s)
+[WARN] [1779782831.629610]: Drop stale right frame for RTSP: age=0.527s (max=0.400s)
+[WARN] [1779782833.357693]: Drop stale left frame for RTSP: age=0.435s (max=0.400s)
+[WARN] [1779782834.475662]: Drop stale right frame for RTSP: age=0.402s (max=0.400s)
+[WARN] [1779782835.073437]: Manual reverse switch detected, applying 1000ms stop guard.
+[WARN] [1779782835.580148]: Drop stale left frame for RTSP: age=0.419s (max=0.400s)
+[WARN] [1779782838.996642]: Drop stale left frame for RTSP: age=0.400s (max=0.400s)
+[WARN] [1779782839.019169]: Drop stale right frame for RTSP: age=0.401s (max=0.400s)
+[WARN] [1779782841.898032]: Drop stale left frame for RTSP: age=0.403s (max=0.400s)
+[WARN] [1779782841.929179]: Drop stale right frame for RTSP: age=0.402s (max=0.400s)
+[WARN] [1779782844.793068]: Drop stale left frame for RTSP: age=0.417s (max=0.400s)
+[WARN] [1779782844.806575]: Drop stale right frame for RTSP: age=0.416s (max=0.400s)
+[WARN] [1779782853.066140]: Drop stale left frame for RTSP: age=0.411s (max=0.400s)
+[WARN] [1779782853.096034]: Drop stale right frame for RTSP: age=0.411s (max=0.400s)
+[WARN] [1779782858.203784]: Drop stale left frame for RTSP: age=0.422s (max=0.400s)
+[WARN] [1779782858.234959]: Drop stale right frame for RTSP: age=0.423s (max=0.400s)
+[WARN] [1779782861.190145]: Drop stale left frame for RTSP: age=0.469s (max=0.400s)
+[WARN] [1779782861.285311]: Drop stale right frame for RTSP: age=0.468s (max=0.400s)
+[WARN] [1779782867.926935]: Drop stale left frame for RTSP: age=0.437s (max=0.400s)
+[WARN] [1779782868.753328]: Drop stale right frame for RTSP: age=0.464s (max=0.400s)
+[WARN] [1779782870.294003]: Drop stale left frame for RTSP: age=0.410s (max=0.400s)
+[WARN] [1779782874.660264]: Drop stale right frame for RTSP: age=0.423s (max=0.400s)
+[WARN] [1779782877.083379]: Drop stale right frame for RTSP: age=0.442s (max=0.400s)
+[WARN] [1779782877.877837]: Drop stale left frame for RTSP: age=0.489s (max=0.400s)
+[WARN] [1779782879.389883]: Drop stale right frame for RTSP: age=0.438s (max=0.400s)
+[WARN] [1779782880.683476]: Drop stale left frame for RTSP: age=0.417s (max=0.400s)
+[WARN] [1779782883.706315]: Drop stale left frame for RTSP: age=0.470s (max=0.400s)
+[WARN] [1779782883.738293]: Drop stale right frame for RTSP: age=0.470s (max=0.400s)
+[WARN] [1779782887.865996]: Drop stale left frame for RTSP: age=0.426s (max=0.400s)
+[WARN] [1779782887.879105]: Drop stale right frame for RTSP: age=0.424s (max=0.400s)
+[WARN] [1779782892.021732]: Drop stale left frame for RTSP: age=0.418s (max=0.400s)
+[WARN] [1779782892.047749]: Drop stale right frame for RTSP: age=0.418s (max=0.400s)
+[WARN] [1779782894.657371]: Drop stale left frame for RTSP: age=0.414s (max=0.400s)
+[WARN] [1779782894.666060]: Drop stale right frame for RTSP: age=0.410s (max=0.400s)
+[WARN] [1779782896.759440]: Drop stale right frame for RTSP: age=0.441s (max=0.400s)
+[WARN] [1779782900.896557]: Drop stale left frame for RTSP: age=0.498s (max=0.400s)
+[WARN] [1779782901.030121]: Drop stale right frame for RTSP: age=0.493s (max=0.400s)
+[WARN] [1779782904.183966]: Drop stale left frame for RTSP: age=0.532s (max=0.400s)
+[WARN] [1779782904.210370]: Drop stale right frame for RTSP: age=0.532s (max=0.400s)
+[WARN] [1779782904.993094]: Manual reverse switch detected, applying 1000ms stop guard.
+[WARN] [1779782907.990707]: Drop stale left frame for RTSP: age=0.424s (max=0.400s)
+[WARN] [1779782908.048988]: Drop stale right frame for RTSP: age=0.422s (max=0.400s)
+[WARN] [1779782911.312282]: Drop stale right frame for RTSP: age=0.464s (max=0.400s)
+[WARN] [1779782913.319146]: Drop stale left frame for RTSP: age=0.499s (max=0.400s)
+[WARN] [1779782916.719267]: Drop stale right frame for RTSP: age=0.450s (max=0.400s)
+[WARN] [1779782922.365274]: Drop stale left frame for RTSP: age=0.445s (max=0.400s)
+[WARN] [1779782922.392395]: Drop stale right frame for RTSP: age=0.444s (max=0.400s)
+[WARN] [1779782924.627444]: Drop stale left frame for RTSP: age=0.503s (max=0.400s)
+[WARN] [1779782924.647928]: Drop stale right frame for RTSP: age=0.503s (max=0.400s)
+[WARN] [1779782927.633536]: Drop stale left frame for RTSP: age=0.436s (max=0.400s)
+[WARN] [1779782927.673109]: Drop stale right frame for RTSP: age=0.432s (max=0.400s)
+[WARN] [1779782934.279770]: Drop stale left frame for RTSP: age=0.418s (max=0.400s)
+[WARN] [1779782934.298498]: Drop stale right frame for RTSP: age=0.413s (max=0.400s)
+[WARN] [1779782937.625812]: Drop stale right frame for RTSP: age=0.482s (max=0.400s)
+[WARN] [1779782940.765492]: Drop stale left frame for RTSP: age=0.424s (max=0.400s)
+[WARN] [1779782941.540515]: Drop stale right frame for RTSP: age=0.435s (max=0.400s)
+[WARN] [1779782944.180678]: Drop stale left frame for RTSP: age=0.474s (max=0.400s)
+[WARN] [1779782944.200465]: Drop stale right frame for RTSP: age=0.474s (max=0.400s)
+[WARN] [1779782950.808615]: Drop stale left frame for RTSP: age=0.414s (max=0.400s)
+[WARN] [1779782953.324738]: Drop stale left frame for RTSP: age=0.400s (max=0.400s)
+[WARN] [1779782953.333169]: Drop stale right frame for RTSP: age=0.402s (max=0.400s)
+[WARN] [1779782957.176543]: Drop stale left frame for RTSP: age=0.412s (max=0.400s)
+[WARN] [1779782957.189385]: Drop stale right frame for RTSP: age=0.412s (max=0.400s)
+[WARN] [1779782960.259084]: Drop stale left frame for RTSP: age=0.431s (max=0.400s)
+[WARN] [1779782960.308120]: Drop stale right frame for RTSP: age=0.430s (max=0.400s)
+[WARN] [1779782963.134232]: Drop stale left frame for RTSP: age=0.402s (max=0.400s)
+[WARN] [1779782963.146986]: Drop stale right frame for RTSP: age=0.402s (max=0.400s)
+[WARN] [1779782965.748515]: Drop stale left frame for RTSP: age=0.413s (max=0.400s)
+[WARN] [1779782965.769623]: Drop stale right frame for RTSP: age=0.404s (max=0.400s)
+[33m[WARN] [1779783040.322100802]: Costmap2DROS transform timeout. Current time: 1779783040.3217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783041.372090408]: Costmap2DROS transform timeout. Current time: 1779783041.3719, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783042.521997440]: Costmap2DROS transform timeout. Current time: 1779783042.5217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783043.522081124]: Costmap2DROS transform timeout. Current time: 1779783043.5217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783044.721851202]: Costmap2DROS transform timeout. Current time: 1779783044.7216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783045.722574803]: Costmap2DROS transform timeout. Current time: 1779783045.7218, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783046.865328126]: Costmap2DROS transform timeout. Current time: 1779783046.8652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783047.865485018]: Costmap2DROS transform timeout. Current time: 1779783047.8652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783048.921778416]: Costmap2DROS transform timeout. Current time: 1779783048.9216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783049.921921892]: Costmap2DROS transform timeout. Current time: 1779783049.9217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783051.121960012]: Costmap2DROS transform timeout. Current time: 1779783051.1217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783052.121975738]: Costmap2DROS transform timeout. Current time: 1779783052.1217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783053.321944733]: Costmap2DROS transform timeout. Current time: 1779783053.3217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783054.365643380]: Costmap2DROS transform timeout. Current time: 1779783054.3652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783055.521720329]: Costmap2DROS transform timeout. Current time: 1779783055.5216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783056.521816555]: Costmap2DROS transform timeout. Current time: 1779783056.5216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783057.521839280]: Costmap2DROS transform timeout. Current time: 1779783057.5217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783058.721870984]: Costmap2DROS transform timeout. Current time: 1779783058.7217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783059.865495224]: Costmap2DROS transform timeout. Current time: 1779783059.8652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783060.922129289]: Costmap2DROS transform timeout. Current time: 1779783060.9217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783061.925525139]: Costmap2DROS transform timeout. Current time: 1779783061.9253, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783062.928771657]: Costmap2DROS transform timeout. Current time: 1779783062.9286, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783064.121976902]: Costmap2DROS transform timeout. Current time: 1779783064.1217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783065.321835064]: Costmap2DROS transform timeout. Current time: 1779783065.3217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783066.365219294]: Costmap2DROS transform timeout. Current time: 1779783066.3651, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783067.365252811]: Costmap2DROS transform timeout. Current time: 1779783067.3652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783068.365451411]: Costmap2DROS transform timeout. Current time: 1779783068.3652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783069.521940194]: Costmap2DROS transform timeout. Current time: 1779783069.5217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783070.522195378]: Costmap2DROS transform timeout. Current time: 1779783070.5217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783071.721769749]: Costmap2DROS transform timeout. Current time: 1779783071.7216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783072.721974474]: Costmap2DROS transform timeout. Current time: 1779783072.7217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783073.865820381]: Costmap2DROS transform timeout. Current time: 1779783073.8652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783074.865659356]: Costmap2DROS transform timeout. Current time: 1779783074.8654, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783075.869358540]: Costmap2DROS transform timeout. Current time: 1779783075.8690, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783076.921848021]: Costmap2DROS transform timeout. Current time: 1779783076.9217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783077.932510164]: Costmap2DROS transform timeout. Current time: 1779783077.9324, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783079.121791325]: Costmap2DROS transform timeout. Current time: 1779783079.1216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783080.121824551]: Costmap2DROS transform timeout. Current time: 1779783080.1216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783081.321962713]: Costmap2DROS transform timeout. Current time: 1779783081.3217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783082.321953647]: Costmap2DROS transform timeout. Current time: 1779783082.3217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783083.322818123]: Costmap2DROS transform timeout. Current time: 1779783083.3218, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783084.365310144]: Costmap2DROS transform timeout. Current time: 1779783084.3652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783085.365369036]: Costmap2DROS transform timeout. Current time: 1779783085.3652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783086.365487762]: Costmap2DROS transform timeout. Current time: 1779783086.3652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783087.522358628]: Costmap2DROS transform timeout. Current time: 1779783087.5222, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783088.721909582]: Costmap2DROS transform timeout. Current time: 1779783088.7217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783089.865336947]: Costmap2DROS transform timeout. Current time: 1779783089.8652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783090.865437547]: Costmap2DROS transform timeout. Current time: 1779783090.8652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783091.865506939]: Costmap2DROS transform timeout. Current time: 1779783091.8652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783092.922156712]: Costmap2DROS transform timeout. Current time: 1779783092.9219, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783094.122021458]: Costmap2DROS transform timeout. Current time: 1779783094.1217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783095.321771120]: Costmap2DROS transform timeout. Current time: 1779783095.3216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783096.322006054]: Costmap2DROS transform timeout. Current time: 1779783096.3218, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783097.322115113]: Costmap2DROS transform timeout. Current time: 1779783097.3217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783098.365442176]: Costmap2DROS transform timeout. Current time: 1779783098.3652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783099.522116750]: Costmap2DROS transform timeout. Current time: 1779783099.5218, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783100.721950621]: Costmap2DROS transform timeout. Current time: 1779783100.7217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783101.722047721]: Costmap2DROS transform timeout. Current time: 1779783101.7217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783102.865845503]: Costmap2DROS transform timeout. Current time: 1779783102.8652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783103.922149526]: Costmap2DROS transform timeout. Current time: 1779783103.9218, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783105.121927771]: Costmap2DROS transform timeout. Current time: 1779783105.1217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[WARN] [1779782969.730990]: Drop stale left frame for RTSP: age=0.420s (max=0.400s)
+[WARN] [1779782969.751248]: Drop stale right frame for RTSP: age=0.420s (max=0.400s)
+[WARN] [1779782972.725055]: Drop stale left frame for RTSP: age=0.413s (max=0.400s)
+[WARN] [1779782972.747412]: Drop stale right frame for RTSP: age=0.415s (max=0.400s)
+[WARN] [1779782975.842187]: Drop stale left frame for RTSP: age=0.402s (max=0.400s)
+[WARN] [1779782975.849181]: Drop stale right frame for RTSP: age=0.401s (max=0.400s)
+[WARN] [1779782978.772477]: Drop stale right frame for RTSP: age=0.428s (max=0.400s)
+[WARN] [1779782986.325748]: Drop stale left frame for RTSP: age=0.476s (max=0.400s)
+[WARN] [1779782986.405714]: Drop stale right frame for RTSP: age=0.445s (max=0.400s)
+[WARN] [1779782989.603604]: Drop stale right frame for RTSP: age=0.510s (max=0.400s)
+[WARN] [1779782993.006676]: Drop stale left frame for RTSP: age=0.433s (max=0.400s)
+[WARN] [1779782994.177373]: Drop stale right frame for RTSP: age=0.417s (max=0.400s)
+[WARN] [1779782995.044065]: Drop stale left frame for RTSP: age=0.500s (max=0.400s)
+[WARN] [1779782996.308311]: Drop stale right frame for RTSP: age=0.566s (max=0.400s)
+[WARN] [1779782997.233711]: Drop stale left frame for RTSP: age=0.424s (max=0.400s)
+[WARN] [1779782998.585462]: Drop stale right frame for RTSP: age=0.460s (max=0.400s)
+[WARN] [1779783001.320104]: Drop stale right frame for RTSP: age=0.420s (max=0.400s)
+[WARN] [1779783002.654308]: Drop stale left frame for RTSP: age=0.589s (max=0.400s)
+[WARN] [1779783003.474957]: Drop stale right frame for RTSP: age=0.454s (max=0.400s)
+[WARN] [1779783004.758261]: Drop stale left frame for RTSP: age=0.532s (max=0.400s)
+[WARN] [1779783005.637844]: Drop stale right frame for RTSP: age=0.507s (max=0.400s)
+[WARN] [1779783008.466392]: Drop stale left frame for RTSP: age=0.424s (max=0.400s)
+[WARN] [1779783008.472808]: Drop stale right frame for RTSP: age=0.424s (max=0.400s)
+[WARN] [1779783012.579294]: Drop stale left frame for RTSP: age=0.453s (max=0.400s)
+[WARN] [1779783012.589610]: Drop stale right frame for RTSP: age=0.457s (max=0.400s)
+[WARN] [1779783015.897388]: Drop stale left frame for RTSP: age=0.411s (max=0.400s)
+[WARN] [1779783015.921931]: Drop stale right frame for RTSP: age=0.411s (max=0.400s)
+[WARN] [1779783018.468106]: Drop stale left frame for RTSP: age=0.424s (max=0.400s)
+[WARN] [1779783018.476738]: Drop stale right frame for RTSP: age=0.422s (max=0.400s)
+[WARN] [1779783022.051076]: Drop stale left frame for RTSP: age=0.415s (max=0.400s)
+[WARN] [1779783022.063393]: Drop stale right frame for RTSP: age=0.413s (max=0.400s)
+[WARN] [1779783026.400146]: Drop stale left frame for RTSP: age=0.420s (max=0.400s)
+[WARN] [1779783026.467753]: Drop stale right frame for RTSP: age=0.414s (max=0.400s)
+[WARN] [1779783030.230734]: Drop stale left frame for RTSP: age=0.420s (max=0.400s)
+[WARN] [1779783032.165332]: Drop stale right frame for RTSP: age=0.404s (max=0.400s)
+[WARN] [1779783032.769933]: Drop stale left frame for RTSP: age=0.403s (max=0.400s)
+[WARN] [1779783040.336063]: Drop stale left frame for RTSP: age=0.525s (max=0.400s)
+[WARN] [1779783040.387537]: Drop stale right frame for RTSP: age=0.527s (max=0.400s)
+[WARN] [1779783042.606698]: Drop stale left frame for RTSP: age=2.796s (max=0.400s)
+[WARN] [1779783042.616710]: Drop stale right frame for RTSP: age=2.797s (max=0.400s)
+[WARN] [1779783044.637679]: Drop stale left frame for RTSP: age=4.829s (max=0.400s)
+[WARN] [1779783044.640255]: Drop stale right frame for RTSP: age=4.831s (max=0.400s)
+[WARN] [1779783046.829268]: Drop stale left frame for RTSP: age=7.019s (max=0.400s)
+[WARN] [1779783046.841786]: Drop stale right frame for RTSP: age=7.020s (max=0.400s)
+[WARN] [1779783048.879669]: Drop stale left frame for RTSP: age=9.051s (max=0.400s)
+[WARN] [1779783048.883691]: Drop stale right frame for RTSP: age=9.052s (max=0.400s)
+[WARN] [1779783051.076848]: Drop stale left frame for RTSP: age=11.266s (max=0.400s)
+[WARN] [1779783051.162406]: Drop stale right frame for RTSP: age=11.268s (max=0.400s)
+[WARN] [1779783053.393154]: Drop stale left frame for RTSP: age=13.584s (max=0.400s)
+[WARN] [1779783053.429888]: Drop stale right frame for RTSP: age=13.586s (max=0.400s)
+[WARN] [1779783055.546513]: Drop stale left frame for RTSP: age=15.738s (max=0.400s)
+[WARN] [1779783055.551074]: Drop stale right frame for RTSP: age=15.739s (max=0.400s)
+[WARN] [1779783057.801908]: Drop stale left frame for RTSP: age=17.992s (max=0.400s)
+[WARN] [1779783057.815807]: Drop stale right frame for RTSP: age=17.994s (max=0.400s)
+[WARN] [1779783060.009668]: Drop stale left frame for RTSP: age=20.198s (max=0.400s)
+[WARN] [1779783060.020900]: Drop stale right frame for RTSP: age=20.199s (max=0.400s)
+[WARN] [1779783062.314783]: Drop stale left frame for RTSP: age=22.504s (max=0.400s)
+[WARN] [1779783062.327734]: Drop stale right frame for RTSP: age=22.506s (max=0.400s)
+[WARN] [1779783064.317801]: Drop stale left frame for RTSP: age=24.509s (max=0.400s)
+[WARN] [1779783064.678721]: Drop stale right frame for RTSP: age=24.869s (max=0.400s)
+[WARN] [1779783066.344793]: Drop stale left frame for RTSP: age=26.536s (max=0.400s)
+[WARN] [1779783066.803670]: Drop stale right frame for RTSP: age=26.993s (max=0.400s)
+[WARN] [1779783068.391650]: Drop stale left frame for RTSP: age=28.241s (max=0.400s)
+[WARN] [1779783069.038897]: Drop stale right frame for RTSP: age=29.229s (max=0.400s)
+[WARN] [1779783070.522476]: Drop stale left frame for RTSP: age=30.713s (max=0.400s)
+[WARN] [1779783071.112669]: Drop stale right frame for RTSP: age=31.304s (max=0.400s)
+[WARN] [1779783072.768790]: Drop stale left frame for RTSP: age=32.960s (max=0.400s)
+[WARN] [1779783073.389373]: Drop stale right frame for RTSP: age=33.577s (max=0.400s)
+[WARN] [1779783074.943125]: Drop stale left frame for RTSP: age=35.134s (max=0.400s)
+[WARN] [1779783075.502676]: Drop stale right frame for RTSP: age=35.691s (max=0.400s)
+[WARN] [1779783077.140902]: Drop stale left frame for RTSP: age=37.014s (max=0.400s)
+[WARN] [1779783077.728163]: Drop stale right frame for RTSP: age=37.919s (max=0.400s)
+[WARN] [1779783079.510467]: Drop stale left frame for RTSP: age=39.697s (max=0.400s)
+[WARN] [1779783079.768384]: Drop stale right frame for RTSP: age=39.961s (max=0.400s)
+[WARN] [1779783081.797409]: Drop stale left frame for RTSP: age=41.986s (max=0.400s)
+[WARN] [1779783081.806664]: Drop stale right frame for RTSP: age=41.988s (max=0.400s)
+[WARN] [1779783083.804413]: Drop stale left frame for RTSP: age=43.976s (max=0.400s)
+[WARN] [1779783083.810230]: Drop stale right frame for RTSP: age=43.977s (max=0.400s)
+[WARN] [1779783085.845738]: Drop stale left frame for RTSP: age=46.024s (max=0.400s)
+[WARN] [1779783085.850977]: Drop stale right frame for RTSP: age=46.025s (max=0.400s)
+[WARN] [1779783087.849261]: Drop stale left frame for RTSP: age=48.040s (max=0.400s)
+[WARN] [1779783087.867394]: Drop stale right frame for RTSP: age=48.042s (max=0.400s)
+[WARN] [1779783090.139904]: Drop stale left frame for RTSP: age=50.329s (max=0.400s)
+[WARN] [1779783090.185236]: Drop stale right frame for RTSP: age=50.330s (max=0.400s)
+[WARN] [1779783092.375896]: Drop stale left frame for RTSP: age=52.565s (max=0.400s)
+[WARN] [1779783092.449610]: Drop stale right frame for RTSP: age=52.566s (max=0.400s)
+[WARN] [1779783094.479346]: Drop stale left frame for RTSP: age=54.670s (max=0.400s)
+[WARN] [1779783094.485711]: Drop stale right frame for RTSP: age=54.671s (max=0.400s)
+[WARN] [1779783096.818649]: Drop stale left frame for RTSP: age=57.010s (max=0.400s)
+[WARN] [1779783096.824735]: Drop stale right frame for RTSP: age=57.011s (max=0.400s)
+[WARN] [1779783099.161656]: Drop stale left frame for RTSP: age=59.353s (max=0.400s)
+[WARN] [1779783099.166555]: Drop stale right frame for RTSP: age=59.354s (max=0.400s)
+[WARN] [1779783101.458107]: Drop stale left frame for RTSP: age=61.253s (max=0.400s)
+[WARN] [1779783101.474791]: Drop stale right frame for RTSP: age=61.254s (max=0.400s)
+[WARN] [1779783103.463696]: Drop stale left frame for RTSP: age=63.654s (max=0.400s)
+[WARN] [1779783103.904924]: Drop stale right frame for RTSP: age=64.090s (max=0.400s)
+[33m[WARN] [1779783106.323650559]: Costmap2DROS transform timeout. Current time: 1779783106.3233, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783107.365425663]: Costmap2DROS transform timeout. Current time: 1779783107.3652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783108.365369347]: Costmap2DROS transform timeout. Current time: 1779783108.3652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783109.365460906]: Costmap2DROS transform timeout. Current time: 1779783109.3652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783110.365536340]: Costmap2DROS transform timeout. Current time: 1779783110.3654, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783111.522060998]: Costmap2DROS transform timeout. Current time: 1779783111.5217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783112.522049973]: Costmap2DROS transform timeout. Current time: 1779783112.5217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783113.721769010]: Costmap2DROS transform timeout. Current time: 1779783113.7216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783114.722024486]: Costmap2DROS transform timeout. Current time: 1779783114.7217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783115.721999670]: Costmap2DROS transform timeout. Current time: 1779783115.7218, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783116.865313576]: Costmap2DROS transform timeout. Current time: 1779783116.8652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783117.865580343]: Costmap2DROS transform timeout. Current time: 1779783117.8652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783118.865509110]: Costmap2DROS transform timeout. Current time: 1779783118.8653, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783119.921847133]: Costmap2DROS transform timeout. Current time: 1779783119.9217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783121.121924337]: Costmap2DROS transform timeout. Current time: 1779783121.1217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783122.321818374]: Costmap2DROS transform timeout. Current time: 1779783122.3216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783123.321965933]: Costmap2DROS transform timeout. Current time: 1779783123.3217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783124.365424830]: Costmap2DROS transform timeout. Current time: 1779783124.3653, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783125.521678821]: Costmap2DROS transform timeout. Current time: 1779783125.5216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783125.844256645]: makePlan is called.
+[0m
+[33m[WARN] [1779783125.844481812]: Transform timeout for global_costmap. Current time: 1779783125.8442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783125.844547437]: Unable to get starting pose of robot, unable to create global plan[0m
+[33m[WARN] [1779783126.521784380]: Costmap2DROS transform timeout. Current time: 1779783126.5216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783126.844421704]: Transform timeout for global_costmap. Current time: 1779783126.8443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783127.521892272]: Costmap2DROS transform timeout. Current time: 1779783127.5216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783127.944431564]: Transform timeout for global_costmap. Current time: 1779783127.9443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783128.522156206]: Costmap2DROS transform timeout. Current time: 1779783128.5218, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783128.948726332]: Transform timeout for global_costmap. Current time: 1779783128.9486, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783129.721882535]: Costmap2DROS transform timeout. Current time: 1779783129.7216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783130.044443150]: Transform timeout for global_costmap. Current time: 1779783130.0443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783130.865570358]: Costmap2DROS transform timeout. Current time: 1779783130.8652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783131.144402553]: Transform timeout for global_costmap. Current time: 1779783131.1443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783131.922214339]: Costmap2DROS transform timeout. Current time: 1779783131.9217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783132.144414778]: Transform timeout for global_costmap. Current time: 1779783132.1443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783133.121883793]: Costmap2DROS transform timeout. Current time: 1779783133.1216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783133.244369514]: Transform timeout for global_costmap. Current time: 1779783133.2442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783134.121876768]: Costmap2DROS transform timeout. Current time: 1779783134.1216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783134.244471281]: Transform timeout for global_costmap. Current time: 1779783134.2442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783135.121929827]: Costmap2DROS transform timeout. Current time: 1779783135.1217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783135.244796173]: Transform timeout for global_costmap. Current time: 1779783135.2445, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783136.322008781]: Costmap2DROS transform timeout. Current time: 1779783136.3218, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783136.344518158]: Transform timeout for global_costmap. Current time: 1779783136.3443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783137.365709469]: Costmap2DROS transform timeout. Current time: 1779783137.3653, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783137.444451019]: Transform timeout for global_costmap. Current time: 1779783137.4442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783138.521791669]: Costmap2DROS transform timeout. Current time: 1779783138.5216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783138.544379504]: Transform timeout for global_costmap. Current time: 1779783138.5442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783139.521938353]: Costmap2DROS transform timeout. Current time: 1779783139.5217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783139.644382657]: Transform timeout for global_costmap. Current time: 1779783139.6442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783140.721861265]: Costmap2DROS transform timeout. Current time: 1779783140.7216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783140.744379392]: Transform timeout for global_costmap. Current time: 1779783140.7442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783141.721917532]: Costmap2DROS transform timeout. Current time: 1779783141.7217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783141.744560201]: Transform timeout for global_costmap. Current time: 1779783141.7443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783142.744789426]: Transform timeout for global_costmap. Current time: 1779783142.7443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783142.865408772]: Costmap2DROS transform timeout. Current time: 1779783142.8652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783143.844302287]: Transform timeout for global_costmap. Current time: 1779783143.8442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783143.921888836]: Costmap2DROS transform timeout. Current time: 1779783143.9217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783144.844817054]: Transform timeout for global_costmap. Current time: 1779783144.8443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783145.121774415]: Costmap2DROS transform timeout. Current time: 1779783145.1216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783145.944546915]: Transform timeout for global_costmap. Current time: 1779783145.9444, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783146.121918474]: Costmap2DROS transform timeout. Current time: 1779783146.1217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783147.044353192]: Transform timeout for global_costmap. Current time: 1779783147.0442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783147.321931511]: Costmap2DROS transform timeout. Current time: 1779783147.3217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783148.044545667]: Transform timeout for global_costmap. Current time: 1779783148.0443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783148.365301158]: Costmap2DROS transform timeout. Current time: 1779783148.3652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783149.144293903]: Transform timeout for global_costmap. Current time: 1779783149.1442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783149.522173774]: Costmap2DROS transform timeout. Current time: 1779783149.5217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783150.144479378]: Transform timeout for global_costmap. Current time: 1779783150.1443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783150.721849061]: Costmap2DROS transform timeout. Current time: 1779783150.7217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783151.244452489]: Transform timeout for global_costmap. Current time: 1779783151.2442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783151.865386968]: Costmap2DROS transform timeout. Current time: 1779783151.8652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783152.344444558]: Transform timeout for global_costmap. Current time: 1779783152.3442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783152.921881907]: Costmap2DROS transform timeout. Current time: 1779783152.9216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783153.444354085]: Transform timeout for global_costmap. Current time: 1779783153.4442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783153.921938175]: Costmap2DROS transform timeout. Current time: 1779783153.9217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783154.444539269]: Transform timeout for global_costmap. Current time: 1779783154.4443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783154.921912192]: Costmap2DROS transform timeout. Current time: 1779783154.9217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783155.544381129]: Transform timeout for global_costmap. Current time: 1779783155.5442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783156.122069896]: Costmap2DROS transform timeout. Current time: 1779783156.1217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783156.544446438]: Transform timeout for global_costmap. Current time: 1779783156.5442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783157.321811391]: Costmap2DROS transform timeout. Current time: 1779783157.3216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783157.644447840]: Transform timeout for global_costmap. Current time: 1779783157.6443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783158.321927450]: Costmap2DROS transform timeout. Current time: 1779783158.3217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783158.744373701]: Transform timeout for global_costmap. Current time: 1779783158.7442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783159.365349013]: Costmap2DROS transform timeout. Current time: 1779783159.3652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783159.744391760]: Transform timeout for global_costmap. Current time: 1779783159.7442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783160.521926171]: Costmap2DROS transform timeout. Current time: 1779783160.5217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783160.744764777]: Transform timeout for global_costmap. Current time: 1779783160.7443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783161.721980625]: Costmap2DROS transform timeout. Current time: 1779783161.7218, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783161.844519429]: Transform timeout for global_costmap. Current time: 1779783161.8443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783162.844517654]: Transform timeout for global_costmap. Current time: 1779783162.8443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783162.865416448]: Costmap2DROS transform timeout. Current time: 1779783162.8652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783163.865438299]: Costmap2DROS transform timeout. Current time: 1779783163.8652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783163.944353682]: Transform timeout for global_costmap. Current time: 1779783163.9442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783164.921796738]: Costmap2DROS transform timeout. Current time: 1779783164.9216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783164.944374365]: Transform timeout for global_costmap. Current time: 1779783164.9442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783166.044397934]: Transform timeout for global_costmap. Current time: 1779783166.0442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783166.121793150]: Costmap2DROS transform timeout. Current time: 1779783166.1216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783167.121989709]: Costmap2DROS transform timeout. Current time: 1779783167.1217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783167.145049461]: Transform timeout for global_costmap. Current time: 1779783167.1445, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783168.244561447]: Transform timeout for global_costmap. Current time: 1779783168.2443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783168.321755705]: Costmap2DROS transform timeout. Current time: 1779783168.3216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783169.321855139]: Costmap2DROS transform timeout. Current time: 1779783169.3216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783169.344481182]: Transform timeout for global_costmap. Current time: 1779783169.3443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783170.365432160]: Costmap2DROS transform timeout. Current time: 1779783170.3652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783170.444490751]: Transform timeout for global_costmap. Current time: 1779783170.4442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783171.365778052]: Costmap2DROS transform timeout. Current time: 1779783171.3653, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783171.544378112]: Transform timeout for global_costmap. Current time: 1779783171.5442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783172.521929377]: Costmap2DROS transform timeout. Current time: 1779783172.5217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783172.544572046]: Transform timeout for global_costmap. Current time: 1779783172.5442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783173.644454739]: Transform timeout for global_costmap. Current time: 1779783173.6442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783173.721961664]: Costmap2DROS transform timeout. Current time: 1779783173.7217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783174.744293683]: Transform timeout for global_costmap. Current time: 1779783174.7442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783174.865464571]: Costmap2DROS transform timeout. Current time: 1779783174.8652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783175.744377367]: Transform timeout for global_costmap. Current time: 1779783175.7442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783175.921855093]: Costmap2DROS transform timeout. Current time: 1779783175.9216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783176.744568384]: Transform timeout for global_costmap. Current time: 1779783176.7443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783177.121836631]: Costmap2DROS transform timeout. Current time: 1779783177.1216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783177.844370870]: Transform timeout for global_costmap. Current time: 1779783177.8442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783178.121874814]: Costmap2DROS transform timeout. Current time: 1779783178.1216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783178.844555762]: Transform timeout for global_costmap. Current time: 1779783178.8443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783179.321884352]: Costmap2DROS transform timeout. Current time: 1779783179.3216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783179.944514581]: Transform timeout for global_costmap. Current time: 1779783179.9443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783180.365364540]: Costmap2DROS transform timeout. Current time: 1779783180.3652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783181.044381233]: Transform timeout for global_costmap. Current time: 1779783181.0442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783181.365447932]: Costmap2DROS transform timeout. Current time: 1779783181.3652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783182.144275885]: Transform timeout for global_costmap. Current time: 1779783182.1442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783182.365978157]: Costmap2DROS transform timeout. Current time: 1779783182.3653, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783183.144500152]: Transform timeout for global_costmap. Current time: 1779783183.1443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783183.521832565]: Costmap2DROS transform timeout. Current time: 1779783183.5216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783184.244327138]: Transform timeout for global_costmap. Current time: 1779783184.2442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783184.521818832]: Costmap2DROS transform timeout. Current time: 1779783184.5217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783185.344412832]: Transform timeout for global_costmap. Current time: 1779783185.3442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783185.721744953]: Costmap2DROS transform timeout. Current time: 1779783185.7216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783186.444285317]: Transform timeout for global_costmap. Current time: 1779783186.4442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783186.721856928]: Costmap2DROS transform timeout. Current time: 1779783186.7216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783187.444412168]: Transform timeout for global_costmap. Current time: 1779783187.4443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783187.865387543]: Costmap2DROS transform timeout. Current time: 1779783187.8652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783188.444473977]: Transform timeout for global_costmap. Current time: 1779783188.4442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783188.865456936]: Costmap2DROS transform timeout. Current time: 1779783188.8652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783189.544348504]: Transform timeout for global_costmap. Current time: 1779783189.5442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783189.921757042]: Costmap2DROS transform timeout. Current time: 1779783189.9216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783190.544456104]: Transform timeout for global_costmap. Current time: 1779783190.5442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783190.922097100]: Costmap2DROS transform timeout. Current time: 1779783190.9217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783191.644491340]: Transform timeout for global_costmap. Current time: 1779783191.6443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783192.121764513]: Costmap2DROS transform timeout. Current time: 1779783192.1216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783192.744283325]: Transform timeout for global_costmap. Current time: 1779783192.7442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783193.121825447]: Costmap2DROS transform timeout. Current time: 1779783193.1216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783193.744323842]: Transform timeout for global_costmap. Current time: 1779783193.7442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783194.121890755]: Costmap2DROS transform timeout. Current time: 1779783194.1217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783194.844314161]: Transform timeout for global_costmap. Current time: 1779783194.8442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783195.121890439]: Costmap2DROS transform timeout. Current time: 1779783195.1217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783195.844331928]: Transform timeout for global_costmap. Current time: 1779783195.8443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783196.321930018]: Costmap2DROS transform timeout. Current time: 1779783196.3217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783196.844472779]: Transform timeout for global_costmap. Current time: 1779783196.8442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783197.365440831]: Costmap2DROS transform timeout. Current time: 1779783197.3652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783197.944343806]: Transform timeout for global_costmap. Current time: 1779783197.9442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783198.521807114]: Costmap2DROS transform timeout. Current time: 1779783198.5216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783198.944475615]: Transform timeout for global_costmap. Current time: 1779783198.9442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783199.721726526]: Costmap2DROS transform timeout. Current time: 1779783199.7216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783200.044332059]: Transform timeout for global_costmap. Current time: 1779783200.0442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783200.721730002]: Costmap2DROS transform timeout. Current time: 1779783200.7216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783201.044420993]: Transform timeout for global_costmap. Current time: 1779783201.0443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783201.721853644]: Costmap2DROS transform timeout. Current time: 1779783201.7216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783202.144382145]: Transform timeout for global_costmap. Current time: 1779783202.1442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783202.721956286]: Costmap2DROS transform timeout. Current time: 1779783202.7217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783203.144473704]: Transform timeout for global_costmap. Current time: 1779783203.1442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783203.865446943]: Costmap2DROS transform timeout. Current time: 1779783203.8652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783204.244442731]: Transform timeout for global_costmap. Current time: 1779783204.2443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783204.921787299]: Costmap2DROS transform timeout. Current time: 1779783204.9216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783205.344371216]: Transform timeout for global_costmap. Current time: 1779783205.3442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783205.921765983]: Costmap2DROS transform timeout. Current time: 1779783205.9216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783206.444381660]: Transform timeout for global_costmap. Current time: 1779783206.4442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[WARN] [1779783105.468641]: Drop stale left frame for RTSP: age=65.660s (max=0.400s)
+[WARN] [1779783105.912342]: Drop stale right frame for RTSP: age=66.104s (max=0.400s)
+[WARN] [1779783107.559431]: Drop stale left frame for RTSP: age=67.749s (max=0.400s)
+[WARN] [1779783108.158056]: Drop stale right frame for RTSP: age=68.348s (max=0.400s)
+[WARN] [1779783109.581963]: Drop stale left frame for RTSP: age=69.773s (max=0.400s)
+[WARN] [1779783110.185465]: Drop stale right frame for RTSP: age=70.366s (max=0.400s)
+[WARN] [1779783111.910246]: Drop stale left frame for RTSP: age=72.101s (max=0.400s)
+[WARN] [1779783112.503742]: Drop stale right frame for RTSP: age=72.299s (max=0.400s)
+[WARN] [1779783113.936914]: Drop stale left frame for RTSP: age=74.128s (max=0.400s)
+[WARN] [1779783114.828304]: Drop stale right frame for RTSP: age=75.020s (max=0.400s)
+[WARN] [1779783116.078564]: Drop stale left frame for RTSP: age=76.267s (max=0.400s)
+[WARN] [1779783116.833992]: Drop stale right frame for RTSP: age=77.027s (max=0.400s)
+[WARN] [1779783118.389534]: Drop stale left frame for RTSP: age=78.578s (max=0.400s)
+[WARN] [1779783119.161663]: Drop stale right frame for RTSP: age=79.350s (max=0.400s)
+[WARN] [1779783120.389447]: Drop stale left frame for RTSP: age=80.581s (max=0.400s)
+[WARN] [1779783121.214019]: Drop stale right frame for RTSP: age=81.391s (max=0.400s)
+[WARN] [1779783122.744807]: Drop stale left frame for RTSP: age=82.934s (max=0.400s)
+[WARN] [1779783123.260482]: Drop stale right frame for RTSP: age=83.124s (max=0.400s)
+[WARN] [1779783124.983573]: Drop stale left frame for RTSP: age=85.174s (max=0.400s)
+[WARN] [1779783125.498320]: Drop stale right frame for RTSP: age=85.690s (max=0.400s)
+[WARN] [1779783127.189077]: Drop stale left frame for RTSP: age=87.369s (max=0.400s)
+[WARN] [1779783127.632545]: Drop stale right frame for RTSP: age=87.821s (max=0.400s)
+[WARN] [1779783129.322901]: Drop stale left frame for RTSP: age=89.513s (max=0.400s)
+[WARN] [1779783129.773416]: Drop stale right frame for RTSP: age=89.964s (max=0.400s)
+[WARN] [1779783131.553470]: Drop stale left frame for RTSP: age=91.426s (max=0.400s)
+[WARN] [1779783131.997085]: Drop stale right frame for RTSP: age=92.188s (max=0.400s)
+[WARN] [1779783133.759805]: Drop stale left frame for RTSP: age=93.948s (max=0.400s)
+[WARN] [1779783134.200041]: Drop stale right frame for RTSP: age=94.390s (max=0.400s)
+[WARN] [1779783135.882571]: Drop stale left frame for RTSP: age=96.072s (max=0.400s)
+[WARN] [1779783136.333493]: Drop stale right frame for RTSP: age=96.523s (max=0.400s)
+[WARN] [1779783137.927586]: Drop stale left frame for RTSP: age=98.119s (max=0.400s)
+[WARN] [1779783138.337321]: Drop stale right frame for RTSP: age=98.521s (max=0.400s)
+[WARN] [1779783140.038677]: Drop stale left frame for RTSP: age=99.856s (max=0.400s)
+[WARN] [1779783140.351836]: Drop stale right frame for RTSP: age=100.544s (max=0.400s)
+[WARN] [1779783142.403647]: Drop stale left frame for RTSP: age=102.593s (max=0.400s)
+[WARN] [1779783142.412360]: Drop stale right frame for RTSP: age=102.595s (max=0.400s)
+[WARN] [1779783144.426586]: Drop stale left frame for RTSP: age=104.618s (max=0.400s)
+[WARN] [1779783144.431357]: Drop stale right frame for RTSP: age=104.619s (max=0.400s)
+[WARN] [1779783146.464243]: Drop stale left frame for RTSP: age=106.655s (max=0.400s)
+[WARN] [1779783146.469207]: Drop stale right frame for RTSP: age=106.657s (max=0.400s)
+[WARN] [1779783148.682178]: Drop stale left frame for RTSP: age=108.555s (max=0.400s)
+[WARN] [1779783148.703014]: Drop stale right frame for RTSP: age=108.556s (max=0.400s)
+[WARN] [1779783150.703956]: Drop stale left frame for RTSP: age=110.895s (max=0.400s)
+[WARN] [1779783150.725991]: Drop stale right frame for RTSP: age=110.896s (max=0.400s)
+[WARN] [1779783152.983469]: Drop stale left frame for RTSP: age=113.173s (max=0.400s)
+[WARN] [1779783152.990869]: Drop stale right frame for RTSP: age=113.174s (max=0.400s)
+[WARN] [1779783155.012528]: Drop stale left frame for RTSP: age=115.200s (max=0.400s)
+[WARN] [1779783155.019802]: Drop stale right frame for RTSP: age=115.202s (max=0.400s)
+[WARN] [1779783157.152841]: Drop stale left frame for RTSP: age=117.343s (max=0.400s)
+[WARN] [1779783157.168117]: Drop stale right frame for RTSP: age=117.344s (max=0.400s)
+[WARN] [1779783159.186804]: Drop stale left frame for RTSP: age=119.377s (max=0.400s)
+[WARN] [1779783159.195278]: Drop stale right frame for RTSP: age=119.378s (max=0.400s)
+[WARN] [1779783161.460090]: Drop stale left frame for RTSP: age=121.651s (max=0.400s)
+[WARN] [1779783161.502727]: Drop stale right frame for RTSP: age=121.652s (max=0.400s)
+[WARN] [1779783163.815898]: Drop stale left frame for RTSP: age=124.006s (max=0.400s)
+[WARN] [1779783163.829049]: Drop stale right frame for RTSP: age=124.007s (max=0.400s)
+[WARN] [1779783165.888190]: Drop stale left frame for RTSP: age=126.079s (max=0.400s)
+[WARN] [1779783165.891954]: Drop stale right frame for RTSP: age=126.080s (max=0.400s)
+[WARN] [1779783168.206362]: Drop stale left frame for RTSP: age=128.397s (max=0.400s)
+[WARN] [1779783168.256861]: Drop stale right frame for RTSP: age=128.398s (max=0.400s)
+[WARN] [1779783170.290145]: Drop stale left frame for RTSP: age=130.460s (max=0.400s)
+[WARN] [1779783170.676805]: Drop stale right frame for RTSP: age=130.461s (max=0.400s)
+[WARN] [1779783172.601597]: Drop stale left frame for RTSP: age=132.792s (max=0.400s)
+[WARN] [1779783172.726670]: Drop stale right frame for RTSP: age=132.919s (max=0.400s)
+[WARN] [1779783174.611600]: Drop stale left frame for RTSP: age=134.803s (max=0.400s)
+[WARN] [1779783175.015083]: Drop stale right frame for RTSP: age=135.205s (max=0.400s)
+[WARN] [1779783176.614813]: Drop stale left frame for RTSP: age=136.806s (max=0.400s)
+[WARN] [1779783177.146623]: Drop stale right frame for RTSP: age=137.337s (max=0.400s)
+[WARN] [1779783178.818827]: Drop stale left frame for RTSP: age=139.009s (max=0.400s)
+[WARN] [1779783179.190975]: Drop stale right frame for RTSP: age=139.381s (max=0.400s)
+[WARN] [1779783180.866748]: Drop stale left frame for RTSP: age=141.058s (max=0.400s)
+[WARN] [1779783181.425427]: Drop stale right frame for RTSP: age=141.614s (max=0.400s)
+[WARN] [1779783183.198192]: Drop stale left frame for RTSP: age=143.388s (max=0.400s)
+[WARN] [1779783183.618085]: Drop stale right frame for RTSP: age=143.809s (max=0.400s)
+[WARN] [1779783185.213529]: Drop stale left frame for RTSP: age=145.397s (max=0.400s)
+[WARN] [1779783185.628512]: Drop stale right frame for RTSP: age=145.803s (max=0.400s)
+[WARN] [1779783187.292895]: Drop stale left frame for RTSP: age=147.484s (max=0.400s)
+[WARN] [1779783187.634167]: Drop stale right frame for RTSP: age=147.827s (max=0.400s)
+[WARN] [1779783189.504775]: Drop stale left frame for RTSP: age=149.695s (max=0.400s)
+[WARN] [1779783189.657777]: Drop stale right frame for RTSP: age=149.833s (max=0.400s)
+[WARN] [1779783191.825029]: Drop stale left frame for RTSP: age=152.015s (max=0.400s)
+[WARN] [1779783191.883275]: Drop stale right frame for RTSP: age=152.016s (max=0.400s)
+[WARN] [1779783193.888508]: Drop stale left frame for RTSP: age=154.058s (max=0.400s)
+[WARN] [1779783193.893070]: Drop stale right frame for RTSP: age=154.059s (max=0.400s)
+[WARN] [1779783195.889548]: Drop stale left frame for RTSP: age=156.081s (max=0.400s)
+[WARN] [1779783195.893847]: Drop stale right frame for RTSP: age=156.082s (max=0.400s)
+[WARN] [1779783198.214630]: Drop stale left frame for RTSP: age=158.404s (max=0.400s)
+[WARN] [1779783198.223165]: Drop stale right frame for RTSP: age=158.405s (max=0.400s)
+[WARN] [1779783200.238765]: Drop stale left frame for RTSP: age=160.430s (max=0.400s)
+[WARN] [1779783200.243066]: Drop stale right frame for RTSP: age=160.431s (max=0.400s)
+[WARN] [1779783202.404832]: Drop stale left frame for RTSP: age=162.593s (max=0.400s)
+[WARN] [1779783202.417574]: Drop stale right frame for RTSP: age=162.594s (max=0.400s)
+[WARN] [1779783204.681916]: Drop stale left frame for RTSP: age=164.872s (max=0.400s)
+[WARN] [1779783204.692502]: Drop stale right frame for RTSP: age=164.874s (max=0.400s)
+[WARN] [1779783207.006611]: Drop stale left frame for RTSP: age=167.196s (max=0.400s)
+[33m[WARN] [1779783207.121821312]: Costmap2DROS transform timeout. Current time: 1779783207.1216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783207.544268146]: Transform timeout for global_costmap. Current time: 1779783207.5442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783208.321680057]: Costmap2DROS transform timeout. Current time: 1779783208.3216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783208.544417163]: Transform timeout for global_costmap. Current time: 1779783208.5442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783209.321906949]: Costmap2DROS transform timeout. Current time: 1779783209.3216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783209.544391472]: Transform timeout for global_costmap. Current time: 1779783209.5443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783210.365357096]: Costmap2DROS transform timeout. Current time: 1779783210.3652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783210.644354374]: Transform timeout for global_costmap. Current time: 1779783210.6442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783211.365499405]: Costmap2DROS transform timeout. Current time: 1779783211.3652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783211.744460193]: Transform timeout for global_costmap. Current time: 1779783211.7443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783212.522842188]: Costmap2DROS transform timeout. Current time: 1779783212.5220, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783212.844300303]: Transform timeout for global_costmap. Current time: 1779783212.8442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783213.722034475]: Costmap2DROS transform timeout. Current time: 1779783213.7217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783213.944320080]: Transform timeout for global_costmap. Current time: 1779783213.9442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783214.865422173]: Costmap2DROS transform timeout. Current time: 1779783214.8652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783214.944523348]: Transform timeout for global_costmap. Current time: 1779783214.9442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783215.921898737]: Costmap2DROS transform timeout. Current time: 1779783215.9216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783216.044503166]: Transform timeout for global_costmap. Current time: 1779783216.0443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783216.921910963]: Costmap2DROS transform timeout. Current time: 1779783216.9216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783217.144335110]: Transform timeout for global_costmap. Current time: 1779783217.1442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783218.121953167]: Costmap2DROS transform timeout. Current time: 1779783218.1217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783218.144391961]: Transform timeout for global_costmap. Current time: 1779783218.1443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783219.245008488]: Transform timeout for global_costmap. Current time: 1779783219.2444, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783219.321701079]: Costmap2DROS transform timeout. Current time: 1779783219.3216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783220.321996221]: Costmap2DROS transform timeout. Current time: 1779783220.3218, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783220.344455723]: Transform timeout for global_costmap. Current time: 1779783220.3442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783221.344466199]: Transform timeout for global_costmap. Current time: 1779783221.3442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783221.366028243]: Costmap2DROS transform timeout. Current time: 1779783221.3653, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783222.444401684]: Transform timeout for global_costmap. Current time: 1779783222.4443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783222.521787859]: Costmap2DROS transform timeout. Current time: 1779783222.5216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783223.444516285]: Transform timeout for global_costmap. Current time: 1779783223.4443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783223.521918501]: Costmap2DROS transform timeout. Current time: 1779783223.5216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783224.444533469]: Transform timeout for global_costmap. Current time: 1779783224.4443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783224.721752747]: Costmap2DROS transform timeout. Current time: 1779783224.7216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783225.544372121]: Transform timeout for global_costmap. Current time: 1779783225.5442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783225.721767889]: Costmap2DROS transform timeout. Current time: 1779783225.7216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783226.544441221]: Transform timeout for global_costmap. Current time: 1779783226.5442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783226.721916614]: Costmap2DROS transform timeout. Current time: 1779783226.7216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783227.644534207]: Transform timeout for global_costmap. Current time: 1779783227.6443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783227.722023340]: Costmap2DROS transform timeout. Current time: 1779783227.7218, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783228.744475817]: Transform timeout for global_costmap. Current time: 1779783228.7442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783228.865404621]: Costmap2DROS transform timeout. Current time: 1779783228.8652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783229.844290261]: Transform timeout for global_costmap. Current time: 1779783229.8442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783229.865357347]: Costmap2DROS transform timeout. Current time: 1779783229.8652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783230.844665612]: Transform timeout for global_costmap. Current time: 1779783230.8444, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783230.921753411]: Costmap2DROS transform timeout. Current time: 1779783230.9216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783231.921927220]: Costmap2DROS transform timeout. Current time: 1779783231.9217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783231.944320806]: Transform timeout for global_costmap. Current time: 1779783231.9442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783232.944394281]: Transform timeout for global_costmap. Current time: 1779783232.9442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783233.121871716]: Costmap2DROS transform timeout. Current time: 1779783233.1216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783233.944489632]: Transform timeout for global_costmap. Current time: 1779783233.9443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783234.121991858]: Costmap2DROS transform timeout. Current time: 1779783234.1217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783235.044296784]: Transform timeout for global_costmap. Current time: 1779783235.0442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783235.321920020]: Costmap2DROS transform timeout. Current time: 1779783235.3217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783236.044468259]: Transform timeout for global_costmap. Current time: 1779783236.0443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783236.365499083]: Costmap2DROS transform timeout. Current time: 1779783236.3653, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783237.144493286]: Transform timeout for global_costmap. Current time: 1779783237.1442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783237.521827449]: Costmap2DROS transform timeout. Current time: 1779783237.5216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783238.144471679]: Transform timeout for global_costmap. Current time: 1779783238.1443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783238.721736362]: Costmap2DROS transform timeout. Current time: 1779783238.7216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[INFO] [1779782778.607145]: Loaded task registry state: 8 map-bound tasks
+[INFO] [1779782778.732658]: Loaded map overlay state: map_id=map_1778827104561 dir=/home/neardi/work/Grinder/temp/grinder_scheduler_state/map_states/map_1778827104561
+[INFO] [1779782778.737674]: Loaded scheduler local state from /home/neardi/work/Grinder/temp/grinder_scheduler_state
+[INFO] [1779782785.374669]: Starting mediamtx on rtsp://192.168.11.127:8554 using /home/neardi/work/Grinder/tools/mediamtx/mediamtx
+[INFO] [1779782785.740663]: mediamtx rtsp listener is ready on 127.0.0.1:8554
+[INFO] [1779782788.798878]: Starting ffmpeg RTSP publisher left -> rtsp://127.0.0.1:8554/left (encoder=libx264)
+[INFO] [1779782788.904057]: Map switched, loaded task-map binding: map_id=map_1778827104561 task_id=<empty> selected_regions=work_region_1
+[INFO] [1779782789.386813]: Starting ffmpeg RTSP publisher right -> rtsp://127.0.0.1:8554/right (encoder=libx264)
+[INFO] [1779782790.098855]: Saved initial map preview to /home/neardi/work/Grinder/temp/aurora_map_preview_s10p2469_res0p05_oxm163p85_oym0p1_ow3279_oh919_pw320_ph90_v47.jpg
+[INFO] [1779782791.351970]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782797.758646]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782803.696749]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782809.954942]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782816.519758]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782821.587888]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782827.580249]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782832.735656]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782838.629802]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782844.306148]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782849.703505]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782856.033344]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782862.053201]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782868.086855]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782873.875722]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782880.140061]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782886.107314]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782891.477161]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782897.738776]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782903.461642]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782909.513915]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782916.161067]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782922.442148]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782928.596746]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782933.763645]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782938.793033]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782945.454299]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782951.635111]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782956.763052]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782961.784992]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782967.048096]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782972.822461]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782978.149122]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782983.515704]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782989.818005]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779782996.564198]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783002.752629]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783008.567281]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783014.771695]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783019.834493]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783025.918862]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783031.167984]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783037.190926]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783042.721712]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783048.760521]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783054.482892]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783060.116070]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783065.758878]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783071.200398]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783076.793691]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783082.551635]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783087.793727]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783093.253752]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783099.250479]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783104.769134]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783110.839302]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783116.891011]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783122.833619]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783128.383535]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783133.850465]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783139.548774]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783145.749022]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783151.936464]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783157.931978]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783163.946043]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783168.953154]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783175.072884]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783180.947657]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783186.907317]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783192.615083]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783197.762038]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783203.589201]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783209.373504]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783214.514790]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783220.567622]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783226.769964]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[INFO] [1779783232.912663]: Live map cropped to free-space bbox: size=3279x919 margin=0.50m
+[33m[WARN] [1779783239.244443039]: Transform timeout for global_costmap. Current time: 1779783239.2442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783239.721769587]: Costmap2DROS transform timeout. Current time: 1779783239.7216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783240.344390483]: Transform timeout for global_costmap. Current time: 1779783240.3442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783240.721911021]: Costmap2DROS transform timeout. Current time: 1779783240.7217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783241.444320135]: Transform timeout for global_costmap. Current time: 1779783241.4442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783241.721937830]: Costmap2DROS transform timeout. Current time: 1779783241.7217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783242.444886236]: Transform timeout for global_costmap. Current time: 1779783242.4446, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783242.865351486]: Costmap2DROS transform timeout. Current time: 1779783242.8652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783243.544427096]: Transform timeout for global_costmap. Current time: 1779783243.5443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783243.922004217]: Costmap2DROS transform timeout. Current time: 1779783243.9217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783244.644297248]: Transform timeout for global_costmap. Current time: 1779783244.6442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783245.121759130]: Costmap2DROS transform timeout. Current time: 1779783245.1216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783245.644373640]: Transform timeout for global_costmap. Current time: 1779783245.6442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783246.122381230]: Costmap2DROS transform timeout. Current time: 1779783246.1219, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783246.744383793]: Transform timeout for global_costmap. Current time: 1779783246.7442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783247.122242664]: Costmap2DROS transform timeout. Current time: 1779783247.1221, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783247.844500112]: Transform timeout for global_costmap. Current time: 1779783247.8443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783248.321936326]: Costmap2DROS transform timeout. Current time: 1779783248.3217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783248.944409639]: Transform timeout for global_costmap. Current time: 1779783248.9442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783249.365315014]: Costmap2DROS transform timeout. Current time: 1779783249.3652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783249.944370823]: Transform timeout for global_costmap. Current time: 1779783249.9442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783250.365662073]: Costmap2DROS transform timeout. Current time: 1779783250.3652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783250.944453923]: Transform timeout for global_costmap. Current time: 1779783250.9443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783251.521914023]: Costmap2DROS transform timeout. Current time: 1779783251.5217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783252.044512492]: Transform timeout for global_costmap. Current time: 1779783252.0443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783252.721849185]: Costmap2DROS transform timeout. Current time: 1779783252.7216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783253.144408311]: Transform timeout for global_costmap. Current time: 1779783253.1442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783253.721878619]: Costmap2DROS transform timeout. Current time: 1779783253.7216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783254.144470995]: Transform timeout for global_costmap. Current time: 1779783254.1443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783254.865457942]: Costmap2DROS transform timeout. Current time: 1779783254.8652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783255.244385188]: Transform timeout for global_costmap. Current time: 1779783255.2443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783255.921683673]: Costmap2DROS transform timeout. Current time: 1779783255.9216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783256.344370257]: Transform timeout for global_costmap. Current time: 1779783256.3443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783256.921751899]: Costmap2DROS transform timeout. Current time: 1779783256.9216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783257.344452191]: Transform timeout for global_costmap. Current time: 1779783257.3442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783258.121763186]: Costmap2DROS transform timeout. Current time: 1779783258.1217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783258.444464677]: Transform timeout for global_costmap. Current time: 1779783258.4442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783259.121810411]: Costmap2DROS transform timeout. Current time: 1779783259.1217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783259.544440995]: Transform timeout for global_costmap. Current time: 1779783259.5442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783260.121925595]: Costmap2DROS transform timeout. Current time: 1779783260.1217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783260.544459929]: Transform timeout for global_costmap. Current time: 1779783260.5443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783261.121932279]: Costmap2DROS transform timeout. Current time: 1779783261.1217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783261.644344665]: Transform timeout for global_costmap. Current time: 1779783261.6442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783262.321788983]: Costmap2DROS transform timeout. Current time: 1779783262.3216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783262.744333234]: Transform timeout for global_costmap. Current time: 1779783262.7442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783263.365308838]: Costmap2DROS transform timeout. Current time: 1779783263.3652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783263.744340792]: Transform timeout for global_costmap. Current time: 1779783263.7442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783264.365540397]: Costmap2DROS transform timeout. Current time: 1779783264.3652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783264.844355903]: Transform timeout for global_costmap. Current time: 1779783264.8442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783265.521776304]: Costmap2DROS transform timeout. Current time: 1779783265.5216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783265.844584253]: Transform timeout for global_costmap. Current time: 1779783265.8444, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783266.521850072]: Costmap2DROS transform timeout. Current time: 1779783266.5216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783266.944366906]: Transform timeout for global_costmap. Current time: 1779783266.9442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783267.721842400]: Costmap2DROS transform timeout. Current time: 1779783267.7216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783267.944356381]: Transform timeout for global_costmap. Current time: 1779783267.9442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783268.865395182]: Costmap2DROS transform timeout. Current time: 1779783268.8652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783268.944487607]: Transform timeout for global_costmap. Current time: 1779783268.9443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783269.921783080]: Costmap2DROS transform timeout. Current time: 1779783269.9216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783270.045004676]: Transform timeout for global_costmap. Current time: 1779783270.0442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783270.921919555]: Costmap2DROS transform timeout. Current time: 1779783270.9217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783271.144481661]: Transform timeout for global_costmap. Current time: 1779783271.1443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783272.121883593]: Costmap2DROS transform timeout. Current time: 1779783272.1216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783272.244542855]: Transform timeout for global_costmap. Current time: 1779783272.2443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783273.121978360]: Costmap2DROS transform timeout. Current time: 1779783273.1218, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783273.244563247]: Transform timeout for global_costmap. Current time: 1779783273.2444, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783274.321866272]: Costmap2DROS transform timeout. Current time: 1779783274.3217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783274.344421733]: Transform timeout for global_costmap. Current time: 1779783274.3443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783275.365327210]: Costmap2DROS transform timeout. Current time: 1779783275.3652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783275.444638676]: Transform timeout for global_costmap. Current time: 1779783275.4443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783276.521789160]: Costmap2DROS transform timeout. Current time: 1779783276.5216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783276.544510870]: Transform timeout for global_costmap. Current time: 1779783276.5443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783277.521801093]: Costmap2DROS transform timeout. Current time: 1779783277.5217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783277.644443147]: Transform timeout for global_costmap. Current time: 1779783277.6442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783278.644402873]: Transform timeout for global_costmap. Current time: 1779783278.6443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783278.721787006]: Costmap2DROS transform timeout. Current time: 1779783278.7216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783279.721879148]: Costmap2DROS transform timeout. Current time: 1779783279.7216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783279.744393192]: Transform timeout for global_costmap. Current time: 1779783279.7443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783280.721933957]: Costmap2DROS transform timeout. Current time: 1779783280.7217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783280.844474511]: Transform timeout for global_costmap. Current time: 1779783280.8443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783281.865396030]: Costmap2DROS transform timeout. Current time: 1779783281.8652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783281.944351079]: Transform timeout for global_costmap. Current time: 1779783281.9442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783282.866536422]: Costmap2DROS transform timeout. Current time: 1779783282.8653, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783282.944374680]: Transform timeout for global_costmap. Current time: 1779783282.9442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783283.921981361]: Costmap2DROS transform timeout. Current time: 1779783283.9216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783283.944350447]: Transform timeout for global_costmap. Current time: 1779783283.9442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783284.944474673]: Transform timeout for global_costmap. Current time: 1779783284.9442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783285.121736274]: Costmap2DROS transform timeout. Current time: 1779783285.1216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783286.044587783]: Transform timeout for global_costmap. Current time: 1779783286.0443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783286.321777311]: Costmap2DROS transform timeout. Current time: 1779783286.3216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783287.044688675]: Transform timeout for global_costmap. Current time: 1779783287.0443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783287.365305332]: Costmap2DROS transform timeout. Current time: 1779783287.3652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783288.144282911]: Transform timeout for global_costmap. Current time: 1779783288.1442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783288.365358975]: Costmap2DROS transform timeout. Current time: 1779783288.3652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783289.144345011]: Transform timeout for global_costmap. Current time: 1779783289.1442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783289.521929716]: Costmap2DROS transform timeout. Current time: 1779783289.5216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783290.144507737]: Transform timeout for global_costmap. Current time: 1779783290.1443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783290.521898483]: Costmap2DROS transform timeout. Current time: 1779783290.5217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783291.244479097]: Transform timeout for global_costmap. Current time: 1779783291.2442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783291.521930250]: Costmap2DROS transform timeout. Current time: 1779783291.5217, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783292.344491583]: Transform timeout for global_costmap. Current time: 1779783292.3442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783292.721884662]: Costmap2DROS transform timeout. Current time: 1779783292.7216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783293.344941892]: Transform timeout for global_costmap. Current time: 1779783293.3443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783293.721909138]: Costmap2DROS transform timeout. Current time: 1779783293.7216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783294.444653085]: Transform timeout for global_costmap. Current time: 1779783294.4444, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783294.865293628]: Costmap2DROS transform timeout. Current time: 1779783294.8652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783295.544681613]: Transform timeout for global_costmap. Current time: 1779783295.5443, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783295.865281937]: Costmap2DROS transform timeout. Current time: 1779783295.8652, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783296.644445306]: Transform timeout for global_costmap. Current time: 1779783296.6442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783296.921750918]: Costmap2DROS transform timeout. Current time: 1779783296.9216, global_pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783297.644497199]: Transform timeout for global_costmap. Current time: 1779783297.6442, pose stamp: 1779783039.7882, tolerance: 0.5000[0m
+[33m[WARN] [1779783297.921764893]: Costmap2DROS transform timeout. Current time: 17797832

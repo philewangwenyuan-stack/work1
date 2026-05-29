@@ -1,0 +1,58 @@
+<!-- 
+  Simulate a differential drive robot with the teb_local_planner and costmap conversion enabled in stage:
+  - stage
+  - map_server
+  - move_base
+  - costmap_converter
+  - static map
+  - amcl
+  - rviz view
+ -->
+<launch>
+
+        <!--  ************** Global Parameters ***************  -->
+        <param name="/use_sim_time" value="false"/>
+		<arg name="ip_address" default="192.168.11.1" />
+
+        <!--  ************** Navigation ***************  -->
+	<node pkg="move_base" type="move_base" respawn="true" name="move_base" output="screen">
+  	  	<rosparam file="$(find teb_local_planner_tutorials)/cfg/diff_drive/costmap_common_params.yaml" command="load" ns="global_costmap" />
+  	 	<rosparam file="$(find teb_local_planner_tutorials)/cfg/diff_drive/costmap_common_params.yaml" command="load" ns="local_costmap" />
+  		<rosparam file="$(find teb_local_planner_tutorials)/cfg/diff_drive/local_costmap_params.yaml" command="load" />
+  		<rosparam file="$(find teb_local_planner_tutorials)/cfg/diff_drive/global_costmap_params.yaml" command="load" />
+  		<rosparam file="$(find teb_local_planner_tutorials)/cfg/diff_drive/teb_local_planner_params.yaml" command="load" />
+		<!-- Here we load our costmap conversion settings -->
+		<rosparam file="$(find teb_local_planner_tutorials)/cfg/diff_drive/costmap_converter_params.yaml" command="load" /> 
+
+		<!-- <param name="base_global_planner" value="global_planner/GlobalPlanner" />
+		<param name="planner_frequency" value="1.0" />
+		<param name="planner_patience" value="5.0" /> -->
+		<param name="base_global_planner" value="carrot_planner/CarrotPlanner" />
+		<!-- <param name="planner_frequency" value="0" /> -->
+
+		<param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
+		<param name="controller_frequency" value="10.0" />
+		<param name="controller_patience" value="10.0" />
+	</node>
+	<!-- <node pkg="topic_tools" type="relay" name="scan_relay" args="/slamware_ros_sdk_server_node/scan /scan" />
+	<node pkg="topic_tools" type="relay" name="map_relay" args="/slamware_ros_sdk_server_node/map /map" /> -->
+
+	<!--  ****** Maps *****  -->
+	<!-- <node name="map_server" pkg="map_server" type="map_server" args="$(find teb_local_planner_tutorials)/maps/map.yaml" output="screen">
+                <param name="frame_id" value="slamware_map"/>
+	</node> -->
+
+	<!--  ************ Odom and Scan and Map***************  -->
+  	<!-- <include file="$(find slamware_ros_sdk)/launch/slamware_ros_sdk_server_node.launch" >
+    	<arg name="ip_address" value="$(arg ip_address)" />
+  	</include> -->
+
+	<!--  **************** Visualisation ****************  -->
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find teb_local_planner_tutorials)/cfg/rviz_navigation.rviz"/>
+	
+
+	<node pkg="tf2_ros" type="static_transform_publisher" name="odom2map" 
+			args="0 0 0 0 0 0 1 map odom"/>
+	<env name="ROS_TF_REPEATED_DATA" value="ignore" />
+
+</launch>

@@ -1,0 +1,519 @@
+... logging to /root/.ros/log/bc4d4448-58e1-11f1-be0a-c285ead2937b/roslaunch-LPA3588-15649.log
+Checking log directory for disk usage. This may take a while.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/neardi/work/Grinder/catkin_ws/src/grinder_scheduler/launch/grinder_system.launch
+[1mstarted roslaunch server http://LPA3588:45533/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /chassis_driver/baudrate: 19200
+ * /chassis_driver/cmd_source_hold_sec: 0.2
+ * /chassis_driver/cmd_vel_deadband_angular: 0.0
+ * /chassis_driver/cmd_vel_deadband_linear: 0.0
+ * /chassis_driver/cmd_vel_drive_left_sign: 1
+ * /chassis_driver/cmd_vel_drive_right_sign: 1
+ * /chassis_driver/cmd_vel_drive_swap_lr: False
+ * /chassis_driver/cmd_vel_enabled: True
+ * /chassis_driver/cmd_vel_filter_angular_accel: 0.2
+ * /chassis_driver/cmd_vel_filter_angular_deadband: 0.005
+ * /chassis_driver/cmd_vel_filter_enabled: True
+ * /chassis_driver/cmd_vel_filter_linear_accel: 0.2
+ * /chassis_driver/cmd_vel_filter_sign_confirm_count: 2
+ * /chassis_driver/cmd_vel_gear_ratio: 60.0
+ * /chassis_driver/cmd_vel_max_abs_wheel_rpm: 3000.0
+ * /chassis_driver/cmd_vel_max_angular: 0.1
+ * /chassis_driver/cmd_vel_max_input_v: 0.1
+ * /chassis_driver/cmd_vel_max_input_w: 0.1
+ * /chassis_driver/cmd_vel_max_linear: 0.1
+ * /chassis_driver/cmd_vel_scale: 1.0
+ * /chassis_driver/cmd_vel_topic: /cmd_vel
+ * /chassis_driver/cmd_vel_wheel_radius_m: 0.15
+ * /chassis_driver/cmd_vel_wheel_track_m: 0.79
+ * /chassis_driver/command_timeout: 5
+ * /chassis_driver/disc_speed_max: 32767
+ * /chassis_driver/disc_speed_min: -32768
+ * /chassis_driver/drive_left_sign: -1
+ * /chassis_driver/drive_right_sign: -1
+ * /chassis_driver/drive_swap_lr: False
+ * /chassis_driver/enable_cmd_ramp_limit: False
+ * /chassis_driver/enable_safe_stop_on_comm_error: False
+ * /chassis_driver/left_speed_max: 32767
+ * /chassis_driver/left_speed_min: -32768
+ * /chassis_driver/manual_drive_max_wheel_speed: 600
+ * /chassis_driver/manual_wheel_deadband_rpm: 30
+ * /chassis_driver/manual_wheel_hyst_enter_rpm: 60
+ * /chassis_driver/manual_wheel_hyst_exit_rpm: 30
+ * /chassis_driver/max_cmd_step_rpm: 50
+ * /chassis_driver/max_echo_deviation: 2000
+ * /chassis_driver/max_echo_failures: 20
+ * /chassis_driver/max_retries: 3
+ * /chassis_driver/poll_rate_hz: 20.0
+ * /chassis_driver/port: /dev/ttyS0
+ * /chassis_driver/right_speed_max: 32767
+ * /chassis_driver/right_speed_min: -32768
+ * /chassis_driver/rs485_raw_log_enabled: False
+ * /chassis_driver/rs485_raw_log_file: temp/chassis_rs48...
+ * /chassis_driver/safe_stop_on_error_interval: 2.0
+ * /chassis_driver/slave_id: 1
+ * /chassis_driver/startup_zero_output: True
+ * /chassis_driver/stop_on_timeout: True
+ * /chassis_driver/task_enable_default: False
+ * /chassis_driver/timeout: 0.1
+ * /chassis_driver/write_verify: False
+ * /grinder_scheduler/aurora_ip_address: 192.168.11.1
+ * /grinder_scheduler/aurora_no_preview_image: False
+ * /grinder_scheduler/aurora_raw_image_on: True
+ * /grinder_scheduler/change_map_service: /change_map
+ * /grinder_scheduler/default_path_spacing: 0.725
+ * /grinder_scheduler/depth_image_colorized_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/first_frame_save_dir: temp
+ * /grinder_scheduler/global_plan_publish_hz: 2
+ * /grinder_scheduler/inflation_radius: 0.65
+ * /grinder_scheduler/initial_map_preview_dir: temp
+ * /grinder_scheduler/initial_map_preview_format: jpg
+ * /grinder_scheduler/initial_map_preview_max_edge: 320
+ * /grinder_scheduler/left_image_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/live_map_dir: temp/live_map
+ * /grinder_scheduler/live_map_enabled: True
+ * /grinder_scheduler/live_map_hz: 1.0
+ * /grinder_scheduler/live_map_image_name: map1.pgm
+ * /grinder_scheduler/live_map_yaml_name: map.yaml
+ * /grinder_scheduler/live_preview_enabled: True
+ * /grinder_scheduler/live_preview_file: temp/aurora_map_p...
+ * /grinder_scheduler/live_preview_format: jpg
+ * /grinder_scheduler/live_preview_hz: 1.0
+ * /grinder_scheduler/live_preview_max_edge: 320
+ * /grinder_scheduler/local_rtsp_enabled: True
+ * /grinder_scheduler/local_rtsp_encoder: libx264
+ * /grinder_scheduler/local_rtsp_fps: 15
+ * /grinder_scheduler/local_rtsp_host: 0.0.0.0
+ * /grinder_scheduler/local_rtsp_log_dir: temp
+ * /grinder_scheduler/local_rtsp_mediamtx_path: /home/neardi/work...
+ * /grinder_scheduler/local_rtsp_port: 8554
+ * /grinder_scheduler/local_rtsp_public_host: auto
+ * /grinder_scheduler/local_rtsp_start_server: True
+ * /grinder_scheduler/local_rtsp_width: 640
+ * /grinder_scheduler/manual_reverse_guard_sec: 1.0
+ * /grinder_scheduler/map_topic: /map
+ * /grinder_scheduler/navigation_map_yaml_path: /home/neardi/work...
+ * /grinder_scheduler/odom_topic: /odom
+ * /grinder_scheduler/overlap_ratio: 0.1
+ * /grinder_scheduler/path_goal_reach_dist: 0.03
+ * /grinder_scheduler/path_segment_timeout: 60.0
+ * /grinder_scheduler/persist_state_dir: temp/grinder_sche...
+ * /grinder_scheduler/persist_state_enabled: True
+ * /grinder_scheduler/planned_path_preview_arrow_len_px: 12
+ * /grinder_scheduler/planned_path_preview_arrow_step: 10
+ * /grinder_scheduler/planned_path_preview_dir: temp
+ * /grinder_scheduler/planned_path_preview_format: jpg
+ * /grinder_scheduler/planned_path_preview_include_overlay: True
+ * /grinder_scheduler/planned_path_preview_max_edge: 320
+ * /grinder_scheduler/planned_path_preview_show_direction: True
+ * /grinder_scheduler/planner_script_path: third_party/path_...
+ * /grinder_scheduler/right_image_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/save_first_frame_on_startup: False
+ * /grinder_scheduler/scheduler_tick_hz: 5
+ * /grinder_scheduler/set_map_localization_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/set_map_update_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/sl_linka_host: 0.0.0.0
+ * /grinder_scheduler/sl_linka_port: 8002
+ * /grinder_scheduler/sl_linka_python_sdk_dir: third_party/sl_li...
+ * /grinder_scheduler/start_aurora_driver: False
+ * /grinder_scheduler/stcm_local_dir: maps/raw
+ * /grinder_scheduler/stream_enabled: True
+ * /grinder_scheduler/stream_fps: 8
+ * /grinder_scheduler/stream_push_hz: 20
+ * /grinder_scheduler/stream_url: rtmp://127.0.0.1:...
+ * /grinder_scheduler/stream_width: 1280
+ * /grinder_scheduler/sync_get_stcm_service: /slamware_ros_sdk...
+ * /grinder_scheduler/sync_set_stcm_service: /slamware_ros_sdk...
+ * /grinder_scheduler/turn_radius: 0.8
+ * /grinder_scheduler/use_depth_colorized_image: False
+ * /grinder_scheduler/vehicle_length: 0.5
+ * /grinder_scheduler/vehicle_width: 0.5
+ * /move_base/TebLocalPlannerROS/acc_lim_theta: 0.05
+ * /move_base/TebLocalPlannerROS/acc_lim_x: 0.1
+ * /move_base/TebLocalPlannerROS/allow_init_with_backwards_motion: False
+ * /move_base/TebLocalPlannerROS/complete_global_plan: True
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/cluster_max_distance: 0.2
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/cluster_min_pts: 2
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/convex_hull_min_pt_separation: 0.1
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_convert_outlier_pts: True
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_filter_remaining_outlier_pts: False
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_inlier_distance: 0.15
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_min_inliers: 10
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_no_iterations: 1500
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_remainig_outliers: 3
+ * /move_base/TebLocalPlannerROS/costmap_converter_plugin: 
+ * /move_base/TebLocalPlannerROS/costmap_converter_rate: 5
+ * /move_base/TebLocalPlannerROS/costmap_converter_spin_thread: True
+ * /move_base/TebLocalPlannerROS/costmap_obstacles_behind_robot_dist: 0.3
+ * /move_base/TebLocalPlannerROS/delete_detours_backwards: True
+ * /move_base/TebLocalPlannerROS/dt_hysteresis: 0.1
+ * /move_base/TebLocalPlannerROS/dt_ref: 0.4
+ * /move_base/TebLocalPlannerROS/dynamic_obstacle_inflation_dist: 0.3
+ * /move_base/TebLocalPlannerROS/enable_homotopy_class_planning: False
+ * /move_base/TebLocalPlannerROS/enable_multithreading: True
+ * /move_base/TebLocalPlannerROS/exact_arc_length: False
+ * /move_base/TebLocalPlannerROS/feasibility_check_no_poses: 5
+ * /move_base/TebLocalPlannerROS/footprint_model/type: polygon
+ * /move_base/TebLocalPlannerROS/footprint_model/vertices: [[-0.15, 0.5], [1...
+ * /move_base/TebLocalPlannerROS/free_goal_vel: False
+ * /move_base/TebLocalPlannerROS/global_plan_overwrite_orientation: True
+ * /move_base/TebLocalPlannerROS/global_plan_prune_distance: 1
+ * /move_base/TebLocalPlannerROS/global_plan_viapoint_sep: 0.2
+ * /move_base/TebLocalPlannerROS/h_signature_prescaler: 0.5
+ * /move_base/TebLocalPlannerROS/h_signature_threshold: 0.1
+ * /move_base/TebLocalPlannerROS/include_costmap_obstacles: True
+ * /move_base/TebLocalPlannerROS/include_dynamic_obstacles: False
+ * /move_base/TebLocalPlannerROS/inflation_dist: 0.35
+ * /move_base/TebLocalPlannerROS/max_global_plan_lookahead_dist: 1.0
+ * /move_base/TebLocalPlannerROS/max_number_classes: 4
+ * /move_base/TebLocalPlannerROS/max_ratio_detours_duration_best_duration: 3.0
+ * /move_base/TebLocalPlannerROS/max_samples: 200
+ * /move_base/TebLocalPlannerROS/max_vel_theta: 0.1
+ * /move_base/TebLocalPlannerROS/max_vel_x: 0.1
+ * /move_base/TebLocalPlannerROS/max_vel_x_backwards: 0.05
+ * /move_base/TebLocalPlannerROS/max_vel_y: 0.0
+ * /move_base/TebLocalPlannerROS/min_obstacle_dist: 0.25
+ * /move_base/TebLocalPlannerROS/min_turning_radius: 0.0
+ * /move_base/TebLocalPlannerROS/no_inner_iterations: 5
+ * /move_base/TebLocalPlannerROS/no_outer_iterations: 4
+ * /move_base/TebLocalPlannerROS/obstacle_cost_exponent: 4
+ * /move_base/TebLocalPlannerROS/obstacle_heading_threshold: 0.45
+ * /move_base/TebLocalPlannerROS/obstacle_poses_affected: 15
+ * /move_base/TebLocalPlannerROS/odom_topic: odom
+ * /move_base/TebLocalPlannerROS/optimization_activate: True
+ * /move_base/TebLocalPlannerROS/optimization_verbose: False
+ * /move_base/TebLocalPlannerROS/oscillation_filter_duration: 10
+ * /move_base/TebLocalPlannerROS/oscillation_omega_eps: 0.03
+ * /move_base/TebLocalPlannerROS/oscillation_recovery: True
+ * /move_base/TebLocalPlannerROS/oscillation_recovery_min_duration: 10
+ * /move_base/TebLocalPlannerROS/oscillation_v_eps: 0.03
+ * /move_base/TebLocalPlannerROS/penalty_epsilon: 0.03
+ * /move_base/TebLocalPlannerROS/publish_feedback: False
+ * /move_base/TebLocalPlannerROS/roadmap_graph_area_length_scale: 1.0
+ * /move_base/TebLocalPlannerROS/roadmap_graph_area_width: 5
+ * /move_base/TebLocalPlannerROS/roadmap_graph_no_samples: 15
+ * /move_base/TebLocalPlannerROS/selection_alternative_time_cost: False
+ * /move_base/TebLocalPlannerROS/selection_cost_hysteresis: 1.0
+ * /move_base/TebLocalPlannerROS/selection_obst_cost_scale: 100.0
+ * /move_base/TebLocalPlannerROS/selection_prefer_initial_plan: 0.9
+ * /move_base/TebLocalPlannerROS/shrink_horizon_backup: True
+ * /move_base/TebLocalPlannerROS/shrink_horizon_min_duration: 10
+ * /move_base/TebLocalPlannerROS/switching_blocking_period: 0.0
+ * /move_base/TebLocalPlannerROS/teb_autosize: True
+ * /move_base/TebLocalPlannerROS/viapoints_all_candidates: True
+ * /move_base/TebLocalPlannerROS/visualize_hc_graph: False
+ * /move_base/TebLocalPlannerROS/visualize_with_time_as_z_axis_scale: False
+ * /move_base/TebLocalPlannerROS/weight_acc_lim_theta: 1.0
+ * /move_base/TebLocalPlannerROS/weight_acc_lim_x: 1.0
+ * /move_base/TebLocalPlannerROS/weight_adapt_factor: 2
+ * /move_base/TebLocalPlannerROS/weight_dynamic_obstacle: 10
+ * /move_base/TebLocalPlannerROS/weight_dynamic_obstacle_inflation: 0.2
+ * /move_base/TebLocalPlannerROS/weight_inflation: 0.2
+ * /move_base/TebLocalPlannerROS/weight_kinematics_forward_drive: 800
+ * /move_base/TebLocalPlannerROS/weight_kinematics_nh: 1000
+ * /move_base/TebLocalPlannerROS/weight_kinematics_turning_radius: 1
+ * /move_base/TebLocalPlannerROS/weight_max_vel_theta: 1
+ * /move_base/TebLocalPlannerROS/weight_max_vel_x: 2
+ * /move_base/TebLocalPlannerROS/weight_obstacle: 100
+ * /move_base/TebLocalPlannerROS/weight_optimaltime: 1
+ * /move_base/TebLocalPlannerROS/weight_shortest_path: 1
+ * /move_base/TebLocalPlannerROS/weight_viapoint: 20
+ * /move_base/TebLocalPlannerROS/xy_goal_tolerance: 0.12
+ * /move_base/TebLocalPlannerROS/yaw_goal_tolerance: 0.05
+ * /move_base/base_global_planner: carrot_planner/Ca...
+ * /move_base/base_local_planner: teb_local_planner...
+ * /move_base/controller_frequency: 10.0
+ * /move_base/controller_patience: 10.0
+ * /move_base/global_costmap/always_send_full_costmap: True
+ * /move_base/global_costmap/footprint: [[-0.15, 0.5], [1...
+ * /move_base/global_costmap/footprint_padding: 0.0
+ * /move_base/global_costmap/global_frame: map
+ * /move_base/global_costmap/inflation_layer/cost_scaling_factor: 10.0
+ * /move_base/global_costmap/inflation_layer/enabled: True
+ * /move_base/global_costmap/inflation_layer/inflation_radius: 0.1
+ * /move_base/global_costmap/map_type: costmap
+ * /move_base/global_costmap/obstacle_layer/combination_method: 1
+ * /move_base/global_costmap/obstacle_layer/enabled: True
+ * /move_base/global_costmap/obstacle_layer/inflation_radius: 0.2
+ * /move_base/global_costmap/obstacle_layer/laser_scan_sensor/clearing: True
+ * /move_base/global_costmap/obstacle_layer/laser_scan_sensor/data_type: LaserScan
+ * /move_base/global_costmap/obstacle_layer/laser_scan_sensor/marking: True
+ * /move_base/global_costmap/obstacle_layer/laser_scan_sensor/topic: scan
+ * /move_base/global_costmap/obstacle_layer/observation_sources: laser_scan_sensor
+ * /move_base/global_costmap/obstacle_layer/obstacle_range: 3.0
+ * /move_base/global_costmap/obstacle_layer/raytrace_range: 4.0
+ * /move_base/global_costmap/obstacle_layer/track_unknown_space: True
+ * /move_base/global_costmap/plugins: [{'name': 'static...
+ * /move_base/global_costmap/publish_frequency: 2.0
+ * /move_base/global_costmap/robot_base_frame: base_link
+ * /move_base/global_costmap/robot_radius: 0.0
+ * /move_base/global_costmap/static_layer/enabled: True
+ * /move_base/global_costmap/static_layer/map_topic: map
+ * /move_base/global_costmap/static_map: True
+ * /move_base/global_costmap/transform_tolerance: 0.5
+ * /move_base/global_costmap/update_frequency: 2.0
+ * /move_base/local_costmap/always_send_full_costmap: True
+ * /move_base/local_costmap/footprint: [[-0.15, 0.5], [1...
+ * /move_base/local_costmap/footprint_padding: 0.0
+ * /move_base/local_costmap/global_frame: map
+ * /move_base/local_costmap/height: 5
+ * /move_base/local_costmap/inflation_layer/cost_scaling_factor: 10.0
+ * /move_base/local_costmap/inflation_layer/enabled: True
+ * /move_base/local_costmap/inflation_layer/inflation_radius: 0.1
+ * /move_base/local_costmap/map_type: costmap
+ * /move_base/local_costmap/obstacle_layer/combination_method: 1
+ * /move_base/local_costmap/obstacle_layer/enabled: True
+ * /move_base/local_costmap/obstacle_layer/inflation_radius: 0.2
+ * /move_base/local_costmap/obstacle_layer/laser_scan_sensor/clearing: True
+ * /move_base/local_costmap/obstacle_layer/laser_scan_sensor/data_type: LaserScan
+ * /move_base/local_costmap/obstacle_layer/laser_scan_sensor/marking: True
+ * /move_base/local_costmap/obstacle_layer/laser_scan_sensor/topic: scan
+ * /move_base/local_costmap/obstacle_layer/observation_sources: laser_scan_sensor
+ * /move_base/local_costmap/obstacle_layer/obstacle_range: 3.0
+ * /move_base/local_costmap/obstacle_layer/raytrace_range: 4.0
+ * /move_base/local_costmap/obstacle_layer/track_unknown_space: True
+ * /move_base/local_costmap/plugins: [{'name': 'static...
+ * /move_base/local_costmap/publish_frequency: 5.0
+ * /move_base/local_costmap/resolution: 0.1
+ * /move_base/local_costmap/robot_base_frame: base_link
+ * /move_base/local_costmap/robot_radius: 0.0
+ * /move_base/local_costmap/rolling_window: True
+ * /move_base/local_costmap/static_layer/enabled: True
+ * /move_base/local_costmap/static_layer/map_topic: map
+ * /move_base/local_costmap/static_map: False
+ * /move_base/local_costmap/transform_tolerance: 0.5
+ * /move_base/local_costmap/update_frequency: 5.0
+ * /move_base/local_costmap/width: 5
+ * /rosdistro: noetic
+ * /rosversion: 1.17.4
+ * /slamware_ros_sdk_server_node/angle_compensate: True
+ * /slamware_ros_sdk_server_node/camera_left: base_camera_left
+ * /slamware_ros_sdk_server_node/camera_right: base_camera_right
+ * /slamware_ros_sdk_server_node/imu_frame: base_imu_link
+ * /slamware_ros_sdk_server_node/imu_raw_data_period: 0.005
+ * /slamware_ros_sdk_server_node/ip_address: 192.168.11.1
+ * /slamware_ros_sdk_server_node/ladar_data_clockwise: True
+ * /slamware_ros_sdk_server_node/laser_frame: base_laser_link
+ * /slamware_ros_sdk_server_node/map_frame: map
+ * /slamware_ros_sdk_server_node/map_pub_period: 0.2
+ * /slamware_ros_sdk_server_node/no_preview_image: False
+ * /slamware_ros_sdk_server_node/odom_frame: odom
+ * /slamware_ros_sdk_server_node/raw_image_on: False
+ * /slamware_ros_sdk_server_node/robot_frame: base_link
+ * /slamware_ros_sdk_server_node/robot_pose_pub_period: 0.05
+ * /slamware_ros_sdk_server_node/robot_pose_topic: robot_pose
+ * /slamware_ros_sdk_server_node/scan_pub_period: 0.1
+ * /use_sim_time: False
+
+NODES
+  /
+    baselink2map (tf2_ros/static_transform_publisher)
+    chassis_driver (grinder_chassis_driver/chassis_driver_node.py)
+    grinder_scheduler (grinder_scheduler/scheduler_node.py)
+    move_base (move_base/move_base)
+    odom2map (tf2_ros/static_transform_publisher)
+    rviz (rviz/rviz)
+    slamware_ros_sdk_server_node (slamware_ros_sdk/slamware_ros_sdk_server_node)
+QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
+Cannot find EGLConfig, returning null config
+Unable to find an X11 visual which matches EGL config 0
+[0m[INFO] [1779786204.718316468]: Trying to connect to Aurora, tryCnt: 1.[0m
+[0m[INFO] [1779786204.727318761]: Selected device: tcp/192.168.11.1:7447[0m
+[0m[INFO] [1779786204.727394594]: Connecting to the selected device...[0m
+[0m[INFO] [1779786204.753883763]: Connected to the selected device[0m
+[0m[INFO] [1779786204.783370391]: Connected to Aurora, OK, tryCnt: 1.[0m
+[0m[INFO] [1779786204.783733516]: Odometry:0.1000[0m
+[0m[INFO] [1779786204.788163642]: RobotPose:0.0500[0m
+[0m[INFO] [1779786204.789804559]: ExploreMapUpdate:0.2000[0m
+[0m[INFO] [1779786204.789906934]: ExploreMapPublish:0.2000[0m
+[0m[INFO] [1779786204.793636476]: LaserScan:0.1000[0m
+[0m[INFO] [1779786204.795501101]: ServerImuRawDataWorker:0.0050[0m
+[0m[INFO] [1779786204.797062684]: RosConnectWorker:0.1000[0m
+[0m[INFO] [1779786204.798739476]: SystemStatus:0.0500[0m
+[0m[INFO] [1779786204.802186976]: StereoImage:0.0500[0m
+[0m[INFO] [1779786204.809454436]: PointCloud:0.1000[0m
+[0m[INFO] [1779786204.846441273]: SlamwareRosSdkServer, work thread begin.[0m
+[0m[INFO] [1779786204.846561148]: reset all 12 workers on work loop begin.[0m
+[0m[INFO] [1779786204.846855731]: Depth camera supported, subscription enabled, post-filtering on[0m
+[0m[INFO] [1779786204.847008564]: Semantic segmentation supported and subscription enabled[0m
+[0m[INFO] [1779786204.847072148]: Semantic segmentation label set: coco80[0m
+[0m[INFO] [1779786204.847140981]: Label ID: 0, Name: (null)[0m
+[0m[INFO] [1779786204.847185314]: Label ID: 1, Name: person[0m
+[0m[INFO] [1779786204.847224981]: Label ID: 2, Name: bicycle[0m
+[0m[INFO] [1779786204.847264648]: Label ID: 3, Name: car[0m
+[0m[INFO] [1779786204.847303731]: Label ID: 4, Name: motorcycle[0m
+[0m[INFO] [1779786204.847343106]: Label ID: 5, Name: airplane[0m
+[0m[INFO] [1779786204.847382189]: Label ID: 6, Name: bus[0m
+[0m[INFO] [1779786204.847421273]: Label ID: 7, Name: train[0m
+[0m[INFO] [1779786204.847460939]: Label ID: 8, Name: truck[0m
+[0m[INFO] [1779786204.847499439]: Label ID: 9, Name: boat[0m
+[0m[INFO] [1779786204.847538523]: Label ID: 10, Name: traffic light[0m
+[0m[INFO] [1779786204.847577606]: Label ID: 11, Name: fire hydrant[0m
+[0m[INFO] [1779786204.847616981]: Label ID: 12, Name: stop sign[0m
+[0m[INFO] [1779786204.847656356]: Label ID: 13, Name: parking meter[0m
+[0m[INFO] [1779786204.847695148]: Label ID: 14, Name: bench[0m
+[0m[INFO] [1779786204.847771564]: Label ID: 15, Name: bird[0m
+[0m[INFO] [1779786204.847811814]: Label ID: 16, Name: cat[0m
+[0m[INFO] [1779786204.847851189]: Label ID: 17, Name: dog[0m
+[0m[INFO] [1779786204.847892898]: Label ID: 18, Name: horse[0m
+[0m[INFO] [1779786204.847931398]: Label ID: 19, Name: sheep[0m
+[0m[INFO] [1779786204.847970773]: Label ID: 20, Name: cow[0m
+[0m[INFO] [1779786204.848009856]: Label ID: 21, Name: elephant[0m
+[0m[INFO] [1779786204.848048356]: Label ID: 22, Name: bear[0m
+[0m[INFO] [1779786204.848087148]: Label ID: 23, Name: zebra[0m
+[0m[INFO] [1779786204.848125648]: Label ID: 24, Name: giraffe[0m
+[0m[INFO] [1779786204.848164731]: Label ID: 25, Name: backpack[0m
+[0m[INFO] [1779786204.848203814]: Label ID: 26, Name: umbrella[0m
+[0m[INFO] [1779786204.848242898]: Label ID: 27, Name: handbag[0m
+[0m[INFO] [1779786204.848281689]: Label ID: 28, Name: tie[0m
+[0m[INFO] [1779786204.848320481]: Label ID: 29, Name: suitcase[0m
+[0m[INFO] [1779786204.848359273]: Label ID: 30, Name: frisbee[0m
+[0m[INFO] [1779786204.848398064]: Label ID: 31, Name: skis[0m
+[0m[INFO] [1779786204.848437148]: Label ID: 32, Name: snowboard[0m
+[0m[INFO] [1779786204.848476231]: Label ID: 33, Name: sports ball[0m
+[0m[INFO] [1779786204.848515606]: Label ID: 34, Name: kite[0m
+[0m[INFO] [1779786204.848554398]: Label ID: 35, Name: baseball bat[0m
+[0m[INFO] [1779786204.848593481]: Label ID: 36, Name: baseball glove[0m
+[0m[INFO] [1779786204.848632564]: Label ID: 37, Name: skateboard[0m
+[0m[INFO] [1779786204.848671356]: Label ID: 38, Name: surfboard[0m
+[0m[INFO] [1779786204.848710148]: Label ID: 39, Name: tennis racket[0m
+[0m[[33m[WARN] [1779786205.057008877]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1779786205.060208169]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1779786205.664749230]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1779786205.665663022]: local_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[WARN] [1779786206.716674]: RTSP encoder probe failed, skip encoder=h264_v4l2m2m for stream left
+[WARN] [1779786206.930908]: RTSP encoder probe failed, skip encoder=h264_vaapi for stream left
+[WARN] [1779786207.065506]: RTSP encoder probe failed, skip encoder=h264_omx for stream left
+[WARN] [1779786207.704779]: RTSP encoder probe failed, skip encoder=h264_v4l2m2m for stream right
+[WARN] [1779786207.871555]: RTSP encoder probe failed, skip encoder=h264_vaapi for stream right
+[WARN] [1779786208.078910]: RTSP encoder probe failed, skip encoder=h264_omx for stream right
+[INFO] [1779786205.563754]: Loaded task registry state: 8 map-bound tasks
+[INFO] [1779786205.631305]: Loaded map overlay state: map_id=map_1778827104561 dir=/home/neardi/work/Grinder/temp/grinder_scheduler_state/map_states/map_1778827104561
+[INFO] [1779786205.634539]: Loaded scheduler local state from /home/neardi/work/Grinder/temp/grinder_scheduler_state
+shutdown request: [/grinder_scheduler] Reason: new node registered with same name
+[INFO] [1779786208.087401]: Starting mediamtx on rtsp://192.168.11.127:8554 using /home/neardi/work/Grinder/tools/mediamtx/mediamtx
+[INFO] [1779786208.192919]: mediamtx rtsp listener is ready on 127.0.0.1:8554
+[0m[INFO] [1779786205.063652461]: global_costmap: Using plugin "static_layer"[0m
+[0m[INFO] [1779786205.087975713]: Requesting the map...[0m
+[0m[INFO] [1779786205.303466360]: Resizing costmap to 4 X 4 at 0.050000 m/pix[0m
+[0m[INFO] [1779786205.403333620]: Received a 4 X 4 map at 0.050000 m/pix[0m
+[0m[INFO] [1779786205.424134414]: global_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1779786205.462205668]:     Subscribed to Topics: laser_scan_sensor[0m
+[0m[INFO] [1779786205.571536054]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1779786205.666777480]: local_costmap: Using plugin "static_layer"[0m
+[0m[INFO] [1779786205.673238481]: Requesting the map...[0m
+[0m[INFO] [1779786205.676571064]: Resizing costmap to 321 X 321 at 0.050000 m/pix[0m
+[0m[INFO] [1779786205.678011314]: Resizing static layer to 321 X 321 at 0.050000 m/pix[0m
+[0m[INFO] [1779786205.776616533]: Received a 321 X 321 map at 0.050000 m/pix[0m
+[0m[INFO] [1779786205.799736660]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1779786205.811138786]:     Subscribed to Topics: laser_scan_sensor[0m
+[0m[INFO] [1779786205.925765839]: Created local_planner teb_local_planner/TebLocalPlannerROS[0m
+[0m[INFO] [1779786205.987379554]: Footprint model 'polygon' loaded for trajectory optimization.[0m
+[0m[INFO] [1779786205.987777096]: Parallel planning in distinctive topologies disabled.[0m
+[0m[INFO] [1779786205.987813846]: No costmap conversion plugin specified. All occupied costmap cells are treaten as point obstacles.[0m
+[0m[INFO] [1779786206.063555020]: max_vel_trans is not set, setting it equal to max_vel_x: 0.1[0m
+[0m[INFO] [1779786206.064926728]: Footprint model 'polygon' loaded for trajectory optimization.[0m
+[0m[INFO] [1779786206.754222048]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1779786206.773756716]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1779786206.842508390]: odom received![0m
+[0m[INFO] [1779786214.908215034]: Resizing costmap to 670 X 662 at 0.050000 m/pix[0m
+[0m[INFO] [1779786214.921165910]: Resizing static layer to 670 X 662 at 0.050000 m/pix[0m
+INFO] [1779786204.848748648]: Label ID: 40, Name: bottle[0m
+[0m[INFO] [1779786204.848893898]: Label ID: 41, Name: wine glass[0m
+[0m[INFO] [1779786204.848934731]: Label ID: 42, Name: cup[0m
+[0m[INFO] [1779786204.848973523]: Label ID: 43, Name: fork[0m
+[0m[INFO] [1779786204.849012606]: Label ID: 44, Name: knife[0m
+[0m[INFO] [1779786204.849051398]: Label ID: 45, Name: spoon[0m
+[0m[INFO] [1779786204.849090189]: Label ID: 46, Name: bowl[0m
+[0m[INFO] [1779786204.849128981]: Label ID: 47, Name: banana[0m
+[0m[INFO] [1779786204.849168065]: Label ID: 48, Name: apple[0m
+[0m[INFO] [1779786204.849207148]: Label ID: 49, Name: sandwich[0m
+[0m[INFO] [1779786204.849245940]: Label ID: 50, Name: orange[0m
+[0m[INFO] [1779786204.849285898]: Label ID: 51, Name: broccoli[0m
+[0m[INFO] [1779786204.849324690]: Label ID: 52, Name: carrot[0m
+[0m[INFO] [1779786204.849363481]: Label ID: 53, Name: hot dog[0m
+[0m[INFO] [1779786204.849402273]: Label ID: 54, Name: pizza[0m
+[0m[INFO] [1779786204.849441356]: Label ID: 55, Name: donut[0m
+[0m[INFO] [1779786204.849480440]: Label ID: 56, Name: cake[0m
+[0m[INFO] [1779786204.849519231]: Label ID: 57, Name: chair[0m
+[0m[INFO] [1779786204.849558023]: Label ID: 58, Name: couch[0m
+[0m[INFO] [1779786204.849597981]: Label ID: 59, Name: potted plant[0m
+[0m[INFO] [1779786204.849637065]: Label ID: 60, Name: bed[0m
+[0m[INFO] [1779786204.849675856]: Label ID: 61, Name: dining table[0m
+[0m[INFO] [1779786204.849714940]: Label ID: 62, Name: toilet[0m
+[0m[INFO] [1779786204.849754023]: Label ID: 63, Name: tv[0m
+[0m[INFO] [1779786204.849792523]: Label ID: 64, Name: laptop[0m
+[0m[INFO] [1779786204.849831606]: Label ID: 65, Name: mouse[0m
+[0m[INFO] [1779786204.849870398]: Label ID: 66, Name: remote[0m
+[0m[INFO] [1779786204.849909481]: Label ID: 67, Name: keyboard[0m
+[0m[INFO] [1779786204.849949148]: Label ID: 68, Name: cell phone[0m
+[0m[INFO] [1779786204.849988231]: Label ID: 69, Name: microwave[0m
+[0m[INFO] [1779786204.850027023]: Label ID: 70, Name: oven[0m
+[0m[INFO] [1779786204.850066106]: Label ID: 71, Name: toaster[0m
+[0m[INFO] [1779786204.850105190]: Label ID: 72, Name: sink[0m
+[0m[INFO] [1779786204.850144273]: Label ID: 73, Name: refrigerator[0m
+[0m[INFO] [1779786204.850183065]: Label ID: 74, Name: book[0m
+[0m[INFO] [1779786204.850221856]: Label ID: 75, Name: clock[0m
+[0m[INFO] [1779786204.850260648]: Label ID: 76, Name: vase[0m
+[0m[INFO] [1779786204.850300023]: Label ID: 77, Name: scissors[0m
+[0m[INFO] [1779786204.850339690]: Label ID: 78, Name: teddy bear[0m
+[0m[INFO] [1779786204.850378481]: Label ID: 79, Name: hair drier[0m
+[0m[INFO] [1779786204.850417565]: Label ID: 80, Name: toothbrush[0m
+[0m[INFO] [1779786204.850556106]: Class colors generated[0m
+[0m[INFO] [1779786204.850610065]: successed to reinit all workers on work loop begin.[0m
+[0m[INFO] [1779786204.850689398]: try to reinit explore map.[0m
+[0m[INFO] [1779786204.850769606]: explore map initialized, resolution: 0.050000, moreCellCntToExtend: 32.[0m
+[0m[INFO] [1779786204.850876065]: try to sync whole explore map.[0m
+[0m[INFO] [1779786204.850957440]: known area: ((-0.100000, -0.100000), (0.200000, 0.200000)), cell rect : ((-2, -2), ( 4,  4)) [0m
+[0m[INFO] [1779786204.851084606]: whole explore map synchronized.[0m
+[0m[INFO] [1779786214.891756865]: sync the map after preview map generated.[0m
+[0m[INFO] [1779786214.891902115]: try to sync whole explore map.[0m
+[0m[INFO] [1779786214.892527740]: known area: ((-15.450001, -17.200001), (33.500000, 33.100002)), cell rect : ((-309, -344), ( 670,  662)) [0m
+[0m[INFO] [1779786214.899444908]: whole explore map synchronized.[0m
+[WARN] [1779786205.325724]: Failed to send startup safe state: Serial read timeout on /dev/ttyS0 after 0 of 8 bytes
+[WARN] [1779786205.500433]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779786207.559065]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779786209.637105]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779786211.733096]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779786213.822954]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779786215.899959]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779786217.950115]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779786220.052541]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779786222.077999]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779786224.174070]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779786226.266103]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779786228.345796]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779786230.442174]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779786232.516160]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779786234.518558]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779786236.609339]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779786238.610083]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779786240.679654]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 8 bytes
+[31m[rviz-6] process has died [pid 15745, exit code -11, cmd /opt/ros/noetic/lib/rviz/rviz -d /home/neardi/work/Grinder/catkin_ws/src/2-dnavigation-package/2dnavigation/teb_local_planner_tutorials/cfg/rviz_navigation.rviz __name:=rviz __log:=/root/.ros/log/bc4d4448-58e1-11f1-be0a-c285ead2937b/rviz-6.log].
+log file: /root/.ros/log/bc4d4448-58e1-11f1-be0a-c285ead2937b/rviz-6*.log[0m
+
+[1mROS_MASTER_URI=http://localhost:11311[0m
+]2;/home/neardi/work/Grinder/catkin_ws/src/grinder_scheduler/launch/grinder_system.launch http://localhost:11311
+[1mprocess[slamware_ros_sdk_server_node-1]: started with pid [15729][0m
+[1mprocess[baselink2map-2]: started with pid [15732][0m
+[1mprocess[chassis_driver-3]: started with pid [15733][0m
+[1mprocess[grinder_scheduler-4]: started with pid [15737][0m
+[1mprocess[move_base-5]: started with pid [15743][0m
+[1mprocess[rviz-6]: started with pid [15745][0m
+[1mprocess[odom2map-7]: started with pid [15750][0m
+[1m[grinder_scheduler-4] process has finished cleanly
+log file: /root/.ros/log/bc4d4448-58e1-11f1-be0a-c285ead2937b/grinder_scheduler-4*.log[0m
+[odom2map-7] killing on exit
+[move_base-5] killing on exit
+[chassis_driver-3] killing on exit
+[baselink2map-2] killing on exit
+[slamware_ros_sdk_server_node-1] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m

@@ -1,0 +1,900 @@
+... logging to /root/.ros/log/cdbba64e-59b2-11f1-99ec-aa5f39e5a3aa/roslaunch-LPA3588-2974.log
+Checking log directory for disk usage. This may take a while.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/neardi/work/Grinder/catkin_ws/src/grinder_scheduler/launch/grinder_system.launch
+[1mstarted roslaunch server http://LPA3588:42167/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /chassis_driver/baudrate: 19200
+ * /chassis_driver/cmd_source_hold_sec: 0.2
+ * /chassis_driver/cmd_vel_deadband_angular: 0.0
+ * /chassis_driver/cmd_vel_deadband_linear: 0.0
+ * /chassis_driver/cmd_vel_drive_left_sign: 1
+ * /chassis_driver/cmd_vel_drive_right_sign: 1
+ * /chassis_driver/cmd_vel_drive_swap_lr: False
+ * /chassis_driver/cmd_vel_enabled: True
+ * /chassis_driver/cmd_vel_filter_angular_accel: 0.2
+ * /chassis_driver/cmd_vel_filter_angular_deadband: 0.005
+ * /chassis_driver/cmd_vel_filter_enabled: True
+ * /chassis_driver/cmd_vel_filter_linear_accel: 0.2
+ * /chassis_driver/cmd_vel_filter_sign_confirm_count: 2
+ * /chassis_driver/cmd_vel_gear_ratio: 60.0
+ * /chassis_driver/cmd_vel_max_abs_wheel_rpm: 3000.0
+ * /chassis_driver/cmd_vel_max_angular: 0.1
+ * /chassis_driver/cmd_vel_max_input_v: 0.1
+ * /chassis_driver/cmd_vel_max_input_w: 0.1
+ * /chassis_driver/cmd_vel_max_linear: 0.1
+ * /chassis_driver/cmd_vel_scale: 1.0
+ * /chassis_driver/cmd_vel_topic: /cmd_vel
+ * /chassis_driver/cmd_vel_wheel_radius_m: 0.15
+ * /chassis_driver/cmd_vel_wheel_track_m: 0.79
+ * /chassis_driver/command_timeout: 5
+ * /chassis_driver/disc_speed_max: 32767
+ * /chassis_driver/disc_speed_min: -32768
+ * /chassis_driver/drive_left_sign: -1
+ * /chassis_driver/drive_right_sign: -1
+ * /chassis_driver/drive_swap_lr: False
+ * /chassis_driver/enable_cmd_ramp_limit: False
+ * /chassis_driver/enable_safe_stop_on_comm_error: False
+ * /chassis_driver/left_speed_max: 32767
+ * /chassis_driver/left_speed_min: -32768
+ * /chassis_driver/manual_drive_max_wheel_speed: 600
+ * /chassis_driver/manual_wheel_deadband_rpm: 30
+ * /chassis_driver/manual_wheel_hyst_enter_rpm: 60
+ * /chassis_driver/manual_wheel_hyst_exit_rpm: 30
+ * /chassis_driver/max_cmd_step_rpm: 50
+ * /chassis_driver/max_echo_deviation: 2000
+ * /chassis_driver/max_echo_failures: 20
+ * /chassis_driver/max_retries: 3
+ * /chassis_driver/poll_rate_hz: 20.0
+ * /chassis_driver/port: /dev/ttyS0
+ * /chassis_driver/right_speed_max: 32767
+ * /chassis_driver/right_speed_min: -32768
+ * /chassis_driver/rs485_raw_log_enabled: False
+ * /chassis_driver/rs485_raw_log_file: temp/chassis_rs48...
+ * /chassis_driver/safe_stop_on_error_interval: 2.0
+ * /chassis_driver/slave_id: 1
+ * /chassis_driver/startup_zero_output: True
+ * /chassis_driver/stop_on_timeout: True
+ * /chassis_driver/task_enable_default: False
+ * /chassis_driver/timeout: 0.1
+ * /chassis_driver/write_verify: False
+ * /grinder_scheduler/aurora_ip_address: 192.168.11.1
+ * /grinder_scheduler/aurora_no_preview_image: False
+ * /grinder_scheduler/aurora_raw_image_on: True
+ * /grinder_scheduler/change_map_service: /change_map
+ * /grinder_scheduler/default_path_spacing: 0.905
+ * /grinder_scheduler/depth_image_colorized_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/first_frame_save_dir: temp
+ * /grinder_scheduler/global_plan_publish_hz: 2
+ * /grinder_scheduler/inflation_radius: 0.65
+ * /grinder_scheduler/initial_map_preview_dir: temp
+ * /grinder_scheduler/initial_map_preview_format: jpg
+ * /grinder_scheduler/initial_map_preview_max_edge: 320
+ * /grinder_scheduler/left_image_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/live_map_dir: temp/live_map
+ * /grinder_scheduler/live_map_enabled: True
+ * /grinder_scheduler/live_map_hz: 1.0
+ * /grinder_scheduler/live_map_image_name: map1.pgm
+ * /grinder_scheduler/live_map_yaml_name: map.yaml
+ * /grinder_scheduler/live_preview_enabled: True
+ * /grinder_scheduler/live_preview_file: temp/aurora_map_p...
+ * /grinder_scheduler/live_preview_format: jpg
+ * /grinder_scheduler/live_preview_hz: 1.0
+ * /grinder_scheduler/live_preview_max_edge: 320
+ * /grinder_scheduler/local_rtsp_enabled: True
+ * /grinder_scheduler/local_rtsp_encoder: libx264
+ * /grinder_scheduler/local_rtsp_fps: 15
+ * /grinder_scheduler/local_rtsp_host: 0.0.0.0
+ * /grinder_scheduler/local_rtsp_log_dir: temp
+ * /grinder_scheduler/local_rtsp_mediamtx_path: /home/neardi/work...
+ * /grinder_scheduler/local_rtsp_port: 8554
+ * /grinder_scheduler/local_rtsp_public_host: auto
+ * /grinder_scheduler/local_rtsp_start_server: True
+ * /grinder_scheduler/local_rtsp_width: 640
+ * /grinder_scheduler/manual_reverse_guard_sec: 1.0
+ * /grinder_scheduler/map_topic: /map
+ * /grinder_scheduler/navigation_map_yaml_path: /home/neardi/work...
+ * /grinder_scheduler/odom_topic: /odom
+ * /grinder_scheduler/overlap_ratio: 0.1
+ * /grinder_scheduler/path_goal_reach_dist: 0.03
+ * /grinder_scheduler/path_segment_timeout: 60.0
+ * /grinder_scheduler/persist_state_dir: temp/grinder_sche...
+ * /grinder_scheduler/persist_state_enabled: True
+ * /grinder_scheduler/planned_path_preview_arrow_len_px: 12
+ * /grinder_scheduler/planned_path_preview_arrow_step: 10
+ * /grinder_scheduler/planned_path_preview_dir: temp
+ * /grinder_scheduler/planned_path_preview_format: jpg
+ * /grinder_scheduler/planned_path_preview_include_overlay: True
+ * /grinder_scheduler/planned_path_preview_max_edge: 320
+ * /grinder_scheduler/planned_path_preview_show_direction: True
+ * /grinder_scheduler/planner_script_path: third_party/path_...
+ * /grinder_scheduler/right_image_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/save_first_frame_on_startup: False
+ * /grinder_scheduler/scheduler_tick_hz: 5
+ * /grinder_scheduler/set_map_localization_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/set_map_update_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/sl_linka_host: 0.0.0.0
+ * /grinder_scheduler/sl_linka_port: 8002
+ * /grinder_scheduler/sl_linka_python_sdk_dir: third_party/sl_li...
+ * /grinder_scheduler/start_aurora_driver: False
+ * /grinder_scheduler/stcm_local_dir: maps/raw
+ * /grinder_scheduler/stream_enabled: True
+ * /grinder_scheduler/stream_fps: 8
+ * /grinder_scheduler/stream_push_hz: 20
+ * /grinder_scheduler/stream_url: rtmp://127.0.0.1:...
+ * /grinder_scheduler/stream_width: 1280
+ * /grinder_scheduler/sync_get_stcm_service: /slamware_ros_sdk...
+ * /grinder_scheduler/sync_set_stcm_service: /slamware_ros_sdk...
+ * /grinder_scheduler/turn_radius: 0.8
+ * /grinder_scheduler/use_depth_colorized_image: False
+ * /grinder_scheduler/vehicle_length: 0.5
+ * /grinder_scheduler/vehicle_width: 0.5
+ * /move_base/TebLocalPlannerROS/acc_lim_theta: 0.05
+ * /move_base/TebLocalPlannerROS/acc_lim_x: 0.1
+ * /move_base/TebLocalPlannerROS/allow_init_with_backwards_motion: False
+ * /move_base/TebLocalPlannerROS/complete_global_plan: True
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/cluster_max_distance: 0.2
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/cluster_min_pts: 2
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/convex_hull_min_pt_separation: 0.1
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_convert_outlier_pts: True
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_filter_remaining_outlier_pts: False
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_inlier_distance: 0.15
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_min_inliers: 10
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_no_iterations: 1500
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_remainig_outliers: 3
+ * /move_base/TebLocalPlannerROS/costmap_converter_plugin: 
+ * /move_base/TebLocalPlannerROS/costmap_converter_rate: 5
+ * /move_base/TebLocalPlannerROS/costmap_converter_spin_thread: True
+ * /move_base/TebLocalPlannerROS/costmap_obstacles_behind_robot_dist: 0.3
+ * /move_base/TebLocalPlannerROS/delete_detours_backwards: True
+ * /move_base/TebLocalPlannerROS/dt_hysteresis: 0.1
+ * /move_base/TebLocalPlannerROS/dt_ref: 0.4
+ * /move_base/TebLocalPlannerROS/dynamic_obstacle_inflation_dist: 0.3
+ * /move_base/TebLocalPlannerROS/enable_homotopy_class_planning: False
+ * /move_base/TebLocalPlannerROS/enable_multithreading: True
+ * /move_base/TebLocalPlannerROS/exact_arc_length: False
+ * /move_base/TebLocalPlannerROS/feasibility_check_no_poses: 5
+ * /move_base/TebLocalPlannerROS/footprint_model/type: polygon
+ * /move_base/TebLocalPlannerROS/footprint_model/vertices: [[-0.15, 0.5], [1...
+ * /move_base/TebLocalPlannerROS/free_goal_vel: False
+ * /move_base/TebLocalPlannerROS/global_plan_overwrite_orientation: False
+ * /move_base/TebLocalPlannerROS/global_plan_prune_distance: 1
+ * /move_base/TebLocalPlannerROS/global_plan_viapoint_sep: 0.2
+ * /move_base/TebLocalPlannerROS/h_signature_prescaler: 0.5
+ * /move_base/TebLocalPlannerROS/h_signature_threshold: 0.1
+ * /move_base/TebLocalPlannerROS/include_costmap_obstacles: True
+ * /move_base/TebLocalPlannerROS/include_dynamic_obstacles: False
+ * /move_base/TebLocalPlannerROS/inflation_dist: 0.35
+ * /move_base/TebLocalPlannerROS/max_global_plan_lookahead_dist: 1.0
+ * /move_base/TebLocalPlannerROS/max_number_classes: 4
+ * /move_base/TebLocalPlannerROS/max_ratio_detours_duration_best_duration: 3.0
+ * /move_base/TebLocalPlannerROS/max_samples: 200
+ * /move_base/TebLocalPlannerROS/max_vel_theta: 0.1
+ * /move_base/TebLocalPlannerROS/max_vel_x: 0.1
+ * /move_base/TebLocalPlannerROS/max_vel_x_backwards: 0.05
+ * /move_base/TebLocalPlannerROS/max_vel_y: 0.0
+ * /move_base/TebLocalPlannerROS/min_obstacle_dist: 0.25
+ * /move_base/TebLocalPlannerROS/min_turning_radius: 0.0
+ * /move_base/TebLocalPlannerROS/no_inner_iterations: 5
+ * /move_base/TebLocalPlannerROS/no_outer_iterations: 4
+ * /move_base/TebLocalPlannerROS/obstacle_cost_exponent: 4
+ * /move_base/TebLocalPlannerROS/obstacle_heading_threshold: 0.45
+ * /move_base/TebLocalPlannerROS/obstacle_poses_affected: 15
+ * /move_base/TebLocalPlannerROS/odom_topic: odom
+ * /move_base/TebLocalPlannerROS/optimization_activate: True
+ * /move_base/TebLocalPlannerROS/optimization_verbose: False
+ * /move_base/TebLocalPlannerROS/oscillation_filter_duration: 10
+ * /move_base/TebLocalPlannerROS/oscillation_omega_eps: 0.03
+ * /move_base/TebLocalPlannerROS/oscillation_recovery: True
+ * /move_base/TebLocalPlannerROS/oscillation_recovery_min_duration: 10
+ * /move_base/TebLocalPlannerROS/oscillation_v_eps: 0.03
+ * /move_base/TebLocalPlannerROS/penalty_epsilon: 0.03
+ * /move_base/TebLocalPlannerROS/publish_feedback: False
+ * /move_base/TebLocalPlannerROS/roadmap_graph_area_length_scale: 1.0
+ * /move_base/TebLocalPlannerROS/roadmap_graph_area_width: 5
+ * /move_base/TebLocalPlannerROS/roadmap_graph_no_samples: 15
+ * /move_base/TebLocalPlannerROS/selection_alternative_time_cost: False
+ * /move_base/TebLocalPlannerROS/selection_cost_hysteresis: 1.0
+ * /move_base/TebLocalPlannerROS/selection_obst_cost_scale: 100.0
+ * /move_base/TebLocalPlannerROS/selection_prefer_initial_plan: 0.9
+ * /move_base/TebLocalPlannerROS/shrink_horizon_backup: True
+ * /move_base/TebLocalPlannerROS/shrink_horizon_min_duration: 10
+ * /move_base/TebLocalPlannerROS/switching_blocking_period: 0.0
+ * /move_base/TebLocalPlannerROS/teb_autosize: True
+ * /move_base/TebLocalPlannerROS/viapoints_all_candidates: True
+ * /move_base/TebLocalPlannerROS/visualize_hc_graph: False
+ * /move_base/TebLocalPlannerROS/visualize_with_time_as_z_axis_scale: False
+ * /move_base/TebLocalPlannerROS/weight_acc_lim_theta: 1.0
+ * /move_base/TebLocalPlannerROS/weight_acc_lim_x: 1.0
+ * /move_base/TebLocalPlannerROS/weight_adapt_factor: 2
+ * /move_base/TebLocalPlannerROS/weight_dynamic_obstacle: 10
+ * /move_base/TebLocalPlannerROS/weight_dynamic_obstacle_inflation: 0.2
+ * /move_base/TebLocalPlannerROS/weight_inflation: 0.2
+ * /move_base/TebLocalPlannerROS/weight_kinematics_forward_drive: 800
+ * /move_base/TebLocalPlannerROS/weight_kinematics_nh: 1000
+ * /move_base/TebLocalPlannerROS/weight_kinematics_turning_radius: 1
+ * /move_base/TebLocalPlannerROS/weight_max_vel_theta: 1
+ * /move_base/TebLocalPlannerROS/weight_max_vel_x: 2
+ * /move_base/TebLocalPlannerROS/weight_obstacle: 100
+ * /move_base/TebLocalPlannerROS/weight_optimaltime: 1
+ * /move_base/TebLocalPlannerROS/weight_shortest_path: 1
+ * /move_base/TebLocalPlannerROS/weight_viapoint: 20
+ * /move_base/TebLocalPlannerROS/xy_goal_tolerance: 0.12
+ * /move_base/TebLocalPlannerROS/yaw_goal_tolerance: 0.05
+ * /move_base/base_global_planner: carrot_planner/Ca...
+ * /move_base/base_local_planner: teb_local_planner...
+ * /move_base/controller_frequency: 10.0
+ * /move_base/controller_patience: 10.0
+ * /move_base/global_costmap/always_send_full_costmap: True
+ * /move_base/global_costmap/footprint: [[-0.15, 0.5], [1...
+ * /move_base/global_costmap/footprint_padding: 0.0
+ * /move_base/global_costmap/global_frame: map
+ * /move_base/global_costmap/inflation_layer/cost_scaling_factor: 10.0
+ * /move_base/global_costmap/inflation_layer/enabled: True
+ * /move_base/global_costmap/inflation_layer/inflation_radius: 0.1
+ * /move_base/global_costmap/map_type: costmap
+ * /move_base/global_costmap/obstacle_layer/combination_method: 1
+ * /move_base/global_costmap/obstacle_layer/enabled: True
+ * /move_base/global_costmap/obstacle_layer/inflation_radius: 0.2
+ * /move_base/global_costmap/obstacle_layer/laser_scan_sensor/clearing: True
+ * /move_base/global_costmap/obstacle_layer/laser_scan_sensor/data_type: LaserScan
+ * /move_base/global_costmap/obstacle_layer/laser_scan_sensor/marking: True
+ * /move_base/global_costmap/obstacle_layer/laser_scan_sensor/topic: scan
+ * /move_base/global_costmap/obstacle_layer/observation_sources: laser_scan_sensor
+ * /move_base/global_costmap/obstacle_layer/obstacle_range: 3.0
+ * /move_base/global_costmap/obstacle_layer/raytrace_range: 4.0
+ * /move_base/global_costmap/obstacle_layer/track_unknown_space: True
+ * /move_base/global_costmap/plugins: [{'name': 'static...
+ * /move_base/global_costmap/publish_frequency: 2.0
+ * /move_base/global_costmap/robot_base_frame: base_link
+ * /move_base/global_costmap/robot_radius: 0.0
+ * /move_base/global_costmap/static_layer/enabled: True
+ * /move_base/global_costmap/static_layer/map_topic: map
+ * /move_base/global_costmap/static_map: True
+ * /move_base/global_costmap/transform_tolerance: 0.5
+ * /move_base/global_costmap/update_frequency: 2.0
+ * /move_base/local_costmap/always_send_full_costmap: True
+ * /move_base/local_costmap/footprint: [[-0.15, 0.5], [1...
+ * /move_base/local_costmap/footprint_padding: 0.0
+ * /move_base/local_costmap/global_frame: map
+ * /move_base/local_costmap/height: 5
+ * /move_base/local_costmap/inflation_layer/cost_scaling_factor: 10.0
+ * /move_base/local_costmap/inflation_layer/enabled: True
+ * /move_base/local_costmap/inflation_layer/inflation_radius: 0.1
+ * /move_base/local_costmap/map_type: costmap
+ * /move_base/local_costmap/obstacle_layer/combination_method: 1
+ * /move_base/local_costmap/obstacle_layer/enabled: True
+ * /move_base/local_costmap/obstacle_layer/inflation_radius: 0.2
+ * /move_base/local_costmap/obstacle_layer/laser_scan_sensor/clearing: True
+ * /move_base/local_costmap/obstacle_layer/laser_scan_sensor/data_type: LaserScan
+ * /move_base/local_costmap/obstacle_layer/laser_scan_sensor/marking: True
+ * /move_base/local_costmap/obstacle_layer/laser_scan_sensor/topic: scan
+ * /move_base/local_costmap/obstacle_layer/observation_sources: laser_scan_sensor
+ * /move_base/local_costmap/obstacle_layer/obstacle_range: 3.0
+ * /move_base/local_costmap/obstacle_layer/raytrace_range: 4.0
+ * /move_base/local_costmap/obstacle_layer/track_unknown_space: True
+ * /move_base/local_costmap/plugins: [{'name': 'static...
+ * /move_base/local_costmap/publish_frequency: 5.0
+ * /move_base/local_costmap/resolution: 0.1
+ * /move_base/local_costmap/robot_base_frame: base_link
+ * /move_base/local_costmap/robot_radius: 0.0
+ * /move_base/local_costmap/rolling_window: True
+ * /move_base/local_costmap/static_layer/enabled: True
+ * /move_base/local_costmap/static_layer/map_topic: map
+ * /move_base/local_costmap/static_map: False
+ * /move_base/local_costmap/transform_tolerance: 0.5
+ * /move_base/local_costmap/update_frequency: 5.0
+ * /move_base/local_costmap/width: 5
+ * /rosdistro: noetic
+ * /rosversion: 1.17.4
+ * /slamware_ros_sdk_server_node/angle_compensate: True
+ * /slamware_ros_sdk_server_node/camera_left: base_camera_left
+ * /slamware_ros_sdk_server_node/camera_right: base_camera_right
+ * /slamware_ros_sdk_server_node/imu_frame: base_imu_link
+ * /slamware_ros_sdk_server_node/imu_raw_data_period: 0.005
+ * /slamware_ros_sdk_server_node/ip_address: 192.168.11.1
+ * /slamware_ros_sdk_server_node/ladar_data_clockwise: True
+ * /slamware_ros_sdk_server_node/laser_frame: base_laser_link
+ * /slamware_ros_sdk_server_node/map_frame: map
+ * /slamware_ros_sdk_server_node/map_pub_period: 0.2
+ * /slamware_ros_sdk_server_node/no_preview_image: False
+ * /slamware_ros_sdk_server_node/odom_frame: odom
+ * /slamware_ros_sdk_server_node/raw_image_on: False
+ * /slamware_ros_sdk_server_node/robot_frame: base_link
+ * /slamware_ros_sdk_server_node/robot_pose_pub_period: 0.05
+ * /slamware_ros_sdk_server_node/robot_pose_topic: robot_pose
+ * /slamware_ros_sdk_server_node/scan_pub_period: 0.1
+ * /use_sim_time: False
+
+NODES
+  /
+    baselink2map (tf2_ros/static_transform_publisher)
+    chassis_driver (grinder_chassis_driver/chassis_driver_node.py)
+    grinder_scheduler (grinder_scheduler/scheduler_node.py)
+    move_base (move_base/move_base)
+    odom2map (tf2_ros/static_transform_publisher)
+    rviz (rviz/rviz)
+    slamware_ros_sdk_server_node (slamware_ros_sdk/slamware_ros_sdk_server_node)
+QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
+Cannot find EGLConfig, returning null config
+Unable to find an X11 visual which matches EGL config 0
+[33m[WARN] [1779876007.967307120]: Timed out waiting for transform from base_link to map to become available before running costmap, tf error: canTransform: source_frame base_link does not exist.. canTransform returned after 0.100817 timeout was 0.1.[0m
+[33m[WARN] [1779876013.020493382]: Timed out waiting for transform from base_link to map to become available before running costmap, tf error: canTransform: source_frame base_link does not exist.. canTransform returned after 0.100364 timeout was 0.1.[0m
+[31m[ERROR] [1779876013.560123549]: Failed to connect to the selected device[0m
+[31m[ERROR] [1779876013.562848159]: Failed to connect to Aurora, tryCnt: 1, waiting 3000 ms to retry.[0m
+[33m[WARN] [1779876018.095282541]: Timed out waiting for transform from base_link to map to become available before running costmap, tf error: canTransform: source_frame base_link does not exist.. canTransform returned after 0.10062 timeout was 0.1.[0m
+[33m[WARN] [1779876023.145656131]: Timed out waiting for transform from base_link to map to become available before running costmap, tf error: canTransform: source_frame base_link does not exist.. canTransform returned after 0.100774 timeout was 0.1.[0m
+[31m[ERROR] [1779876023.672370482]: Failed to connect to the selected device[0m
+[31m[ERROR] [1779876023.674904951]: Failed to connect to Aurora, tryCnt: 2, waiting 3000 ms to retry.[0m
+[33m[WARN] [1779876028.179064583]: Timed out waiting for transform from base_link to map to become available before running costmap, tf error: canTransform: source_frame base_link does not exist.. canTransform returned after 0.100694 timeout was 0.1.[0m
+[33m[WARN] [1779876033.214974212]: Timed out waiting for transform from base_link to map to become available before running costmap, tf error: canTransform: source_frame base_link does not exist.. canTransform returned after 0.100928 timeout was 0.1.[0m
+[31m[ERROR] [1779876033.781508430]: Failed to connect to the selected device[0m
+[31m[ERROR] [1779876033.783783338]: Failed to connect to Aurora, tryCnt: 3, waiting 3000 ms to retry.[0m
+[33m[WARN] [1779876038.248619208]: Timed out waiting for transform from base_link to map to become available before running costmap, tf error: canTransform: source_frame base_link does not exist.. canTransform returned after 0.101257 timeout was 0.1.[0m
+[33m[WARN] [1779876043.305594946]: Timed out waiting for transform from base_link to map to become available before running costmap, tf error: canTransform: source_frame base_link does not exist.. canTransform returned after 0.100864 timeout was 0.1.[0m
+[31m[ERROR] [1779876043.891290638]: Failed to connect to the selected device[0m
+[31m[ERROR] [1779876043.894376361]: Failed to connect to Aurora, tryCnt: 4, waiting 3000 ms to retry.[0m
+[33m[WARN] [1779876048.369843818]: Timed out waiting for transform from base_link to map to become available before running costmap, tf error: canTransform: source_frame base_link does not exist.. canTransform returned after 0.100294 timeout was 0.1.[0m
+[33m[WARN] [1779876053.467618680]: Timed out waiting for transform from base_link to map to become available before running costmap, tf error: canTransform: source_frame base_link does not exist.. canTransform returned after 0.113695 timeout was 0.1.[0m
+[31m[ERROR] [1779876054.010614888]: Failed to connect to the selected device[0m
+[31m[ERROR] [1779876054.014089695]: Failed to connect to Aurora, tryCnt: 5, waiting 3000 ms to retry.[0m
+[33m[WARN] [1779876058.539335999]: Timed out waiting for transform from base_link to map to become available before running costmap, tf error: canTransform: source_frame base_link does not exist.. canTransform returned after 0.118142 timeout was 0.1.[0m
+[33m[WARN] [1779876063.601214565]: Timed out waiting for transform from base_link to map to become available before running costmap, tf error: canTransform: source_frame base_link does not exist.. canTransform returned after 0.100269 timeout was 0.1.[0m
+[31m[ERROR] [1779876064.129517250]: Failed to connect to the selected device[0m
+[31m[ERROR] [1779876064.132297630]: Failed to connect to Aurora, tryCnt: 6, waiting 3000 ms to retry.[0m
+[33m[WARN] [1779876068.700548909]: Timed out waiting for transform from base_link to map to become available before running costmap, tf error: canTransform: source_frame base_link does not exist.. canTransform returned after 0.100187 timeout was 0.1.[0m
+[33m[WARN] [1779876073.703561124]: Timed out waiting for transform from base_link to map to become available before running costmap, tf error: canTransform: source_frame base_link does not exist.. canTransform returned after 0.100441 timeout was 0.1.[0m
+[31m[ERROR] [1779876074.258599369]: Failed to connect to the selected device[0m
+[31m[ERROR] [1779876074.262576143]: Failed to connect to Aurora, tryCnt: 7, waiting 3000 ms to retry.[0m
+[33m[WARN] [1779876078.728487185]: Timed out waiting for transform from base_link to map to become available before running costmap, tf error: canTransform: source_frame base_link does not exist.. canTransform returned after 0.101128 timeout was 0.1.[0m
+[31m[ERROR] [1779876080.600959041]: Failed to connect to the selected device[0m
+[31m[ERROR] [1779876080.606605280]: Failed to connect to Aurora, tryCnt: 8, waiting 3000 ms to retry.[0m
+[0m[INFO] [1779876003.496114401]: Trying to connect to Aurora, tryCnt: 1.[0m
+[0m[INFO] [1779876003.505214364]: Selected device: tcp/192.168.11.1:7447[0m
+[0m[INFO] [1779876003.505331613]: Connecting to the selected device...[0m
+[0m[INFO] [1779876013.665038146]: Trying to connect to Aurora, tryCnt: 2.[0m
+[0m[INFO] [1779876013.669137894]: Selected device: tcp/192.168.11.1:7447[0m
+[0m[INFO] [1779876013.669204390]: Connecting to the selected device...[0m
+[0m[INFO] [1779876023.776035195]: Trying to connect to Aurora, tryCnt: 3.[0m
+[0m[INFO] [1779876023.779385418]: Selected device: tcp/192.168.11.1:7447[0m
+[0m[INFO] [1779876023.779440541]: Connecting to the selected device...[0m
+[0m[INFO] [1779876033.885004234]: Trying to connect to Aurora, tryCnt: 4.[0m
+[0m[INFO] [1779876033.888259686]: Selected device: tcp/192.168.11.1:7447[0m
+[0m[INFO] [1779876033.888322975]: Connecting to the selected device...[0m
+[0m[INFO] [1779876043.996373890]: Trying to connect to Aurora, tryCnt: 5.[0m
+[0m[INFO] [1779876044.005937593]: Selected device: tcp/192.168.11.1:7447[0m
+[0m[INFO] [1779876044.006251998]: Connecting to the selected device...[0m
+[0m[INFO] [1779876054.116569967]: Trying to connect to Aurora, tryCnt: 6.[0m
+[0m[INFO] [1779876054.124472427]: Selected device: tcp/192.168.11.1:7447[0m
+[0m[INFO] [1779876054.124653838]: Connecting to the selected device...[0m
+[0m[INFO] [1779876064.236401018]: Trying to connect to Aurora, tryCnt: 7.[0m
+[0m[INFO] [1779876064.248401595]: Selected device: tcp/192.168.11.1:7447[0m
+[0m[INFO] [1779876064.248652713]: Connecting to the selected device...[0m
+[0m[INFO] [1779876074.365741091]: Trying to connect to Aurora, tryCnt: 8.[0m
+[0m[INFO] [1779876074.381437315]: Selected device: tcp/192.168.11.1:7447[0m
+[0m[INFO] [1779876074.381632143]: Connecting to the selected device...[0m
+[0m[INFO] [1779876080.720985441]: Trying to connect to Aurora, tryCnt: 9.[0m
+[0m[INFO] [1779876080.728139102]: Selected device: tcp/192.168.11.1:7447[0m
+[0m[INFO] [1779876080.728565800]: Connecting to the selected device...[0m
+[0m[INFO] [1779876081.724561301]: Connected to the selected device[0m
+[0m[INFO] [1779876081.764321810]: Connected to Aurora, OK, tryCnt: 9.[0m
+[0m[INFO] [1779876081.764930212]: Odometry:0.1000[0m
+[0m[INFO] [1779876081.774163867]: RobotPose:0.0500[0m
+[0m[INFO] [1779876081.777231836]: ExploreMapUpdate:0.2000[0m
+[0m[INFO] [1779876081.777312625]: ExploreMapPublish:0.2000[0m
+[0m[INFO] [1779876081.780942914]: LaserScan:0.1000[0m
+[0m[INFO] [1779876081.782105178]: ServerImuRawDataWorker:0.0050[0m
+[0m[INFO] [1779876081.783269775]: RosConnectWorker:0.1000[0m
+[0m[INFO] [1779876081.788255697]: SystemStatus:0.0500[0m
+[0m[INFO] [1779876081.791118921]: StereoImage:0.0500[0m
+[0m[INFO] [1779876081.803046053]: PointCloud:0.1000[0m
+[0m[INFO] [1779876081.835628234]: SlamwareRosSdkServer, work thread begin.[0m
+[0m[INFO] [1779876081.835707857]: reset all 12 workers on work loop begin.[0m
+[0m[INFO] [1779876081.835913768]: Depth camera supported, subscription enabled, post-filtering on[0m
+[0m[INFO] [1779876081.836023141]: Semantic segmentation supported and subscription enabled[0m
+[0m[INFO] [1779876081.836084681]: Semantic segmentation label set: coco80[0m
+[0m[INFO] [1779876081.836166054]: Label ID: 0, Name: (null)[0m
+[0m[INFO] [1779876081.836211261]: Label ID: 1, Name: person[0m
+[0m[INFO] [1779876081.836245385]: Label ID: 2, Name: bicycle[0m
+[0m[INFO] [1779876081.836281260]: Label ID: 3, Name: car[0m
+[0m[INFO] [1779876081.836319759]: Label ID: 4, Name: motorcycle[0m
+[0m[INFO] [1779876081.836363508]: Label ID: 5, Name: airplane[0m
+[0m[INFO] [1779876081.836397632]: Label ID: 6, Name: bus[0m
+[0m[INFO] [1779876081.836437006]: Label ID: 7, Name: train[0m
+[0m[INFO] [1779876081.836481630]: Label ID: 8, Name: truck[0m
+[0m[INFO] [1779876081.836523629]: Label ID: 9, Name: boat[0m
+[0m[INFO] [1779876081.836953827]: Label ID: 10, Name: traffic light[0m
+[0m[INFO] [1779876081.837000492]: Label ID: 11, Name: fire hydrant[0m
+[0m[INFO] [1779876081.837038700]: Label ID: 12, Name: stop sign[0m
+[0m[INFO] [1779876081.837158864]: Label ID: 13, Name: parking meter[0m
+[0m[INFO] [1779876081.837205238]: Label ID: 14, Name: bench[0m
+[0m[INFO] [1779876081.837247528]: Label ID: 15, Name: bird[0m
+[0m[INFO] [1779876081.837288652]: Label ID: 16, Name: cat[0m
+[0m[INFO] [1779876081.837331235]: Label ID: 17, Name: dog[0m
+[0m[INFO] [1779876081.837372650]: Label ID: 18, Name: horse[0m
+[0m[INFO] [1779876081.837414358]: Label ID: 19, Name: sheep[0m
+[0m[INFO] [1779876081.837456648]: Label ID: 20, Name: cow[0m
+[0m[INFO] [1779876081.837497481]: Label ID: 21, Name: elephant[0m
+[0m[INFO] [1779876081.837538896]: Label ID: 22, Name: bear[0m
+[0m[INFO] [1779876081.837582062]: Label ID: 23, Name: zebra[0m
+[0m[INFO] [1779876081.837614728]: Label ID: 24, Name: giraffe[0m
+[0m[INFO] [1779876081.837655560]: Label ID: 25, Name: backpack[0m
+[0m[INFO] [1779876081.837698434]: Label ID: 26, Name: umbrella[0m
+[0m[INFO] [1779876081.837739850]: Label ID: 27, Name: handbag[0m
+[0m[INFO] [1779876081.837781557]: Label ID: 28, Name: tie[0m
+[0m[INFO] [1779876081.837823848]: Label ID: 29, Name: suitcase[0m
+[0m[INFO] [1779876081.837865555]: Label ID: 30, Name: frisbee[0m
+[0m[INFO] [1779876081.837906679]: Label ID: 31, Name: skis[0m
+[0m[INFO] [1779876081.837949261]: Label ID: 32, Name: snowboard[0m
+[0m[INFO] [1779876081.837990969]: Label ID: 33, Name: sports ball[0m
+[0m[INFO] [1779876081.838031801]: Label ID: 34, Name: kite[0m
+[0m[INFO] [1779876081.838069425]: Label ID: 35, Name: baseball bat[0m
+[0m[INFO] [1779876081.838110841]: Label ID: 36, Name: baseball glove[0m
+[0m[INFO] [1779876081.838153715]: Label ID: 37, Name: skateboard[0m
+[0m[INFO] [1779876081.838195422]: Label ID: 38, Name: surfboard[0m
+[0m[INFO] [1779876081.838237421]: Label ID: 39, Name: tennis racket[0m
+[0m[INFO] [1779876081.838280295]: Label ID: 40, Name: bottle[0m
+[0m[INFO] [1779876081.838312669]: Label ID: 41, Name: wine glass[0m
+[0m[INFO] [1779876081.838344169]: Label ID: 42, Name: cup[0m
+[0m[INFO] [1779876081.838375668]: Label ID: 43, Name: fork[0m
+[0m[INFO] [1779876081.838415917]: Label ID: 44, Name: knife[0m
+[0m[INFO] [1779876081.838448583]: Label ID: 45, Name: spoon[0m
+[0m[INFO] [1779876081.838485332]: Label ID: 46, Name: bowl[0m
+[0m[INFO] [1779876081.838517415]: Label ID: 47, Name: banana[0m
+[0m[INFO] [1779876081.838554747]: Label ID: 48, Name: apple[0m
+[0m[INFO] [1779876081.838587121]: Label ID: 49, Name: sandwich[0m
+[0m[INFO] [1779876081.838623870]: Label ID: 50, Name: orange[0m
+[0m[INFO] [1779876081.838655953]: Label ID: 51, Name: broccoli[0m
+[0m[INFO] [1779876081.838692994]: Label ID: 52, Name: carrot[0m
+[0m[INFO] [1779876081.838725660]: Label ID: 53, Name: hot dog[0m
+[0m[INFO] [1779876081.838762992]: Label ID: 54, Name: pizza[0m
+[0m[INFO] [1779876081.838795950]: Label ID: 55, Name: donut[0m
+[0m[INFO] [1779876081.838833282]: Label ID: 56, Name: cake[0m
+[0m[INFO] [1779876081.838865656]: Label ID: 57, Name: chair[0m
+[0m[INFO] [1779876081.838905322]: Label ID: 58, Name: couch[0m
+[0m[INFO] [1779876081.838937696]: Label ID: 59, Name: potted plant[0m
+[0m[INFO] [1779876081.838970362]: Label ID: 60, Name: bed[0m
+[0m[INFO] [1779876081.839012069]: Label ID: 61, Name: dining table[0m
+[0m[INFO] [1779876081.839045027]: Label ID: 62, Name: toilet[0m
+[0m[INFO] [1779876081.839075943]: Label ID: 63, Name: tv[0m
+[0m[INFO] [1779876081.839107734]: Label ID: 64, Name: laptop[0m
+[0m[INFO] [1779876081.839139816]: Label ID: 65, Name: mouse[0m
+[0m[INFO] [1779876081.839170732]: Label ID: 66, Name: remote[0m
+[0m[INFO] [1779876081.839201357]: Label ID: 67, Name: keyboard[0m
+[0m[INFO] [1779876081.839231689]: Label ID: 68, Name: cell phone[0m
+[0m[INFO] [1779876081.839262605]: Label ID: 69, Name: microwave[0m
+[0m[INFO] [1779876081.839331145]: Label ID: 70, Name: oven[0m
+[0m[INFO] [1779876081.839364394]: Label ID: 71, Name: toaster[0m
+[0m[INFO] [1779876081.839402893]: Label ID: 72, Name: sink[0m
+[0m[INFO] [1779876081.839435268]: Label ID: 73, Name: r[33m[WARN] [1779876082.053423964]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1779876082.054822181]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1779876082.655008242]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1779876082.656277254]: local_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[WARN] [1779876003.854636]: Failed to send startup safe state: Serial read timeout on /dev/ttyS0 after 0 of 8 bytes
+[WARN] [1779876004.034957]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876006.111490]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876008.195336]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876010.255757]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876012.301327]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876014.413035]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876016.470594]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876018.514410]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876020.588432]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876022.668550]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876024.745561]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876026.815694]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876028.874565]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876030.925270]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876032.992189]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876035.055015]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876037.116523]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876039.230097]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876041.299126]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876043.389049]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876045.478472]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876047.564638]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876049.672762]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876051.736077]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876053.799171]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876055.868479]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876057.874616]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876059.944466]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876062.020647]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876064.094781]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876066.187447]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876068.249417]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876070.352337]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876072.459406]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876074.561319]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876076.647396]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876078.726387]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876080.756203]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876082.765760]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876084.781721]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876086.793592]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876088.885896]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876090.995163]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876093.095353]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876095.095506]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876097.109273]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876099.186249]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876101.208940]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876103.285537]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876105.368496]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876107.456381]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876109.542953]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876111.658610]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876113.732998]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876115.814542]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876117.890920]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876119.984848]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876122.071568]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876124.148565]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876126.225889]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876128.318858]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876130.415939]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876132.501974]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876134.613220]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876136.645252]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876138.717969]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876140.785306]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876142.874816]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876144.969070]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876147.048835]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876149.137762]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876151.205092]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876153.285545]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876155.385218]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876157.384617]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876159.434914]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[0m[INFO] [1779876082.059349907]: global_costmap: Using plugin "static_layer"[0m
+[0m[INFO] [1779876082.089826895]: Requesting the map...[0m
+[0m[INFO] [1779876082.293583245]: Resizing costmap to 4 X 4 at 0.050000 m/pix[0m
+[0m[INFO] [1779876082.393470800]: Received a 4 X 4 map at 0.050000 m/pix[0m
+[0m[INFO] [1779876082.407885501]: global_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1779876082.429156540]:     Subscribed to Topics: laser_scan_sensor[0m
+[0m[INFO] [1779876082.491921723]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1779876082.658343663]: local_costmap: Using plugin "static_layer"[0m
+[0m[INFO] [1779876082.670080636]: Requesting the map...[0m
+[0m[INFO] [1779876082.681508157]: Resizing costmap to 321 X 321 at 0.050000 m/pix[0m
+[0m[INFO] [1779876082.684252676]: Resizing static layer to 321 X 321 at 0.050000 m/pix[0m
+[0m[INFO] [1779876082.781513043]: Received a 321 X 321 map at 0.050000 m/pix[0m
+[0m[INFO] [1779876082.794732814]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1779876082.803768142]:     Subscribed to Topics: laser_scan_sensor[0m
+[0m[INFO] [1779876082.944899097]: Created local_planner teb_local_planner/TebLocalPlannerROS[0m
+[0m[INFO] [1779876083.029023739]: Footprint model 'polygon' loaded for trajectory optimization.[0m
+[0m[INFO] [1779876083.029567102]: Parallel planning in distinctive topologies disabled.[0m
+[0m[INFO] [1779876083.029598017]: No costmap conversion plugin specified. All occupied costmap cells are treaten as point obstacles.[0m
+[0m[INFO] [1779876083.195749335]: max_vel_trans is not set, setting it equal to max_vel_x: 0.1[0m
+[0m[INFO] [1779876083.196979264]: Footprint model 'polygon' loaded for trajectory optimization.[0m
+[0m[INFO] [1779876083.743422467]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1779876083.797231874]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1779876083.920058873]: odom received![0m
+[0m[INFO] [1779876091.928807935]: Resizing costmap to 539 X 455 at 0.050000 m/pix[0m
+[0m[INFO] [1779876091.934173027]: Resizing static layer to 539 X 455 at 0.050000 m/pix[0m
+[WARN] [1779876161.518510]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876163.582523]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876165.629367]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876167.708807]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876169.815121]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876171.886360]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876173.984582]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876176.054616]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876178.103289]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876180.165044]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876182.222521]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876184.299314]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876186.371392]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876188.475098]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876190.550092]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876192.612720]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876194.676068]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876196.754995]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876198.807957]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876200.894596]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876202.988350]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876205.102519]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876207.158027]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876209.236776]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876211.297510]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876213.367897]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876215.425483]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876217.517994]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876219.608511]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876221.709175]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876223.788895]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876225.874774]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876227.956174]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779876230.035616]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[INFO] [1779876009.690221]: chassis task_enable updated: False
+efrigerator[0m
+[0m[INFO] [1779876081.839509641]: Label ID: 74, Name: book[0m
+[0m[INFO] [1779876081.839548723]: Label ID: 75, Name: clock[0m
+[0m[INFO] [1779876081.839586056]: Label ID: 76, Name: vase[0m
+[0m[INFO] [1779876081.839624263]: Label ID: 77, Name: scissors[0m
+[0m[INFO] [1779876081.839662179]: Label ID: 78, Name: teddy bear[0m
+[0m[INFO] [1779876081.839701553]: Label ID: 79, Name: hair drier[0m
+[0m[INFO] [1779876081.839739469]: Label ID: 80, Name: toothbrush[0m
+[0m[INFO] [1779876081.839854383]: Class colors generated[0m
+[0m[INFO] [1779876081.839900757]: successed to reinit all workers on work loop begin.[0m
+[0m[INFO] [1779876081.839967255]: try to reinit explore map.[0m
+[0m[INFO] [1779876081.840034628]: explore map initialized, resolution: 0.050000, moreCellCntToExtend: 32.[0m
+[0m[INFO] [1779876081.840078086]: try to sync whole explore map.[0m
+[0m[INFO] [1779876081.840135543]: known area: ((-0.100000, -0.100000), (0.200000, 0.200000)), cell rect : ((-2, -2), ( 4,  4)) [0m
+[0m[INFO] [1779876081.840201166]: whole explore map synchronized.[0m
+[0m[INFO] [1779876091.926435570]: sync the map after preview map generated.[0m
+[0m[INFO] [1779876091.926478153]: try to sync whole explore map.[0m
+[0m[INFO] [1779876091.926503819]: known area: ((-15.150001, -9.250001), (26.950001, 22.750002)), cell rect : ((-303, -185), ( 539,  455)) [0m
+[0m[INFO] [1779876091.927132930]: whole explore map synchronized.[0m
+[WARN] [1779876006.616214]: RTSP encoder probe failed, skip encoder=h264_v4l2m2m for stream left
+[WARN] [1779876006.858294]: RTSP encoder probe failed, skip encoder=h264_vaapi for stream left
+[WARN] [1779876007.061011]: RTSP encoder probe failed, skip encoder=h264_omx for stream left
+[WARN] [1779876007.817349]: RTSP encoder probe failed, skip encoder=h264_v4l2m2m for stream right
+[WARN] [1779876008.028625]: RTSP encoder probe failed, skip encoder=h264_vaapi for stream right
+[WARN] [1779876008.254964]: RTSP encoder probe failed, skip encoder=h264_omx for stream right
+[WARN] [1779876105.885259]: Failed to reload navigation map via /change_map: service [/change_map] unavailable
+[WARN] [1779876105.890858]: Navigation map refresh before planning failed (code=None), continue planning with current map
+[WARN] [1779876230.604491]: Drop stale left frame for RTSP: age=0.760s (max=0.400s)
+[WARN] [1779876230.610913]: Drop stale right frame for RTSP: age=0.764s (max=0.400s)
+[WARN] [1779876232.615952]: Drop stale left frame for RTSP: age=2.770s (max=0.400s)
+[WARN] [1779876232.643474]: Drop stale right frame for RTSP: age=2.774s (max=0.400s)
+[WARN] [1779876234.653998]: Drop stale left frame for RTSP: age=4.810s (max=0.400s)
+[WARN] [1779876234.657141]: Drop stale right frame for RTSP: age=4.814s (max=0.400s)
+[WARN] [1779876236.655244]: Drop stale left frame for RTSP: age=6.810s (max=0.400s)
+[WARN] [1779876236.663464]: Drop stale right frame for RTSP: age=6.815s (max=0.400s)
+[WARN] [1779876238.655286]: Drop stale left frame for RTSP: age=8.810s (max=0.400s)
+[WARN] [1779876238.844806]: Drop stale right frame for RTSP: age=9.004s (max=0.400s)
+[WARN] [1779876240.655499]: Drop stale left frame for RTSP: age=10.811s (max=0.400s)
+[WARN] [1779876240.854571]: Drop stale right frame for RTSP: age=11.014s (max=0.400s)
+[WARN] [1779876242.709768]: Drop stale left frame for RTSP: age=12.865s (max=0.400s)
+[WARN] [1779876242.856773]: Drop stale right frame for RTSP: age=13.016s (max=0.400s)
+[WARN] [1779876244.799654]: Drop stale left frame for RTSP: age=14.955s (max=0.400s)
+[WARN] [1779876244.904209]: Drop stale right frame for RTSP: age=15.064s (max=0.400s)
+[WARN] [1779876246.804733]: Drop stale left frame for RTSP: age=16.960s (max=0.400s)
+[WARN] [1779876247.001407]: Drop stale right frame for RTSP: age=17.160s (max=0.400s)
+[WARN] [1779876248.836644]: Drop stale left frame for RTSP: age=18.992s (max=0.400s)
+[WARN] [1779876249.013920]: Drop stale right frame for RTSP: age=19.173s (max=0.400s)
+[WARN] [1779876250.855236]: Drop stale left frame for RTSP: age=21.010s (max=0.400s)
+[WARN] [1779876251.058112]: Drop stale right frame for RTSP: age=21.217s (max=0.400s)
+[WARN] [1779876252.870965]: Drop stale left frame for RTSP: age=23.026s (max=0.400s)
+[WARN] [1779876253.068533]: Drop stale right frame for RTSP: age=23.228s (max=0.400s)
+[WARN] [1779876254.988822]: Drop stale left frame for RTSP: age=25.145s (max=0.400s)
+[WARN] [1779876255.117101]: Drop stale right frame for RTSP: age=25.277s (max=0.400s)
+[WARN] [1779876256.994189]: Drop stale left frame for RTSP: age=27.146s (max=0.400s)
+[WARN] [1779876257.118472]: Drop stale right frame for RTSP: age=27.277s (max=0.400s)
+[WARN] [1779876259.022484]: Drop stale left frame for RTSP: age=29.176s (max=0.400s)
+[WARN] [1779876259.191964]: Drop stale right frame for RTSP: age=29.351s (max=0.400s)
+[WARN] [1779876261.070111]: Drop stale left frame for RTSP: age=31.225s (max=0.400s)
+[WARN] [1779876261.221386]: Drop stale right frame for RTSP: age=31.380s (max=0.400s)
+[WARN] [1779876263.120272]: Drop stale left frame for RTSP: age=33.276s (max=0.400s)
+[WARN] [1779876263.268796]: Drop stale right frame for RTSP: age=33.429s (max=0.400s)
+[WARN] [1779876265.128852]: Drop stale left frame for RTSP: age=35.284s (max=0.400s)
+[WARN] [1779876265.272493]: Drop stale right frame for RTSP: age=35.429s (max=0.400s)
+[WARN] [1779876267.197612]: Drop stale left frame for RTSP: age=37.354s (max=0.400s)
+[WARN] [1779876267.320780]: Drop stale right frame for RTSP: age=37.479s (max=0.400s)
+[WARN] [1779876269.219108]: Drop stale left frame for RTSP: age=39.375s (max=0.400s)
+[WARN] [1779876269.322727]: Drop stale right frame for RTSP: age=39.480s (max=0.400s)
+[WARN] [1779876271.271889]: Drop stale left frame for RTSP: age=41.426s (max=0.400s)
+[WARN] [1779876271.322521]: Drop stale right frame for RTSP: age=41.480s (max=0.400s)
+[WARN] [1779876273.438594]: Drop stale left frame for RTSP: age=43.594s (max=0.400s)
+[WARN] [1779876273.442972]: Drop stale right frame for RTSP: age=43.598s (max=0.400s)
+[WARN] [1779876275.449610]: Drop stale left frame for RTSP: age=45.605s (max=0.400s)
+[WARN] [1779876275.458428]: Drop stale right frame for RTSP: age=45.609s (max=0.400s)
+[WARN] [1779876277.469300]: Drop stale left frame for RTSP: age=47.625s (max=0.400s)
+[WARN] [1779876277.475123]: Drop stale right frame for RTSP: age=47.629s (max=0.400s)
+[WARN] [1779876279.469557]: Drop stale left frame for RTSP: age=49.625s (max=0.400s)
+[WARN] [1779876279.475296]: Drop stale right frame for RTSP: age=49.629s (max=0.400s)
+[WARN] [1779876281.471437]: Drop stale left frame for RTSP: age=51.626s (max=0.400s)
+[WARN] [1779876281.481547]: Drop stale right frame for RTSP: age=51.630s (max=0.400s)
+[WARN] [1779876283.523044]: Drop stale left frame for RTSP: age=53.676s (max=0.400s)
+[WARN] [1779876283.533876]: Drop stale right frame for RTSP: age=53.680s (max=0.400s)
+[WARN] [1779876285.569518]: Drop stale left frame for RTSP: age=55.725s (max=0.400s)
+[WARN] [1779876285.575444]: Drop stale right frame for RTSP: age=55.729s (max=0.400s)
+[WARN] [1779876287.569631]: Drop stale left frame for RTSP: age=57.725s (max=0.400s)
+[WARN] [1779876287.619609]: Drop stale right frame for RTSP: age=57.779s (max=0.400s)
+[WARN] [1779876289.618742]: Drop stale left frame for RTSP: age=59.775s (max=0.400s)
+[WARN] [1779876289.623185]: Drop stale right frame for RTSP: age=59.779s (max=0.400s)
+[WARN] [1779876291.631043]: Drop stale left frame for RTSP: age=61.785s (max=0.400s)
+[WARN] [1779876291.639153]: Drop stale right frame for RTSP: age=61.789s (max=0.400s)
+[WARN] [1779876293.671473]: Drop stale left frame for RTSP: age=63.826s (max=0.400s)
+[WARN] [1779876293.683503]: Drop stale right frame for RTSP: age=63.830s (max=0.400s)
+[WARN] [1779876295.721724]: Drop stale left frame for RTSP: age=65.876s (max=0.400s)
+[WARN] [1779876295.731980]: Drop stale right frame for RTSP: age=65.880s (max=0.400s)
+[WARN] [1779876297.769606]: Drop stale left frame for RTSP: age=67.925s (max=0.400s)
+[WARN] [1779876297.775069]: Drop stale right frame for RTSP: age=67.929s (max=0.400s)
+[WARN] [1779876299.821339]: Drop stale left frame for RTSP: age=69.976s (max=0.400s)
+[WARN] [1779876299.831619]: Drop stale right frame for RTSP: age=69.980s (max=0.400s)
+[WARN] [1779876301.846774]: Drop stale left frame for RTSP: age=72.002s (max=0.400s)
+[WARN] [1779876301.856049]: Drop stale right frame for RTSP: age=72.006s (max=0.400s)
+[WARN] [1779876303.880708]: Drop stale left frame for RTSP: age=74.035s (max=0.400s)
+[WARN] [1779876303.891407]: Drop stale right frame for RTSP: age=74.039s (max=0.400s)
+[WARN] [1779876305.931111]: Drop stale left frame for RTSP: age=76.085s (max=0.400s)
+[WARN] [1779876305.943571]: Drop stale right frame for RTSP: age=76.089s (max=0.400s)
+[WARN] [1779876307.980062]: Drop stale left frame for RTSP: age=78.135s (max=0.400s)
+[WARN] [1779876307.990659]: Drop stale right frame for RTSP: age=78.139s (max=0.400s)
+[WARN] [1779876310.030536]: Drop stale left frame for RTSP: age=80.185s (max=0.400s)
+[WARN] [1779876310.042034]: Drop stale right frame for RTSP: age=80.189s (max=0.400s)
+[WARN] [1779876312.078218]: Drop stale left frame for RTSP: age=82.234s (max=0.400s)
+[WARN] [1779876312.083721]: Drop stale right frame for RTSP: age=82.238s (max=0.400s)
+[WARN] [1779876314.079200]: Drop stale left frame for RTSP: age=84.234s (max=0.400s)
+[WARN] [1779876314.084909]: Drop stale right frame for RTSP: age=84.238s (max=0.400s)
+[WARN] [1779876316.130077]: Drop stale left frame for RTSP: age=86.285s (max=0.400s)
+[WARN] [1779876316.142925]: Drop stale right frame for RTSP: age=86.289s (max=0.400s)
+[INFO] [1779876004.654380]: Loaded task registry state: 8 map-bound tasks
+[INFO] [1779876004.770725]: Loaded map overlay state: map_id=map_1778827104561 dir=/home/neardi/work/Grinder/temp/grinder_scheduler_state/map_states/map_1778827104561
+[INFO] [1779876004.773463]: Loaded scheduler local state from /home/neardi/work/Grinder/temp/grinder_scheduler_state
+[INFO] [1779876008.275563]: Starting mediamtx on rtsp://172.20.20.180:8554 using /home/neardi/work/Grinder/tools/mediamtx/mediamtx
+[INFO] [1779876008.727219]: mediamtx rtsp listener is ready on 127.0.0.1:8554
+[INFO] [1779876081.890893]: Map switched, loaded task-map binding: map_id=map_1778827104561 task_id=<empty> selected_regions=work_region_1
+[INFO] [1779876081.933228]: Starting ffmpeg RTSP publisher left -> rtsp://127.0.0.1:8554/left (encoder=libx264)
+[INFO] [1779876081.968874]: Saved initial map preview to /home/neardi/work/Grinder/temp/aurora_map_preview_s1_res0p05_oxm0p1_oym0p1_ow4_oh4_pw4_ph4_v48.jpg
+[INFO] [1779876081.992497]: Live map cropped to free-space bbox: size=4x4 margin=0.50m
+[INFO] [1779876082.135898]: Starting ffmpeg RTSP publisher right -> rtsp://127.0.0.1:8554/right (encoder=libx264)
+[INFO] [1779876087.470448]: Live map cropped to free-space bbox: size=321x321 margin=0.50m
+[INFO] [1779876093.489978]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876099.448000]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876105.087306]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876105.737205]: PathPlanRequest: request_id=req_1779876013 active_work_region_id=work_region_1 force_replan=true use_all_regions=false work_region_count=1 has_start=false has_end=false global_direction=x
+[INFO] [1779876105.740452]: PathPlanRequest selection: map_id=map_1778827104561 task_id=task selected_regions=work_region_1 region_repeat_config={"work_region_1": 1}
+[INFO] [1779876105.896135]: Planning input regions: work_total=1 work_selected=1 obstacle=0 active_work_region_id=work_region_1 force_use_all=false
+[INFO] [1779876106.037868]: Planning started: task_id=task map_version=48 map_size=539x455 resolution=0.0500
+[INFO] [1779876106.159616]: Plan request poses: current_pose=(0.020, 0.150, -128.0deg) request_start=(<empty>) request_end=(<empty>)
+   [障碍物膨胀] 膨胀半径: 12像素, 原始: 138285, 膨胀后: 173172
+[INFO] [1779876106.296600]: PlannerAdapter input start candidates: current_pose=(0.020,0.150) request_start=<empty> direction=x
+[INFO] [1779876106.303560]: Region planning start from robot pose: region_idx=1 region_id=work_region_1 robot=(0.020,0.150) start_grid=(188,303)
+[INFO] [1779876106.306608]: Region planning effective start: region_idx=1 region_id=work_region_1 source=current_pose start_grid=(188,303) start_world=(-0.000,0.150)
+[INFO] [1779876106.506834]: Single-region planning merged: region_idx=1 region_id=work_region_1 points=203 cumulative=203
+[INFO] [1779876106.517048]: Prepended start pose point: x=0.020 y=0.151 heading=-127.9deg path_points=204
+[INFO] [1779876106.520824]: Precomputed goal points: count=6
+[INFO] [1779876106.523310]: Published planned path to navigation: points=204
+[INFO] [1779876106.608082]: Path preview paint override: obstacle_regions=0 erase_regions=1
+[INFO] [1779876106.614210]: Saved planned path preview latest files: /home/neardi/work/Grinder/temp/aurora_path_preview_latest.jpg, /home/neardi/work/Grinder/temp/aurora_path_preview_tasktask_latest.jpg
+[INFO] [1779876106.634177]: Saved planned path debug json to /home/neardi/work/Grinder/temp/path_debug/planned_path_tasktask_mapv48_pathv1_1779876106.json
+[INFO] [1779876106.657505]: Planning success: path_version=1 points=204 length_m=10.276
+[INFO] [1779876106.815707]: Saved planned path preview latest files: /home/neardi/work/Grinder/temp/aurora_path_preview_latest.jpg, /home/neardi/work/Grinder/temp/aurora_path_preview_tasktask_latest.jpg
+[INFO] [1779876111.252132]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876116.793967]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876122.398619]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876128.049997]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876133.536306]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876139.355889]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876144.550022]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876149.936451]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876155.301135]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876160.902354]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876166.596093]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876172.268518]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876178.040086]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876183.533976]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876189.147915]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876194.613856]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876200.335535]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876205.773399]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876211.324807]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876216.489391]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876222.222492]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876227.795903]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876229.965872]: Starting ffmpeg RTSP publisher right -> rtsp://127.0.0.1:8554/right (encoder=libx264)
+[INFO] [1779876230.190000]: Starting ffmpeg RTSP publisher left -> rtsp://127.0.0.1:8554/left (encoder=libx264)
+[INFO] [1779876230.375437]: Starting ffmpeg RTSP publisher right -> rtsp://127.0.0.1:8554/right (encoder=libx264)
+[INFO] [1779876233.356156]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876239.214034]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876244.816090]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876250.429363]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876255.997789]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876261.601038]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876267.211118]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876273.054460]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876278.852018]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876284.406053]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876289.557231]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876295.416450]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876300.770954]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876306.795969]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876312.020958]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876317.751944]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876323.601175]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876329.399931]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876335.152127]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876340.960403]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[INFO] [1779876346.806726]: Live map cropped to free-space bbox: size=474x421 margin=0.50m
+[WARN] [1779876318.131608]: Drop stale left frame for RTSP: age=88.286s (max=0.400s)
+[WARN] [1779876318.143072]: Drop stale right frame for RTSP: age=88.290s (max=0.400s)
+[WARN] [1779876320.221533]: Drop stale left frame for RTSP: age=90.377s (max=0.400s)
+[WARN] [1779876320.227433]: Drop stale right frame for RTSP: age=90.381s (max=0.400s)
+[WARN] [1779876322.236209]: Drop stale left frame for RTSP: age=92.390s (max=0.400s)
+[WARN] [1779876322.246244]: Drop stale right frame for RTSP: age=92.394s (max=0.400s)
+[WARN] [1779876324.280880]: Drop stale left frame for RTSP: age=94.435s (max=0.400s)
+[WARN] [1779876324.292090]: Drop stale right frame for RTSP: age=94.439s (max=0.400s)
+[WARN] [1779876326.281812]: Drop stale left frame for RTSP: age=96.436s (max=0.400s)
+[WARN] [1779876326.329694]: Drop stale right frame for RTSP: age=96.488s (max=0.400s)
+[WARN] [1779876328.328752]: Drop stale left frame for RTSP: age=98.484s (max=0.400s)
+[WARN] [1779876328.332716]: Drop stale right frame for RTSP: age=98.488s (max=0.400s)
+[WARN] [1779876330.448168]: Drop stale left frame for RTSP: age=100.603s (max=0.400s)
+[WARN] [1779876330.453023]: Drop stale right frame for RTSP: age=100.607s (max=0.400s)
+[WARN] [1779876332.481753]: Drop stale left frame for RTSP: age=102.636s (max=0.400s)
+[WARN] [1779876332.496197]: Drop stale right frame for RTSP: age=102.640s (max=0.400s)
+[WARN] [1779876334.482616]: Drop stale left frame for RTSP: age=104.635s (max=0.400s)
+[WARN] [1779876334.530934]: Drop stale right frame for RTSP: age=104.689s (max=0.400s)
+[WARN] [1779876336.528120]: Drop stale left frame for RTSP: age=106.684s (max=0.400s)
+[WARN] [1779876336.533176]: Drop stale right frame for RTSP: age=106.688s (max=0.400s)
+[WARN] [1779876338.628401]: Drop stale left frame for RTSP: age=108.784s (max=0.400s)
+[WARN] [1779876338.632781]: Drop stale right frame for RTSP: age=108.788s (max=0.400s)
+[WARN] [1779876340.630591]: Drop stale left frame for RTSP: age=110.785s (max=0.400s)
+[WARN] [1779876340.641960]: Drop stale right frame for RTSP: age=110.789s (max=0.400s)
+[WARN] [1779876342.680684]: Drop stale left frame for RTSP: age=112.835s (max=0.400s)
+[WARN] [1779876342.691183]: Drop stale right frame for RTSP: age=112.839s (max=0.400s)
+[WARN] [1779876344.680870]: Drop stale left frame for RTSP: age=114.835s (max=0.400s)
+[WARN] [1779876344.693588]: Drop stale right frame for RTSP: age=114.839s (max=0.400s)
+[WARN] [1779876346.683649]: Drop stale left frame for RTSP: age=116.838s (max=0.400s)
+[WARN] [1779876346.699588]: Drop stale right frame for RTSP: age=116.842s (max=0.400s)
+[WARN] [1779876348.688670]: Drop stale left frame for RTSP: age=118.845s (max=0.400s)
+[WARN] [1779876348.739502]: Drop stale right frame for RTSP: age=118.899s (max=0.400s)
+[WARN] [1779876350.692746]: Drop stale left frame for RTSP: age=120.846s (max=0.400s)
+[WARN] [1779876350.741781]: Drop stale right frame for RTSP: age=120.900s (max=0.400s)
+[WARN] [1779876352.793142]: Drop stale left frame for RTSP: age=122.948s (max=0.400s)
+[WARN] [1779876352.799822]: Drop stale right frame for RTSP: age=122.952s (max=0.400s)
+[WARN] [1779876354.841992]: Drop stale left frame for RTSP: age=124.996s (max=0.400s)
+[WARN] [1779876354.852350]: Drop stale right frame for RTSP: age=125.001s (max=0.400s)
+[WARN] [1779876356.841504]: Drop stale left frame for RTSP: age=126.997s (max=0.400s)
+[WARN] [1779876356.900151]: Drop stale right frame for RTSP: age=127.059s (max=0.400s)
+[WARN] [1779876358.850482]: Drop stale left frame for RTSP: age=129.006s (max=0.400s)
+[WARN] [1779876358.905435]: Drop stale right frame for RTSP: age=129.061s (max=0.400s)
+[WARN] [1779876360.900532]: Drop stale left frame for RTSP: age=131.055s (max=0.400s)
+[WARN] [1779876360.909770]: Drop stale right frame for RTSP: age=131.060s (max=0.400s)
+[WARN] [1779876362.902039]: Drop stale left frame for RTSP: age=133.056s (max=0.400s)
+[WARN] [1779876363.055882]: Drop stale right frame for RTSP: age=133.061s (max=0.400s)
+[WARN] [1779876364.916850]: Drop stale left frame for RTSP: age=135.071s (max=0.400s)
+[WARN] [1779876365.067431]: Drop stale right frame for RTSP: age=135.225s (max=0.400s)
+[WARN] [1779876367.033634]: Drop stale left frame for RTSP: age=137.189s (max=0.400s)
+[WARN] [1779876367.127203]: Drop stale right frame for RTSP: age=137.284s (max=0.400s)
+[WARN] [1779876369.064481]: Drop stale left frame for RTSP: age=139.220s (max=0.400s)
+[WARN] [1779876369.165025]: Drop stale right frame for RTSP: age=139.324s (max=0.400s)
+[WARN] [1779876371.068192]: Drop stale left frame for RTSP: age=141.223s (max=0.400s)
+[WARN] [1779876371.169749]: Drop stale right frame for RTSP: age=141.327s (max=0.400s)
+[WARN] [1779876373.076910]: Drop stale left frame for RTSP: age=143.232s (max=0.400s)
+[WARN] [1779876373.214972]: Drop stale right frame for RTSP: age=143.374s (max=0.400s)
+[WARN] [1779876375.114769]: Drop stale left frame for RTSP: age=145.270s (max=0.400s)
+[WARN] [1779876375.215769]: Drop stale right frame for RTSP: age=145.374s (max=0.400s)
+[WARN] [1779876377.119280]: Drop stale left frame for RTSP: age=147.272s (max=0.400s)
+[WARN] [1779876377.218556]: Drop stale right frame for RTSP: age=147.375s (max=0.400s)
+[WARN] [1779876379.166766]: Drop stale left frame for RTSP: age=149.322s (max=0.400s)
+[WARN] [1779876379.218962]: Drop stale right frame for RTSP: age=149.377s (max=0.400s)
+[WARN] [1779876381.216398]: Drop stale left frame for RTSP: age=151.372s (max=0.400s)
+[WARN] [1779876381.221666]: Drop stale right frame for RTSP: age=151.376s (max=0.400s)
+[WARN] [1779876383.268559]: Drop stale left frame for RTSP: age=153.423s (max=0.400s)
+[WARN] [1779876383.276452]: Drop stale right frame for RTSP: age=153.427s (max=0.400s)
+[WARN] [1779876385.437985]: Drop stale left frame for RTSP: age=155.593s (max=0.400s)
+[WARN] [1779876385.454570]: Drop stale right frame for RTSP: age=155.597s (max=0.400s)
+[WARN] [1779876387.468474]: Drop stale left frame for RTSP: age=157.623s (max=0.400s)
+[WARN] [1779876387.480431]: Drop stale right frame for RTSP: age=157.627s (max=0.400s)
+[WARN] [1779876389.516145]: Drop stale left frame for RTSP: age=159.672s (max=0.400s)
+[WARN] [1779876389.520284]: Drop stale right frame for RTSP: age=159.676s (max=0.400s)
+[WARN] [1779876391.648004]: Drop stale left frame for RTSP: age=161.803s (max=0.400s)
+[WARN] [1779876391.652431]: Drop stale right frame for RTSP: age=161.808s (max=0.400s)
+[WARN] [1779876393.652096]: Drop stale left frame for RTSP: age=163.807s (max=0.400s)
+[WARN] [1779876393.657497]: Drop stale right frame for RTSP: age=163.812s (max=0.400s)
+[WARN] [1779876395.669544]: Drop stale left frame for RTSP: age=165.823s (max=0.400s)
+[WARN] [1779876395.695845]: Drop stale right frame for RTSP: age=165.828s (max=0.400s)
+[WARN] [1779876397.688142]: Drop stale left frame for RTSP: age=167.843s (max=0.400s)
+[WARN] [1779876397.701510]: Drop stale right frame for RTSP: age=167.847s (max=0.400s)
+[WARN] [1779876399.687708]: Drop stale left frame for RTSP: age=169.843s (max=0.400s)
+[WARN] [1779876399.736861]: Drop stale right frame for RTSP: age=169.896s (max=0.400s)
+[WARN] [1779876401.737143]: Drop stale left frame for RTSP: age=171.892s (max=0.400s)
+[WARN] [1779876401.742242]: Drop stale right frame for RTSP: age=171.897s (max=0.400s)
+[WARN] [1779876403.738269]: Drop stale left frame for RTSP: age=173.893s (max=0.400s)
+[WARN] [1779876403.749147]: Drop stale right frame for RTSP: age=173.897s (max=0.400s)
+[WARN] [1779876405.738454]: Drop stale left frame for RTSP: age=175.893s (max=0.400s)
+[WARN] [1779876405.749458]: Drop stale right frame for RTSP: age=175.897s (max=0.400s)
+[WARN] [1779876407.792517]: Drop stale left frame for RTSP: age=177.947s (max=0.400s)
+[WARN] [1779876407.808647]: Drop stale right frame for RTSP: age=177.951s (max=0.400s)
+[WARN] [1779876409.836256]: Drop stale left frame for RTSP: age=179.992s (max=0.400s)
+[WARN] [1779876409.840744]: Drop stale right frame for RTSP: age=179.996s (max=0.400s)
+[WARN] [1779876411.838164]: Drop stale left frame for RTSP: age=181.993s (max=0.400s)
+[WARN] [1779876411.849112]: Drop stale right frame for RTSP: age=181.997s (max=0.400s)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          

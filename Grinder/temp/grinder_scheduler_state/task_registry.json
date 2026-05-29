@@ -1,0 +1,18 @@
+{
+  "map_tasks": {
+    "LIVE_MAP1": {
+      "map_id": "LIVE_MAP1",
+      "task_id": "task",
+      "selected_work_region_ids": [
+        "work_region_1"
+      ],
+      "region_repeat_config": {
+        "work_region_1": 1
+      },
+      "active_work_region_id": "work_region_1",
+      "updated_at": 1779948364,
+      "task_result": {}
+    }
+  },
+  "saved_at": 1779948364
+}

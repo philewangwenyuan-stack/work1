@@ -1,0 +1,1308 @@
+... logging to /root/.ros/log/dd4f78fc-542f-11f1-9fc6-c285ead2937b/roslaunch-LPA3588-15058.log
+Checking log directory for disk usage. This may take a while.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/neardi/work/Grinder/catkin_ws/src/grinder_scheduler/launch/grinder_system.launch
+[1mstarted roslaunch server http://LPA3588:44643/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /chassis_driver/baudrate: 19200
+ * /chassis_driver/cmd_source_hold_sec: 0.2
+ * /chassis_driver/cmd_vel_deadband_angular: 0.0
+ * /chassis_driver/cmd_vel_deadband_linear: 0.0
+ * /chassis_driver/cmd_vel_drive_left_sign: 1
+ * /chassis_driver/cmd_vel_drive_right_sign: 1
+ * /chassis_driver/cmd_vel_drive_swap_lr: False
+ * /chassis_driver/cmd_vel_enabled: True
+ * /chassis_driver/cmd_vel_gear_ratio: 60.0
+ * /chassis_driver/cmd_vel_max_abs_wheel_rpm: 3000.0
+ * /chassis_driver/cmd_vel_max_angular: 1.6
+ * /chassis_driver/cmd_vel_max_input_v: 0.7
+ * /chassis_driver/cmd_vel_max_input_w: 1.6
+ * /chassis_driver/cmd_vel_max_linear: 0.7
+ * /chassis_driver/cmd_vel_scale: 1.0
+ * /chassis_driver/cmd_vel_topic: /cmd_vel
+ * /chassis_driver/cmd_vel_wheel_radius_m: 0.15
+ * /chassis_driver/cmd_vel_wheel_track_m: 0.79
+ * /chassis_driver/command_timeout: 5
+ * /chassis_driver/disc_speed_max: 32767
+ * /chassis_driver/disc_speed_min: -32768
+ * /chassis_driver/drive_left_sign: -1
+ * /chassis_driver/drive_right_sign: -1
+ * /chassis_driver/drive_swap_lr: False
+ * /chassis_driver/enable_cmd_ramp_limit: False
+ * /chassis_driver/enable_safe_stop_on_comm_error: False
+ * /chassis_driver/left_speed_max: 32767
+ * /chassis_driver/left_speed_min: -32768
+ * /chassis_driver/manual_drive_max_wheel_speed: 600
+ * /chassis_driver/manual_wheel_deadband_rpm: 30
+ * /chassis_driver/manual_wheel_hyst_enter_rpm: 60
+ * /chassis_driver/manual_wheel_hyst_exit_rpm: 30
+ * /chassis_driver/max_cmd_step_rpm: 50
+ * /chassis_driver/max_echo_deviation: 200
+ * /chassis_driver/max_echo_failures: 2
+ * /chassis_driver/max_retries: 3
+ * /chassis_driver/poll_rate_hz: 20.0
+ * /chassis_driver/port: /dev/ttyS0
+ * /chassis_driver/right_speed_max: 32767
+ * /chassis_driver/right_speed_min: -32768
+ * /chassis_driver/rs485_raw_log_enabled: False
+ * /chassis_driver/rs485_raw_log_file: temp/chassis_rs48...
+ * /chassis_driver/safe_stop_on_error_interval: 1.0
+ * /chassis_driver/slave_id: 1
+ * /chassis_driver/startup_zero_output: True
+ * /chassis_driver/stop_on_timeout: True
+ * /chassis_driver/task_enable_default: False
+ * /chassis_driver/timeout: 0.1
+ * /chassis_driver/write_verify: False
+ * /grinder_scheduler/aurora_ip_address: 192.168.11.1
+ * /grinder_scheduler/aurora_no_preview_image: False
+ * /grinder_scheduler/aurora_raw_image_on: True
+ * /grinder_scheduler/change_map_service: /change_map
+ * /grinder_scheduler/default_path_spacing: 0.425
+ * /grinder_scheduler/depth_image_colorized_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/first_frame_save_dir: temp
+ * /grinder_scheduler/global_plan_publish_hz: 2
+ * /grinder_scheduler/inflation_radius: 0.06
+ * /grinder_scheduler/initial_map_preview_dir: temp
+ * /grinder_scheduler/initial_map_preview_format: jpg
+ * /grinder_scheduler/initial_map_preview_max_edge: 320
+ * /grinder_scheduler/left_image_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/live_map_dir: temp/live_map
+ * /grinder_scheduler/live_map_enabled: True
+ * /grinder_scheduler/live_map_hz: 1.0
+ * /grinder_scheduler/live_map_image_name: map1.pgm
+ * /grinder_scheduler/live_map_yaml_name: map.yaml
+ * /grinder_scheduler/live_preview_enabled: True
+ * /grinder_scheduler/live_preview_file: temp/aurora_map_p...
+ * /grinder_scheduler/live_preview_format: jpg
+ * /grinder_scheduler/live_preview_hz: 1.0
+ * /grinder_scheduler/live_preview_max_edge: 320
+ * /grinder_scheduler/local_rtsp_enabled: True
+ * /grinder_scheduler/local_rtsp_encoder: libx264
+ * /grinder_scheduler/local_rtsp_fps: 15
+ * /grinder_scheduler/local_rtsp_host: 0.0.0.0
+ * /grinder_scheduler/local_rtsp_log_dir: temp
+ * /grinder_scheduler/local_rtsp_mediamtx_path: /home/neardi/work...
+ * /grinder_scheduler/local_rtsp_port: 8554
+ * /grinder_scheduler/local_rtsp_public_host: auto
+ * /grinder_scheduler/local_rtsp_start_server: True
+ * /grinder_scheduler/local_rtsp_width: 640
+ * /grinder_scheduler/manual_reverse_guard_sec: 1.0
+ * /grinder_scheduler/map_topic: /map
+ * /grinder_scheduler/navigation_map_yaml_path: /home/neardi/work...
+ * /grinder_scheduler/odom_topic: /odom
+ * /grinder_scheduler/overlap_ratio: 0
+ * /grinder_scheduler/path_goal_reach_dist: 0.03
+ * /grinder_scheduler/path_segment_timeout: 60.0
+ * /grinder_scheduler/persist_state_dir: temp/grinder_sche...
+ * /grinder_scheduler/persist_state_enabled: True
+ * /grinder_scheduler/planned_path_preview_arrow_len_px: 12
+ * /grinder_scheduler/planned_path_preview_arrow_step: 10
+ * /grinder_scheduler/planned_path_preview_dir: temp
+ * /grinder_scheduler/planned_path_preview_format: jpg
+ * /grinder_scheduler/planned_path_preview_include_overlay: True
+ * /grinder_scheduler/planned_path_preview_max_edge: 320
+ * /grinder_scheduler/planned_path_preview_show_direction: True
+ * /grinder_scheduler/planner_script_path: third_party/path_...
+ * /grinder_scheduler/right_image_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/save_first_frame_on_startup: False
+ * /grinder_scheduler/scheduler_tick_hz: 5
+ * /grinder_scheduler/set_map_localization_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/set_map_update_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/sl_linka_host: 0.0.0.0
+ * /grinder_scheduler/sl_linka_port: 8002
+ * /grinder_scheduler/sl_linka_python_sdk_dir: third_party/sl_li...
+ * /grinder_scheduler/start_aurora_driver: False
+ * /grinder_scheduler/stcm_local_dir: maps/raw
+ * /grinder_scheduler/stream_enabled: True
+ * /grinder_scheduler/stream_fps: 8
+ * /grinder_scheduler/stream_push_hz: 20
+ * /grinder_scheduler/stream_url: rtmp://127.0.0.1:...
+ * /grinder_scheduler/stream_width: 1280
+ * /grinder_scheduler/sync_get_stcm_service: /slamware_ros_sdk...
+ * /grinder_scheduler/sync_set_stcm_service: /slamware_ros_sdk...
+ * /grinder_scheduler/turn_radius: 0.1
+ * /grinder_scheduler/use_depth_colorized_image: False
+ * /grinder_scheduler/vehicle_length: 1.531
+ * /grinder_scheduler/vehicle_width: 0.8
+ * /move_base/TebLocalPlannerROS/acc_lim_theta: 0.05
+ * /move_base/TebLocalPlannerROS/acc_lim_x: 0.1
+ * /move_base/TebLocalPlannerROS/allow_init_with_backwards_motion: False
+ * /move_base/TebLocalPlannerROS/complete_global_plan: False
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/cluster_max_distance: 0.2
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/cluster_min_pts: 2
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/convex_hull_min_pt_separation: 0.1
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_convert_outlier_pts: True
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_filter_remaining_outlier_pts: False
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_inlier_distance: 0.15
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_min_inliers: 10
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_no_iterations: 1500
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_remainig_outliers: 3
+ * /move_base/TebLocalPlannerROS/costmap_converter_plugin: 
+ * /move_base/TebLocalPlannerROS/costmap_converter_rate: 5
+ * /move_base/TebLocalPlannerROS/costmap_converter_spin_thread: True
+ * /move_base/TebLocalPlannerROS/costmap_obstacles_behind_robot_dist: 0.3
+ * /move_base/TebLocalPlannerROS/delete_detours_backwards: True
+ * /move_base/TebLocalPlannerROS/dt_hysteresis: 0.1
+ * /move_base/TebLocalPlannerROS/dt_ref: 0.4
+ * /move_base/TebLocalPlannerROS/dynamic_obstacle_inflation_dist: 0.3
+ * /move_base/TebLocalPlannerROS/enable_homotopy_class_planning: False
+ * /move_base/TebLocalPlannerROS/enable_multithreading: True
+ * /move_base/TebLocalPlannerROS/exact_arc_length: False
+ * /move_base/TebLocalPlannerROS/feasibility_check_no_poses: 2
+ * /move_base/TebLocalPlannerROS/footprint_model/type: point
+ * /move_base/TebLocalPlannerROS/free_goal_vel: False
+ * /move_base/TebLocalPlannerROS/global_plan_overwrite_orientation: False
+ * /move_base/TebLocalPlannerROS/global_plan_prune_distance: 1
+ * /move_base/TebLocalPlannerROS/global_plan_viapoint_sep: 0.5
+ * /move_base/TebLocalPlannerROS/h_signature_prescaler: 0.5
+ * /move_base/TebLocalPlannerROS/h_signature_threshold: 0.1
+ * /move_base/TebLocalPlannerROS/include_costmap_obstacles: True
+ * /move_base/TebLocalPlannerROS/include_dynamic_obstacles: False
+ * /move_base/TebLocalPlannerROS/inflation_dist: 0.6
+ * /move_base/TebLocalPlannerROS/max_global_plan_lookahead_dist: 1.0
+ * /move_base/TebLocalPlannerROS/max_number_classes: 4
+ * /move_base/TebLocalPlannerROS/max_ratio_detours_duration_best_duration: 3.0
+ * /move_base/TebLocalPlannerROS/max_samples: 200
+ * /move_base/TebLocalPlannerROS/max_vel_theta: 0.1
+ * /move_base/TebLocalPlannerROS/max_vel_x: 0.1
+ * /move_base/TebLocalPlannerROS/max_vel_x_backwards: 0.05
+ * /move_base/TebLocalPlannerROS/max_vel_y: 0.0
+ * /move_base/TebLocalPlannerROS/min_obstacle_dist: 0.5
+ * /move_base/TebLocalPlannerROS/min_turning_radius: 0.0
+ * /move_base/TebLocalPlannerROS/no_inner_iterations: 3
+ * /move_base/TebLocalPlannerROS/no_outer_iterations: 2
+ * /move_base/TebLocalPlannerROS/obstacle_cost_exponent: 4
+ * /move_base/TebLocalPlannerROS/obstacle_heading_threshold: 0.45
+ * /move_base/TebLocalPlannerROS/obstacle_poses_affected: 15
+ * /move_base/TebLocalPlannerROS/odom_topic: odom
+ * /move_base/TebLocalPlannerROS/optimization_activate: True
+ * /move_base/TebLocalPlannerROS/optimization_verbose: False
+ * /move_base/TebLocalPlannerROS/oscillation_filter_duration: 10
+ * /move_base/TebLocalPlannerROS/oscillation_omega_eps: 0.1
+ * /move_base/TebLocalPlannerROS/oscillation_recovery: True
+ * /move_base/TebLocalPlannerROS/oscillation_recovery_min_duration: 10
+ * /move_base/TebLocalPlannerROS/oscillation_v_eps: 0.1
+ * /move_base/TebLocalPlannerROS/penalty_epsilon: 0.03
+ * /move_base/TebLocalPlannerROS/publish_feedback: False
+ * /move_base/TebLocalPlannerROS/roadmap_graph_area_length_scale: 1.0
+ * /move_base/TebLocalPlannerROS/roadmap_graph_area_width: 5
+ * /move_base/TebLocalPlannerROS/roadmap_graph_no_samples: 15
+ * /move_base/TebLocalPlannerROS/selection_alternative_time_cost: False
+ * /move_base/TebLocalPlannerROS/selection_cost_hysteresis: 1.0
+ * /move_base/TebLocalPlannerROS/selection_obst_cost_scale: 100.0
+ * /move_base/TebLocalPlannerROS/selection_prefer_initial_plan: 0.9
+ * /move_base/TebLocalPlannerROS/shrink_horizon_backup: True
+ * /move_base/TebLocalPlannerROS/shrink_horizon_min_duration: 10
+ * /move_base/TebLocalPlannerROS/switching_blocking_period: 0.0
+ * /move_base/TebLocalPlannerROS/teb_autosize: True
+ * /move_base/TebLocalPlannerROS/viapoints_all_candidates: True
+ * /move_base/TebLocalPlannerROS/visualize_hc_graph: False
+ * /move_base/TebLocalPlannerROS/visualize_with_time_as_z_axis_scale: False
+ * /move_base/TebLocalPlannerROS/weight_acc_lim_theta: 1.0
+ * /move_base/TebLocalPlannerROS/weight_acc_lim_x: 1.0
+ * /move_base/TebLocalPlannerROS/weight_adapt_factor: 2
+ * /move_base/TebLocalPlannerROS/weight_dynamic_obstacle: 10
+ * /move_base/TebLocalPlannerROS/weight_dynamic_obstacle_inflation: 0.2
+ * /move_base/TebLocalPlannerROS/weight_inflation: 0.2
+ * /move_base/TebLocalPlannerROS/weight_kinematics_forward_drive: 800
+ * /move_base/TebLocalPlannerROS/weight_kinematics_nh: 1000
+ * /move_base/TebLocalPlannerROS/weight_kinematics_turning_radius: 1
+ * /move_base/TebLocalPlannerROS/weight_max_vel_theta: 1
+ * /move_base/TebLocalPlannerROS/weight_max_vel_x: 2
+ * /move_base/TebLocalPlannerROS/weight_obstacle: 100
+ * /move_base/TebLocalPlannerROS/weight_optimaltime: 1
+ * /move_base/TebLocalPlannerROS/weight_shortest_path: 1
+ * /move_base/TebLocalPlannerROS/weight_viapoint: 20
+ * /move_base/TebLocalPlannerROS/xy_goal_tolerance: 0.1
+ * /move_base/TebLocalPlannerROS/yaw_goal_tolerance: 0.1
+ * /move_base/base_global_planner: carrot_planner/Ca...
+ * /move_base/base_local_planner: teb_local_planner...
+ * /move_base/controller_frequency: 10.0
+ * /move_base/controller_patience: 10.0
+ * /move_base/global_costmap/always_send_full_costmap: True
+ * /move_base/global_costmap/footprint_padding: 0.0
+ * /move_base/global_costmap/global_frame: map
+ * /move_base/global_costmap/inflation_layer/cost_scaling_factor: 10.0
+ * /move_base/global_costmap/inflation_layer/enabled: True
+ * /move_base/global_costmap/inflation_layer/inflation_radius: 0.1
+ * /move_base/global_costmap/map_type: costmap
+ * /move_base/global_costmap/obstacle_layer/combination_method: 1
+ * /move_base/global_costmap/obstacle_layer/enabled: True
+ * /move_base/global_costmap/obstacle_layer/inflation_radius: 0.2
+ * /move_base/global_costmap/obstacle_layer/laser_scan_sensor/clearing: True
+ * /move_base/global_costmap/obstacle_layer/laser_scan_sensor/data_type: LaserScan
+ * /move_base/global_costmap/obstacle_layer/laser_scan_sensor/marking: True
+ * /move_base/global_costmap/obstacle_layer/laser_scan_sensor/topic: scan
+ * /move_base/global_costmap/obstacle_layer/observation_sources: laser_scan_sensor
+ * /move_base/global_costmap/obstacle_layer/obstacle_range: 3.0
+ * /move_base/global_costmap/obstacle_layer/raytrace_range: 4.0
+ * /move_base/global_costmap/obstacle_layer/track_unknown_space: True
+ * /move_base/global_costmap/plugins: [{'name': 'static...
+ * /move_base/global_costmap/publish_frequency: 2.0
+ * /move_base/global_costmap/robot_base_frame: base_link
+ * /move_base/global_costmap/robot_radius: 0.17
+ * /move_base/global_costmap/static_layer/enabled: True
+ * /move_base/global_costmap/static_layer/map_topic: map
+ * /move_base/global_costmap/static_map: True
+ * /move_base/global_costmap/transform_tolerance: 0.5
+ * /move_base/global_costmap/update_frequency: 2.0
+ * /move_base/local_costmap/always_send_full_costmap: True
+ * /move_base/local_costmap/footprint_padding: 0.0
+ * /move_base/local_costmap/global_frame: map
+ * /move_base/local_costmap/height: 5
+ * /move_base/local_costmap/inflation_layer/cost_scaling_factor: 10.0
+ * /move_base/local_costmap/inflation_layer/enabled: True
+ * /move_base/local_costmap/inflation_layer/inflation_radius: 0.1
+ * /move_base/local_costmap/map_type: costmap
+ * /move_base/local_costmap/obstacle_layer/combination_method: 1
+ * /move_base/local_costmap/obstacle_layer/enabled: True
+ * /move_base/local_costmap/obstacle_layer/inflation_radius: 0.2
+ * /move_base/local_costmap/obstacle_layer/laser_scan_sensor/clearing: True
+ * /move_base/local_costmap/obstacle_layer/laser_scan_sensor/data_type: LaserScan
+ * /move_base/local_costmap/obstacle_layer/laser_scan_sensor/marking: True
+ * /move_base/local_costmap/obstacle_layer/laser_scan_sensor/topic: scan
+ * /move_base/local_costmap/obstacle_layer/observation_sources: laser_scan_sensor
+ * /move_base/local_costmap/obstacle_layer/obstacle_range: 3.0
+ * /move_base/local_costmap/obstacle_layer/raytrace_range: 4.0
+ * /move_base/local_costmap/obstacle_layer/track_unknown_space: True
+ * /move_base/local_costmap/plugins: [{'name': 'static...
+ * /move_base/local_costmap/publish_frequency: 5.0
+ * /move_base/local_costmap/resolution: 0.1
+ * /move_base/local_costmap/robot_base_frame: base_link
+ * /move_base/local_costmap/robot_radius: 0.17
+ * /move_base/local_costmap/rolling_window: True
+ * /move_base/local_costmap/static_layer/enabled: True
+ * /move_base/local_costmap/static_layer/map_topic: map
+ * /move_base/local_costmap/static_map: False
+ * /move_base/local_costmap/transform_tolerance: 0.5
+ * /move_base/local_costmap/update_frequency: 5.0
+ * /move_base/local_costmap/width: 5
+ * /rosdistro: noetic
+ * /rosversion: 1.17.4
+ * /slamware_ros_sdk_server_node/angle_compensate: True
+ * /slamware_ros_sdk_server_node/camera_left: base_camera_left
+ * /slamware_ros_sdk_server_node/camera_right: base_camera_right
+ * /slamware_ros_sdk_server_node/imu_frame: base_imu_link
+ * /slamware_ros_sdk_server_node/imu_raw_data_period: 0.005
+ * /slamware_ros_sdk_server_node/ip_address: 192.168.11.1
+ * /slamware_ros_sdk_server_node/ladar_data_clockwise: True
+ * /slamware_ros_sdk_server_node/laser_frame: base_laser_link
+ * /slamware_ros_sdk_server_node/map_frame: map
+ * /slamware_ros_sdk_server_node/map_pub_period: 0.2
+ * /slamware_ros_sdk_server_node/no_preview_image: False
+ * /slamware_ros_sdk_server_node/odom_frame: odom
+ * /slamware_ros_sdk_server_node/raw_image_on: False
+ * /slamware_ros_sdk_server_node/robot_frame: base_link
+ * /slamware_ros_sdk_server_node/robot_pose_pub_period: 0.05
+ * /slamware_ros_sdk_server_node/robot_pose_topic: robot_pose
+ * /slamware_ros_sdk_server_node/scan_pub_period: 0.1
+ * /use_sim_time: False
+
+NODES
+  /
+    baselink2map (tf2_ros/static_transform_publisher)
+    chassis_driver (grinder_chassis_driver/chassis_driver_node.py)
+    grinder_scheduler (grinder_scheduler/scheduler_node.py)
+    move_base (move_base/move_base)
+    odom2map (tf2_ros/static_transform_publisher)
+    rviz (rviz/rviz)
+    slamware_ros_sdk_server_node (slamware_ros_sdk/slamware_ros_sdk_server_node)
+QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
+Cannot find EGLConfig, returning null config
+Unable to find an X11 visual which matches EGL config 0
+[0m[INFO] [1779270031.236643257]: Trying to connect to Aurora, tryCnt: 1.[0m
+[0m[INFO] [1779270031.260912423]: Selected device: tcp/192.168.11.1:7447[0m
+[0m[INFO] [1779270031.260987669]: Connecting to the selected device...[0m
+[0m[INFO] [1779270031.286106706]: Connected to the selected device[0m
+[0m[INFO] [1779270031.312628293]: Connected to Aurora, OK, tryCnt: 1.[0m
+[0m[INFO] [1779270031.312899237]: Odometry:0.1000[0m
+[0m[INFO] [1779270031.315326941]: RobotPose:0.0500[0m
+[0m[INFO] [1779270031.317338751]: ExploreMapUpdate:0.2000[0m
+[0m[INFO] [1779270031.317413997]: ExploreMapPublish:0.2000[0m
+[0m[INFO] [1779270031.320780818]: LaserScan:0.1000[0m
+[0m[INFO] [1779270031.322359525]: ServerImuRawDataWorker:0.0050[0m
+[0m[INFO] [1779270031.324132472]: RosConnectWorker:0.1000[0m
+[0m[INFO] [1779270031.325801592]: SystemStatus:0.0500[0m
+[0m[INFO] [1779270031.329848835]: StereoImage:0.0500[0m
+[0m[INFO] [1779270031.339257500]: PointCloud:0.1000[0m
+[0m[INFO] [1779270031.368999791]: SlamwareRosSdkServer, work thread begin.[0m
+[0m[INFO] [1779270031.369149992]: reset all 12 workers on work loop begin.[0m
+[0m[INFO] [1779270031.369446892]: Depth camera supported, subscription enabled, post-filtering on[0m
+[0m[INFO] [1779270031.369585135]: Semantic segmentation supported and subscription enabled[0m
+[0m[INFO] [1779270031.369666797]: Semantic segmentation label set: coco80[0m
+[0m[INFO] [1779270031.369766542]: Label ID: 0, Name: (null)[0m
+[0m[INFO] [1779270031.369830997]: Label ID: 1, Name: person[0m
+[0m[INFO] [1779270031.369873286]: Label ID: 2, Name: bicycle[0m
+[0m[INFO] [1779270031.369911784]: Label ID: 3, Name: car[0m
+[0m[INFO] [1779270031.369957282]: Label ID: 4, Name: motorcycle[0m
+[0m[INFO] [1779270031.369994613]: Label ID: 5, Name: airplane[0m
+[0m[INFO] [1779270031.370037778]: Label ID: 6, Name: bus[0m
+[0m[INFO] [1779270031.370076567]: Label ID: 7, Name: train[0m
+[0m[INFO] [1779270031.370121190]: Label ID: 8, Name: truck[0m
+[0m[INFO] [1779270031.370160271]: Label ID: 9, Name: boat[0m
+[0m[INFO] [1779270031.370196728]: Label ID: 10, Name: traffic light[0m
+[0m[INFO] [1779270031.370240184]: Label ID: 11, Name: fire hydrant[0m
+[0m[INFO] [1779270031.370276932]: Label ID: 12, Name: stop sign[0m
+[0m[INFO] [1779270031.370319221]: Label ID: 13, Name: parking meter[0m
+[0m[INFO] [1779270031.370357719]: Label ID: 14, Name: bench[0m
+[0m[INFO] [1779270031.370394467]: Label ID: 15, Name: bird[0m
+[0m[INFO] [1779270031.370437923]: Label ID: 16, Name: cat[0m
+[0m[INFO] [1779270031.370474088]: Label ID: 17, Name: dog[0m
+[0m[INFO] [1779270031.370516669]: Label ID: 18, Name: horse[0m
+[0m[INFO] [1779270031.370553417]: Label ID: 19, Name: sheep[0m
+[0m[INFO] [1779270031.370589873]: Label ID: 20, Name: cow[0m
+[0m[INFO] [1779270031.370633038]: Label ID: 21, Name: elephant[0m
+[0m[INFO] [1779270031.370670077]: Label ID: 22, Name: bear[0m
+[0m[INFO] [1779270031.370714700]: Label ID: 23, Name: zebra[0m
+[0m[INFO] [1779270031.370752031]: Label ID: 24, Name: giraffe[0m
+[0m[INFO] [1779270031.370794321]: Label ID: 25, Name: backpack[0m
+[0m[INFO] [1779270031.370831652]: Label ID: 26, Name: umbrella[0m
+[0m[INFO] [1779270031.370868983]: Label ID: 27, Name: handbag[0m
+[0m[INFO] [1779270031.370910398]: Label ID: 28, Name: tie[0m
+[0m[INFO] [1779270031.370946854]: Label ID: 29, Name: suitcase[0m
+[0m[INFO] [1779270031.370983019]: Label ID: 30, Name: frisbee[0m
+[0m[INFO] [1779270031.371021517]: Label ID: 31, Name: skis[0m
+[0m[INFO] [1779270031.371059140]: Label ID: 32, Name: snowboard[0m
+[0m[INFO] [1779270031.371095596]: Label ID: 33, Name: sports ball[0m
+[0m[INFO] [1779270031.371131761]: Label ID: 34, Name: kite[0m
+[0m[INFO] [1779270031.371168801]: Label ID: 35, Name: baseball bat[0m
+[0m[INFO] [1779270031.371205257]: Label ID: 36, Name: baseball glove[0m
+[0m[INFO] [1779270031.371241714]: Label ID: 37, Name: skateboard[0m
+[0m[INFO] [1779270031.371278753]: Label ID: 38, Name: surfboard[0m
+[0m[INFO] [1779270031.371314918]: Label ID: 39, Name: tennis racket[0m
+[0m[[33m[WARN] [1779270031.589400262]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1779270031.593186477]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1779270032.191825983]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1779270032.192750225]: local_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[WARN] [1779270032.269178]: Planner module import failed, using fallback planner: [Errno 2] No such file or directory: '/home/neardi/work/Grinder/third_party/path_planner/mst25.py'
+[WARN] [1779270032.870308]: RTSP encoder probe failed, skip encoder=h264_v4l2m2m for stream left
+[WARN] [1779270033.075880]: RTSP encoder probe failed, skip encoder=h264_vaapi for stream left
+[WARN] [1779270033.281686]: RTSP encoder probe failed, skip encoder=h264_omx for stream left
+[WARN] [1779270034.033067]: RTSP encoder probe failed, skip encoder=h264_v4l2m2m for stream right
+[WARN] [1779270034.285093]: RTSP encoder probe failed, skip encoder=h264_vaapi for stream right
+[WARN] [1779270034.492265]: RTSP encoder probe failed, skip encoder=h264_omx for stream right
+[INFO] [1779270032.128940]: Loaded task registry state: 8 map-bound tasks
+[INFO] [1779270032.204195]: Loaded map overlay state: map_id=map_1778827104561 dir=/home/neardi/work/Grinder/temp/grinder_scheduler_state/map_states/map_1778827104561
+[INFO] [1779270032.208842]: Loaded scheduler local state from /home/neardi/work/Grinder/temp/grinder_scheduler_state
+[INFO] [1779270034.517478]: Starting mediamtx on rtsp://172.20.18.253:8554 using /home/neardi/work/Grinder/tools/mediamtx/mediamtx
+[INFO] [1779270034.562254]: mediamtx rtsp listener is ready on 127.0.0.1:8554
+Traceback (most recent call last):
+  File "/home/neardi/work/Grinder/catkin_ws/devel/lib/grinder_scheduler/scheduler_node.py", line 15, in <module>
+    exec(compile(fh.read(), python_script, 'exec'), context)
+  File "/home/neardi/work/Grinder/catkin_ws/src/grinder_scheduler/scripts/scheduler_node.py", line 7, in <module>
+    main()
+  File "/home/neardi/work/Grinder/catkin_ws/src/grinder_scheduler/src/grinder_scheduler/scheduler_node.py", line 4595, in main
+    node = SchedulerNode()
+  File "/home/neardi/work/Grinder/catkin_ws/src/grinder_scheduler/src/grinder_scheduler/scheduler_node.py", line 363, in __init__
+    self.sl_link_server = SlLinkAServer(
+  File "/home/neardi/work/Grinder/catkin_ws/src/grinder_scheduler/src/grinder_scheduler/sl_linka_adapter.py", line 17, in __init__
+    from sl_link.frame import SL_PROTOCOL_VERSION, SlFrame, SlFrameParser
+ModuleNotFoundError: No module named 'sl_link'
+[WARN] [1779270031.867040]: Failed to send startup safe state: Serial read timeout on /dev/ttyS0 after 0 of 8 bytes
+[WARN] [1779270032.057712]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270034.092258]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270036.187037]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270038.295033]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270040.390963]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270042.467610]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270044.548558]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270046.650848]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270048.734388]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270050.754244]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270052.827092]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270054.881044]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270056.956568]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270059.022392]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270061.111444]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270063.217598]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270065.291003]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270067.387885]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270069.467577]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270071.541106]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270073.604450]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270075.664158]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270077.740614]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270079.844938]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270081.921193]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270083.997619]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270086.054798]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270088.168191]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270090.277326]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270092.301222]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270094.301232]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270096.417205]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270098.491735]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270100.607526]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270102.620772]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270104.704465]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270106.788198]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270108.790780]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270110.794142]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270112.901475]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270114.987485]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270117.067827]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270119.139909]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270121.213431]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270123.305735]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270125.364237]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270127.451112]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270129.547913]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270131.621049]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270133.713851]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270135.811602]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270137.891690]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270140.002136]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270142.083276]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270144.190491]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270146.268128]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270148.359676]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270150.366734]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270152.461333]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270154.560389]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270156.651410]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270158.690736]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270160.788716]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270162.857685]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270164.933989]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270167.007920]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270169.074733]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270171.141152]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270173.228763]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270175.238187]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270177.334402]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270179.441021]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270181.554031]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270183.667079]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270185.764503]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270187.878362]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270189.944736]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270192.018755]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270194.081092]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270196.141589]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270198.211278]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270200.268638]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270202.328278]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270204.401551]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270206.467861]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270208.535409]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270210.594287]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270212.596551]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270214.608577]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270216.615290]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270218.701288]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270220.774730]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270222.837840]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270224.894438]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270226.948002]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270229.039263]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270231.041761]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270233.141863]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270235.155685]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270237.161921]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270239.251640]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270241.275097]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270243.344688]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270245.407846]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270247.479277]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270249.534872]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270251.595009]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270253.644533]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270255.710912]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270257.811915]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270259.881706]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270261.953197]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270264.011023]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270266.074792]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270268.137996]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270270.204728]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270272.271092]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270274.344618]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270276.452318]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270278.462389]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270280.531423]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270282.587890]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270284.648102]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270286.712793]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270288.808444]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270290.915260]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270292.916463]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270294.931954]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270296.938773]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270299.048360]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270301.162365]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270303.179333]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270305.285019]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270307.301949]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270309.315229]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270311.417737]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270313.478088]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270315.568351]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270317.686443]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270319.788274]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270321.882708]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270323.884889]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270325.975408]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270328.084494]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270330.197984]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270332.298087]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270334.388620]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270336.502337]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270338.554198]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270340.648211]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270342.659037]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270344.776507]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270346.872833]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270348.894799]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270350.931537]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270352.959488]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270354.960904]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270357.071537]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270359.075194]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270361.175038]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270363.175606]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270365.192012]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270367.298461]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270369.406119]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270371.428342]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270373.538669]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270375.644977]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270377.655448]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270379.758500]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270381.772095]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270383.861852]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270385.948323]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270388.058608]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270390.127976]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270392.208759]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270394.271960]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270396.344860]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270398.424668]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270400.505408]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270402.588483]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270404.661519]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270406.662488]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270408.775082]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270410.791667]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270412.874848]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270414.947018]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270417.031411]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270419.104838]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270421.168177]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270423.234223]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270425.301329]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270427.324927]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270429.435874]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270431.464063]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270433.580103]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270435.585349]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270437.602231]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270439.713907]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270441.817844]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270443.908204]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270445.971741]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270448.052138]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270450.141126]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270452.204487]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270454.319416]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270456.417973]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270458.521932]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270460.637630]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270462.649724]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270464.664887]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270466.682460]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270468.809668]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270470.834296]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270472.904510]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270474.987061]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270477.061367]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270479.131341]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270481.228123]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270483.330714]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270485.431210]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270487.517928]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270489.580561]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270491.644435]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270493.718135]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270495.778000]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270497.851095]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270499.921398]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270502.002955]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270504.019738]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270506.122220]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270508.211212]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270510.285219]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270512.371239]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270514.454199]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270516.524606]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270518.611178]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270520.677713]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270522.748453]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270524.824648]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270526.910845]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270528.991396]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270531.075591]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270533.151387]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270535.247588]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270537.337823]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270539.418395]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270541.503090]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270543.501445]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270545.502039]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270547.510517]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270549.516247]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270551.631432]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270553.744318]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270555.852044]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270557.858406]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270559.948599]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270562.065383]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270564.154511]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270566.247336]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270568.304346]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270570.392519]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270572.503701]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270574.594226]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270576.686857]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270578.805603]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270580.893998]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270582.905416]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270585.004363]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270587.086641]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270589.178053]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270591.275306]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270593.354299]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270595.449740]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270597.551862]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270599.641431]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270601.731023]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270603.792620]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270605.821278]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270607.821304]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270609.917695]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270611.950815]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270613.966710]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270616.058635]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270618.154875]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270620.167534]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270622.264846]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270624.371678]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270626.480900]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270628.491024]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270630.580904]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270632.664763]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270634.752903]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270636.844132]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270638.921521]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270641.002241]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270643.070816]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270645.160439]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270647.265034]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270649.338192]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270651.418207]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270653.494670]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270655.557827]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270657.621253]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270659.687659]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270661.757772]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270663.825175]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270665.884355]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270667.958139]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270670.027612]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270672.098181]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270674.164625]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270676.234060]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270678.307856]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270680.367958]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270682.438510]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270684.501311]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270686.571574]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270688.648129]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270690.712085]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270692.821219]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270694.897685]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270696.957822]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270699.014634]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270701.091148]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270703.187919]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270705.281260]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270707.370758]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270709.475167]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270711.496095]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270713.611496]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270715.667765]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270717.747957]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270719.817650]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270721.881586]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270723.951106]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270726.011130]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270728.071519]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270730.160603]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270732.171941]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270734.285166]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270736.371350]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270738.458049]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270740.542137]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270742.651865]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270744.758893]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270746.764411]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270748.878492]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270750.891648]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270752.998724]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270755.115239]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270757.231692]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270759.298432]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270761.361511]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270763.474811]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270765.572075]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270767.681073]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270769.686309]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270771.787473]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270773.867952]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270775.931423]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270778.022882]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270780.090899]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270782.095073]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270784.178531]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270786.251443]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270788.254740]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270790.341787]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270792.411059]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270794.479269]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270796.482354]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270798.595385]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270800.601475]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270802.606235]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270804.715396]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270806.715539]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270808.718531]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270810.825162]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270812.935343]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270815.048421]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270817.161172]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270819.227356]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270821.305351]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270823.315024]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270825.415693]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270827.428409]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270829.434467]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270831.451371]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270833.561625]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270835.588571]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270837.629713]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270839.638603]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270841.748156]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270843.854773]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270845.855023]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270847.858271]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270849.968716]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270852.095637]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270854.190837]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270856.192138]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270858.194824]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270860.195474]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270862.205721]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270864.235251]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270866.248436]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270868.357571]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270870.427721]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270872.491394]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270874.609039]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270876.628223]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270878.691120]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270880.764055]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270882.857748]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270884.924513]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270886.984759]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270889.051206]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270891.165128]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270893.165757]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270895.172169]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270897.255038]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270899.311369]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270901.398762]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270903.464620]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270905.534770]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270907.618700]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270909.670991]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270911.698758]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270913.791303]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270915.805298]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270917.913243]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270920.025776]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270922.131589]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270924.141717]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270926.251543]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270928.255466]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270930.332361]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270932.398223]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270934.471413]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270936.548186]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270938.611506]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270940.677593]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270942.745256]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270944.821786]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270946.900992]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270948.970826]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270951.060810]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270953.141863]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270955.240877]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270957.323730]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270959.415082]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270961.513221]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270963.626292]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270965.704379]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270967.804443]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270969.893859]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270971.988168]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270974.074458]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270976.168117]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270978.253745]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270980.354844]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270982.444162]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270984.537295]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270986.628396]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270988.704125]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270990.790746]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270992.902385]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270995.008245]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270997.091785]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779270999.194621]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271001.294609]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271003.367867]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271005.417716]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271007.467501]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271009.521385]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271011.580549]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271013.631476]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271015.711827]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271017.807185]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271019.872104]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271021.961869]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271024.038475]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271026.138086]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271028.227287]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271030.298198]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271032.375233]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271034.457950]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271036.537503]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271038.607673]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271040.691971]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271042.754378]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271044.837866]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271046.901069]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271049.002339]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271051.071837]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271053.144474]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271055.224246]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271057.295758]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271059.381580]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271061.444529]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271063.520672]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271065.597542]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271067.661772]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271069.724800]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271071.784663]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271073.851591]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271075.911232]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271078.022787]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271080.131561]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271082.244931]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271084.301506]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271086.364790]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271088.424639]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271090.538173]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271092.611169]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271094.664859]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271096.724787]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271098.832166]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271100.848540]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271102.851318]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271104.854438]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271106.862262]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271108.974902]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271111.086598]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271113.201969]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271115.308365]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271117.311815]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271119.425440]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271121.428239]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271123.535835]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271125.651461]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271127.658702]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271129.751410]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271131.755597]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271133.858361]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271135.921774]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271137.977851]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271140.037862]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271142.098410]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271144.164395]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271146.264394]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271148.324511]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271150.391394]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271152.451449]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271154.514829]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271156.605228]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271158.618731]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271160.725013]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271162.781415]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271164.864873]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271166.921350]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271168.991246]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271171.061332]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271173.117978]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271175.184613]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271177.274741]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271179.344697]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271181.404937]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271183.501715]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271185.564917]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271187.634619]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271189.714607]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271191.791379]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271193.857924]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271195.934527]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271198.008035]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271200.092001]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271202.171255]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271204.231331]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271206.308530]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271208.426181]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271210.433059]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271212.544582]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271214.607737]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271216.672098]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271218.678425]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271220.792135]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271222.811615]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271224.916684]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271226.918447]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271229.032182]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271231.135207]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271233.138440]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271235.221998]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271237.277886]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271239.337850]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271241.407732]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271243.481417]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271245.579099]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271247.654782]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271249.711918]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271251.781271]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271253.858550]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271255.968625]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271258.082182]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271260.089036]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271262.205511]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271264.314945]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271266.425086]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271268.538637]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271270.649413]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271272.758145]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271274.868781]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271276.978540]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271278.994927]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271281.105264]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271283.121671]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271285.238379]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271287.255036]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271289.275601]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271291.278650]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271293.385267]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271295.458322]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271297.518019]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271299.604921]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271301.708287]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271303.821807]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271305.921894]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271307.994146]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271310.064640]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271312.131605]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271314.204462]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271316.258120]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271318.321260]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[0m[INFO] [1779270031.595536310]: global_costmap: Using plugin "static_layer"[0m
+[0m[INFO] [1779270031.614368224]: Requesting the map...[0m
+[0m[INFO] [1779270031.822465099]: Resizing costmap to 4 X 4 at 0.050000 m/pix[0m
+[0m[INFO] [1779270031.922375737]: Received a 4 X 4 map at 0.050000 m/pix[0m
+[0m[INFO] [1779270031.951004795]: global_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1779270031.966464639]:     Subscribed to Topics: laser_scan_sensor[0m
+[0m[INFO] [1779270032.043913767]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1779270032.194029699]: local_costmap: Using plugin "static_layer"[0m
+[0m[INFO] [1779270032.206572574]: Requesting the map...[0m
+[0m[INFO] [1779270032.210501115]: Resizing costmap to 226 X 183 at 0.050000 m/pix[0m
+[0m[INFO] [1779270032.211440523]: Resizing static layer to 226 X 183 at 0.050000 m/pix[0m
+[0m[INFO] [1779270032.310602707]: Received a 226 X 183 map at 0.050000 m/pix[0m
+[0m[INFO] [1779270032.338807707]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1779270032.347814478]:     Subscribed to Topics: laser_scan_sensor[0m
+[0m[INFO] [1779270032.418077657]: Created local_planner teb_local_planner/TebLocalPlannerROS[0m
+[0m[INFO] [1779270032.595188070]: Footprint model 'point' loaded for trajectory optimization.[0m
+[0m[INFO] [1779270032.595763789]: Parallel planning in distinctive topologies disabled.[0m
+[0m[INFO] [1779270032.595815120]: No costmap conversion plugin specified. All occupied costmap cells are treaten as point obstacles.[0m
+[0m[INFO] [1779270032.692400649]: max_vel_trans is not set, setting it equal to max_vel_x: 0.1[0m
+[0m[INFO] [1779270032.692739256]: Footprint model 'point' loaded for trajectory optimization.[0m
+[0m[INFO] [1779270033.242982131]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1779270033.264392368]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1779270033.384926257]: Resizing costmap to 227 X 183 at 0.050000 m/pix[0m
+[0m[INFO] [1779270033.385488852]: Resizing static layer to 227 X 183 at 0.050000 m/pix[0m
+[0m[INFO] [1779270033.385894539]: odom received![0m
+[0m[INFO] [1779270045.449570245]: Resizing costmap to 228 X 183 at 0.050000 m/pix[0m
+[0m[INFO] [1779270045.450542611]: Resizing static layer to 228 X 183 at 0.050000 m/pix[0m
+[0m[INFO] [1779270070.115831591]: Resizing costmap to 320 X 183 at 0.050000 m/pix[0m
+[0m[INFO] [1779270070.117983107]: Resizing static layer to 320 X 183 at 0.050000 m/pix[0m
+[0m[INFO] [1779271268.386094661]: Resizing costmap to 321 X 183 at 0.050000 m/pix[0m
+[0m[INFO] [1779271268.387895664]: Resizing static layer to 321 X 183 at 0.050000 m/pix[0m
+[0m[INFO] [1779271404.759380245]: Resizing costmap to 322 X 183 at 0.050000 m/pix[0m
+[0m[INFO] [1779271404.761259706]: Resizing static layer to 322 X 183 at 0.050000 m/pix[0m
+[0m[INFO] [1779271404.959429656]: Resizing costmap to 323 X 183 at 0.050000 m/pix[0m
+[0m[INFO] [1779271404.961068789]: Resizing static layer to 323 X 183 at 0.050000 m/pix[0m
+[0m[INFO] [1779271407.763225283]: Resizing costmap to 323 X 259 at 0.050000 m/pix[0m
+[0m[INFO] [1779271407.766080931]: Resizing static layer to 323 X 259 at 0.050000 m/pix[0m
+[0m[INFO] [1779271412.303822524]: Resizing costmap to 323 X 269 at 0.050000 m/pix[0m
+[0m[INFO] [1779271412.307040999]: Resizing static layer to 323 X 269 at 0.050000 m/pix[0m
+[0m[INFO] [1779271412.754330353]: Resizing costmap to 323 X 271 at 0.050000 m/pix[0m
+[0m[INFO] [1779271412.757098253]: Resizing static layer to 323 X 271 at 0.050000 m/pix[0m
+[0m[INFO] [1779271415.962887907]: Resizing costmap to 324 X 271 at 0.050000 m/pix[0m
+[0m[INFO] [1779271415.966063091]: Resizing static layer to 324 X 271 at 0.050000 m/pix[0m
+[0m[INFO] [1779271416.377245870]: Resizing costmap to 324 X 272 at 0.050000 m/pix[0m
+[0m[INFO] [1779271416.380088978]: Resizing static layer to 324 X 272 at 0.050000 m/pix[0m
+[0m[INFO] [1779271416.813037721]: Resizing costmap to 324 X 273 at 0.050000 m/pix[0m
+[0m[INFO] [1779271416.815009055]: Resizing static layer [WARN] [1779271320.401239]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271322.464396]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271324.531334]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271326.581274]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271328.647891]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271330.704624]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271332.774672]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271334.849187]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271336.958969]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271338.959909]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271340.972742]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271343.078396]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271345.178199]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271347.282291]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271349.364666]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271351.444499]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271353.523539]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271355.580801]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271357.640999]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271359.651285]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271361.717858]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271363.784635]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271365.844583]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271367.921193]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271369.987919]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271372.054670]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271374.127532]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271376.215082]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271378.315450]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271380.424902]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271382.535123]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271384.538023]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271386.634874]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271388.745158]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271390.824576]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271392.891379]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271394.947475]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271397.014670]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271399.070737]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271401.165109]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271403.231192]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271405.291347]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271407.355089]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271409.411172]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271411.464789]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271413.518151]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271415.578012]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271417.671145]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271419.731699]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271421.791462]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271423.854833]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271425.914975]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271427.977627]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271430.093231]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271432.181469]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271434.264664]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271436.327985]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271438.438659]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271440.448836]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271442.454803]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271444.514182]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271446.567751]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271448.648820]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271450.749784]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271452.856120]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271454.920923]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271456.978108]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271459.058017]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271461.125553]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271463.136731]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271465.141933]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271467.145120]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271469.262188]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271471.368943]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271473.475054]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271475.585564]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271477.697986]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271479.761218]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271481.831338]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271483.891562]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271485.967866]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271488.024660]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271490.080953]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271492.134653]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271494.201480]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271496.267782]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271498.327715]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271500.391311]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271502.454429]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271504.520983]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271506.584939]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271508.667653]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271510.741175]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271512.807313]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271514.858564]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271516.917389]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271518.981166]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271521.044334]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271523.111373]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271525.171652]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271527.230995]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271529.298046]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271531.381239]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271533.438030]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271535.511481]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271537.571495]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271539.634794]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271541.695436]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271543.805130]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271545.918336]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271548.001260]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271550.097087]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271552.130511]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271554.158752]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271556.178555]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271558.288910]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271560.298157]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271562.315066]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271564.322337]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271566.325311]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271568.438991]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271570.445223]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271572.554872]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271574.558288]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271576.567730]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271578.634553]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271580.698064]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271582.767582]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271584.834572]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271586.894858]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271588.951684]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271591.007483]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271593.109302]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271595.125432]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271597.238372]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271599.246633]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271601.353660]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271603.361643]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271605.369487]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271607.448890]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271609.525114]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271611.632235]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271613.644914]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271615.722949]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271617.726211]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271619.787883]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271621.851356]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271623.917902]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271625.991018]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271628.045604]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271630.141970]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271632.230706]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271634.291265]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271636.357987]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271638.414418]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271640.474560]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271642.544588]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271644.597806]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271646.698814]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271648.761125]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271650.821630]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271652.891550]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271654.961584]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271657.021114]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271659.094634]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271661.167891]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271663.224651]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271665.229760]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271667.331349]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271669.383983]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271671.451005]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271673.551777]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271675.672411]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271677.685413]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271679.702764]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271681.735110]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271683.851401]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271685.934749]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271688.001216]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271690.057522]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271692.144316]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271694.248394]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271696.274873]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271698.274947]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271700.371488]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271702.505174]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271704.511356]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271706.591141]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271708.696282]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271710.708783]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271712.712031]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271714.825182]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271716.924950]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271719.022496]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271721.122273]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271723.225558]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271725.328314]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271727.429374]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271729.544933]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271731.652144]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271733.755553]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271735.837872]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271737.942015]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271740.008980]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271742.071489]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271744.151665]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271746.217778]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271748.298869]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271750.364872]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271752.471630]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271754.544071]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271756.602173]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271758.660961]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271760.721804]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271762.822475]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271764.932423]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271767.038127]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271769.141644]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271771.235048]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271773.335071]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271775.439411]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271777.538379]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271779.652259]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271781.769169]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271783.769409]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271785.771445]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271787.882781]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271789.999635]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271792.009074]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271794.115244]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271796.122145]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271798.197879]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271800.291796]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779271802.395772]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes

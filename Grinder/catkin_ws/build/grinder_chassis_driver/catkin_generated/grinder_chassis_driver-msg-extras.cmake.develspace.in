@@ -1,0 +1,2 @@
+set(grinder_chassis_driver_MESSAGE_FILES "/home/neardi/work/Grinder/catkin_ws/src/grinder_chassis_driver/msg/WheelSpeedCommand.msg;/home/neardi/work/Grinder/catkin_ws/src/grinder_chassis_driver/msg/WheelSpeedState.msg;/home/neardi/work/Grinder/catkin_ws/src/grinder_chassis_driver/msg/ChassisStatus.msg")
+set(grinder_chassis_driver_SERVICE_FILES "/home/neardi/work/Grinder/catkin_ws/src/grinder_chassis_driver/srv/EnableChassis.srv;/home/neardi/work/Grinder/catkin_ws/src/grinder_chassis_driver/srv/ClearFault.srv")

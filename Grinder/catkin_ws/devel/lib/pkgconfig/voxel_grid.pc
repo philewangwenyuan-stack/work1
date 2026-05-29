@@ -1,0 +1,8 @@
+prefix=/home/neardi/work/Grinder/catkin_ws/devel
+
+Name: voxel_grid
+Description: Description of voxel_grid
+Version: 1.17.3
+Cflags: -I/home/neardi/work/Grinder/catkin_ws/src/2-dnavigation-package/2dnavigation/voxel_grid/include
+Libs: -L${prefix}/lib -lvoxel_grid
+Requires: roscpp

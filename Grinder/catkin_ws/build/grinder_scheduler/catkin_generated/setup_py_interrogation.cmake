@@ -1,0 +1,7 @@
+set(grinder_scheduler_SETUP_PY_SETUP_MODULE "setuptools")
+set(grinder_scheduler_SETUP_PY_VERSION "0.1.0")
+set(grinder_scheduler_SETUP_PY_SCRIPTS "")
+set(grinder_scheduler_SETUP_PY_PACKAGES "grinder_scheduler")
+set(grinder_scheduler_SETUP_PY_PACKAGE_DIRS "src/grinder_scheduler")
+set(grinder_scheduler_SETUP_PY_MODULES "")
+set(grinder_scheduler_SETUP_PY_MODULE_DIRS "")

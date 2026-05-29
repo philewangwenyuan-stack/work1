@@ -1,0 +1,19 @@
+logLevel: info
+rtspAddress: :8554
+# Lower internal buffering to reduce end-to-end latency.
+readBufferCount: 64
+# Allow both UDP and TCP for player compatibility.
+rtspTransports: [udp, tcp]
+# Keep server-side output queue small to avoid stale-frame buildup.
+writeQueueSize: 128
+rtmpAddress: :1935
+hls: no
+webrtc: no
+srt: no
+paths:
+  left:
+    source: publisher
+  right:
+    source: publisher
+  live/grinder_main:
+    source: publisher

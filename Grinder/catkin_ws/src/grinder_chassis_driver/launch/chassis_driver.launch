@@ -1,0 +1,8 @@
+<launch>
+  <node pkg="grinder_chassis_driver"
+        type="chassis_driver_node.py"
+        name="chassis_driver"
+        output="screen">
+    <rosparam command="load" file="$(find grinder_chassis_driver)/config/chassis_driver.yaml" />
+  </node>
+</launch>

@@ -1,0 +1,1573 @@
+... logging to /root/.ros/log/4ff4f3fa-58db-11f1-a588-c285ead2937b/roslaunch-LPA3588-2672.log
+Checking log directory for disk usage. This may take a while.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/neardi/work/Grinder/catkin_ws/src/grinder_scheduler/launch/grinder_system.launch
+[1mstarted roslaunch server http://LPA3588:35131/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /chassis_driver/baudrate: 19200
+ * /chassis_driver/cmd_source_hold_sec: 0.2
+ * /chassis_driver/cmd_vel_deadband_angular: 0.0
+ * /chassis_driver/cmd_vel_deadband_linear: 0.0
+ * /chassis_driver/cmd_vel_drive_left_sign: 1
+ * /chassis_driver/cmd_vel_drive_right_sign: 1
+ * /chassis_driver/cmd_vel_drive_swap_lr: False
+ * /chassis_driver/cmd_vel_enabled: True
+ * /chassis_driver/cmd_vel_filter_angular_accel: 0.2
+ * /chassis_driver/cmd_vel_filter_angular_deadband: 0.005
+ * /chassis_driver/cmd_vel_filter_enabled: True
+ * /chassis_driver/cmd_vel_filter_linear_accel: 0.2
+ * /chassis_driver/cmd_vel_filter_sign_confirm_count: 2
+ * /chassis_driver/cmd_vel_gear_ratio: 60.0
+ * /chassis_driver/cmd_vel_max_abs_wheel_rpm: 3000.0
+ * /chassis_driver/cmd_vel_max_angular: 0.1
+ * /chassis_driver/cmd_vel_max_input_v: 0.1
+ * /chassis_driver/cmd_vel_max_input_w: 0.1
+ * /chassis_driver/cmd_vel_max_linear: 0.1
+ * /chassis_driver/cmd_vel_scale: 1.0
+ * /chassis_driver/cmd_vel_topic: /cmd_vel
+ * /chassis_driver/cmd_vel_wheel_radius_m: 0.15
+ * /chassis_driver/cmd_vel_wheel_track_m: 0.79
+ * /chassis_driver/command_timeout: 5
+ * /chassis_driver/disc_speed_max: 32767
+ * /chassis_driver/disc_speed_min: -32768
+ * /chassis_driver/drive_left_sign: -1
+ * /chassis_driver/drive_right_sign: -1
+ * /chassis_driver/drive_swap_lr: False
+ * /chassis_driver/enable_cmd_ramp_limit: False
+ * /chassis_driver/enable_safe_stop_on_comm_error: False
+ * /chassis_driver/left_speed_max: 32767
+ * /chassis_driver/left_speed_min: -32768
+ * /chassis_driver/manual_drive_max_wheel_speed: 600
+ * /chassis_driver/manual_wheel_deadband_rpm: 30
+ * /chassis_driver/manual_wheel_hyst_enter_rpm: 60
+ * /chassis_driver/manual_wheel_hyst_exit_rpm: 30
+ * /chassis_driver/max_cmd_step_rpm: 50
+ * /chassis_driver/max_echo_deviation: 2000
+ * /chassis_driver/max_echo_failures: 20
+ * /chassis_driver/max_retries: 3
+ * /chassis_driver/poll_rate_hz: 20.0
+ * /chassis_driver/port: /dev/ttyS0
+ * /chassis_driver/right_speed_max: 32767
+ * /chassis_driver/right_speed_min: -32768
+ * /chassis_driver/rs485_raw_log_enabled: False
+ * /chassis_driver/rs485_raw_log_file: temp/chassis_rs48...
+ * /chassis_driver/safe_stop_on_error_interval: 2.0
+ * /chassis_driver/slave_id: 1
+ * /chassis_driver/startup_zero_output: True
+ * /chassis_driver/stop_on_timeout: True
+ * /chassis_driver/task_enable_default: False
+ * /chassis_driver/timeout: 0.1
+ * /chassis_driver/write_verify: False
+ * /grinder_scheduler/aurora_ip_address: 192.168.11.1
+ * /grinder_scheduler/aurora_no_preview_image: False
+ * /grinder_scheduler/aurora_raw_image_on: True
+ * /grinder_scheduler/change_map_service: /change_map
+ * /grinder_scheduler/default_path_spacing: 0.925
+ * /grinder_scheduler/depth_image_colorized_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/first_frame_save_dir: temp
+ * /grinder_scheduler/global_plan_publish_hz: 2
+ * /grinder_scheduler/inflation_radius: 0.65
+ * /grinder_scheduler/initial_map_preview_dir: temp
+ * /grinder_scheduler/initial_map_preview_format: jpg
+ * /grinder_scheduler/initial_map_preview_max_edge: 320
+ * /grinder_scheduler/left_image_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/live_map_dir: temp/live_map
+ * /grinder_scheduler/live_map_enabled: True
+ * /grinder_scheduler/live_map_hz: 1.0
+ * /grinder_scheduler/live_map_image_name: map1.pgm
+ * /grinder_scheduler/live_map_yaml_name: map.yaml
+ * /grinder_scheduler/live_preview_enabled: True
+ * /grinder_scheduler/live_preview_file: temp/aurora_map_p...
+ * /grinder_scheduler/live_preview_format: jpg
+ * /grinder_scheduler/live_preview_hz: 1.0
+ * /grinder_scheduler/live_preview_max_edge: 320
+ * /grinder_scheduler/local_rtsp_enabled: True
+ * /grinder_scheduler/local_rtsp_encoder: libx264
+ * /grinder_scheduler/local_rtsp_fps: 15
+ * /grinder_scheduler/local_rtsp_host: 0.0.0.0
+ * /grinder_scheduler/local_rtsp_log_dir: temp
+ * /grinder_scheduler/local_rtsp_mediamtx_path: /home/neardi/work...
+ * /grinder_scheduler/local_rtsp_port: 8554
+ * /grinder_scheduler/local_rtsp_public_host: auto
+ * /grinder_scheduler/local_rtsp_start_server: True
+ * /grinder_scheduler/local_rtsp_width: 640
+ * /grinder_scheduler/manual_reverse_guard_sec: 1.0
+ * /grinder_scheduler/map_topic: /map
+ * /grinder_scheduler/navigation_map_yaml_path: /home/neardi/work...
+ * /grinder_scheduler/odom_topic: /odom
+ * /grinder_scheduler/overlap_ratio: 0.1
+ * /grinder_scheduler/path_goal_reach_dist: 0.03
+ * /grinder_scheduler/path_segment_timeout: 60.0
+ * /grinder_scheduler/persist_state_dir: temp/grinder_sche...
+ * /grinder_scheduler/persist_state_enabled: True
+ * /grinder_scheduler/planned_path_preview_arrow_len_px: 12
+ * /grinder_scheduler/planned_path_preview_arrow_step: 10
+ * /grinder_scheduler/planned_path_preview_dir: temp
+ * /grinder_scheduler/planned_path_preview_format: jpg
+ * /grinder_scheduler/planned_path_preview_include_overlay: True
+ * /grinder_scheduler/planned_path_preview_max_edge: 320
+ * /grinder_scheduler/planned_path_preview_show_direction: True
+ * /grinder_scheduler/planner_script_path: third_party/path_...
+ * /grinder_scheduler/right_image_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/save_first_frame_on_startup: False
+ * /grinder_scheduler/scheduler_tick_hz: 5
+ * /grinder_scheduler/set_map_localization_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/set_map_update_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/sl_linka_host: 0.0.0.0
+ * /grinder_scheduler/sl_linka_port: 8002
+ * /grinder_scheduler/sl_linka_python_sdk_dir: third_party/sl_li...
+ * /grinder_scheduler/start_aurora_driver: False
+ * /grinder_scheduler/stcm_local_dir: maps/raw
+ * /grinder_scheduler/stream_enabled: True
+ * /grinder_scheduler/stream_fps: 8
+ * /grinder_scheduler/stream_push_hz: 20
+ * /grinder_scheduler/stream_url: rtmp://127.0.0.1:...
+ * /grinder_scheduler/stream_width: 1280
+ * /grinder_scheduler/sync_get_stcm_service: /slamware_ros_sdk...
+ * /grinder_scheduler/sync_set_stcm_service: /slamware_ros_sdk...
+ * /grinder_scheduler/turn_radius: 0.8
+ * /grinder_scheduler/use_depth_colorized_image: False
+ * /grinder_scheduler/vehicle_length: 0.5
+ * /grinder_scheduler/vehicle_width: 0.5
+ * /move_base/TebLocalPlannerROS/acc_lim_theta: 0.05
+ * /move_base/TebLocalPlannerROS/acc_lim_x: 0.1
+ * /move_base/TebLocalPlannerROS/allow_init_with_backwards_motion: False
+ * /move_base/TebLocalPlannerROS/complete_global_plan: True
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/cluster_max_distance: 0.2
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/cluster_min_pts: 2
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/convex_hull_min_pt_separation: 0.1
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_convert_outlier_pts: True
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_filter_remaining_outlier_pts: False
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_inlier_distance: 0.15
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_min_inliers: 10
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_no_iterations: 1500
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_remainig_outliers: 3
+ * /move_base/TebLocalPlannerROS/costmap_converter_plugin: 
+ * /move_base/TebLocalPlannerROS/costmap_converter_rate: 5
+ * /move_base/TebLocalPlannerROS/costmap_converter_spin_thread: True
+ * /move_base/TebLocalPlannerROS/costmap_obstacles_behind_robot_dist: 0.3
+ * /move_base/TebLocalPlannerROS/delete_detours_backwards: True
+ * /move_base/TebLocalPlannerROS/dt_hysteresis: 0.1
+ * /move_base/TebLocalPlannerROS/dt_ref: 0.4
+ * /move_base/TebLocalPlannerROS/dynamic_obstacle_inflation_dist: 0.3
+ * /move_base/TebLocalPlannerROS/enable_homotopy_class_planning: False
+ * /move_base/TebLocalPlannerROS/enable_multithreading: True
+ * /move_base/TebLocalPlannerROS/exact_arc_length: False
+ * /move_base/TebLocalPlannerROS/feasibility_check_no_poses: 5
+ * /move_base/TebLocalPlannerROS/footprint_model/type: polygon
+ * /move_base/TebLocalPlannerROS/footprint_model/vertices: [[-0.15, 0.5], [1...
+ * /move_base/TebLocalPlannerROS/free_goal_vel: False
+ * /move_base/TebLocalPlannerROS/global_plan_overwrite_orientation: True
+ * /move_base/TebLocalPlannerROS/global_plan_prune_distance: 1
+ * /move_base/TebLocalPlannerROS/global_plan_viapoint_sep: 0.2
+ * /move_base/TebLocalPlannerROS/h_signature_prescaler: 0.5
+ * /move_base/TebLocalPlannerROS/h_signature_threshold: 0.1
+ * /move_base/TebLocalPlannerROS/include_costmap_obstacles: True
+ * /move_base/TebLocalPlannerROS/include_dynamic_obstacles: False
+ * /move_base/TebLocalPlannerROS/inflation_dist: 0.35
+ * /move_base/TebLocalPlannerROS/max_global_plan_lookahead_dist: 1.0
+ * /move_base/TebLocalPlannerROS/max_number_classes: 4
+ * /move_base/TebLocalPlannerROS/max_ratio_detours_duration_best_duration: 3.0
+ * /move_base/TebLocalPlannerROS/max_samples: 200
+ * /move_base/TebLocalPlannerROS/max_vel_theta: 0.1
+ * /move_base/TebLocalPlannerROS/max_vel_x: 0.1
+ * /move_base/TebLocalPlannerROS/max_vel_x_backwards: 0.05
+ * /move_base/TebLocalPlannerROS/max_vel_y: 0.0
+ * /move_base/TebLocalPlannerROS/min_obstacle_dist: 0.25
+ * /move_base/TebLocalPlannerROS/min_turning_radius: 0.0
+ * /move_base/TebLocalPlannerROS/no_inner_iterations: 5
+ * /move_base/TebLocalPlannerROS/no_outer_iterations: 4
+ * /move_base/TebLocalPlannerROS/obstacle_cost_exponent: 4
+ * /move_base/TebLocalPlannerROS/obstacle_heading_threshold: 0.45
+ * /move_base/TebLocalPlannerROS/obstacle_poses_affected: 15
+ * /move_base/TebLocalPlannerROS/odom_topic: odom
+ * /move_base/TebLocalPlannerROS/optimization_activate: True
+ * /move_base/TebLocalPlannerROS/optimization_verbose: False
+ * /move_base/TebLocalPlannerROS/oscillation_filter_duration: 10
+ * /move_base/TebLocalPlannerROS/oscillation_omega_eps: 0.03
+ * /move_base/TebLocalPlannerROS/oscillation_recovery: True
+ * /move_base/TebLocalPlannerROS/oscillation_recovery_min_duration: 10
+ * /move_base/TebLocalPlannerROS/oscillation_v_eps: 0.03
+ * /move_base/TebLocalPlannerROS/penalty_epsilon: 0.03
+ * /move_base/TebLocalPlannerROS/publish_feedback: False
+ * /move_base/TebLocalPlannerROS/roadmap_graph_area_length_scale: 1.0
+ * /move_base/TebLocalPlannerROS/roadmap_graph_area_width: 5
+ * /move_base/TebLocalPlannerROS/roadmap_graph_no_samples: 15
+ * /move_base/TebLocalPlannerROS/selection_alternative_time_cost: False
+ * /move_base/TebLocalPlannerROS/selection_cost_hysteresis: 1.0
+ * /move_base/TebLocalPlannerROS/selection_obst_cost_scale: 100.0
+ * /move_base/TebLocalPlannerROS/selection_prefer_initial_plan: 0.9
+ * /move_base/TebLocalPlannerROS/shrink_horizon_backup: True
+ * /move_base/TebLocalPlannerROS/shrink_horizon_min_duration: 10
+ * /move_base/TebLocalPlannerROS/switching_blocking_period: 0.0
+ * /move_base/TebLocalPlannerROS/teb_autosize: True
+ * /move_base/TebLocalPlannerROS/viapoints_all_candidates: True
+ * /move_base/TebLocalPlannerROS/visualize_hc_graph: False
+ * /move_base/TebLocalPlannerROS/visualize_with_time_as_z_axis_scale: False
+ * /move_base/TebLocalPlannerROS/weight_acc_lim_theta: 1.0
+ * /move_base/TebLocalPlannerROS/weight_acc_lim_x: 1.0
+ * /move_base/TebLocalPlannerROS/weight_adapt_factor: 2
+ * /move_base/TebLocalPlannerROS/weight_dynamic_obstacle: 10
+ * /move_base/TebLocalPlannerROS/weight_dynamic_obstacle_inflation: 0.2
+ * /move_base/TebLocalPlannerROS/weight_inflation: 0.2
+ * /move_base/TebLocalPlannerROS/weight_kinematics_forward_drive: 800
+ * /move_base/TebLocalPlannerROS/weight_kinematics_nh: 1000
+ * /move_base/TebLocalPlannerROS/weight_kinematics_turning_radius: 1
+ * /move_base/TebLocalPlannerROS/weight_max_vel_theta: 1
+ * /move_base/TebLocalPlannerROS/weight_max_vel_x: 2
+ * /move_base/TebLocalPlannerROS/weight_obstacle: 100
+ * /move_base/TebLocalPlannerROS/weight_optimaltime: 1
+ * /move_base/TebLocalPlannerROS/weight_shortest_path: 1
+ * /move_base/TebLocalPlannerROS/weight_viapoint: 20
+ * /move_base/TebLocalPlannerROS/xy_goal_tolerance: 0.12
+ * /move_base/TebLocalPlannerROS/yaw_goal_tolerance: 0.05
+ * /move_base/base_global_planner: carrot_planner/Ca...
+ * /move_base/base_local_planner: teb_local_planner...
+ * /move_base/controller_frequency: 10.0
+ * /move_base/controller_patience: 10.0
+ * /move_base/global_costmap/always_send_full_costmap: True
+ * /move_base/global_costmap/footprint: [[-0.15, 0.5], [1...
+ * /move_base/global_costmap/footprint_padding: 0.0
+ * /move_base/global_costmap/global_frame: map
+ * /move_base/global_costmap/inflation_layer/cost_scaling_factor: 10.0
+ * /move_base/global_costmap/inflation_layer/enabled: True
+ * /move_base/global_costmap/inflation_layer/inflation_radius: 0.1
+ * /move_base/global_costmap/map_type: costmap
+ * /move_base/global_costmap/obstacle_layer/combination_method: 1
+ * /move_base/global_costmap/obstacle_layer/enabled: True
+ * /move_base/global_costmap/obstacle_layer/inflation_radius: 0.2
+ * /move_base/global_costmap/obstacle_layer/laser_scan_sensor/clearing: True
+ * /move_base/global_costmap/obstacle_layer/laser_scan_sensor/data_type: LaserScan
+ * /move_base/global_costmap/obstacle_layer/laser_scan_sensor/marking: True
+ * /move_base/global_costmap/obstacle_layer/laser_scan_sensor/topic: scan
+ * /move_base/global_costmap/obstacle_layer/observation_sources: laser_scan_sensor
+ * /move_base/global_costmap/obstacle_layer/obstacle_range: 3.0
+ * /move_base/global_costmap/obstacle_layer/raytrace_range: 4.0
+ * /move_base/global_costmap/obstacle_layer/track_unknown_space: True
+ * /move_base/global_costmap/plugins: [{'name': 'static...
+ * /move_base/global_costmap/publish_frequency: 2.0
+ * /move_base/global_costmap/robot_base_frame: base_link
+ * /move_base/global_costmap/robot_radius: 0.0
+ * /move_base/global_costmap/static_layer/enabled: True
+ * /move_base/global_costmap/static_layer/map_topic: map
+ * /move_base/global_costmap/static_map: True
+ * /move_base/global_costmap/transform_tolerance: 0.5
+ * /move_base/global_costmap/update_frequency: 2.0
+ * /move_base/local_costmap/always_send_full_costmap: True
+ * /move_base/local_costmap/footprint: [[-0.15, 0.5], [1...
+ * /move_base/local_costmap/footprint_padding: 0.0
+ * /move_base/local_costmap/global_frame: map
+ * /move_base/local_costmap/height: 5
+ * /move_base/local_costmap/inflation_layer/cost_scaling_factor: 10.0
+ * /move_base/local_costmap/inflation_layer/enabled: True
+ * /move_base/local_costmap/inflation_layer/inflation_radius: 0.1
+ * /move_base/local_costmap/map_type: costmap
+ * /move_base/local_costmap/obstacle_layer/combination_method: 1
+ * /move_base/local_costmap/obstacle_layer/enabled: True
+ * /move_base/local_costmap/obstacle_layer/inflation_radius: 0.2
+ * /move_base/local_costmap/obstacle_layer/laser_scan_sensor/clearing: True
+ * /move_base/local_costmap/obstacle_layer/laser_scan_sensor/data_type: LaserScan
+ * /move_base/local_costmap/obstacle_layer/laser_scan_sensor/marking: True
+ * /move_base/local_costmap/obstacle_layer/laser_scan_sensor/topic: scan
+ * /move_base/local_costmap/obstacle_layer/observation_sources: laser_scan_sensor
+ * /move_base/local_costmap/obstacle_layer/obstacle_range: 3.0
+ * /move_base/local_costmap/obstacle_layer/raytrace_range: 4.0
+ * /move_base/local_costmap/obstacle_layer/track_unknown_space: True
+ * /move_base/local_costmap/plugins: [{'name': 'static...
+ * /move_base/local_costmap/publish_frequency: 5.0
+ * /move_base/local_costmap/resolution: 0.1
+ * /move_base/local_costmap/robot_base_frame: base_link
+ * /move_base/local_costmap/robot_radius: 0.0
+ * /move_base/local_costmap/rolling_window: True
+ * /move_base/local_costmap/static_layer/enabled: True
+ * /move_base/local_costmap/static_layer/map_topic: map
+ * /move_base/local_costmap/static_map: False
+ * /move_base/local_costmap/transform_tolerance: 0.5
+ * /move_base/local_costmap/update_frequency: 5.0
+ * /move_base/local_costmap/width: 5
+ * /rosdistro: noetic
+ * /rosversion: 1.17.4
+ * /slamware_ros_sdk_server_node/angle_compensate: True
+ * /slamware_ros_sdk_server_node/camera_left: base_camera_left
+ * /slamware_ros_sdk_server_node/camera_right: base_camera_right
+ * /slamware_ros_sdk_server_node/imu_frame: base_imu_link
+ * /slamware_ros_sdk_server_node/imu_raw_data_period: 0.005
+ * /slamware_ros_sdk_server_node/ip_address: 192.168.11.1
+ * /slamware_ros_sdk_server_node/ladar_data_clockwise: True
+ * /slamware_ros_sdk_server_node/laser_frame: base_laser_link
+ * /slamware_ros_sdk_server_node/map_frame: map
+ * /slamware_ros_sdk_server_node/map_pub_period: 0.2
+ * /slamware_ros_sdk_server_node/no_preview_image: False
+ * /slamware_ros_sdk_server_node/odom_frame: odom
+ * /slamware_ros_sdk_server_node/raw_image_on: False
+ * /slamware_ros_sdk_server_node/robot_frame: base_link
+ * /slamware_ros_sdk_server_node/robot_pose_pub_period: 0.05
+ * /slamware_ros_sdk_server_node/robot_pose_topic: robot_pose
+ * /slamware_ros_sdk_server_node/scan_pub_period: 0.1
+ * /use_sim_time: False
+
+NODES
+  /
+    baselink2map (tf2_ros/static_transform_publisher)
+    chassis_driver (grinder_chassis_driver/chassis_driver_node.py)
+    grinder_scheduler (grinder_scheduler/scheduler_node.py)
+    move_base (move_base/move_base)
+    odom2map (tf2_ros/static_transform_publisher)
+    rviz (rviz/rviz)
+    slamware_ros_sdk_server_node (slamware_ros_sdk/slamware_ros_sdk_server_node)
+QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
+[0m[INFO] [1779783449.494803382]: Trying to connect to Aurora, tryCnt: 1.[0m
+[0m[INFO] [1779783449.505738550]: Selected device: tcp/192.168.11.1:7447[0m
+[0m[INFO] [1779783449.505806800]: Connecting to the selected device...[0m
+[0m[INFO] [1779783449.593111684]: Connected to the selected device[0m
+[0m[INFO] [1779783449.623500728]: Connected to Aurora, OK, tryCnt: 1.[0m
+[0m[INFO] [1779783449.623792687]: Odometry:0.1000[0m
+[0m[INFO] [1779783449.628957521]: RobotPose:0.0500[0m
+[0m[INFO] [1779783449.631313896]: ExploreMapUpdate:0.2000[0m
+[0m[INFO] [1779783449.631441063]: ExploreMapPublish:0.2000[0m
+[0m[INFO] [1779783449.635911438]: LaserScan:0.1000[0m
+[0m[INFO] [1779783449.637625563]: ServerImuRawDataWorker:0.0050[0m
+[0m[INFO] [1779783449.638769188]: RosConnectWorker:0.1000[0m
+[0m[INFO] [1779783449.639937605]: SystemStatus:0.0500[0m
+[0m[INFO] [1779783449.642245272]: StereoImage:0.0500[0m
+[0m[INFO] [1779783449.645538772]: PointCloud:0.1000[0m
+[0m[INFO] [1779783449.672391358]: SlamwareRosSdkServer, work thread begin.[0m
+[0m[INFO] [1779783449.672470983]: reset all 12 workers on work loop begin.[0m
+[0m[INFO] [1779783449.672844317]: Depth camera supported, subscription enabled, post-filtering on[0m
+[0m[INFO] [1779783449.673068900]: Semantic segmentation supported and subscription enabled[0m
+[0m[INFO] [1779783449.673127817]: Semantic segmentation label set: coco80[0m
+[0m[INFO] [1779783449.673197233]: Label ID: 0, Name: (null)[0m
+[0m[INFO] [1779783449.673228733]: Label ID: 1, Name: person[0m
+[0m[INFO] [1779783449.673257317]: Label ID: 2, Name: bicycle[0m
+[0m[INFO] [1779783449.673285608]: Label ID: 3, Name: car[0m
+[0m[INFO] [1779783449.673315650]: Label ID: 4, Name: motorcycle[0m
+[0m[INFO] [1779783449.673342483]: Label ID: 5, Name: airplane[0m
+[0m[INFO] [1779783449.673369608]: Label ID: 6, Name: bus[0m
+[0m[INFO] [1779783449.673400525]: Label ID: 7, Name: train[0m
+[0m[INFO] [1779783449.673427650]: Label ID: 8, Name: truck[0m
+[0m[INFO] [1779783449.673454192]: Label ID: 9, Name: boat[0m
+[0m[INFO] [1779783449.673481608]: Label ID: 10, Name: traffic light[0m
+[0m[INFO] [1779783449.673511067]: Label ID: 11, Name: fire hydrant[0m
+[0m[INFO] [1779783449.673537900]: Label ID: 12, Name: stop sign[0m
+[0m[INFO] [1779783449.673564733]: Label ID: 13, Name: parking meter[0m
+[0m[INFO] [1779783449.673610525]: Label ID: 14, Name: bench[0m
+[0m[INFO] [1779783449.673637942]: Label ID: 15, Name: bird[0m
+[0m[INFO] [1779783449.673665067]: Label ID: 16, Name: cat[0m
+[0m[INFO] [1779783449.673691317]: Label ID: 17, Name: dog[0m
+[0m[INFO] [1779783449.673720775]: Label ID: 18, Name: horse[0m
+[0m[INFO] [1779783449.673747608]: Label ID: 19, Name: sheep[0m
+[0m[INFO] [1779783449.673774733]: Label ID: 20, Name: cow[0m
+[0m[INFO] [1779783449.673801567]: Label ID: 21, Name: elephant[0m
+[0m[INFO] [1779783449.673832192]: Label ID: 22, Name: bear[0m
+[0m[INFO] [1779783449.673859317]: Label ID: 23, Name: zebra[0m
+[0m[INFO] [1779783449.673885859]: Label ID: 24, Name: giraffe[0m
+[0m[INFO] [1779783449.673913275]: Label ID: 25, Name: backpack[0m
+[0m[INFO] [1779783449.673944192]: Label ID: 26, Name: umbrella[0m
+[0m[INFO] [1779783449.673971025]: Label ID: 27, Name: handbag[0m
+[0m[INFO] [1779783449.674001359]: Label ID: 28, Name: tie[0m
+[0m[INFO] [1779783449.674028484]: Label ID: 29, Name: suitcase[0m
+[0m[INFO] [1779783449.674062609]: Label ID: 30, Name: frisbee[0m
+[0m[INFO] [1779783449.674090317]: Label ID: 31, Name: skis[0m
+[0m[INFO] [1779783449.674117442]: Label ID: 32, Name: snowboard[0m
+[0m[INFO] [1779783449.674144859]: Label ID: 33, Name: sports ball[0m
+[0m[INFO] [1779783449.674173150]: Label ID: 34, Name: kite[0m
+[0m[INFO] [1779783449.674200567]: Label ID: 35, Name: baseball bat[0m
+[0m[INFO] [1779783449.674219817]: Label ID: 36, Name: baseball glove[0m
+[0m[INFO] [1779783449.674234692]: Label ID: 37, Name: skateboard[0m
+[0m[INFO] [1779783449.674247817]: Label ID: 38, Name: surfboard[0m
+[0m[INFO] [1779783449.674265317]: Label ID: 39, Name: tennis racket[0m
+[0m[Cannot find EGLConfig, returning null config
+Unable to find an X11 visual which matches EGL config 0
+[33m[WARN] [1779783449.875334212]: knownCellIdxRect: ((-2, -2), (4, 4)), nearRobotIdxRect : ((-583, -91), ( 321,  321)), intersection is empty.[0m
+[33m[WARN] [1779783449.878913546]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1779783449.881983046]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1779783450.075337357]: knownCellIdxRect: ((-2, -2), (4, 4)), nearRobotIdxRect : ((-583, -91), ( 321,  321)), intersection is empty.[0m
+[33m[WARN] [1779783450.379133888]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1779783450.379517429]: local_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1779783502.354459027]: The origin for the sensor at (-29.85, 5.93) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[0m[INFO] [1779783449.886337630]: global_costmap: Using plugin "static_layer"[0m
+[0m[INFO] [1779783449.923431800]: Requesting the map...[0m
+[0m[INFO] [1779783450.129510654]: Resizing costmap to 4 X 4 at 0.050000 m/pix[0m
+[0m[INFO] [1779783450.229269706]: Received a 4 X 4 map at 0.050000 m/pix[0m
+[0m[INFO] [1779783450.249941583]: global_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1779783450.271122710]:     Subscribed to Topics: laser_scan_sensor[0m
+[0m[INFO] [1779783450.316061256]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1779783450.380162013]: local_costmap: Using plugin "static_layer"[0m
+[0m[INFO] [1779783450.384168055]: Requesting the map...[0m
+[0m[INFO] [1779783450.385834347]: Resizing costmap to 585 X 321 at 0.050000 m/pix[0m
+[0m[INFO] [1779783450.387409930]: Resizing static layer to 585 X 321 at 0.050000 m/pix[0m
+[0m[INFO] [1779783450.485911315]: Received a 585 X 321 map at 0.050000 m/pix[0m
+[0m[INFO] [1779783450.492198191]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1779783450.495396316]:     Subscribed to Topics: laser_scan_sensor[0m
+[0m[INFO] [1779783450.616623203]: Created local_planner teb_local_planner/TebLocalPlannerROS[0m
+[0m[INFO] [1779783450.805211056]: Footprint model 'polygon' loaded for trajectory optimization.[0m
+[0m[INFO] [1779783450.805602472]: Parallel planning in distinctive topologies disabled.[0m
+[0m[INFO] [1779783450.805638931]: No costmap conversion plugin specified. All occupied costmap cells are treaten as point obstacles.[0m
+[0m[INFO] [1779783450.958951488]: max_vel_trans is not set, setting it equal to max_vel_x: 0.1[0m
+[0m[INFO] [1779783450.959879571]: Footprint model 'polygon' loaded for trajectory optimization.[0m
+[0m[INFO] [1779783451.577738425]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1779783451.595735135]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1779783451.648019307]: odom received![0m
+[0m[INFO] [1779783459.847381297]: Resizing costmap to 723 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783459.861607340]: Resizing static layer to 723 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783501.952241695]: Resizing costmap to 758 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783501.957393695]: Resizing static layer to 758 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783502.152751965]: Resizing costmap to 759 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783502.175188134]: Resizing static layer to 759 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783502.353068943]: Resizing costmap to 825 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783502.362483361]: Resizing static layer to 825 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783502.555118297]: Resizing costmap to 846 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783502.568663882]: Resizing static layer to 846 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783502.778111944]: Resizing costmap to 851 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783502.795375988]: Resizing static layer to 851 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783502.974772297]: Resizing costmap to 852 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783502.992527507]: Resizing static layer to 852 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783503.175877651]: Resizing costmap to 865 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783503.185488944]: Resizing static layer to 865 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783503.392086381]: Resizing costmap to 868 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783503.405451716]: Resizing static layer to 868 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783503.583665900]: Resizing costmap to 871 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783503.602964319]: Resizing static layer to 871 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783503.792235588]: Resizing costmap to 872 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783503.809228090]: Resizing static layer to 872 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783503.985026399]: Resizing costmap to 875 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783503.993175858]: Resizing static la[33m[WARN] [1779783506.348662178]: The origin for the sensor at (-36.58, 10.97, -1.07) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783507.848704995]: The origin for the sensor at (-36.52, 12.07, -0.99) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+yer to 875 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783504.188458836]: Resizing costmap to 879 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783504.199832379]: Resizing static layer to 879 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783504.382807272]: Resizing costmap to 881 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783504.386266439]: Resizing static layer to 881 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783504.583163917]: Resizing costmap to 882 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783504.590492335]: Resizing static layer to 882 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783504.822815066]: Resizing costmap to 884 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783504.834477068]: Resizing static layer to 884 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783505.027165004]: Resizing costmap to 885 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783505.048402922]: Resizing static layer to 885 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783505.222836232]: Resizing costmap to 893 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783505.242579150]: Resizing static layer to 893 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1779783505.436387711]: Resizing costmap to 893 X 578 at 0.050000 m/pix[0m
+[0m[INFO] [1779783505.454797422]: Resizing static layer to 893 X 578 at 0.050000 m/pix[0m
+[0m[INFO] [1779783505.631698231]: Resizing costmap to 894 X 584 at 0.050000 m/pix[0m
+[0m[INFO] [1779783505.652816941]: Resizing static layer to 894 X 584 at 0.050000 m/pix[0m
+[0m[INFO] [1779783505.851704378]: Resizing costmap to 894 X 586 at 0.050000 m/pix[0m
+[0m[INFO] [1779783505.868471838]: Resizing static layer to 894 X 586 at 0.050000 m/pix[0m
+[0m[INFO] [1779783506.038518730]: Resizing costmap to 894 X 587 at 0.050000 m/pix[0m
+[0m[INFO] [1779783506.054528148]: Resizing static layer to 894 X 587 at 0.050000 m/pix[0m
+[0m[INFO] [1779783506.245970584]: Resizing costmap to 894 X 593 at 0.050000 m/pix[0m
+[0m[INFO] [1779783506.268290670]: Resizing static layer to 894 X 593 at 0.050000 m/pix[0m
+[0m[INFO] [1779783506.444440271]: Resizing costmap to 896 X 596 at 0.050000 m/pix[0m
+[0m[INFO] [1779783506.453082938]: Resizing static layer to 896 X 596 at 0.050000 m/pix[0m
+[0m[INFO] [1779783506.646975083]: Resizing costmap to 896 X 599 at 0.050000 m/pix[0m
+[0m[INFO] [1779783506.658012042]: Resizing static layer to 896 X 599 at 0.050000 m/pix[0m
+[0m[INFO] [1779783506.855613896]: Resizing costmap to 896 X 602 at 0.050000 m/pix[0m
+[0m[INFO] [1779783506.887522232]: Resizing static layer to 896 X 602 at 0.050000 m/pix[0m
+[0m[INFO] [1779783507.047889040]: Resizing costmap to 896 X 603 at 0.050000 m/pix[0m
+[0m[INFO] [1779783507.059117041]: Resizing static layer to 896 X 603 at 0.050000 m/pix[0m
+[0m[INFO] [1779783507.247963643]: Resizing costmap to 896 X 605 at 0.050000 m/pix[0m
+[0m[INFO] [1779783507.257006769]: Resizing static layer to 896 X 605 at 0.050000 m/pix[0m
+[0m[INFO] [1779783507.450933622]: Resizing costmap to 896 X 611 at 0.050000 m/pix[0m
+[0m[INFO] [1779783507.461483498]: Resizing static layer to 896 X 611 at 0.050000 m/pix[0m
+[0m[INFO] [1779783507.649837309]: Resizing costmap to 896 X 614 at 0.050000 m/pix[0m
+[0m[INFO] [1779783507.671530603]: Resizing static layer to 896 X 614 at 0.050000 m/pix[0m
+[0m[INFO] [1779783507.862215580]: Resizing costmap to 896 X 622 at 0.050000 m/pix[0m
+[0m[INFO] [1779783507.877793207]: Resizing static layer to 896 X 622 at 0.050000 m/pix[0m
+[0m[INFO] [1779783508.062871184]: Resizing costmap to 896 X 626 at 0.050000 m/pix[0m
+[0m[INFO] [1779783508.071023559]: Resizing static layer to 896 X 626 at 0.050000 m/pix[0m
+[0m[INFO] [1779783508.265693287]: Resizing costmap to 896 X 629 at 0.050000 m/pix[0m
+[0m[INFO] [1779783508.271048579]: Resizing static layer to 896 X 629 at 0.050000 m/pix[0m
+[0m[INFO] [1779783508.468890183]: Resizing costmap to 896 X 631 at 0.050000 m/pix[0m
+[0m[INFO] [1779783508.476721725]: Resizing static layer to 896 X 631 at 0.050000 m/pix[0m
+[0m[INFO] [1779783508.668377369]: Resizing costmap to 896 X 635 at 0.050000 m/pix[0m
+[0m[INFO] [1779783508.684809871[33m[WARN] [1779783508.849040096]: The origin for the sensor at (-36.16, 13.08, -0.77) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783510.348685788]: The origin for the sensor at (-35.79, 13.56, -0.79) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783512.348611739]: The origin for the sensor at (-36.17, 13.05, -1.04) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783524.848710037]: The origin for the sensor at (-37.63, 12.34, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783526.348612354]: The origin for the sensor at (-37.60, 12.37, -1.75) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783527.348636830]: The origin for the sensor at (-37.56, 12.44, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+INFO] [1779783449.674280484]: Label ID: 40, Name: bottle[0m
+[0m[INFO] [1779783449.674396275]: Label ID: 41, Name: wine glass[0m
+[0m[INFO] [1779783449.674409692]: Label ID: 42, Name: cup[0m
+[0m[INFO] [1779783449.674421650]: Label ID: 43, Name: fork[0m
+[0m[INFO] [1779783449.674437984]: Label ID: 44, Name: knife[0m
+[0m[INFO] [1779783449.674503025]: Label ID: 45, Name: spoon[0m
+[0m[INFO] [1779783449.674524025]: Label ID: 46, Name: bowl[0m
+[0m[INFO] [1779783449.674537150]: Label ID: 47, Name: banana[0m
+[0m[INFO] [1779783449.674549692]: Label ID: 48, Name: apple[0m
+[0m[INFO] [1779783449.674566317]: Label ID: 49, Name: sandwich[0m
+[0m[INFO] [1779783449.674598109]: Label ID: 50, Name: orange[0m
+[0m[INFO] [1779783449.674615900]: Label ID: 51, Name: broccoli[0m
+[0m[INFO] [1779783449.674628442]: Label ID: 52, Name: carrot[0m
+[0m[INFO] [1779783449.674642150]: Label ID: 53, Name: hot dog[0m
+[0m[INFO] [1779783449.674659067]: Label ID: 54, Name: pizza[0m
+[0m[INFO] [1779783449.674676275]: Label ID: 55, Name: donut[0m
+[0m[INFO] [1779783449.674689400]: Label ID: 56, Name: cake[0m
+[0m[INFO] [1779783449.674701650]: Label ID: 57, Name: chair[0m
+[0m[INFO] [1779783449.674714192]: Label ID: 58, Name: couch[0m
+[0m[INFO] [1779783449.674727317]: Label ID: 59, Name: potted plant[0m
+[0m[INFO] [1779783449.674740442]: Label ID: 60, Name: bed[0m
+[0m[INFO] [1779783449.674752692]: Label ID: 61, Name: dining table[0m
+[0m[INFO] [1779783449.674765817]: Label ID: 62, Name: toilet[0m
+[0m[INFO] [1779783449.674779817]: Label ID: 63, Name: tv[0m
+[0m[INFO] [1779783449.674797900]: Label ID: 64, Name: laptop[0m
+[0m[INFO] [1779783449.674811317]: Label ID: 65, Name: mouse[0m
+[0m[INFO] [1779783449.674827650]: Label ID: 66, Name: remote[0m
+[0m[INFO] [1779783449.674840775]: Label ID: 67, Name: keyboard[0m
+[0m[INFO] [1779783449.674858859]: Label ID: 68, Name: cell phone[0m
+[0m[INFO] [1779783449.674871400]: Label ID: 69, Name: microwave[0m
+[0m[INFO] [1779783449.674901442]: Label ID: 70, Name: oven[0m
+[0m[INFO] [1779783449.674919817]: Label ID: 71, Name: toaster[0m
+[0m[INFO] [1779783449.674939942]: Label ID: 72, Name: sink[0m
+[0m[INFO] [1779783449.674955400]: Label ID: 73, Name: refrigerator[0m
+[0m[INFO] [1779783449.674969984]: Label ID: 74, Name: book[0m
+[0m[INFO] [1779783449.674990109]: Label ID: 75, Name: clock[0m
+[0m[INFO] [1779783449.675007900]: Label ID: 76, Name: vase[0m
+[0m[INFO] [1779783449.675020442]: Label ID: 77, Name: scissors[0m
+[0m[INFO] [1779783449.675033567]: Label ID: 78, Name: teddy bear[0m
+[0m[INFO] [1779783449.675049317]: Label ID: 79, Name: hair drier[0m
+[0m[INFO] [1779783449.675067400]: Label ID: 80, Name: toothbrush[0m
+[0m[INFO] [1779783449.675174442]: Class colors generated[0m
+[0m[INFO] [1779783449.675198359]: successed to reinit all workers on work loop begin.[0m
+[0m[INFO] [1779783449.675274192]: try to reinit explore map.[0m
+[0m[INFO] [1779783449.675323192]: explore map initialized, resolution: 0.050000, moreCellCntToExtend: 32.[0m
+[0m[INFO] [1779783449.675410692]: try to sync whole explore map.[0m
+[0m[INFO] [1779783449.675472817]: known area: ((-0.100000, -0.100000), (0.200000, 0.200000)), cell rect : ((-2, -2), ( 4,  4)) [0m
+[0m[INFO] [1779783449.675537859]: whole explore map synchronized.[0m
+[0m[INFO] [1779783459.842989380]: sync the map after preview map generated.[0m
+[0m[INFO] [1779783459.843076005]: try to sync whole explore map.[0m
+[0m[INFO] [1779783459.843148922]: known area: ((-36.049999, -10.550000), (36.149998, 28.750000)), cell rect : ((-721, -211), ( 723,  575)) [0m
+[0m[INFO] [1779783459.844806464]: whole explore map synchronized.[0m
+[0m[INFO] [1779783644.905475600]: Map download progress: 0.000000[0m
+[0m[INFO] [1779783645.105853120]: Map download progress: 3.137255[0m
+[0m[INFO] [1779783645.306204432]: Map download progress: 6.274510[0m
+[0m[INFO] [1779783645.506586952]: Map download progress: 8.235294[0m
+[0m[INFO] [1779783645.706916847]: Map download progress: 11.372549[0m
+[0m[INFO] [1779783645.907344492]: Map download pr[33m[WARN] [1779783665.954551256]: Costmap2DROS transform timeout. Current time: 1779783665.9544, global_pose stamp: 1779783665.4370, tolerance: 0.5000[0m
+[33m[WARN] [1779783667.348657855]: The origin for the sensor at (-37.63, 12.50, -1.59) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783668.348675455]: The origin for the sensor at (-37.65, 12.43, -1.64) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783669.348881264]: The origin for the sensor at (-37.69, 12.42, -1.64) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783670.848820790]: The origin for the sensor at (-37.72, 12.46, -1.66) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783672.348805190]: The origin for the sensor at (-37.71, 12.44, -1.66) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783673.348998958]: The origin for the sensor at (-37.57, 12.41, -1.62) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783674.848790025]: The origin for the sensor at (-37.66, 12.40, -1.64) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783675.848899042]: The origin for the sensor at (-37.63, 12.37, -1.64) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783676.849380101]: The origin for the sensor at (-37.66, 12.38, -1.62) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783678.349039002]: The origin for the sensor at (-37.72, 12.38, -1.62) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783679.848815361]: The origin for the sensor at (-37.80, 12.50, -1.64) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783680.848823295]: The origin for the sensor at (-37.81, 12.52, -1.67) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783682.348814404]: The origin for the sensor at (-37.82, 12.53, -1.70) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783684.348729396]: The origin for the sensor at (-37.74, 12.48, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783685.848726380]: The origin for the sensor at (-37.74, 12.47, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783687.348947614]: The origin for the sensor at (-37.74, 12.47, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783688.848985015]: The origin for the sensor at (-37.74, 12.47, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783690.348658249]: The origin for the sensor at (-37.76, 12.47, -1.72) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783691.848705900]: The origin for the sensor at (-37.76, 12.48, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783692.848798917]: The origin for the sensor at (-37.74, 12.48, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783694.348699276]: The origin for the sensor at (-37.74, 12.48, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783695.848755677]: The origin for the sensor at (-37.73, 12.49, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783697.348633911]: The origin for the sensor at (-37.74, 12.48, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783698.348818845]: The origin for the sensor at (-37.74, 12.48, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783699.848714912]: The origin for the sensor at (-37.74, 12.48, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783700.849203262]: The origin for the sensor at (-37.74, 12.48, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783701.849253988]: The origin for the sensor at (-37.74, 12.48, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783703.349303097]: The origin for the sensor at (-37.74, 12.48, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783704.848984206]: The origin for the sensor at (-37.74, 12.48, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783706.348640398]: The origin for the sensor at (-37.74, 12.48, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783707.348848207]: The origin for the sensor at (-37.74, 12.48, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783708.849013483]: The origin for the sensor at (-37.74, 12.48, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783710.348730009]: The origin for the sensor at (-37.74, 12.48, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783711.348784442]: The origin for the sensor at (-37.74, 12.48, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783712.848711426]: The origin for the sensor at (-37.74, 12.48, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783714.348729410]: The origin for the sensor at (-37.74, 12.48, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783715.848710603]: The origin for the sensor at (-37.74, 12.48, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783716.848738495]: The origin for the sensor at (-37.74, 12.48, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783718.348743104]: The origin for the sensor at (-37.74, 12.48, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783719.349363538]: The origin for the sensor at (-37.74, 12.47, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783720.852719897]: The origin for the sensor at (-37.74, 12.47, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783722.348877798]: The origin for the sensor at (-37.74, 12.47, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783723.848713115]: The origin for the sensor at (-37.74, 12.47, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783725.348806766]: The origin for the sensor at (-37.74, 12.47, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783726.848689166]: The origin for the sensor at (-37.74, 12.47, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783727.848721809]: The origin for the sensor at (-37.73, 12.47, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783728.848824701]: The origin for the sensor at (-37.73, 12.47, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783729.848803426]: The origin for the sensor at (-37.73, 12.47, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783731.348700702]: The origin for the sensor at (-37.73, 12.47, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783732.348736261]: The origin for the sensor at (-37.73, 12.47, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783733.848620995]: The origin for the sensor at (-37.73, 12.47, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783735.348594354]: The origin for the sensor at (-37.73, 12.47, -1.72) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783736.348788038]: The origin for the sensor at (-37.73, 12.47, -1.72) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783737.848961772]: The origin for the sensor at (-37.73, 12.47, -1.72) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783739.348660964]: The origin for the sensor at (-37.73, 12.47, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783740.348730023]: The origin for the sensor at (-37.73, 12.47, -1.72) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783741.348800707]: The origin for the sensor at (-37.73, 12.47, -1.72) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[INFO] [1779783450.622444]: Loaded task registry state: 8 map-bound tasks
+[INFO] [1779783450.719373]: Loaded map overlay state: map_id=map_1778827104561 dir=/home/neardi/work/Grinder/temp/grinder_scheduler_state/map_states/map_1778827104561
+[INFO] [1779783450.722275]: Loaded scheduler local state from /home/neardi/work/Grinder/temp/grinder_scheduler_state
+[INFO] [1779783453.767518]: Starting mediamtx on rtsp://192.168.11.127:8554 using /home/neardi/work/Grinder/tools/mediamtx/mediamtx
+[INFO] [1779783454.121309]: mediamtx rtsp listener is ready on 127.0.0.1:8554
+[INFO] [1779783454.834212]: Starting ffmpeg RTSP publisher left -> rtsp://127.0.0.1:8554/left (encoder=libx264)
+[INFO] [1779783454.952293]: Map switched, loaded task-map binding: map_id=map_1778827104561 task_id=<empty> selected_regions=work_region_1
+[INFO] [1779783455.029724]: Starting ffmpeg RTSP publisher right -> rtsp://127.0.0.1:8554/right (encoder=libx264)
+[INFO] [1779783455.080705]: Saved initial map preview to /home/neardi/work/Grinder/temp/aurora_map_preview_s1p8281_res0p05_oxm29p15_oym4p55_ow585_oh321_pw320_ph176_v47.jpg
+[INFO] [1779783455.243871]: Live map cropped to free-space bbox: size=585x321 margin=0.50m
+[INFO] [1779783460.436162]: Live map cropped to free-space bbox: size=585x321 margin=0.50m
+[INFO] [1779783466.365086]: Live map cropped to free-space bbox: size=723x575 margin=0.50m
+[INFO] [1779783472.464519]: Live map cropped to free-space bbox: size=723x575 margin=0.50m
+[INFO] [1779783477.540550]: Live map cropped to free-space bbox: size=723x575 margin=0.50m
+[INFO] [1779783483.737600]: Live map cropped to free-space bbox: size=723x575 margin=0.50m
+[INFO] [1779783488.979410]: Live map cropped to free-space bbox: size=723x575 margin=0.50m
+[INFO] [1779783494.654604]: Live map cropped to free-space bbox: size=723x575 margin=0.50m
+[INFO] [1779783499.986368]: Live map cropped to free-space bbox: size=723x575 margin=0.50m
+[INFO] [1779783505.538001]: Live map cropped to free-space bbox: size=885x575 margin=0.50m
+[INFO] [1779783511.189973]: Live map cropped to free-space bbox: size=896x644 margin=0.50m
+[INFO] [1779783516.775110]: Live map cropped to free-space bbox: size=908x644 margin=0.50m
+[INFO] [1779783522.423260]: Live map cropped to free-space bbox: size=914x644 margin=0.50m
+[INFO] [1779783528.042459]: Live map cropped to free-space bbox: size=915x644 margin=0.50m
+[INFO] [1779783533.096865]: Live map cropped to free-space bbox: size=915x644 margin=0.50m
+[INFO] [1779783538.662714]: Live map cropped to free-space bbox: size=915x644 margin=0.50m
+[INFO] [1779783544.070150]: Live map cropped to free-space bbox: size=915x644 margin=0.50m
+[INFO] [1779783549.868370]: Live map cropped to free-space bbox: size=915x644 margin=0.50m
+[INFO] [1779783555.625815]: Live map cropped to free-space bbox: size=915x644 margin=0.50m
+[INFO] [1779783562.170360]: Live map cropped to free-space bbox: size=915x644 margin=0.50m
+[INFO] [1779783567.738900]: Live map cropped to free-space bbox: size=915x644 margin=0.50m
+[INFO] [1779783574.143775]: Live map cropped to free-space bbox: size=915x644 margin=0.50m
+[INFO] [1779783579.791265]: Live map cropped to free-space bbox: size=915x644 margin=0.50m
+[INFO] [1779783585.020279]: Live map cropped to free-space bbox: size=915x644 margin=0.50m
+[INFO] [1779783590.692390]: Live map cropped to free-space bbox: size=915x644 margin=0.50m
+[INFO] [1779783595.992853]: Live map cropped to free-space bbox: size=915x644 margin=0.50m
+[INFO] [1779783601.816482]: Live map cropped to free-space bbox: size=915x644 margin=0.50m
+[INFO] [1779783607.194033]: Live map cropped to free-space bbox: size=915x644 margin=0.50m
+[INFO] [1779783613.665326]: Live map cropped to free-space bbox: size=915x644 margin=0.50m
+[INFO] [1779783619.213258]: Live map cropped to free-space bbox: size=915x644 margin=0.50m
+[INFO] [1779783622.460364]: PathPlanRequest: request_id=req_1779783453 active_work_region_id=work_region_1 force_replan=true use_all_regions=false work_region_count=1 has_start=false has_end=false global_direction=x
+[INFO] [1779783622.557215]: PathPlanRequest selection: map_id=map_1778827104561 task_id=task selected_regions=work_region_1 region_repeat_config={"work_region_1": 1}
+[INFO] [1779783622.847453]: Planning input regions: work_total=1 work_selected=1 obstacle=0 active_work_region_id=work_region_1 force_use_all=false
+[INFO] [1779783623.003595]: Planning started: task_id=task map_version=47 map_size=915x644 resolution=0.0500
+[INFO] [1779783623.042353]: Plan request poses: current_pose=(-37.579, 12.464, -96.4deg) request_start=(<empty>) request_end=(<empty>)
+   [障碍物膨胀] 膨胀半径: 12像素, 原始: 375034, 膨胀后: 472102
+[INFO] [1779783623.311965]: PlannerAdapter input start candidates: current_pose=(-37.579,12.464) request_start=<empty> direction=x
+[INFO] [1779783623.341539]: Region planning effective start: region_idx=1 region_id=work_region_1 source=default_boundary start_grid=<auto_by_planner>
+[INFO] [1779783623.542722]: Single-region planning merged: region_idx=1 region_id=work_region_1 points=109 cumulative=109
+[INFO] [1779783623.556879]: Prepended start pose point: x=-37.583 y=12.470 heading=-96.4deg path_points=110
+[INFO] [1779783623.562882]: Precomputed goal points: count=16
+[INFO] [1779783623.569940]: Published planned path to navigation: points=110
+[INFO] [1779783623.998189]: Path preview paint override: obstacle_regions=0 erase_regions=1
+[INFO] [1779783624.079028]: Saved planned path preview latest files: /home/neardi/work/Grinder/temp/aurora_path_preview_latest.jpg, /home/neardi/work/Grinder/temp/aurora_path_preview_tasktask_latest.jpg
+[INFO] [1779783624.130548]: Saved planned path debug json to /home/neardi/work/Grinder/temp/path_debug/planned_path_tasktask_mapv47_pathv1_1779783624.json
+[INFO] [1779783624.147262]: Planning success: path_version=1 points=110 length_m=46.610
+[INFO] [1779783624.750383]: Saved planned path preview latest files: /home/neardi/work/Grinder/temp/aurora_path_preview_latest.jpg, /home/neardi/work/Grinder/temp/aurora_path_preview_tasktask_latest.jpg
+[INFO] [1779783625.450773]: Live map cropped to free-space bbox: size=915x644 margin=0.50m
+[INFO] [1779783630.455167]: Live map cropped to free-space bbox: size=915x644 margin=0.50m
+[INFO] [1779783636.030148]: Live map cropped to free-space bbox: size=915x644 margin=0.50m
+[INFO] [1779783641.472147]: Live map cropped to free-space bbox: size=915x644 margin=0.50m
+[INFO] [1779783647.245065]: Live map cropped to free-space bbox: size=915x644 margin=0.50m
+[INFO] [1779783653.312467]: Live map cropped to free-space bbox: size=915x644 margin=0.50m
+[INFO] [1779783658.779003]: Live map cropped to free-space bbox: size=915x644 margin=0.50m
+[INFO] [1779783664.017771]: Live map cropped to free-space bbox: size=915x644 margin=0.50m
+[INFO] [1779783670.400041]: Live map cropped to free-space bbox: size=916x644 margin=0.50m
+[INFO] [1779783675.505691]: Live map cropped to free-space bbox: size=917x644 margin=0.50m
+[INFO] [1779783680.885924]: Live map cropped to free-space bbox: size=919x644 margin=0.50m
+[INFO] [1779783686.114521]: Live map cropped to free-space bbox: size=919x644 margin=0.50m
+[INFO] [1779783691.200042]: Live map cropped to free-space bbox: size=919x644 margin=0.50m
+[INFO] [1779783696.845160]: Live map cropped to free-space bbox: size=919x644 margin=0.50m
+[INFO] [1779783702.401031]: Live map cropped to free-space bbox: size=919x644 margin=0.50m
+[INFO] [1779783708.334354]: Live map cropped to free-space bbox: size=919x644 margin=0.50m
+[INFO] [1779783713.972387]: Live map cropped to free-space bbox: size=919x644 margin=0.50m
+[INFO] [1779783719.553803]: Live map cropped to free-space bbox: size=919x644 margin=0.50m
+[INFO] [1779783725.024824]: Live map cropped to free-space bbox: size=919x644 margin=0.50m
+[INFO] [1779783730.416648]: Live map cropped to free-space bbox: size=919x644 margin=0.50m
+[INFO] [1779783736.550025]: Live map cropped to free-space bbox: size=919x644 margin=0.50m
+[INFO] [1779783741.892113]: Live map cropped to free-space bbox: size=919x644 margin=0.50m
+[INFO] [1779783741.971240]: Skip chassis enable control by scheduler (requested enabled=True).
+[33m[WARN] [1779783742.009384690]: makePlan is called.
+[0m
+[33m[WARN] [1779783742.239510296]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1302 seconds[0m
+]: Resizing static layer to 896 X 635 at 0.050000 m/pix[0m
+[0m[INFO] [1779783508.869142056]: Resizing costmap to 896 X 636 at 0.050000 m/pix[0m
+[0m[INFO] [1779783508.873043390]: Resizing static layer to 896 X 636 at 0.050000 m/pix[0m
+[0m[INFO] [1779783509.071690577]: Resizing costmap to 896 X 643 at 0.050000 m/pix[0m
+[0m[INFO] [1779783509.087767537]: Resizing static layer to 896 X 643 at 0.050000 m/pix[0m
+[0m[INFO] [1779783509.693934597]: Resizing costmap to 896 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783509.704867140]: Resizing static layer to 896 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783512.937617757]: Resizing costmap to 897 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783512.951278841]: Resizing static layer to 897 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783513.146467361]: Resizing costmap to 898 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783513.162629029]: Resizing static layer to 898 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783513.550472235]: Resizing costmap to 900 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783513.572071029]: Resizing static layer to 900 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783513.740148046]: Resizing costmap to 903 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783513.754745380]: Resizing static layer to 903 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783514.540573418]: Resizing costmap to 906 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783514.555358294]: Resizing static layer to 906 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783515.173465773]: Resizing costmap to 907 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783515.216722152]: Resizing static layer to 907 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783516.385656311]: Resizing costmap to 908 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783516.394124271]: Resizing static layer to 908 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783516.788907394]: Resizing costmap to 909 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783516.792018894]: Resizing static layer to 909 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783517.436807667]: Resizing costmap to 910 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783517.447547710]: Resizing static layer to 910 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783518.481085564]: Resizing costmap to 911 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783518.502117941]: Resizing static layer to 911 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783519.494733207]: Resizing costmap to 912 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783519.501084833]: Resizing static layer to 912 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783520.301874830]: Resizing costmap to 913 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783520.313280164]: Resizing static layer to 913 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783521.306415473]: Resizing costmap to 914 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783521.315798099]: Resizing static layer to 914 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783522.715660406]: Resizing costmap to 915 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783522.724541948]: Resizing static layer to 915 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783667.462465616]: Resizing costmap to 916 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783667.501479537]: Resizing static layer to 916 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783670.531137008]: Resizing costmap to 917 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783670.542448426]: Resizing static layer to 917 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783678.929380435]: Resizing costmap to 918 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783678.940240936]: Resizing static layer to 918 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783679.573284541]: Resizing costmap to 919 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783679.582210709]: Resizing static layer to 919 X 644 at 0.050000 m/pix[0m
+[0m[INFO] [1779783742.238965463]: delta_orient: 0.888440, ??????????????????.[0m
+[0m[INFO] [1779783742.299721386]: delta_orient: 0.888172, ??????????????????.[0m
+[0m[INFO] [1779783742.368076684]: delta_orient: 0.888172, ??????????????????.[0m
+[0m[INFO] [1779783742.48190[33m[WARN] [1779783742.753112306]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1437 seconds[0m
+[33m[WARN] [1779783742.810384562]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1010 seconds[0m
+[33m[WARN] [1779783742.848667566]: The origin for the sensor at (-37.73, 12.47, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783743.010257332]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1009 seconds[0m
+[33m[WARN] [1779783743.243353564]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1340 seconds[0m
+[33m[WARN] [1779783743.518291133]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1089 seconds[0m
+[33m[WARN] [1779783743.735713488]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1263 seconds[0m
+[33m[WARN] [1779783743.848709541]: The origin for the sensor at (-37.69, 12.46, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783744.056058020]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1467 seconds[0m
+[33m[WARN] [1779783744.168016032]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1586 seconds[0m
+[33m[WARN] [1779783744.269382458]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1600 seconds[0m
+[33m[WARN] [1779783744.327665631]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1183 seconds[0m
+[33m[WARN] [1779783744.633825537]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1244 seconds[0m
+[33m[WARN] [1779783744.755372674]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1460 seconds[0m
+[33m[WARN] [1779783744.820131430]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1108 seconds[0m
+[33m[WARN] [1779783744.850316017]: The origin for the sensor at (-37.67, 12.45, -1.72) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783745.435360034]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1260 seconds[0m
+[33m[WARN] [1779783745.666897057]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1575 seconds[0m
+[33m[WARN] [1779783745.740159356]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1307 seconds[0m
+[33m[WARN] [1779783746.024606135]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1153 seconds[0m
+[33m[WARN] [1779783746.215363446]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1060 seconds[0m
+[33m[WARN] [1779783746.348765667]: The origin for the sensor at (-37.63, 12.46, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783746.719066871]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1097 seconds[0m
+[33m[WARN] [1779783747.153839248]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1445 seconds[0m
+[33m[WARN] [1779783747.225044130]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1157 seconds[0m
+[33m[WARN] [1779783747.348952018]: The origin for the sensor at (-37.60, 12.46, -1.72) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+4571]: delta_orient: 0.888518, ??????????????????.[0m
+[0m[INFO] [1779783742.562430829]: delta_orient: 0.888476, ??????????????????.[0m
+[0m[INFO] [1779783742.752528098]: delta_orient: 0.888367, ??????????????????.[0m
+[0m[INFO] [1779783742.809872395]: delta_orient: 0.881554, ??????????????????.[0m
+[0m[INFO] [1779783742.856064233]: delta_orient: 0.881554, ??????????????????.[0m
+[0m[INFO] [1779783743.009585040]: delta_orient: 0.870274, ??????????????????.[0m
+[0m[INFO] [1779783743.064253587]: delta_orient: 0.853933, ??????????????????.[0m
+[0m[INFO] [1779783743.242881939]: delta_orient: 0.845175, ??????????????????.[0m
+[0m[INFO] [1779783743.302937570]: delta_orient: 0.835968, ??????????????????.[0m
+[0m[INFO] [1779783743.358708325]: delta_orient: 0.805645, ??????????????????.[0m
+[0m[INFO] [1779783743.517602508]: delta_orient: 0.792740, ??????????????????.[0m
+[0m[INFO] [1779783743.575611222]: delta_orient: 0.762416, ??????????????????.[0m
+[0m[INFO] [1779783743.735033905]: delta_orient: 0.747428, ??????????????????.[0m
+[0m[INFO] [1779783743.801637161]: delta_orient: 0.727824, ??????????????????.[0m
+[0m[INFO] [1779783743.863788126]: delta_orient: 0.723010, ??????????????????.[0m
+[0m[INFO] [1779783744.055604479]: delta_orient: 0.716258, ??????????????????.[0m
+[0m[INFO] [1779783744.167343448]: delta_orient: 0.704506, ??????????????????.[0m
+[0m[INFO] [1779783744.268593208]: delta_orient: 0.697664, ??????????????????.[0m
+[0m[INFO] [1779783744.327326131]: delta_orient: 0.690614, ??????????????????.[0m
+[0m[INFO] [1779783744.377612094]: delta_orient: 0.675061, ??????????????????.[0m
+[0m[INFO] [1779783744.477136063]: delta_orient: 0.666710, ??????????????????.[0m
+[0m[INFO] [1779783744.632780495]: delta_orient: 0.651207, ??????????????????.[0m
+[0m[INFO] [1779783744.754570591]: delta_orient: 0.643961, ??????????????????.[0m
+[0m[INFO] [1779783744.819528847]: delta_orient: 0.630316, ??????????????????.[0m
+[0m[INFO] [1779783744.889121687]: delta_orient: 0.623331, ??????????????????.[0m
+[0m[INFO] [1779783744.962414903]: delta_orient: 0.615976, ??????????????????.[0m
+[0m[INFO] [1779783745.074444081]: delta_orient: 0.600423, ??????????????????.[0m
+[0m[INFO] [1779783745.165890632]: delta_orient: 0.583752, ??????????????????.[0m
+[0m[INFO] [1779783745.265079184]: delta_orient: 0.566960, ??????????????????.[0m
+[0m[INFO] [1779783745.434821617]: delta_orient: 0.558553, ??????????????????.[0m
+[0m[INFO] [1779783745.495496457]: delta_orient: 0.542881, ??????????????????.[0m
+[0m[INFO] [1779783745.666311099]: delta_orient: 0.535785, ??????????????????.[0m
+[0m[INFO] [1779783745.739471606]: delta_orient: 0.521539, ??????????????????.[0m
+[0m[INFO] [1779783745.796264362]: delta_orient: 0.514278, ??????????????????.[0m
+[0m[INFO] [1779783745.868177702]: delta_orient: 0.497049, ??????????????????.[0m
+[0m[INFO] [1779783746.024289093]: delta_orient: 0.497049, ??????????????????.[0m
+[0m[INFO] [1779783746.070658848]: delta_orient: 0.471746, ??????????????????.[0m
+[0m[INFO] [1779783746.214984862]: delta_orient: 0.464909, ??????????????????.[0m
+[0m[INFO] [1779783746.263594909]: delta_orient: 0.450051, ??????????????????.[0m
+[0m[INFO] [1779783746.386484296]: delta_orient: 0.441966, ??????????????????.[0m
+[0m[INFO] [1779783746.484225889]: delta_orient: 0.426188, ??????????????????.[0m
+[0m[INFO] [1779783746.564624689]: delta_orient: 0.418226, ??????????????????.[0m
+[0m[INFO] [1779783746.718273830]: delta_orient: 0.418226, ??????????????????.[0m
+[0m[INFO] [1779783746.783967086]: delta_orient: 0.395285, ??????????????????.[0m
+[0m[INFO] [1779783746.870612512]: delta_orient: 0.395285, ??????????????????.[0m
+[0m[INFO] [1779783746.959423270]: delta_orient: 0.387597, ??????????????????.[0m
+[0m[INFO] [1779783747.153057873]: delta_orient: 0.371457, ??????????????????.[0m
+[0m[INFO] [1779783747.224604589]: delta_orient: 0.336624, ??????????????????.[0m
+[0m[INFO] [1779783747.276532052]: delta_orient: 0.336624, ??????????????????.[0m
+[0m[INFO] [1779783747.384022021]: delta_orient: 0.328391[33m[WARN] [1779783748.032320962]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1230 seconds[0m
+[33m[WARN] [1779783748.134828972]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1255 seconds[0m
+[33m[WARN] [1779783748.829786208]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1203 seconds[0m
+[33m[WARN] [1779783748.848660835]: The origin for the sensor at (-37.56, 12.48, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783749.848967936]: The origin for the sensor at (-37.53, 12.49, -1.73) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783749.934472069]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1250 seconds[0m
+[33m[WARN] [1779783750.252860393]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1434 seconds[0m
+[33m[WARN] [1779783750.333020318]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1236 seconds[0m
+[33m[WARN] [1779783750.845899369]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1365 seconds[0m
+[33m[WARN] [1779783750.914730543]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1053 seconds[0m
+[33m[WARN] [1779783751.311829791]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1024 seconds[0m
+[33m[WARN] [1779783751.348708128]: The origin for the sensor at (-37.49, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783751.525881063]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1165 seconds[0m
+[33m[WARN] [1779783751.844036636]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1347 seconds[0m
+[33m[WARN] [1779783751.958817981]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1494 seconds[0m
+[33m[WARN] [1779783752.034251739]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1249 seconds[0m
+[33m[WARN] [1779783752.348674270]: The origin for the sensor at (-37.46, 12.55, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783752.414351485]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1050 seconds[0m
+[33m[WARN] [1779783752.613778297]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1044 seconds[0m
+[33m[WARN] [1779783752.917953994]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1085 seconds[0m
+[33m[WARN] [1779783753.235272776]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1259 seconds[0m
+[33m[WARN] [1779783753.748257328]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1389 seconds[0m
+[33m[WARN] [1779783753.848894296]: The origin for the sensor at (-37.47, 12.54, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783754.540702324]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1313 seconds[0m
+[33m[WARN] [1779783755.314342402]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1049 seconds[0m
+[33m[WARN] [1779783755.348844530]: The origin for the sensor at (-37.47, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783755.632687267]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1232 seconds[0m
+[33m[WARN] [1779783755.710629066]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1013 seconds[0m
+[33m[WARN] [1779783756.242570203]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1327 seconds[0m
+[33m[WARN] [1779783756.352595923]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1432 seconds[0m
+[33m[WARN] [1779783756.423572763]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1142 seconds[0m
+[33m[WARN] [1779783756.732863127]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1235 seconds[0m
+[33m[WARN] [1779783756.848704972]: The origin for the sensor at (-37.44, 12.56, -1.75) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783757.323690020]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1143 seconds[0m
+[33m[WARN] [1779783757.652142886]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1426 seconds[0m
+, ??????????????????.[0m
+[0m[INFO] [1779783747.483116365]: delta_orient: 0.313743, ??????????????????.[0m
+[0m[INFO] [1779783747.556095455]: delta_orient: 0.306657, ??????????????????.[0m
+[0m[INFO] [1779783747.701899637]: delta_orient: 0.291042, ??????????????????.[0m
+[0m[INFO] [1779783747.776540936]: delta_orient: 0.282849, ??????????????????.[0m
+[0m[INFO] [1779783747.907589407]: delta_orient: 0.266990, ??????????????????.[0m
+[0m[INFO] [1779783748.031763587]: delta_orient: 0.259503, ??????????????????.[0m
+[0m[INFO] [1779783748.134448055]: delta_orient: 0.243548, ??????????????????.[0m
+[0m[INFO] [1779783748.194349978]: delta_orient: 0.226757, ??????????????????.[0m
+[0m[INFO] [1779783748.258607359]: delta_orient: 0.219046, ??????????????????.[0m
+[0m[INFO] [1779783748.377686121]: delta_orient: 0.203615, ??????????????????.[0m
+[0m[INFO] [1779783751.843342469]: delta_orient: -0.200377, ??????????????????.[0m
+[0m[INFO] [1779783751.957955231]: delta_orient: -0.216485, ??????????????????.[0m
+[0m[INFO] [1779783752.033883072]: delta_orient: -0.224623, ??????????????????.[0m
+[0m[INFO] [1779783752.085477744]: delta_orient: -0.240825, ??????????????????.[0m
+[0m[INFO] [1779783752.195944463]: delta_orient: -0.249065, ??????????????????.[0m
+[0m[INFO] [1779783752.275252721]: delta_orient: -0.263770, ??????????????????.[0m
+[0m[INFO] [1779783752.413784777]: delta_orient: -0.269832, ??????????????????.[0m
+[0m[INFO] [1779783752.492554326]: delta_orient: -0.281449, ??????????????????.[0m
+[0m[INFO] [1779783752.612967463]: delta_orient: -0.281935, ??????????????????.[0m
+[0m[INFO] [1779783752.674876345]: delta_orient: -0.276984, ??????????????????.[0m
+[0m[INFO] [1779783752.772972021]: delta_orient: -0.274550, ??????????????????.[0m
+[0m[INFO] [1779783752.916551952]: delta_orient: -0.270052, ??????????????????.[0m
+[0m[INFO] [1779783752.998853294]: delta_orient: -0.264375, ??????????????????.[0m
+[0m[INFO] [1779783753.067693342]: delta_orient: -0.245064, ??????????????????.[0m
+[0m[INFO] [1779783753.234886026]: delta_orient: -0.233527, ??????????????????.[0m
+[0m[INFO] [1779783753.291717573]: delta_orient: -0.211696, ??????????????????.[0m
+[0m[INFO] [1779783753.372948790]: delta_orient: -0.211696, ??????????????????.[0m
+[0m[INFO] [1779783753.477149634]: delta_orient: -0.202090, ??????????????????.[0m
+[0m[INFO] [1779783755.710293358]: delta_orient: -0.208902, ??????????????????.[0m
+[0m[INFO] [1779783755.760680238]: delta_orient: -0.208902, ??????????????????.[0m
+[0m[INFO] [1779783755.887583251]: delta_orient: -0.222387, ??????????????????.[0m
+[0m[INFO] [1779783755.954041841]: delta_orient: -0.256064, ??????????????????.[0m
+[0m[INFO] [1779783756.067048394]: delta_orient: -0.288814, ??????????????????.[0m
+[0m[INFO] [1779783756.238971036]: delta_orient: -0.299958, ??????????????????.[0m
+[0m[INFO] [1779783756.351982547]: delta_orient: -0.310486, ??????????????????.[0m
+[0m[INFO] [1779783756.422955305]: delta_orient: -0.310599, ??????????????????.[0m
+[0m[INFO] [1779783756.503057479]: delta_orient: -0.310599, ??????????????????.[0m
+[0m[INFO] [1779783756.555896110]: delta_orient: -0.311749, ??????????????????.[0m
+[0m[INFO] [1779783756.732056086]: delta_orient: -0.312403, ??????????????????.[0m
+[0m[INFO] [1779783756.799487092]: delta_orient: -0.303266, ??????????????????.[0m
+[0m[INFO] [1779783756.866561974]: delta_orient: -0.303266, ??????????????????.[0m
+[0m[INFO] [1779783756.980169069]: delta_orient: -0.297641, ??????????????????.[0m
+[0m[INFO] [1779783757.062751869]: delta_orient: -0.282411, ??????????????????.[0m
+[0m[INFO] [1779783757.170266338]: delta_orient: -0.274590, ??????????????????.[0m
+[0m[INFO] [1779783757.322784395]: delta_orient: -0.259227, ??????????????????.[0m
+[0m[INFO] [1779783757.393110194]: delta_orient: -0.250745, ??????????????????.[0m
+[0m[INFO] [1779783757.458626992]: delta_orient: -0.232025, ??????????????????.[0m
+[0m[INFO] [1779783757.649794678]: delta_orient: -0.223290, ??????????????????.[0m
+[0m[INFO] [1779783757.720598518]: delta_orient:[33m[WARN] [1779783757.720934810]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1116 seconds[0m
+[33m[WARN] [1779783757.848889573]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783757.950960958]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1416 seconds[0m
+[33m[WARN] [1779783758.021305715]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1119 seconds[0m
+[33m[WARN] [1779783758.316004286]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1066 seconds[0m
+[33m[WARN] [1779783758.849021090]: The origin for the sensor at (-37.46, 12.52, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783759.139874619]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1305 seconds[0m
+[33m[WARN] [1779783759.621705376]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1123 seconds[0m
+[33m[WARN] [1779783759.911136738]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1017 seconds[0m
+[33m[WARN] [1779783760.348683157]: The origin for the sensor at (-37.46, 12.54, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783760.426253374]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1169 seconds[0m
+[33m[WARN] [1779783760.909605130]: TebLocalPlannerROS: possible oscillation (of the robot or its local plan) detected. Activating recovery strategy (prefer current turning direction during optimization).[0m
+[33m[WARN] [1779783761.121651777]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1123 seconds[0m
+[33m[WARN] [1779783761.440873392]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1315 seconds[0m
+[33m[WARN] [1779783761.728684838]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1193 seconds[0m
+[33m[WARN] [1779783761.848768683]: The origin for the sensor at (-37.45, 12.55, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783762.121171669]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1117 seconds[0m
+[33m[WARN] [1779783762.743406398]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1338 seconds[0m
+[33m[WARN] [1779783762.824566448]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1152 seconds[0m
+[33m[WARN] [1779783763.109642351]: makePlan is called.
+[0m
+[33m[WARN] [1779783763.209750528]: makePlan is called.
+[0m
+[33m[WARN] [1779783763.348725834]: The origin for the sensor at (-37.46, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783763.413206090]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1037 seconds[0m
+[33m[WARN] [1779783763.511426017]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1020 seconds[0m
+[33m[WARN] [1779783763.833353424]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1239 seconds[0m
+[33m[WARN] [1779783763.910522599]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1012 seconds[0m
+[33m[WARN] [1779783764.848589485]: The origin for the sensor at (-37.45, 12.54, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783765.218290730]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1089 seconds[0m
+[33m[WARN] [1779783765.316884865]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1075 seconds[0m
+[33m[WARN] [1779783765.528011303]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1186 seconds[0m
+ -0.211711, ??????????????????.[0m
+[0m[INFO] [1779783757.765867523]: delta_orient: -0.210473, ??????????????????.[0m
+[0m[INFO] [1779783757.950291583]: delta_orient: -0.209142, ??????????????????.[0m
+[0m[INFO] [1779783758.020785090]: delta_orient: -0.200511, ??????????????????.[0m
+[0m[INFO] [1779783760.260099315]: delta_orient: -0.204826, ??????????????????.[0m
+[0m[INFO] [1779783760.425635040]: delta_orient: -0.207739, ??????????????????.[0m
+[0m[INFO] [1779783760.487179338]: delta_orient: -0.213165, ??????????????????.[0m
+[0m[INFO] [1779783760.590866682]: delta_orient: -0.220370, ??????????????????.[0m
+[0m[INFO] [1779783760.697467526]: delta_orient: -0.224406, ??????????????????.[0m
+[0m[INFO] [1779783760.773183283]: delta_orient: -0.236343, ??????????????????.[0m
+[0m[INFO] [1779783760.883737794]: delta_orient: -0.244699, ??????????????????.[0m
+[0m[INFO] [1779783760.968770886]: delta_orient: -0.264095, ??????????????????.[0m
+[0m[INFO] [1779783761.121001068]: delta_orient: -0.271491, ??????????????????.[0m
+[0m[INFO] [1779783761.179535366]: delta_orient: -0.281744, ??????????????????.[0m
+[0m[INFO] [1779783761.263299416]: delta_orient: -0.283444, ??????????????????.[0m
+[0m[INFO] [1779783761.440255934]: delta_orient: -0.278632, ??????????????????.[0m
+[0m[INFO] [1779783761.502072648]: delta_orient: -0.273895, ??????????????????.[0m
+[0m[INFO] [1779783761.557369154]: delta_orient: -0.260262, ??????????????????.[0m
+[0m[INFO] [1779783761.727947504]: delta_orient: -0.250983, ??????????????????.[0m
+[0m[INFO] [1779783761.797391011]: delta_orient: -0.229948, ??????????????????.[0m
+[0m[INFO] [1779783761.884315270]: delta_orient: -0.220368, ??????????????????.[0m
+[0m[INFO] [1779783761.967426278]: delta_orient: -0.207259, ??????????????????.[0m
+[0m[INFO] [1779783762.120103585]: delta_orient: -0.206274, ??????????????????.[0m
+[0m[INFO] [1779783762.186359759]: delta_orient: -0.205321, ??????????????????.[0m
+[0m[INFO] [1779783762.258019933]: delta_orient: -0.205321, ??????????????????.[0m
+[0m[INFO] [1779783762.375363278]: delta_orient: -0.202015, ??????????????????.[0m
+[0m[INFO] [1779783763.412575799]: delta_orient: 0.363257, ??????????????????.[0m
+[0m[INFO] [1779783763.510159892]: delta_orient: 0.362780, ??????????????????.[0m
+[0m[INFO] [1779783763.571581981]: delta_orient: 0.359171, ??????????????????.[0m
+[0m[INFO] [1779783763.658122990]: delta_orient: 0.349093, ??????????????????.[0m
+[0m[INFO] [1779783763.832343382]: delta_orient: 0.340321, ??????????????????.[0m
+[0m[INFO] [1779783763.910126515]: delta_orient: 0.334737, ??????????????????.[0m
+[0m[INFO] [1779783763.971193355]: delta_orient: 0.327197, ??????????????????.[0m
+[0m[INFO] [1779783764.070684073]: delta_orient: 0.307589, ??????????????????.[0m
+[0m[INFO] [1779783764.181070292]: delta_orient: 0.298019, ??????????????????.[0m
+[0m[INFO] [1779783764.291029804]: delta_orient: 0.285097, ??????????????????.[0m
+[0m[INFO] [1779783764.388767313]: delta_orient: 0.284846, ??????????????????.[0m
+[0m[INFO] [1779783764.476327114]: delta_orient: 0.283972, ??????????????????.[0m
+[0m[INFO] [1779783764.573605832]: delta_orient: 0.282456, ??????????????????.[0m
+[0m[INFO] [1779783764.699403428]: delta_orient: 0.282569, ??????????????????.[0m
+[0m[INFO] [1779783764.781324436]: delta_orient: 0.282308, ??????????????????.[0m
+[0m[INFO] [1779783764.867257320]: delta_orient: 0.282429, ??????????????????.[0m
+[0m[INFO] [1779783765.004710500]: delta_orient: 0.282469, ??????????????????.[0m
+[0m[INFO] [1779783765.071718299]: delta_orient: 0.282261, ??????????????????.[0m
+[0m[INFO] [1779783765.217758147]: delta_orient: 0.282773, ??????????????????.[0m
+[0m[INFO] [1779783765.316460490]: delta_orient: 0.282409, ??????????????????.[0m
+[0m[INFO] [1779783765.379588246]: delta_orient: 0.282372, ??????????????????.[0m
+[0m[INFO] [1779783765.527378094]: delta_orient: 0.282372, ??????????????????.[0m
+[0m[INFO] [1779783765.592798643]: delta_orient: 0.282453, ??????????????????.[0m
+[0m[INFO] [1779783765.685921402]: delta_orient: 0.[33m[WARN] [1779783765.848751918]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783766.114952028]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1056 seconds[0m
+[33m[WARN] [1779783766.329760758]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1204 seconds[0m
+[33m[WARN] [1779783766.650146416]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1407 seconds[0m
+[33m[WARN] [1779783766.713642839]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1043 seconds[0m
+[33m[WARN] [1779783767.348670361]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783768.116814855]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1074 seconds[0m
+[33m[WARN] [1779783768.348712628]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783768.548695356]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1393 seconds[0m
+[33m[WARN] [1779783768.811009008]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1015 seconds[0m
+[33m[WARN] [1779783769.334848227]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1253 seconds[0m
+[33m[WARN] [1779783769.612927047]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1036 seconds[0m
+[33m[WARN] [1779783769.819067151]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1097 seconds[0m
+[33m[WARN] [1779783769.848733445]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783770.039178089]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1298 seconds[0m
+[33m[WARN] [1779783770.113839805]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1045 seconds[0m
+[33m[WARN] [1779783770.352746621]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1433 seconds[0m
+[33m[WARN] [1779783770.411882627]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1025 seconds[0m
+282453, ??????????????????.[0m
+[0m[INFO] [1779783765.759927159]: delta_orient: 0.282558, ??????????????????.[0m
+[0m[INFO] [1779783765.866300045]: delta_orient: 0.282112, ??????????????????.[0m
+[0m[INFO] [1779783765.956494763]: delta_orient: 0.282059, ??????????????????.[0m
+[0m[INFO] [1779783766.114427028]: delta_orient: 0.282194, ??????????????????.[0m
+[0m[INFO] [1779783766.172216118]: delta_orient: 0.282337, ??????????????????.[0m
+[0m[INFO] [1779783766.329178008]: delta_orient: 0.282183, ??????????????????.[0m
+[0m[INFO] [1779783766.381187430]: delta_orient: 0.282270, ??????????????????.[0m
+[0m[INFO] [1779783766.459804730]: delta_orient: 0.282088, ??????????????????.[0m
+[0m[INFO] [1779783766.646843874]: delta_orient: 0.282298, ??????????????????.[0m
+[0m[INFO] [1779783766.713110547]: delta_orient: 0.282257, ??????????????????.[0m
+[0m[INFO] [1779783766.762874719]: delta_orient: 0.282224, ??????????????????.[0m
+[0m[INFO] [1779783766.876838522]: delta_orient: 0.282045, ??????????????????.[0m
+[0m[INFO] [1779783766.983673991]: delta_orient: 0.282179, ??????????????????.[0m
+[0m[INFO] [1779783767.068200749]: delta_orient: 0.282128, ??????????????????.[0m
+[0m[INFO] [1779783767.198165096]: delta_orient: 0.282097, ??????????????????.[0m
+[0m[INFO] [1779783767.284973563]: delta_orient: 0.282086, ??????????????????.[0m
+[0m[INFO] [1779783767.403102950]: delta_orient: 0.282102, ??????????????????.[0m
+[0m[INFO] [1779783767.482187499]: delta_orient: 0.282128, ??????????????????.[0m
+[0m[INFO] [1779783767.571993717]: delta_orient: 0.282107, ??????????????????.[0m
+[0m[INFO] [1779783767.698314854]: delta_orient: 0.282212, ??????????????????.[0m
+[0m[INFO] [1779783767.758042652]: delta_orient: 0.282136, ??????????????????.[0m
+[0m[INFO] [1779783767.860893371]: delta_orient: 0.282074, ??????????????????.[0m
+[0m[INFO] [1779783767.958177922]: delta_orient: 0.282077, ??????????????????.[0m
+[0m[INFO] [1779783768.116277021]: delta_orient: 0.282137, ??????????????????.[0m
+[0m[INFO] [1779783768.184755695]: delta_orient: 0.282026, ??????????????????.[0m
+[0m[INFO] [1779783768.280099788]: delta_orient: 0.282147, ??????????????????.[0m
+[0m[INFO] [1779783768.357410712]: delta_orient: 0.281929, ??????????????????.[0m
+[0m[INFO] [1779783768.548208565]: delta_orient: 0.281975, ??????????????????.[0m
+[0m[INFO] [1779783768.607419237]: delta_orient: 0.282135, ??????????????????.[0m
+[0m[INFO] [1779783768.672068327]: delta_orient: 0.282007, ??????????????????.[0m
+[0m[INFO] [1779783768.809873549]: delta_orient: 0.281993, ??????????????????.[0m
+[0m[INFO] [1779783768.906158267]: delta_orient: 0.282058, ??????????????????.[0m
+[0m[INFO] [1779783768.987604734]: delta_orient: 0.282058, ??????????????????.[0m
+[0m[INFO] [1779783769.072155117]: delta_orient: 0.282114, ??????????????????.[0m
+[0m[INFO] [1779783769.165416418]: delta_orient: 0.282178, ??????????????????.[0m
+[0m[INFO] [1779783769.334158727]: delta_orient: 0.282212, ??????????????????.[0m
+[0m[INFO] [1779783769.390190816]: delta_orient: 0.282057, ??????????????????.[0m
+[0m[INFO] [1779783769.476974200]: delta_orient: 0.282057, ??????????????????.[0m
+[0m[INFO] [1779783769.612384547]: delta_orient: 0.282081, ??????????????????.[0m
+[0m[INFO] [1779783769.671729969]: delta_orient: 0.282169, ??????????????????.[0m
+[0m[INFO] [1779783769.818039026]: delta_orient: 0.282291, ??????????????????.[0m
+[0m[INFO] [1779783769.878709782]: delta_orient: 0.282145, ??????????????????.[0m
+[0m[INFO] [1779783770.038628006]: delta_orient: 0.282136, ??????????????????.[0m
+[0m[INFO] [1779783770.112992805]: delta_orient: 0.282227, ??????????????????.[0m
+[0m[INFO] [1779783770.166676394]: delta_orient: 0.282285, ??????????????????.[0m
+[0m[INFO] [1779783770.351805996]: delta_orient: 0.282261, ??????????????????.[0m
+[0m[INFO] [1779783770.411554502]: delta_orient: 0.282041, ??????????????????.[0m
+[0m[INFO] [1779783770.460771798]: delta_orient: 0.282041, ??????????????????.[0m
+[0m[INFO] [1779783770.633592191]: delta_orient: 0.282106, ??????????????????.[[33m[WARN] [1779783770.634639274]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1252 seconds[0m
+[33m[WARN] [1779783770.933814179]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1244 seconds[0m
+[33m[WARN] [1779783771.019635730]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1103 seconds[0m
+[33m[WARN] [1779783771.348654429]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783771.749765845]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1404 seconds[0m
+[33m[WARN] [1779783772.034266873]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1249 seconds[0m
+[33m[WARN] [1779783772.166948178]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1576 seconds[0m
+[33m[WARN] [1779783772.261635146]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1523 seconds[0m
+[33m[WARN] [1779783772.335740653]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1264 seconds[0m
+[33m[WARN] [1779783772.848781497]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783773.038150474]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1287 seconds[0m
+[33m[WARN] [1779783773.119564857]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1101 seconds[0m
+[33m[WARN] [1779783773.415307012]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1059 seconds[0m
+[33m[WARN] [1779783773.848689014]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783774.124622917]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1152 seconds[0m
+[33m[WARN] [1779783774.621588175]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1122 seconds[0m
+[33m[WARN] [1779783774.719118601]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1097 seconds[0m
+[33m[WARN] [1779783774.848715156]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783774.909924620]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1005 seconds[0m
+[33m[WARN] [1779783775.217806401]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1084 seconds[0m
+0m
+[0m[INFO] [1779783770.701979864]: delta_orient: 0.282156, ??????????????????.[0m
+[0m[INFO] [1779783770.764429787]: delta_orient: 0.282151, ??????????????????.[0m
+[0m[INFO] [1779783770.933190013]: delta_orient: 0.282184, ??????????????????.[0m
+[0m[INFO] [1779783771.019022063]: delta_orient: 0.282366, ??????????????????.[0m
+[0m[INFO] [1779783771.085903570]: delta_orient: 0.282281, ??????????????????.[0m
+[0m[INFO] [1779783771.200808873]: delta_orient: 0.282331, ??????????????????.[0m
+[0m[INFO] [1779783771.269011921]: delta_orient: 0.281935, ??????????????????.[0m
+[0m[INFO] [1779783771.394119434]: delta_orient: 0.282278, ??????????????????.[0m
+[0m[INFO] [1779783771.478680317]: delta_orient: 0.282078, ??????????????????.[0m
+[0m[INFO] [1779783771.567374993]: delta_orient: 0.281918, ??????????????????.[0m
+[0m[INFO] [1779783771.749360428]: delta_orient: 0.282176, ??????????????????.[0m
+[0m[INFO] [1779783771.800822391]: delta_orient: 0.282166, ??????????????????.[0m
+[0m[INFO] [1779783771.857383564]: delta_orient: 0.282181, ??????????????????.[0m
+[0m[INFO] [1779783772.033500956]: delta_orient: 0.282122, ??????????????????.[0m
+[0m[INFO] [1779783772.166432511]: delta_orient: 0.282230, ??????????????????.[0m
+[0m[INFO] [1779783772.257716896]: delta_orient: 0.281992, ??????????????????.[0m
+[0m[INFO] [1779783772.335340195]: delta_orient: 0.282287, ??????????????????.[0m
+[0m[INFO] [1779783772.382858242]: delta_orient: 0.282080, ??????????????????.[0m
+[0m[INFO] [1779783772.465533208]: delta_orient: 0.282080, ??????????????????.[0m
+[0m[INFO] [1779783772.588699679]: delta_orient: 0.282168, ??????????????????.[0m
+[0m[INFO] [1779783772.656026852]: delta_orient: 0.282229, ??????????????????.[0m
+[0m[INFO] [1779783772.805966576]: delta_orient: 0.282350, ??????????????????.[0m
+[0m[INFO] [1779783772.879130291]: delta_orient: 0.282137, ??????????????????.[0m
+[0m[INFO] [1779783773.037411099]: delta_orient: 0.282335, ??????????????????.[0m
+[0m[INFO] [1779783773.118191690]: delta_orient: 0.281991, ??????????????????.[0m
+[0m[INFO] [1779783773.198346657]: delta_orient: 0.281901, ??????????????????.[0m
+[0m[INFO] [1779783773.281852290]: delta_orient: 0.282040, ??????????????????.[0m
+[0m[INFO] [1779783773.414521262]: delta_orient: 0.282185, ??????????????????.[0m
+[0m[INFO] [1779783773.415909887]: TebLocalPlannerROS: oscillation recovery disabled/expired.[0m
+[0m[INFO] [1779783773.473974893]: delta_orient: 0.282129, ??????????????????.[0m
+[0m[INFO] [1779783773.572274153]: delta_orient: 0.282001, ??????????????????.[0m
+[0m[INFO] [1779783773.687781373]: delta_orient: 0.282013, ??????????????????.[0m
+[0m[INFO] [1779783773.773861631]: delta_orient: 0.282131, ??????????????????.[0m
+[0m[INFO] [1779783773.887747559]: delta_orient: 0.281982, ??????????????????.[0m
+[0m[INFO] [1779783773.972180693]: delta_orient: 0.281982, ??????????????????.[0m
+[0m[INFO] [1779783774.123663916]: delta_orient: 0.282055, ??????????????????.[0m
+[0m[INFO] [1779783774.192476840]: delta_orient: 0.282349, ??????????????????.[0m
+[0m[INFO] [1779783774.273503598]: delta_orient: 0.282182, ??????????????????.[0m
+[0m[INFO] [1779783774.390163860]: delta_orient: 0.281885, ??????????????????.[0m
+[0m[INFO] [1779783774.481985494]: delta_orient: 0.282122, ??????????????????.[0m
+[0m[INFO] [1779783774.620830133]: delta_orient: 0.282109, ??????????????????.[0m
+[0m[INFO] [1779783774.717983726]: delta_orient: 0.282122, ??????????????????.[0m
+[0m[INFO] [1779783774.767590398]: delta_orient: 0.282044, ??????????????????.[0m
+[0m[INFO] [1779783774.909345954]: delta_orient: 0.282294, ??????????????????.[0m
+[0m[INFO] [1779783774.973313710]: delta_orient: 0.282127, ??????????????????.[0m
+[0m[INFO] [1779783775.070133928]: delta_orient: 0.281971, ??????????????????.[0m
+[0m[INFO] [1779783775.217185735]: delta_orient: 0.282149, ??????????????????.[0m
+[0m[INFO] [1779783775.279013533]: delta_orient: 0.281987, ??????????????????.[0m
+[0m[INFO] [1779783775.366726458]: delta_orient: 0.282024, ??????????????????.[0m
+[0m[INFO] [33m[WARN] [1779783776.247391297]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1379 seconds[0m
+[33m[WARN] [1779783776.312845678]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1035 seconds[0m
+[33m[WARN] [1779783776.348647182]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783776.713855302]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1045 seconds[0m
+[33m[WARN] [1779783776.839913439]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1305 seconds[0m
+[33m[WARN] [1779783777.130189552]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1208 seconds[0m
+[33m[WARN] [1779783777.513186132]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1038 seconds[0m
+[33m[WARN] [1779783777.848753332]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783778.409566847]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1002 seconds[0m
+[33m[WARN] [1779783778.619384577]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1100 seconds[0m
+[33m[WARN] [1779783778.932109025]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1227 seconds[0m
+[33m[WARN] [1779783779.239603889]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1302 seconds[0m
+[33m[WARN] [1779783779.341992899]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1326 seconds[0m
+[33m[WARN] [1779783779.348578150]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783780.031840343]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1225 seconds[0m
+[33m[WARN] [1779783780.330434707]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1210 seconds[0m
+[33m[WARN] [1779783780.348773542]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[1779783775.488778179]: delta_orient: 0.282149, ??????????????????.[0m
+[0m[INFO] [1779783775.563051686]: delta_orient: 0.282091, ??????????????????.[0m
+[0m[INFO] [1779783775.681597573]: delta_orient: 0.281988, ??????????????????.[0m
+[0m[INFO] [1779783775.774259499]: delta_orient: 0.282163, ??????????????????.[0m
+[0m[INFO] [1779783775.900845762]: delta_orient: 0.282132, ??????????????????.[0m
+[0m[INFO] [1779783775.978506686]: delta_orient: 0.282083, ??????????????????.[0m
+[0m[INFO] [1779783776.058199069]: delta_orient: 0.282047, ??????????????????.[0m
+[0m[INFO] [1779783776.244395880]: delta_orient: 0.282047, ??????????????????.[0m
+[0m[INFO] [1779783776.312521928]: delta_orient: 0.282092, ??????????????????.[0m
+[0m[INFO] [1779783776.364704600]: delta_orient: 0.282092, ??????????????????.[0m
+[0m[INFO] [1779783776.490818654]: delta_orient: 0.282187, ??????????????????.[0m
+[0m[INFO] [1779783776.573657829]: delta_orient: 0.282096, ??????????????????.[0m
+[0m[INFO] [1779783776.712945885]: delta_orient: 0.282081, ??????????????????.[0m
+[0m[INFO] [1779783776.839127981]: delta_orient: 0.282113, ??????????????????.[0m
+[0m[INFO] [1779783776.897912029]: delta_orient: 0.282133, ??????????????????.[0m
+[0m[INFO] [1779783776.966231744]: delta_orient: 0.282133, ??????????????????.[0m
+[0m[INFO] [1779783777.129645010]: delta_orient: 0.281996, ??????????????????.[0m
+[0m[INFO] [1779783777.191795683]: delta_orient: 0.282176, ??????????????????.[0m
+[0m[INFO] [1779783777.267567191]: delta_orient: 0.282176, ??????????????????.[0m
+[0m[INFO] [1779783777.403691829]: delta_orient: 0.282023, ??????????????????.[0m
+[0m[INFO] [1779783777.512200882]: delta_orient: 0.282056, ??????????????????.[0m
+[0m[INFO] [1779783777.572760805]: delta_orient: 0.282091, ??????????????????.[0m
+[0m[INFO] [1779783777.657235647]: delta_orient: 0.282081, ??????????????????.[0m
+[0m[INFO] [1779783777.760472532]: delta_orient: 0.282162, ??????????????????.[0m
+[0m[INFO] [1779783777.889614962]: delta_orient: 0.282107, ??????????????????.[0m
+[0m[INFO] [1779783778.001550806]: delta_orient: 0.282143, ??????????????????.[0m
+[0m[INFO] [1779783778.070184938]: delta_orient: 0.282106, ??????????????????.[0m
+[0m[INFO] [1779783778.208034202]: delta_orient: 0.282203, ??????????????????.[0m
+[0m[INFO] [1779783778.261587999]: delta_orient: 0.282014, ??????????????????.[0m
+[0m[INFO] [1779783778.409176305]: delta_orient: 0.281945, ??????????????????.[0m
+[0m[INFO] [1779783778.457210019]: delta_orient: 0.282024, ??????????????????.[0m
+[0m[INFO] [1779783778.618429076]: delta_orient: 0.282024, ??????????????????.[0m
+[0m[INFO] [1779783778.685702583]: delta_orient: 0.282108, ??????????????????.[0m
+[0m[INFO] [1779783778.765727758]: delta_orient: 0.282108, ??????????????????.[0m
+[0m[INFO] [1779783778.931579066]: delta_orient: 0.282192, ??????????????????.[0m
+[0m[INFO] [1779783779.008692241]: delta_orient: 0.282116, ??????????????????.[0m
+[0m[INFO] [1779783779.055657579]: delta_orient: 0.282116, ??????????????????.[0m
+[0m[INFO] [1779783779.239101930]: delta_orient: 0.282220, ??????????????????.[0m
+[0m[INFO] [1779783779.341487441]: delta_orient: 0.282065, ??????????????????.[0m
+[0m[INFO] [1779783779.408476281]: delta_orient: 0.281919, ??????????????????.[0m
+[0m[INFO] [1779783779.502667707]: delta_orient: 0.282073, ??????????????????.[0m
+[0m[INFO] [1779783779.571349089]: delta_orient: 0.282053, ??????????????????.[0m
+[0m[INFO] [1779783779.708699019]: delta_orient: 0.281993, ??????????????????.[0m
+[0m[INFO] [1779783779.768405525]: delta_orient: 0.282041, ??????????????????.[0m
+[0m[INFO] [1779783779.871834911]: delta_orient: 0.282132, ??????????????????.[0m
+[0m[INFO] [1779783780.031274218]: delta_orient: 0.282081, ??????????????????.[0m
+[0m[INFO] [1779783780.095425141]: delta_orient: 0.281946, ??????????????????.[0m
+[0m[INFO] [1779783780.164805357]: delta_orient: 0.282154, ??????????????????.[0m
+[0m[INFO] [1779783780.329793623]: delta_orient: 0.281965, ??????????????????.[0m
+[0m[INFO] [1779783780.407858215]: delta[33m[WARN] [1779783780.928167684]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1188 seconds[0m
+[33m[WARN] [1779783781.348751351]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783781.438100526]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1287 seconds[0m
+[33m[WARN] [1779783781.718265638]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1088 seconds[0m
+[33m[WARN] [1779783781.845477817]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1361 seconds[0m
+[33m[WARN] [1779783782.124695595]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1153 seconds[0m
+[33m[WARN] [1779783782.336016575]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1266 seconds[0m
+[33m[WARN] [1779783782.349394451]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783782.618998312]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1096 seconds[0m
+[33m[WARN] [1779783782.915163675]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1058 seconds[0m
+[33m[WARN] [1779783783.738470216]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1291 seconds[0m
+[33m[WARN] [1779783783.848835435]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783784.011800410]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1024 seconds[0m
+[33m[WARN] [1779783784.334520567]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1252 seconds[0m
+[33m[WARN] [1779783784.412823450]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1034 seconds[0m
+[33m[WARN] [1779783784.849001369]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+_orient: 0.281856, ??????????????????.[0m
+[0m[INFO] [1779783780.474495888]: delta_orient: 0.282051, ??????????????????.[0m
+[0m[INFO] [1779783780.571078106]: delta_orient: 0.281902, ??????????????????.[0m
+[0m[INFO] [1779783780.678531033]: delta_orient: 0.282010, ??????????????????.[0m
+[0m[INFO] [1779783780.794189128]: delta_orient: 0.282015, ??????????????????.[0m
+[0m[INFO] [1779783780.927701308]: delta_orient: 0.282054, ??????????????????.[0m
+[0m[INFO] [1779783780.990591356]: delta_orient: 0.282027, ??????????????????.[0m
+[0m[INFO] [1779783781.076953282]: delta_orient: 0.282027, ??????????????????.[0m
+[0m[INFO] [1779783781.174515208]: delta_orient: 0.281987, ??????????????????.[0m
+[0m[INFO] [1779783781.266746634]: delta_orient: 0.282228, ??????????????????.[0m
+[0m[INFO] [1779783781.437358818]: delta_orient: 0.282068, ??????????????????.[0m
+[0m[INFO] [1779783781.497334241]: delta_orient: 0.282176, ??????????????????.[0m
+[0m[INFO] [1779783781.569379998]: delta_orient: 0.282124, ??????????????????.[0m
+[0m[INFO] [1779783781.717500013]: delta_orient: 0.281980, ??????????????????.[0m
+[0m[INFO] [1779783781.844967984]: delta_orient: 0.281980, ??????????????????.[0m
+[0m[INFO] [1779783781.907051865]: delta_orient: 0.282208, ??????????????????.[0m
+[0m[INFO] [1779783781.969677663]: delta_orient: 0.282208, ??????????????????.[0m
+[0m[INFO] [1779783782.124066470]: delta_orient: 0.281928, ??????????????????.[0m
+[0m[INFO] [1779783782.185075268]: delta_orient: 0.281989, ??????????????????.[0m
+[0m[INFO] [1779783782.335318033]: delta_orient: 0.282007, ??????????????????.[0m
+[0m[INFO] [1779783782.408036957]: delta_orient: 0.282241, ??????????????????.[0m
+[0m[INFO] [1779783782.463803921]: delta_orient: 0.282241, ??????????????????.[0m
+[0m[INFO] [1779783782.618182520]: delta_orient: 0.282159, ??????????????????.[0m
+[0m[INFO] [1779783782.681813401]: delta_orient: 0.282065, ??????????????????.[0m
+[0m[INFO] [1779783782.785165203]: delta_orient: 0.282027, ??????????????????.[0m
+[0m[INFO] [1779783782.914516175]: delta_orient: 0.282037, ??????????????????.[0m
+[0m[INFO] [1779783782.980035890]: delta_orient: 0.281941, ??????????????????.[0m
+[0m[INFO] [1779783783.089460192]: delta_orient: 0.281968, ??????????????????.[0m
+[0m[INFO] [1779783783.185153702]: delta_orient: 0.281950, ??????????????????.[0m
+[0m[INFO] [1779783783.281936587]: delta_orient: 0.282027, ??????????????????.[0m
+[0m[INFO] [1779783783.361950970]: delta_orient: 0.282131, ??????????????????.[0m
+[0m[INFO] [1779783783.470856106]: delta_orient: 0.282020, ??????????????????.[0m
+[0m[INFO] [1779783783.557129948]: delta_orient: 0.281989, ??????????????????.[0m
+[0m[INFO] [1779783783.737819216]: delta_orient: 0.282161, ??????????????????.[0m
+[0m[INFO] [1779783783.806243931]: delta_orient: 0.282092, ??????????????????.[0m
+[0m[INFO] [1779783783.859834478]: delta_orient: 0.282093, ??????????????????.[0m
+[0m[INFO] [1779783784.011152618]: delta_orient: 0.281980, ??????????????????.[0m
+[0m[INFO] [1779783784.094968002]: delta_orient: 0.281920, ??????????????????.[0m
+[0m[INFO] [1779783784.158923216]: delta_orient: 0.282026, ??????????????????.[0m
+[0m[INFO] [1779783784.333954734]: delta_orient: 0.282248, ??????????????????.[0m
+[0m[INFO] [1779783784.412282117]: delta_orient: 0.282029, ??????????????????.[0m
+[0m[INFO] [1779783784.473759331]: delta_orient: 0.281969, ??????????????????.[0m
+[0m[INFO] [1779783784.569325091]: delta_orient: 0.282025, ??????????????????.[0m
+[0m[INFO] [1779783784.678738894]: delta_orient: 0.282229, ??????????????????.[0m
+[0m[INFO] [1779783784.761336569]: delta_orient: 0.282229, ??????????????????.[0m
+[0m[INFO] [1779783784.875213163]: delta_orient: 0.282097, ??????????????????.[0m
+[0m[INFO] [1779783784.999066218]: delta_orient: 0.282208, ??????????????????.[0m
+[0m[INFO] [1779783785.082272309]: delta_orient: 0.282019, ??????????????????.[0m
+[0m[INFO] [1779783785.167699151]: delta_orient: 0.282100, ??????????????????.[0m
+[0m[INFO] [1779783785.280110121]: delta_orient: 0.282138, ??????????[33m[WARN] [1779783785.527655229]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1183 seconds[0m
+[33m[WARN] [1779783785.760668044]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1513 seconds[0m
+[33m[WARN] [1779783785.816101341]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1068 seconds[0m
+[33m[WARN] [1779783786.141156291]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1318 seconds[0m
+[33m[WARN] [1779783786.211769089]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1024 seconds[0m
+[33m[WARN] [1779783786.348752436]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783786.428605528]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1192 seconds[0m
+[33m[WARN] [1779783786.516882537]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1075 seconds[0m
+[33m[WARN] [1779783786.765223895]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1559 seconds[0m
+[33m[WARN] [1779783786.833993944]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1246 seconds[0m
+[33m[WARN] [1779783787.164350227]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1550 seconds[0m
+[33m[WARN] [1779783787.225211150]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1159 seconds[0m
+[33m[WARN] [1779783787.416099710]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1067 seconds[0m
+[33m[WARN] [1779783787.849503587]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783788.014903104]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1055 seconds[0m
+[33m[WARN] [1779783788.827590352]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1180 seconds[0m
+[33m[WARN] [1779783788.920678695]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1113 seconds[0m
+[33m[WARN] [1779783789.240981810]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1316 seconds[0m
+[33m[WARN] [1779783789.348730780]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783789.537212507]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1278 seconds[0m
+[33m[WARN] [1779783789.733387527]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1240 seconds[0m
+[33m[WARN] [1779783790.164918320]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1555 seconds[0m
+[33m[WARN] [1779783790.232514993]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1231 seconds[0m
+????????.[0m
+[0m[INFO] [1779783785.367995130]: delta_orient: 0.282144, ??????????????????.[0m
+[0m[INFO] [1779783785.527115937]: delta_orient: 0.282087, ??????????????????.[0m
+[0m[INFO] [1779783785.601008528]: delta_orient: 0.281919, ??????????????????.[0m
+[0m[INFO] [1779783785.760177752]: delta_orient: 0.281919, ??????????????????.[0m
+[0m[INFO] [1779783785.815756591]: delta_orient: 0.282067, ??????????????????.[0m
+[0m[INFO] [1779783785.865346346]: delta_orient: 0.282067, ??????????????????.[0m
+[0m[INFO] [1779783786.005165819]: delta_orient: 0.282072, ??????????????????.[0m
+[0m[INFO] [1779783786.140649957]: delta_orient: 0.281982, ??????????????????.[0m
+[0m[INFO] [1779783786.211087173]: delta_orient: 0.282228, ??????????????????.[0m
+[0m[INFO] [1779783786.285351930]: delta_orient: 0.282228, ??????????????????.[0m
+[0m[INFO] [1779783786.427836403]: delta_orient: 0.281971, ??????????????????.[0m
+[0m[INFO] [1779783786.516155995]: delta_orient: 0.282114, ??????????????????.[0m
+[0m[INFO] [1779783786.562325958]: delta_orient: 0.282114, ??????????????????.[0m
+[0m[INFO] [1779783786.764700645]: delta_orient: 0.282084, ??????????????????.[0m
+[0m[INFO] [1779783786.833585610]: delta_orient: 0.282229, ??????????????????.[0m
+[0m[INFO] [1779783786.891568366]: delta_orient: 0.282172, ??????????????????.[0m
+[0m[INFO] [1779783786.961790331]: delta_orient: 0.282172, ??????????????????.[0m
+[0m[INFO] [1779783787.163056685]: delta_orient: 0.282191, ??????????????????.[0m
+[0m[INFO] [1779783787.224757608]: delta_orient: 0.282118, ??????????????????.[0m
+[0m[INFO] [1779783787.278282238]: delta_orient: 0.282118, ??????????????????.[0m
+[0m[INFO] [1779783787.415162002]: delta_orient: 0.282153, ??????????????????.[0m
+[0m[INFO] [1779783787.486982301]: delta_orient: 0.282089, ??????????????????.[0m
+[0m[INFO] [1779783787.600297146]: delta_orient: 0.282134, ??????????????????.[0m
+[0m[INFO] [1779783787.673320278]: delta_orient: 0.282139, ??????????????????.[0m
+[0m[INFO] [1779783787.767065746]: delta_orient: 0.282303, ??????????????????.[0m
+[0m[INFO] [1779783787.878931882]: delta_orient: 0.282164, ??????????????????.[0m
+[0m[INFO] [1779783788.014227604]: delta_orient: 0.282206, ??????????????????.[0m
+[0m[INFO] [1779783788.070901360]: delta_orient: 0.282098, ??????????????????.[0m
+[0m[INFO] [1779783788.172326120]: delta_orient: 0.282108, ??????????????????.[0m
+[0m[INFO] [1779783788.307688050]: delta_orient: 0.282092, ??????????????????.[0m
+[0m[INFO] [1779783788.367319014]: delta_orient: 0.282022, ??????????????????.[0m
+[0m[INFO] [1779783788.462461857]: delta_orient: 0.282007, ??????????????????.[0m
+[0m[INFO] [1779783788.563622367]: delta_orient: 0.282103, ??????????????????.[0m
+[0m[INFO] [1779783788.664578419]: delta_orient: 0.281990, ??????????????????.[0m
+[0m[INFO] [1779783788.826787685]: delta_orient: 0.282182, ??????????????????.[0m
+[0m[INFO] [1779783788.919560445]: delta_orient: 0.281977, ??????????????????.[0m
+[0m[INFO] [1779783788.993033036]: delta_orient: 0.281948, ??????????????????.[0m
+[0m[INFO] [1779783789.063474334]: delta_orient: 0.282258, ??????????????????.[0m
+[0m[INFO] [1779783789.240509894]: delta_orient: 0.282021, ??????????????????.[0m
+[0m[INFO] [1779783789.308246567]: delta_orient: 0.282001, ??????????????????.[0m
+[0m[INFO] [1779783789.364019073]: delta_orient: 0.282018, ??????????????????.[0m
+[0m[INFO] [1779783789.536517173]: delta_orient: 0.282027, ??????????????????.[0m
+[0m[INFO] [1779783789.603930680]: delta_orient: 0.281948, ??????????????????.[0m
+[0m[INFO] [1779783789.732738860]: delta_orient: 0.282018, ??????????????????.[0m
+[0m[INFO] [1779783789.797577825]: delta_orient: 0.282104, ??????????????????.[0m
+[0m[INFO] [1779783789.890707876]: delta_orient: 0.282059, ??????????????????.[0m
+[0m[INFO] [1779783789.958794549]: delta_orient: 0.282183, ??????????????????.[0m
+[0m[INFO] [1779783790.164260028]: delta_orient: 0.282157, ??????????????????.[0m
+[0m[INFO] [1779783790.231945660]: delta_orient: 0.281986, ??????????????????.[0m
+[0m[INFO] [177[33m[WARN] [1779783790.529935107]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1206 seconds[0m
+[33m[WARN] [1779783790.848690347]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783791.025960406]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1166 seconds[0m
+[33m[WARN] [1779783791.848728531]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783792.124082600]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1147 seconds[0m
+[33m[WARN] [1779783792.852632465]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1433 seconds[0m
+[33m[WARN] [1779783792.942215849]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1320 seconds[0m
+[33m[WARN] [1779783793.344804264]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1354 seconds[0m
+[33m[WARN] [1779783793.348718431]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783793.411020479]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1016 seconds[0m
+[33m[WARN] [1779783794.011557540]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1022 seconds[0m
+[33m[WARN] [1779783794.411620997]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1023 seconds[0m
+[33m[WARN] [1779783794.536001092]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1266 seconds[0m
+[33m[WARN] [1779783794.848712707]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783794.923697590]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1143 seconds[0m
+9783790.284389082]: delta_orient: 0.282239, ??????????????????.[0m
+[0m[INFO] [1779783790.376080049]: delta_orient: 0.281926, ??????????????????.[0m
+[0m[INFO] [1779783790.529330482]: delta_orient: 0.281963, ??????????????????.[0m
+[0m[INFO] [1779783790.593792321]: delta_orient: 0.282116, ??????????????????.[0m
+[0m[INFO] [1779783790.670996787]: delta_orient: 0.281746, ??????????????????.[0m
+[0m[INFO] [1779783790.787977299]: delta_orient: 0.281969, ??????????????????.[0m
+[0m[INFO] [1779783790.896660477]: delta_orient: 0.282038, ??????????????????.[0m
+[0m[INFO] [1779783791.025470990]: delta_orient: 0.281963, ??????????????????.[0m
+[0m[INFO] [1779783791.097629622]: delta_orient: 0.282089, ??????????????????.[0m
+[0m[INFO] [1779783791.184993422]: delta_orient: 0.282017, ??????????????????.[0m
+[0m[INFO] [1779783791.269648806]: delta_orient: 0.281980, ??????????????????.[0m
+[0m[INFO] [1779783791.376385692]: delta_orient: 0.281941, ??????????????????.[0m
+[0m[INFO] [1779783791.464196325]: delta_orient: 0.281978, ??????????????????.[0m
+[0m[INFO] [1779783791.603871714]: delta_orient: 0.282006, ??????????????????.[0m
+[0m[INFO] [1779783791.682150972]: delta_orient: 0.282179, ??????????????????.[0m
+[0m[INFO] [1779783791.769173231]: delta_orient: 0.282101, ??????????????????.[0m
+[0m[INFO] [1779783791.882257659]: delta_orient: 0.281882, ??????????????????.[0m
+[0m[INFO] [1779783791.964981917]: delta_orient: 0.282079, ??????????????????.[0m
+[0m[INFO] [1779783792.123576267]: delta_orient: 0.281901, ??????????????????.[0m
+[0m[INFO] [1779783792.185825815]: delta_orient: 0.282044, ??????????????????.[0m
+[0m[INFO] [1779783792.273527073]: delta_orient: 0.281991, ??????????????????.[0m
+[0m[INFO] [1779783792.376277167]: delta_orient: 0.282048, ??????????????????.[0m
+[0m[INFO] [1779783792.468981676]: delta_orient: 0.282104, ??????????????????.[0m
+[0m[INFO] [1779783792.574748770]: delta_orient: 0.282104, ??????????????????.[0m
+[0m[INFO] [1779783792.682117406]: delta_orient: 0.282258, ??????????????????.[0m
+[0m[INFO] [1779783792.851963090]: delta_orient: 0.282150, ??????????????????.[0m
+[0m[INFO] [1779783792.940829849]: delta_orient: 0.282313, ??????????????????.[0m
+[0m[INFO] [1779783793.006038064]: delta_orient: 0.282025, ??????????????????.[0m
+[0m[INFO] [1779783793.076952738]: delta_orient: 0.282025, ??????????????????.[0m
+[0m[INFO] [1779783793.163655621]: delta_orient: 0.282180, ??????????????????.[0m
+[0m[INFO] [1779783793.342877514]: delta_orient: 0.282277, ??????????????????.[0m
+[0m[INFO] [1779783793.410390188]: delta_orient: 0.281969, ??????????????????.[0m
+[0m[INFO] [1779783793.490164237]: delta_orient: 0.281969, ??????????????????.[0m
+[0m[INFO] [1779783793.569147287]: delta_orient: 0.282090, ??????????????????.[0m
+[0m[INFO] [1779783793.673360964]: delta_orient: 0.282204, ??????????????????.[0m
+[0m[INFO] [1779783793.774678391]: delta_orient: 0.282073, ??????????????????.[0m
+[0m[INFO] [1779783793.868675859]: delta_orient: 0.281971, ??????????????????.[0m
+[0m[INFO] [1779783794.011116540]: delta_orient: 0.282102, ??????????????????.[0m
+[0m[INFO] [1779783794.083862589]: delta_orient: 0.282217, ??????????????????.[0m
+[0m[INFO] [1779783794.172557848]: delta_orient: 0.282109, ??????????????????.[0m
+[0m[INFO] [1779783794.266709315]: delta_orient: 0.282131, ??????????????????.[0m
+[0m[INFO] [1779783794.411134205]: delta_orient: 0.282254, ??????????????????.[0m
+[0m[INFO] [1779783794.535609384]: delta_orient: 0.282093, ??????????????????.[0m
+[0m[INFO] [1779783794.587663139]: delta_orient: 0.282109, ??????????????????.[0m
+[0m[INFO] [1779783794.680311357]: delta_orient: 0.282109, ??????????????????.[0m
+[0m[INFO] [1779783794.773041241]: delta_orient: 0.282155, ??????????????????.[0m
+[0m[INFO] [1779783794.923225673]: delta_orient: 0.282072, ??????????????????.[0m
+[0m[INFO] [1779783794.991309138]: delta_orient: 0.282060, ??????????????????.[0m
+[0m[INFO] [1779783795.089759773]: delta_orient: 0.282165, ??????????????????.[0m
+[0m[INFO] [1779783795.166951989]: delta_ori[33m[WARN] [1779783795.849527016]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783796.228225304]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1188 seconds[0m
+[33m[WARN] [1779783796.310359521]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1010 seconds[0m
+[33m[WARN] [1779783796.613830843]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1045 seconds[0m
+[33m[WARN] [1779783797.348603125]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783798.348594934]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783799.348603951]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+ent: 0.282020, ??????????????????.[0m
+[0m[INFO] [1779783795.268064666]: delta_orient: 0.282014, ??????????????????.[0m
+[0m[INFO] [1779783795.382303511]: delta_orient: 0.282129, ??????????????????.[0m
+[0m[INFO] [1779783795.475748270]: delta_orient: 0.282202, ??????????????????.[0m
+[0m[INFO] [1779783795.600744366]: delta_orient: 0.282173, ??????????????????.[0m
+[0m[INFO] [1779783795.675102749]: delta_orient: 0.282043, ??????????????????.[0m
+[0m[INFO] [1779783795.772322550]: delta_orient: 0.282033, ??????????????????.[0m
+[0m[INFO] [1779783795.896658896]: delta_orient: 0.282050, ??????????????????.[0m
+[0m[INFO] [1779783795.975333070]: delta_orient: 0.282241, ??????????????????.[0m
+[0m[INFO] [1779783796.084338540]: delta_orient: 0.282048, ??????????????????.[0m
+[0m[INFO] [1779783796.227577804]: delta_orient: 0.282136, ??????????????????.[0m
+[0m[INFO] [1779783796.310005437]: delta_orient: 0.282043, ??????????????????.[0m
+[0m[INFO] [1779783796.374250860]: delta_orient: 0.282020, ??????????????????.[0m
+[0m[INFO] [1779783796.480699871]: delta_orient: 0.282229, ??????????????????.[0m
+[0m[INFO] [1779783796.613230009]: delta_orient: 0.281994, ??????????????????.[0m
+[0m[INFO] [1779783796.678108349]: delta_orient: 0.281987, ??????????????????.[0m
+[0m[INFO] [1779783796.771271067]: delta_orient: 0.282237, ??????????????????.[0m
+[0m[INFO] [1779783796.882116953]: delta_orient: 0.282119, ??????????????????.[0m
+[0m[INFO] [1779783796.971269545]: delta_orient: 0.282197, ??????????????????.[0m
+[0m[INFO] [1779783797.068636055]: delta_orient: 0.282099, ??????????????????.[0m
+[0m[INFO] [1779783797.187317567]: delta_orient: 0.281938, ??????????????????.[0m
+[0m[INFO] [1779783797.295369286]: delta_orient: 0.282094, ??????????????????.[0m
+[0m[INFO] [1779783797.401804005]: delta_orient: 0.281942, ??????????????????.[0m
+[0m[INFO] [1779783797.477499096]: delta_orient: 0.282217, ??????????????????.[0m
+[0m[INFO] [1779783797.578178356]: delta_orient: 0.281990, ??????????????????.[0m
+[0m[INFO] [1779783797.705991661]: delta_orient: 0.282143, ??????????????????.[0m
+[0m[INFO] [1779783797.768772042]: delta_orient: 0.282103, ??????????????????.[0m
+[0m[INFO] [1779783797.887320846]: delta_orient: 0.282135, ??????????????????.[0m
+[0m[INFO] [1779783797.969000937]: delta_orient: 0.282154, ??????????????????.[0m
+[0m[INFO] [1779783798.089640991]: delta_orient: 0.282179, ??????????????????.[0m
+[0m[INFO] [1779783798.167954082]: delta_orient: 0.281928, ??????????????????.[0m
+[0m[INFO] [1779783798.264052717]: delta_orient: 0.282022, ??????????????????.[0m
+[0m[INFO] [1779783798.393747855]: delta_orient: 0.281928, ??????????????????.[0m
+[0m[INFO] [1779783798.472220780]: delta_orient: 0.282007, ??????????????????.[0m
+[0m[INFO] [1779783798.590574166]: delta_orient: 0.281954, ??????????????????.[0m
+[0m[INFO] [1779783798.683139842]: delta_orient: 0.281954, ??????????????????.[0m
+[0m[INFO] [1779783798.799846771]: delta_orient: 0.282010, ??????????????????.[0m
+[0m[INFO] [1779783798.879283362]: delta_orient: 0.281949, ??????????????????.[0m
+[0m[INFO] [1779783798.989068457]: delta_orient: 0.282063, ??????????????????.[0m
+[0m[INFO] [1779783799.091806592]: delta_orient: 0.281888, ??????????????????.[0m
+[0m[INFO] [1779783799.179576976]: delta_orient: 0.281952, ??????????????????.[0m
+[0m[INFO] [1779783799.289467653]: delta_orient: 0.281978, ??????????????????.[0m
+[0m[INFO] [1779783799.369646828]: delta_orient: 0.281823, ??????????????????.[0m
+[0m[INFO] [1779783799.482107381]: delta_orient: 0.281955, ??????????????????.[0m
+[0m[INFO] [1779783799.588465683]: delta_orient: 0.282166, ??????????????????.[0m
+[0m[INFO] [1779783799.684411485]: delta_orient: 0.281987, ??????????????????.[0m
+[0m[INFO] [1779783799.793596329]: delta_orient: 0.281939, ??????????????????.[0m
+[0m[INFO] [1779783799.874357087]: delta_orient: 0.281958, ??????????????????.[0m
+[0m[INFO] [1779783799.974291139]: delta_orient: 0.282056, ??????????????????.[0m
+[0m[INFO] [1779783800.077799858]: delta_orient: 0.281943, ??????????????[33m[WARN] [1779783800.848634977]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783802.348596877]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783803.348656936]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783803.711115514]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1018 seconds[0m
+[33m[WARN] [1779783804.015121753]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1058 seconds[0m
+[33m[WARN] [1779783804.110982388]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1016 seconds[0m
+[33m[WARN] [1779783804.217462607]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1081 seconds[0m
+[33m[WARN] [1779783804.217844107]: Map update loop missed its desired rate of 5.0000Hz... the loop actually took 0.2632 seconds[0m
+[33m[WARN] [1779783804.351107495]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783804.542150639]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1328 seconds[0m
+[33m[WARN] [1779783804.735827534]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1265 seconds[0m
+[33m[WARN] [1779783804.822405293]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1130 seconds[0m
+[33m[WARN] [1779783805.028725063]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1193 seconds[0m
+????.[0m
+[0m[INFO] [1779783800.201190620]: delta_orient: 0.282139, ??????????????????.[0m
+[0m[INFO] [1779783800.276588794]: delta_orient: 0.282086, ??????????????????.[0m
+[0m[INFO] [1779783800.381302680]: delta_orient: 0.282085, ??????????????????.[0m
+[0m[INFO] [1779783800.479760606]: delta_orient: 0.282047, ??????????????????.[0m
+[0m[INFO] [1779783800.575210574]: delta_orient: 0.282129, ??????????????????.[0m
+[0m[INFO] [1779783800.690634461]: delta_orient: 0.281899, ??????????????????.[0m
+[0m[INFO] [1779783800.779756428]: delta_orient: 0.281785, ??????????????????.[0m
+[0m[INFO] [1779783800.884213939]: delta_orient: 0.282059, ??????????????????.[0m
+[0m[INFO] [1779783800.975957406]: delta_orient: 0.281816, ??????????????????.[0m
+[0m[INFO] [1779783801.076093583]: delta_orient: 0.281883, ??????????????????.[0m
+[0m[INFO] [1779783801.171186842]: delta_orient: 0.282098, ??????????????????.[0m
+[0m[INFO] [1779783801.274797936]: delta_orient: 0.282009, ??????????????????.[0m
+[0m[INFO] [1779783801.372893613]: delta_orient: 0.282036, ??????????????????.[0m
+[0m[INFO] [1779783801.482468415]: delta_orient: 0.281749, ??????????????????.[0m
+[0m[INFO] [1779783801.587048134]: delta_orient: 0.282064, ??????????????????.[0m
+[0m[INFO] [1779783801.686867853]: delta_orient: 0.281911, ??????????????????.[0m
+[0m[INFO] [1779783801.775055320]: delta_orient: 0.281875, ??????????????????.[0m
+[0m[INFO] [1779783801.881586289]: delta_orient: 0.281973, ??????????????????.[0m
+[0m[INFO] [1779783801.976076382]: delta_orient: 0.281850, ??????????????????.[0m
+[0m[INFO] [1779783802.077928725]: delta_orient: 0.281847, ??????????????????.[0m
+[0m[INFO] [1779783802.181512986]: delta_orient: 0.281934, ??????????????????.[0m
+[0m[INFO] [1779783802.273055495]: delta_orient: 0.281952, ??????????????????.[0m
+[0m[INFO] [1779783802.377047797]: delta_orient: 0.282169, ??????????????????.[0m
+[0m[INFO] [1779783802.482409183]: delta_orient: 0.282076, ??????????????????.[0m
+[0m[INFO] [1779783802.581810943]: delta_orient: 0.282033, ??????????????????.[0m
+[0m[INFO] [1779783802.708218997]: delta_orient: 0.281925, ??????????????????.[0m
+[0m[INFO] [1779783802.771204128]: delta_orient: 0.281983, ??????????????????.[0m
+[0m[INFO] [1779783802.896668932]: delta_orient: 0.281983, ??????????????????.[0m
+[0m[INFO] [1779783802.979015482]: delta_orient: 0.282035, ??????????????????.[0m
+[0m[INFO] [1779783803.076660534]: delta_orient: 0.282047, ??????????????????.[0m
+[0m[INFO] [1779783803.185954753]: delta_orient: 0.282035, ??????????????????.[0m
+[0m[INFO] [1779783803.275457346]: delta_orient: 0.282057, ??????????????????.[0m
+[0m[INFO] [1779783803.361211729]: delta_orient: 0.282006, ??????????????????.[0m
+[0m[INFO] [1779783803.478106783]: delta_orient: 0.281852, ??????????????????.[0m
+[0m[INFO] [1779783803.567517500]: delta_orient: 0.281988, ??????????????????.[0m
+[0m[INFO] [1779783803.710676848]: delta_orient: 0.281990, ??????????????????.[0m
+[0m[INFO] [1779783803.797301273]: delta_orient: 0.282100, ??????????????????.[0m
+[0m[INFO] [1779783803.888454699]: delta_orient: 0.281981, ??????????????????.[0m
+[0m[INFO] [1779783804.014745503]: delta_orient: 0.282001, ??????????????????.[0m
+[0m[INFO] [1779783804.110430846]: delta_orient: 0.281983, ??????????????????.[0m
+[0m[INFO] [1779783804.217039690]: delta_orient: 0.281990, ??????????????????.[0m
+[0m[INFO] [1779783804.275560571]: delta_orient: 0.282192, ??????????????????.[0m
+[0m[INFO] [1779783804.381568582]: delta_orient: 0.281955, ??????????????????.[0m
+[0m[INFO] [1779783804.541214681]: delta_orient: 0.281954, ??????????????????.[0m
+[0m[INFO] [1779783804.600942187]: delta_orient: 0.282207, ??????????????????.[0m
+[0m[INFO] [1779783804.735406951]: delta_orient: 0.282207, ??????????????????.[0m
+[0m[INFO] [1779783804.798900457]: delta_orient: 0.282078, ??????????????????.[0m
+[0m[INFO] [1779783804.889793133]: delta_orient: 0.282025, ??????????????????.[0m
+[0m[INFO] [1779783805.027115938]: delta_orient: 0.281913, ??????????????????.[0m
+[0m[INFO] [1779783[33m[WARN] [1779783805.509940112]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1006 seconds[0m
+[33m[WARN] [1779783805.823490560]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1141 seconds[0m
+[33m[WARN] [1779783805.848595187]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783806.126415590]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1170 seconds[0m
+[33m[WARN] [1779783806.715918025]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1066 seconds[0m
+[33m[WARN] [1779783806.848651746]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783807.025187097]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1158 seconds[0m
+[33m[WARN] [1779783807.128346691]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1189 seconds[0m
+[33m[WARN] [1779783807.424196471]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1148 seconds[0m
+[33m[WARN] [1779783807.970722401]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1613 seconds[0m
+[33m[WARN] [1779783808.049706325]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1403 seconds[0m
+[33m[WARN] [1779783808.126989250]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1176 seconds[0m
+[33m[WARN] [1779783808.348905605]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779783809.115977349]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1066 seconds[0m
+[33m[WARN] [1779783809.622280400]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1129 seconds[0m
+[33m[WARN] [1779783809.723150118]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1138 seconds[0m
+[33m[WARN] [1779783809.848687548]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+805.103355279]: delta_orient: 0.282105, ??????????????????.[0m
+[0m[INFO] [1779783805.193509747]: delta_orient: 0.282105, ??????????????????.[0m
+[0m[INFO] [1779783805.270046296]: delta_orient: 0.282086, ??????????????????.[0m
+[0m[INFO] [1779783805.398420476]: delta_orient: 0.282157, ??????????????????.[0m
+[0m[INFO] [1779783805.509470820]: delta_orient: 0.282157, ??????????????????.[0m
+[0m[INFO] [1779783805.569200659]: delta_orient: 0.282177, ??????????????????.[0m
+[0m[INFO] [1779783805.677277170]: delta_orient: 0.282177, ??????????????????.[0m
+[0m[INFO] [1779783805.822703060]: delta_orient: 0.282069, ??????????????????.[0m
+[0m[INFO] [1779783805.893784275]: delta_orient: 0.282101, ??????????????????.[0m
+[0m[INFO] [1779783805.982093368]: delta_orient: 0.282101, ??????????????????.[0m
+[0m[INFO] [1779783806.125937549]: delta_orient: 0.282106, ??????????????????.[0m
+[0m[INFO] [1779783806.194397556]: delta_orient: 0.282076, ??????????????????.[0m
+[0m[INFO] [1779783806.274096064]: delta_orient: 0.281990, ??????????????????.[0m
+[0m[INFO] [1779783806.368703115]: delta_orient: 0.282044, ??????????????????.[0m
+[0m[INFO] [1779783806.504687753]: delta_orient: 0.281939, ??????????????????.[0m
+[0m[INFO] [1779783806.607156389]: delta_orient: 0.282079, ??????????????????.[0m
+[0m[INFO] [1779783806.715271108]: delta_orient: 0.282019, ??????????????????.[0m
+[0m[INFO] [1779783806.790091782]: delta_orient: 0.282106, ??????????????????.[0m
+[0m[INFO] [1779783806.891884042]: delta_orient: 0.282034, ??????????????????.[0m
+[0m[INFO] [1779783807.023045389]: delta_orient: 0.281867, ??????????????????.[0m
+[0m[INFO] [1779783807.127793399]: delta_orient: 0.282125, ??????????????????.[0m
+[0m[INFO] [1779783807.200903157]: delta_orient: 0.282057, ??????????????????.[0m
+[0m[INFO] [1779783807.286149165]: delta_orient: 0.282019, ??????????????????.[0m
+[0m[INFO] [1779783807.423282679]: delta_orient: 0.281991, ??????????????????.[0m
+[0m[INFO] [1779783807.482344018]: delta_orient: 0.282107, ??????????????????.[0m
+[0m[INFO] [1779783807.598503780]: delta_orient: 0.282066, ??????????????????.[0m
+[0m[INFO] [1779783807.674039621]: delta_orient: 0.282002, ??????????????????.[0m
+[0m[INFO] [1779783807.793189841]: delta_orient: 0.281777, ??????????????????.[0m
+[0m[INFO] [1779783807.968874109]: delta_orient: 0.281886, ??????????????????.[0m
+[0m[INFO] [1779783808.049233825]: delta_orient: 0.281932, ??????????????????.[0m
+[0m[INFO] [1779783808.120067124]: delta_orient: 0.282146, ??????????????????.[0m
+[0m[INFO] [1779783808.196755632]: delta_orient: 0.281983, ??????????????????.[0m
+[0m[INFO] [1779783808.304630309]: delta_orient: 0.281983, ??????????????????.[0m
+[0m[INFO] [1779783808.371837024]: delta_orient: 0.281881, ??????????????????.[0m
+[0m[INFO] [1779783808.474056576]: delta_orient: 0.281889, ??????????????????.[0m
+[0m[INFO] [1779783808.573254753]: delta_orient: 0.281974, ??????????????????.[0m
+[0m[INFO] [1779783808.686271806]: delta_orient: 0.281786, ??????????????????.[0m
+[0m[INFO] [1779783808.792850608]: delta_orient: 0.281948, ??????????????????.[0m
+[0m[INFO] [1779783808.873183491]: delta_orient: 0.281939, ??????????????????.[0m
+[0m[INFO] [1779783808.972839585]: delta_orient: 0.281986, ??????????????????.[0m
+[0m[INFO] [1779783809.115587391]: delta_orient: 0.281965, ??????????????????.[0m
+[0m[INFO] [1779783809.178660314]: delta_orient: 0.282011, ??????????????????.[0m
+[0m[INFO] [1779783809.272463240]: delta_orient: 0.281846, ??????????????????.[0m
+[0m[INFO] [1779783809.376494625]: delta_orient: 0.282020, ??????????????????.[0m
+[0m[INFO] [1779783809.464958301]: delta_orient: 0.281966, ??????????????????.[0m
+[0m[INFO] [1779783809.621673442]: delta_orient: 0.282078, ??????????????????.[0m
+[0m[INFO] [1779783809.712885201]: delta_orient: 0.282199, ??????????????????.[0m
+[0m[INFO] [1779783809.776867540]: delta_orient: 0.282015, ??????????????????.[0m
+[0m[INFO] [1779783809.896474802]: delta_orient: 0.282015, ??????????????????.[0m
+[0m[INFO] [1779783810.035619066]: delta_orient:[33m[WARN] [1779783810.036061233]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1267 seconds[0m
+[33m[WARN] [1779783810.314051678]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1047 seconds[0m
+[33m[WARN] [1779783810.420829105]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1115 seconds[0m
+[33m[WARN] [1779783810.546368284]: Control loop missed its desired rate of 10.0000Hz... the loop actually took 0.1370 seconds[0m
+[33m[WARN] [1779783810.546820368]: makePlan is called.
+[0m
+[33m[WARN] [1779783810.848983273]: The origin for the sensor at (-37.45, 12.53, -1.74) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              

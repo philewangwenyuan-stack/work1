@@ -1,0 +1,724 @@
+... logging to /root/.ros/log/572adad0-54e0-11f1-883a-c285ead2937b/roslaunch-LPA3588-4520.log
+Checking log directory for disk usage. This may take a while.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/neardi/work/Grinder/catkin_ws/src/grinder_scheduler/launch/grinder_system.launch
+[1mstarted roslaunch server http://LPA3588:37779/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /chassis_driver/baudrate: 19200
+ * /chassis_driver/cmd_source_hold_sec: 0.2
+ * /chassis_driver/cmd_vel_deadband_angular: 0.0
+ * /chassis_driver/cmd_vel_deadband_linear: 0.0
+ * /chassis_driver/cmd_vel_drive_left_sign: 1
+ * /chassis_driver/cmd_vel_drive_right_sign: 1
+ * /chassis_driver/cmd_vel_drive_swap_lr: False
+ * /chassis_driver/cmd_vel_enabled: True
+ * /chassis_driver/cmd_vel_gear_ratio: 60.0
+ * /chassis_driver/cmd_vel_max_abs_wheel_rpm: 3000.0
+ * /chassis_driver/cmd_vel_max_angular: 0.1
+ * /chassis_driver/cmd_vel_max_input_v: 0.1
+ * /chassis_driver/cmd_vel_max_input_w: 0.1
+ * /chassis_driver/cmd_vel_max_linear: 0.1
+ * /chassis_driver/cmd_vel_scale: 1.0
+ * /chassis_driver/cmd_vel_topic: /cmd_vel
+ * /chassis_driver/cmd_vel_wheel_radius_m: 0.15
+ * /chassis_driver/cmd_vel_wheel_track_m: 0.79
+ * /chassis_driver/command_timeout: 5
+ * /chassis_driver/disc_speed_max: 32767
+ * /chassis_driver/disc_speed_min: -32768
+ * /chassis_driver/drive_left_sign: -1
+ * /chassis_driver/drive_right_sign: -1
+ * /chassis_driver/drive_swap_lr: False
+ * /chassis_driver/enable_cmd_ramp_limit: False
+ * /chassis_driver/enable_safe_stop_on_comm_error: False
+ * /chassis_driver/left_speed_max: 32767
+ * /chassis_driver/left_speed_min: -32768
+ * /chassis_driver/manual_drive_max_wheel_speed: 600
+ * /chassis_driver/manual_wheel_deadband_rpm: 30
+ * /chassis_driver/manual_wheel_hyst_enter_rpm: 60
+ * /chassis_driver/manual_wheel_hyst_exit_rpm: 30
+ * /chassis_driver/max_cmd_step_rpm: 50
+ * /chassis_driver/max_echo_deviation: 200
+ * /chassis_driver/max_echo_failures: 2
+ * /chassis_driver/max_retries: 3
+ * /chassis_driver/poll_rate_hz: 20.0
+ * /chassis_driver/port: /dev/ttyS0
+ * /chassis_driver/right_speed_max: 32767
+ * /chassis_driver/right_speed_min: -32768
+ * /chassis_driver/rs485_raw_log_enabled: False
+ * /chassis_driver/rs485_raw_log_file: temp/chassis_rs48...
+ * /chassis_driver/safe_stop_on_error_interval: 1.0
+ * /chassis_driver/slave_id: 1
+ * /chassis_driver/startup_zero_output: True
+ * /chassis_driver/stop_on_timeout: True
+ * /chassis_driver/task_enable_default: False
+ * /chassis_driver/timeout: 0.1
+ * /chassis_driver/write_verify: False
+ * /grinder_scheduler/aurora_ip_address: 192.168.11.1
+ * /grinder_scheduler/aurora_no_preview_image: False
+ * /grinder_scheduler/aurora_raw_image_on: True
+ * /grinder_scheduler/change_map_service: /change_map
+ * /grinder_scheduler/default_path_spacing: 0.425
+ * /grinder_scheduler/depth_image_colorized_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/first_frame_save_dir: temp
+ * /grinder_scheduler/global_plan_publish_hz: 2
+ * /grinder_scheduler/inflation_radius: 0.06
+ * /grinder_scheduler/initial_map_preview_dir: temp
+ * /grinder_scheduler/initial_map_preview_format: jpg
+ * /grinder_scheduler/initial_map_preview_max_edge: 320
+ * /grinder_scheduler/left_image_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/live_map_dir: temp/live_map
+ * /grinder_scheduler/live_map_enabled: True
+ * /grinder_scheduler/live_map_hz: 1.0
+ * /grinder_scheduler/live_map_image_name: map1.pgm
+ * /grinder_scheduler/live_map_yaml_name: map.yaml
+ * /grinder_scheduler/live_preview_enabled: True
+ * /grinder_scheduler/live_preview_file: temp/aurora_map_p...
+ * /grinder_scheduler/live_preview_format: jpg
+ * /grinder_scheduler/live_preview_hz: 1.0
+ * /grinder_scheduler/live_preview_max_edge: 320
+ * /grinder_scheduler/local_rtsp_enabled: True
+ * /grinder_scheduler/local_rtsp_encoder: libx264
+ * /grinder_scheduler/local_rtsp_fps: 15
+ * /grinder_scheduler/local_rtsp_host: 0.0.0.0
+ * /grinder_scheduler/local_rtsp_log_dir: temp
+ * /grinder_scheduler/local_rtsp_mediamtx_path: /home/neardi/work...
+ * /grinder_scheduler/local_rtsp_port: 8554
+ * /grinder_scheduler/local_rtsp_public_host: auto
+ * /grinder_scheduler/local_rtsp_start_server: True
+ * /grinder_scheduler/local_rtsp_width: 640
+ * /grinder_scheduler/manual_reverse_guard_sec: 1.0
+ * /grinder_scheduler/map_topic: /map
+ * /grinder_scheduler/navigation_map_yaml_path: /home/neardi/work...
+ * /grinder_scheduler/odom_topic: /odom
+ * /grinder_scheduler/overlap_ratio: 0
+ * /grinder_scheduler/path_goal_reach_dist: 0.03
+ * /grinder_scheduler/path_segment_timeout: 60.0
+ * /grinder_scheduler/persist_state_dir: temp/grinder_sche...
+ * /grinder_scheduler/persist_state_enabled: True
+ * /grinder_scheduler/planned_path_preview_arrow_len_px: 12
+ * /grinder_scheduler/planned_path_preview_arrow_step: 10
+ * /grinder_scheduler/planned_path_preview_dir: temp
+ * /grinder_scheduler/planned_path_preview_format: jpg
+ * /grinder_scheduler/planned_path_preview_include_overlay: True
+ * /grinder_scheduler/planned_path_preview_max_edge: 320
+ * /grinder_scheduler/planned_path_preview_show_direction: True
+ * /grinder_scheduler/planner_script_path: third_party/path_...
+ * /grinder_scheduler/right_image_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/save_first_frame_on_startup: False
+ * /grinder_scheduler/scheduler_tick_hz: 5
+ * /grinder_scheduler/set_map_localization_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/set_map_update_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/sl_linka_host: 0.0.0.0
+ * /grinder_scheduler/sl_linka_port: 8002
+ * /grinder_scheduler/sl_linka_python_sdk_dir: third_party/sl_li...
+ * /grinder_scheduler/start_aurora_driver: False
+ * /grinder_scheduler/stcm_local_dir: maps/raw
+ * /grinder_scheduler/stream_enabled: True
+ * /grinder_scheduler/stream_fps: 8
+ * /grinder_scheduler/stream_push_hz: 20
+ * /grinder_scheduler/stream_url: rtmp://127.0.0.1:...
+ * /grinder_scheduler/stream_width: 1280
+ * /grinder_scheduler/sync_get_stcm_service: /slamware_ros_sdk...
+ * /grinder_scheduler/sync_set_stcm_service: /slamware_ros_sdk...
+ * /grinder_scheduler/turn_radius: 0.1
+ * /grinder_scheduler/use_depth_colorized_image: False
+ * /grinder_scheduler/vehicle_length: 1.531
+ * /grinder_scheduler/vehicle_width: 0.8
+ * /move_base/TebLocalPlannerROS/acc_lim_theta: 0.05
+ * /move_base/TebLocalPlannerROS/acc_lim_x: 0.1
+ * /move_base/TebLocalPlannerROS/allow_init_with_backwards_motion: False
+ * /move_base/TebLocalPlannerROS/complete_global_plan: False
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/cluster_max_distance: 0.2
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/cluster_min_pts: 2
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/convex_hull_min_pt_separation: 0.1
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_convert_outlier_pts: True
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_filter_remaining_outlier_pts: False
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_inlier_distance: 0.15
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_min_inliers: 10
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_no_iterations: 1500
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_remainig_outliers: 3
+ * /move_base/TebLocalPlannerROS/costmap_converter_plugin: 
+ * /move_base/TebLocalPlannerROS/costmap_converter_rate: 5
+ * /move_base/TebLocalPlannerROS/costmap_converter_spin_thread: True
+ * /move_base/TebLocalPlannerROS/costmap_obstacles_behind_robot_dist: 0.3
+ * /move_base/TebLocalPlannerROS/delete_detours_backwards: True
+ * /move_base/TebLocalPlannerROS/dt_hysteresis: 0.1
+ * /move_base/TebLocalPlannerROS/dt_ref: 0.4
+ * /move_base/TebLocalPlannerROS/dynamic_obstacle_inflation_dist: 0.3
+ * /move_base/TebLocalPlannerROS/enable_homotopy_class_planning: False
+ * /move_base/TebLocalPlannerROS/enable_multithreading: True
+ * /move_base/TebLocalPlannerROS/exact_arc_length: False
+ * /move_base/TebLocalPlannerROS/feasibility_check_no_poses: 2
+ * /move_base/TebLocalPlannerROS/footprint_model/type: point
+ * /move_base/TebLocalPlannerROS/free_goal_vel: False
+ * /move_base/TebLocalPlannerROS/global_plan_overwrite_orientation: False
+ * /move_base/TebLocalPlannerROS/global_plan_prune_distance: 1
+ * /move_base/TebLocalPlannerROS/global_plan_viapoint_sep: 0.5
+ * /move_base/TebLocalPlannerROS/h_signature_prescaler: 0.5
+ * /move_base/TebLocalPlannerROS/h_signature_threshold: 0.1
+ * /move_base/TebLocalPlannerROS/include_costmap_obstacles: True
+ * /move_base/TebLocalPlannerROS/include_dynamic_obstacles: False
+ * /move_base/TebLocalPlannerROS/inflation_dist: 0.6
+ * /move_base/TebLocalPlannerROS/max_global_plan_lookahead_dist: 1.0
+ * /move_base/TebLocalPlannerROS/max_number_classes: 4
+ * /move_base/TebLocalPlannerROS/max_ratio_detours_duration_best_duration: 3.0
+ * /move_base/TebLocalPlannerROS/max_samples: 200
+ * /move_base/TebLocalPlannerROS/max_vel_theta: 0.1
+ * /move_base/TebLocalPlannerROS/max_vel_x: 0.1
+ * /move_base/TebLocalPlannerROS/max_vel_x_backwards: 0.05
+ * /move_base/TebLocalPlannerROS/max_vel_y: 0.0
+ * /move_base/TebLocalPlannerROS/min_obstacle_dist: 0.5
+ * /move_base/TebLocalPlannerROS/min_turning_radius: 0.0
+ * /move_base/TebLocalPlannerROS/no_inner_iterations: 3
+ * /move_base/TebLocalPlannerROS/no_outer_iterations: 2
+ * /move_base/TebLocalPlannerROS/obstacle_cost_exponent: 4
+ * /move_base/TebLocalPlannerROS/obstacle_heading_threshold: 0.45
+ * /move_base/TebLocalPlannerROS/obstacle_poses_affected: 15
+ * /move_base/TebLocalPlannerROS/odom_topic: odom
+ * /move_base/TebLocalPlannerROS/optimization_activate: True
+ * /move_base/TebLocalPlannerROS/optimization_verbose: False
+ * /move_base/TebLocalPlannerROS/oscillation_filter_duration: 10
+ * /move_base/TebLocalPlannerROS/oscillation_omega_eps: 0.1
+ * /move_base/TebLocalPlannerROS/oscillation_recovery: True
+ * /move_base/TebLocalPlannerROS/oscillation_recovery_min_duration: 10
+ * /move_base/TebLocalPlannerROS/oscillation_v_eps: 0.1
+ * /move_base/TebLocalPlannerROS/penalty_epsilon: 0.03
+ * /move_base/TebLocalPlannerROS/publish_feedback: False
+ * /move_base/TebLocalPlannerROS/roadmap_graph_area_length_scale: 1.0
+ * /move_base/TebLocalPlannerROS/roadmap_graph_area_width: 5
+ * /move_base/TebLocalPlannerROS/roadmap_graph_no_samples: 15
+ * /move_base/TebLocalPlannerROS/selection_alternative_time_cost: False
+ * /move_base/TebLocalPlannerROS/selection_cost_hysteresis: 1.0
+ * /move_base/TebLocalPlannerROS/selection_obst_cost_scale: 100.0
+ * /move_base/TebLocalPlannerROS/selection_prefer_initial_plan: 0.9
+ * /move_base/TebLocalPlannerROS/shrink_horizon_backup: True
+ * /move_base/TebLocalPlannerROS/shrink_horizon_min_duration: 10
+ * /move_base/TebLocalPlannerROS/switching_blocking_period: 0.0
+ * /move_base/TebLocalPlannerROS/teb_autosize: True
+ * /move_base/TebLocalPlannerROS/viapoints_all_candidates: True
+ * /move_base/TebLocalPlannerROS/visualize_hc_graph: False
+ * /move_base/TebLocalPlannerROS/visualize_with_time_as_z_axis_scale: False
+ * /move_base/TebLocalPlannerROS/weight_acc_lim_theta: 1.0
+ * /move_base/TebLocalPlannerROS/weight_acc_lim_x: 1.0
+ * /move_base/TebLocalPlannerROS/weight_adapt_factor: 2
+ * /move_base/TebLocalPlannerROS/weight_dynamic_obstacle: 10
+ * /move_base/TebLocalPlannerROS/weight_dynamic_obstacle_inflation: 0.2
+ * /move_base/TebLocalPlannerROS/weight_inflation: 0.2
+ * /move_base/TebLocalPlannerROS/weight_kinematics_forward_drive: 800
+ * /move_base/TebLocalPlannerROS/weight_kinematics_nh: 1000
+ * /move_base/TebLocalPlannerROS/weight_kinematics_turning_radius: 1
+ * /move_base/TebLocalPlannerROS/weight_max_vel_theta: 1
+ * /move_base/TebLocalPlannerROS/weight_max_vel_x: 2
+ * /move_base/TebLocalPlannerROS/weight_obstacle: 100
+ * /move_base/TebLocalPlannerROS/weight_optimaltime: 1
+ * /move_base/TebLocalPlannerROS/weight_shortest_path: 1
+ * /move_base/TebLocalPlannerROS/weight_viapoint: 20
+ * /move_base/TebLocalPlannerROS/xy_goal_tolerance: 0.1
+ * /move_base/TebLocalPlannerROS/yaw_goal_tolerance: 0.1
+ * /move_base/base_global_planner: carrot_planner/Ca...
+ * /move_base/base_local_planner: teb_local_planner...
+ * /move_base/controller_frequency: 10.0
+ * /move_base/controller_patience: 10.0
+ * /move_base/global_costmap/always_send_full_costmap: True
+ * /move_base/global_costmap/footprint_padding: 0.0
+ * /move_base/global_costmap/global_frame: map
+ * /move_base/global_costmap/inflation_layer/cost_scaling_factor: 10.0
+ * /move_base/global_costmap/inflation_layer/enabled: True
+ * /move_base/global_costmap/inflation_layer/inflation_radius: 0.1
+ * /move_base/global_costmap/map_type: costmap
+ * /move_base/global_costmap/obstacle_layer/combination_method: 1
+ * /move_base/global_costmap/obstacle_layer/enabled: True
+ * /move_base/global_costmap/obstacle_layer/inflation_radius: 0.2
+ * /move_base/global_costmap/obstacle_layer/laser_scan_sensor/clearing: True
+ * /move_base/global_costmap/obstacle_layer/laser_scan_sensor/data_type: LaserScan
+ * /move_base/global_costmap/obstacle_layer/laser_scan_sensor/marking: True
+ * /move_base/global_costmap/obstacle_layer/laser_scan_sensor/topic: scan
+ * /move_base/global_costmap/obstacle_layer/observation_sources: laser_scan_sensor
+ * /move_base/global_costmap/obstacle_layer/obstacle_range: 3.0
+ * /move_base/global_costmap/obstacle_layer/raytrace_range: 4.0
+ * /move_base/global_costmap/obstacle_layer/track_unknown_space: True
+ * /move_base/global_costmap/plugins: [{'name': 'static...
+ * /move_base/global_costmap/publish_frequency: 2.0
+ * /move_base/global_costmap/robot_base_frame: base_link
+ * /move_base/global_costmap/robot_radius: 0.17
+ * /move_base/global_costmap/static_layer/enabled: True
+ * /move_base/global_costmap/static_layer/map_topic: map
+ * /move_base/global_costmap/static_map: True
+ * /move_base/global_costmap/transform_tolerance: 0.5
+ * /move_base/global_costmap/update_frequency: 2.0
+ * /move_base/local_costmap/always_send_full_costmap: True
+ * /move_base/local_costmap/footprint_padding: 0.0
+ * /move_base/local_costmap/global_frame: map
+ * /move_base/local_costmap/height: 5
+ * /move_base/local_costmap/inflation_layer/cost_scaling_factor: 10.0
+ * /move_base/local_costmap/inflation_layer/enabled: True
+ * /move_base/local_costmap/inflation_layer/inflation_radius: 0.1
+ * /move_base/local_costmap/map_type: costmap
+ * /move_base/local_costmap/obstacle_layer/combination_method: 1
+ * /move_base/local_costmap/obstacle_layer/enabled: True
+ * /move_base/local_costmap/obstacle_layer/inflation_radius: 0.2
+ * /move_base/local_costmap/obstacle_layer/laser_scan_sensor/clearing: True
+ * /move_base/local_costmap/obstacle_layer/laser_scan_sensor/data_type: LaserScan
+ * /move_base/local_costmap/obstacle_layer/laser_scan_sensor/marking: True
+ * /move_base/local_costmap/obstacle_layer/laser_scan_sensor/topic: scan
+ * /move_base/local_costmap/obstacle_layer/observation_sources: laser_scan_sensor
+ * /move_base/local_costmap/obstacle_layer/obstacle_range: 3.0
+ * /move_base/local_costmap/obstacle_layer/raytrace_range: 4.0
+ * /move_base/local_costmap/obstacle_layer/track_unknown_space: True
+ * /move_base/local_costmap/plugins: [{'name': 'static...
+ * /move_base/local_costmap/publish_frequency: 5.0
+ * /move_base/local_costmap/resolution: 0.1
+ * /move_base/local_costmap/robot_base_frame: base_link
+ * /move_base/local_costmap/robot_radius: 0.17
+ * /move_base/local_costmap/rolling_window: True
+ * /move_base/local_costmap/static_layer/enabled: True
+ * /move_base/local_costmap/static_layer/map_topic: map
+ * /move_base/local_costmap/static_map: False
+ * /move_base/local_costmap/transform_tolerance: 0.5
+ * /move_base/local_costmap/update_frequency: 5.0
+ * /move_base/local_costmap/width: 5
+ * /rosdistro: noetic
+ * /rosversion: 1.17.4
+ * /slamware_ros_sdk_server_node/angle_compensate: True
+ * /slamware_ros_sdk_server_node/camera_left: base_camera_left
+ * /slamware_ros_sdk_server_node/camera_right: base_camera_right
+ * /slamware_ros_sdk_server_node/imu_frame: base_imu_link
+ * /slamware_ros_sdk_server_node/imu_raw_data_period: 0.005
+ * /slamware_ros_sdk_server_node/ip_address: 192.168.11.1
+ * /slamware_ros_sdk_server_node/ladar_data_clockwise: True
+ * /slamware_ros_sdk_server_node/laser_frame: base_laser_link
+ * /slamware_ros_sdk_server_node/map_frame: map
+ * /slamware_ros_sdk_server_node/map_pub_period: 0.2
+ * /slamware_ros_sdk_server_node/no_preview_image: False
+ * /slamware_ros_sdk_server_node/odom_frame: odom
+ * /slamware_ros_sdk_server_node/raw_image_on: False
+ * /slamware_ros_sdk_server_node/robot_frame: base_link
+ * /slamware_ros_sdk_server_node/robot_pose_pub_period: 0.05
+ * /slamware_ros_sdk_server_node/robot_pose_topic: robot_pose
+ * /slamware_ros_sdk_server_node/scan_pub_period: 0.1
+ * /use_sim_time: False
+
+NODES
+  /
+    baselink2map (tf2_ros/static_transform_publisher)
+    chassis_driver (grinder_chassis_driver/chassis_driver_node.py)
+    grinder_scheduler (grinder_scheduler/scheduler_node.py)
+    move_base (move_base/move_base)
+    odom2map (tf2_ros/static_transform_publisher)
+    rviz (rviz/rviz)
+    slamware_ros_sdk_server_node (slamware_ros_sdk/slamware_ros_sdk_server_node)
+QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
+Cannot find EGLConfig, returning null config
+Unable to find an X11 visual which matches EGL config 0
+[0m[INFO] [1779345807.465410960]: Trying to connect to Aurora, tryCnt: 1.[0m
+[0m[INFO] [1779345807.477227545]: Selected device: tcp/192.168.11.1:7447[0m
+[0m[INFO] [1779345807.477376003]: Connecting to the selected device...[0m
+[0m[INFO] [1779345808.320432338]: Connected to the selected device[0m
+[0m[INFO] [1779345808.355188216]: Connected to Aurora, OK, tryCnt: 1.[0m
+[0m[INFO] [1779345808.355896675]: Odometry:0.1000[0m
+[0m[INFO] [1779345808.363024134]: RobotPose:0.0500[0m
+[0m[INFO] [1779345808.365687342]: ExploreMapUpdate:0.2000[0m
+[0m[INFO] [1779345808.365745676]: ExploreMapPublish:0.2000[0m
+[0m[INFO] [1779345808.367963509]: LaserScan:0.1000[0m
+[0m[INFO] [1779345808.368857468]: ServerImuRawDataWorker:0.0050[0m
+[0m[INFO] [1779345808.369605301]: RosConnectWorker:0.1000[0m
+[0m[INFO] [1779345808.370309676]: SystemStatus:0.0500[0m
+[0m[INFO] [1779345808.371476343]: StereoImage:0.0500[0m
+[0m[INFO] [1779345808.373784302]: PointCloud:0.1000[0m
+[0m[INFO] [1779345808.392714053]: SlamwareRosSdkServer, work thread begin.[0m
+[0m[INFO] [1779345808.392809137]: reset all 12 workers on work loop begin.[0m
+[0m[INFO] [1779345808.393313429]: Depth camera supported, subscription enabled, post-filtering on[0m
+[0m[INFO] [1779345808.393573012]: Semantic segmentation supported and subscription enabled[0m
+[0m[INFO] [1779345808.393782720]: Semantic segmentation label set: coco80[0m
+[0m[INFO] [1779345808.393950137]: Label ID: 0, Name: (null)[0m
+[0m[INFO] [1779345808.394090429]: Label ID: 1, Name: person[0m
+[0m[INFO] [1779345808.394227512]: Label ID: 2, Name: bicycle[0m
+[0m[INFO] [1779345808.394342720]: Label ID: 3, Name: car[0m
+[0m[INFO] [1779345808.394453845]: Label ID: 4, Name: motorcycle[0m
+[0m[INFO] [1779345808.394564387]: Label ID: 5, Name: airplane[0m
+[0m[INFO] [1779345808.394691554]: Label ID: 6, Name: bus[0m
+[0m[INFO] [1779345808.394801804]: Label ID: 7, Name: train[0m
+[0m[INFO] [1779345808.394992845]: Label ID: 8, Name: truck[0m
+[0m[INFO] [1779345808.395044470]: Label ID: 9, Name: boat[0m
+[0m[INFO] [1779345808.395088512]: Label ID: 10, Name: traffic light[0m
+[0m[INFO] [1779345808.395131679]: Label ID: 11, Name: fire hydrant[0m
+[0m[INFO] [1779345808.395175137]: Label ID: 12, Name: stop sign[0m
+[0m[INFO] [1779345808.395218595]: Label ID: 13, Name: parking meter[0m
+[0m[INFO] [1779345808.395280429]: Label ID: 14, Name: bench[0m
+[0m[INFO] [1779345808.395325345]: Label ID: 15, Name: bird[0m
+[0m[INFO] [1779345808.395369387]: Label ID: 16, Name: cat[0m
+[0m[INFO] [1779345808.395532137]: Label ID: 17, Name: dog[0m
+[0m[INFO] [1779345808.395579387]: Label ID: 18, Name: horse[0m
+[0m[INFO] [1779345808.395623137]: Label ID: 19, Name: sheep[0m
+[0m[INFO] [1779345808.395666887]: Label ID: 20, Name: cow[0m
+[0m[INFO] [1779345808.395709470]: Label ID: 21, Name: elephant[0m
+[0m[INFO] [1779345808.395753220]: Label ID: 22, Name: bear[0m
+[0m[INFO] [1779345808.395796095]: Label ID: 23, Name: zebra[0m
+[0m[INFO] [1779345808.395838679]: Label ID: 24, Name: giraffe[0m
+[0m[INFO] [1779345808.395881554]: Label ID: 25, Name: backpack[0m
+[0m[INFO] [1779345808.395954762]: Label ID: 26, Name: umbrella[0m
+[0m[INFO] [1779345808.395999387]: Label ID: 27, Name: handbag[0m
+[0m[INFO] [1779345808.396043137]: Label ID: 28, Name: tie[0m
+[0m[INFO] [1779345808.396085429]: Label ID: 29, Name: suitcase[0m
+[0m[INFO] [1779345808.396128595]: Label ID: 30, Name: frisbee[0m
+[0m[INFO] [1779345808.396171470]: Label ID: 31, Name: skis[0m
+[0m[INFO] [1779345808.396213179]: Label ID: 32, Name: snowboard[0m
+[0m[INFO] [1779345808.396254887]: Label ID: 33, Name: sports ball[0m
+[0m[INFO] [1779345808.396296012]: Label ID: 34, Name: kite[0m
+[0m[INFO] [1779345808.396336845]: Label ID: 35, Name: baseball bat[0m
+[0m[INFO] [1779345808.396378262]: Label ID: 36, Name: baseball glove[0m
+[0m[INFO] [1779345808.396419095]: Label ID: 37, Name: skateboard[0m
+[0m[INFO] [1779345808.396459637]: Label ID: 38, Name: surfboard[0m
+[0m[INFO] [1779345808.396500762]: Label ID: 39, Name: tennis racket[0m
+[0m[[33m[WARN] [1779345808.607313075]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1779345808.611686617]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1779345809.151485255]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1779345809.151940046]: local_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[WARN] [1779345807.703306]: Failed to send startup safe state: Serial read timeout on /dev/ttyS0 after 0 of 8 bytes
+[WARN] [1779345807.879992]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345809.956522]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345812.042499]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345814.126182]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345816.220262]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345818.260666]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345820.363899]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345822.476416]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345824.579035]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345826.670244]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345828.699493]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345830.796994]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345832.809752]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345834.905697]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345836.996313]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345839.074252]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345841.108660]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345843.119163]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345845.209314]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345847.272762]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345849.353215]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345851.456475]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345853.460367]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345855.469647]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345857.550476]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345859.643449]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345861.656307]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345863.746524]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345865.850928]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345867.942320]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345870.049615]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345872.053185]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345874.063772]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345876.178183]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345878.308632]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345880.389913]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345882.489319]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345884.552949]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345886.659968]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345888.677362]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345890.677859]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345892.689983]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345894.706808]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345896.819655]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345898.919639]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345901.011569]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345903.110081]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345905.181425]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345907.262534]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345909.373707]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345911.458864]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345913.560133]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345915.645554]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345917.730005]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345919.840533]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345921.948780]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345924.051461]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345926.063489]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345928.066390]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345930.175843]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345932.286623]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345934.395711]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345936.472498]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345938.560378]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345940.649344]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345942.737046]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345944.822240]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345946.914918]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345949.006593]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345951.020325]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345953.102436]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345955.132278]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345957.235398]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345959.287199]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345961.356059]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345963.428895]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[33m[WARN] [1779346050.468535626]: makePlan is called.
+[0m
+[33m[WARN] [1779346051.168658072]: makePlan is called.
+[0m
+[33m[WARN] [1779346051.368744842]: makePlan is called.
+[0m
+[33m[WARN] [1779346051.568588945]: makePlan is called.
+[0m
+[INFO] [1779345808.678176]: Loaded task registry state: 8 map-bound tasks
+[INFO] [1779345808.771897]: Loaded map overlay state: map_id=map_1778827104561 dir=/home/neardi/work/Grinder/temp/grinder_scheduler_state/map_states/map_1778827104561
+[INFO] [1779345808.777646]: Loaded scheduler local state from /home/neardi/work/Grinder/temp/grinder_scheduler_state
+[INFO] [1779345811.965121]: Starting mediamtx on rtsp://192.168.11.127:8554 using /home/neardi/work/Grinder/tools/mediamtx/mediamtx
+[INFO] [1779345812.348675]: mediamtx rtsp listener is ready on 127.0.0.1:8554
+[INFO] [1779345813.065191]: Starting ffmpeg RTSP publisher left -> rtsp://127.0.0.1:8554/left (encoder=libx264)
+[INFO] [1779345813.210227]: Map switched, loaded task-map binding: map_id=map_1778827104561 task_id=<empty> selected_regions=work_region_1
+[INFO] [1779345813.269028]: Starting ffmpeg RTSP publisher right -> rtsp://127.0.0.1:8554/right (encoder=libx264)
+[INFO] [1779345813.338886]: Saved initial map preview to /home/neardi/work/Grinder/temp/aurora_map_preview_s1p0031_res0p05_oxm8p1_oym8p05_ow286_oh321_pw285_ph320_v39.jpg
+[INFO] [1779345813.422030]: Live map cropped to free-space bbox: size=286x321 margin=0.50m
+[INFO] [1779345819.555661]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345824.967150]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345830.148569]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345835.682580]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345841.386313]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345846.709219]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345852.275026]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345858.277340]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345864.134471]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345869.736691]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345875.440673]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345881.021888]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345886.333469]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345891.504749]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345897.032227]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345902.760935]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345908.518780]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345913.929785]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345919.524330]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345925.403016]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345930.799591]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345935.991790]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345941.719328]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345947.482276]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345953.048466]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345958.265090]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345963.890833]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345969.326194]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345974.871582]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345980.403636]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345985.916134]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345991.522964]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779345997.051904]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779346002.806113]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779346008.200159]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779346013.988667]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779346019.619885]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779346025.072494]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779346030.750844]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779346036.598044]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779346042.053143]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779346047.756030]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779346049.970312]: Planning input regions: work_total=1 work_selected=1 obstacle=0 active_work_region_id=work_region_1 force_use_all=false
+[INFO] [1779346050.071527]: Planning started: task_id=task map_version=39 map_size=428x573 resolution=0.0500
+[INFO] [1779346050.076188]: Plan request poses: current_pose=(-0.051, -0.004, 5.4deg) request_start=(<empty>) request_end=(<empty>)
+
+⚠️  警告: 膨胀半径(0.06m) < 最小建议值(0.4m)
+   建议设置: inflation_radius >= 0.4m
+   [障碍物膨胀] 膨胀半径: 1像素, 原始: 182913, 膨胀后: 192542
+[INFO] [1779346050.109470]: PlannerAdapter input start candidates: current_pose=(-0.051,-0.004) request_start=<empty> direction=x
+[INFO] [1779346050.117899]: Region planning effective start: region_idx=1 region_id=work_region_1 source=default_boundary start_grid=<auto_by_planner>
+[INFO] [1779346050.159646]: Single-region planning merged: region_idx=1 region_id=work_region_1 points=130 cumulative=130
+[INFO] [1779346050.179930]: Prepended start pose point: x=-0.051 y=-0.005 heading=5.4deg path_points=131
+[INFO] [1779346050.198283]: Precomputed goal points: count=2
+[INFO] [1779346050.215552]: Published planned path to navigation: points=131
+[INFO] [1779346050.358900]: Path preview paint override: obstacle_regions=0 erase_regions=1
+[INFO] [1779346050.369978]: Saved planned path preview latest files: /home/neardi/work/Grinder/temp/aurora_path_preview_latest.jpg, /home/neardi/work/Grinder/temp/aurora_path_preview_tasktask_latest.jpg
+[INFO] [1779346050.416428]: Saved planned path debug json to /home/neardi/work/Grinder/temp/path_debug/planned_path_tasktask_mapv39_pathv1_1779346050.json
+[INFO] [1779346050.450745]: Planning success: path_version=1 points=131 length_m=8.936
+[INFO] [1779346050.455587]: Skip chassis enable control by scheduler (requested enabled=True).
+[INFO] [1779346050.459071]: task_enable runtime enabled reason=task_start_nav_cmd_vel_forward
+[INFO] [1779346050.464782]: Execution cursor update: idx=129 x=4.950 y=2.050 force=True
+[INFO] [1779346050.474064]: Task execution started: regions=work_region_1 active=work_region_1 mode=move_base_goal
+[INFO] [1779346051.130175]: Task execution started: regions=work_region_1 active=work_region_1 mode=move_base_goal
+[INFO] [1779346051.309729]: Task execution started: regions=work_region_1 active=work_region_1 mode=move_base_goal
+[INFO] [1779346051.496397]: Task execution started: regions=work_region_1 active=work_region_1 mode=move_base_goal
+[INFO] [1779346052.535144]: Execution cursor update: idx=129 x=4.950 y=2.050 force=False
+[INFO] [1779346053.195474]: Live map cropped to free-space bbox: size=428x573 margin=0.50m
+[INFO] [1779346054.251007]: MapService.apply_edit begin: op=UPSERT_WORK_REGION map_version=39 region_id=work_region_1 region_type= region_points=4 polygon_points=0 target_region_id=<empty>
+[INFO] [1779346054.255900]: MapService.apply_edit done: op=UPSERT_WORK_REGION map_version=40 work_regions=1 obstacle_regions=1 crop_region=no
+[INFO] [1779346054.519132]: Planning input regions: work_total=1 work_selected=1 obstacle=0 active_work_region_id=work_region_1 force_use_all=false
+[33m[WARN] [1779346055.168776474]: makePlan is called.
+[0m
+[WARN] [1779345965.525737]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345967.579666]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345969.698328]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345971.797554]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345973.814417]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345975.835926]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345977.919431]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345980.017547]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345982.112246]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345984.209641]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345986.292046]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345988.298595]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345990.299479]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345992.307407]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345994.407634]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345996.514184]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779345998.516769]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346000.613004]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346002.707097]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346004.733104]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346006.803107]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346008.885723]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346010.975654]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346013.052867]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346015.055628]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346017.152568]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346019.230361]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346021.319935]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346023.422098]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346025.503571]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346027.559462]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346029.633714]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346031.642973]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346033.659592]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346035.676978]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346037.788795]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346039.871009]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346041.949152]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346044.047028]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346046.056357]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346048.066414]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346050.129315]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346052.310448]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 8 bytes
+[WARN] [1779346054.502506]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 8 bytes
+[WARN] [1779346056.610374]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346058.690202]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 8 bytes
+[WARN] [1779346060.414114]: Ignore /chassis/wheel_speed_cmd because cmd_vel source is active (hold=0.200s).
+[WARN] [1779346060.779368]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346062.645606]: Ignore /chassis/wheel_speed_cmd because cmd_vel source is active (hold=0.200s).
+[WARN] [1779346062.885287]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 8 bytes
+[WARN] [1779346064.647969]: Ignore /chassis/wheel_speed_cmd because cmd_vel source is active (hold=0.200s).
+[WARN] [1779346064.939055]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 8 bytes
+[WARN] [1779346067.013514]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 8 bytes
+[WARN] [1779346067.041155]: Ignore /chassis/wheel_speed_cmd because cmd_vel source is active (hold=0.200s).
+[WARN] [1779346069.114311]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 8 bytes
+[WARN] [1779346069.233730]: Ignore /chassis/wheel_speed_cmd because cmd_vel source is active (hold=0.200s).
+[WARN] [1779346071.220154]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 8 bytes
+[WARN] [1779346073.453415]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 8 bytes
+[WARN] [1779346075.546555]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346077.643253]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 8 bytes
+[WARN] [1779346079.749803]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346081.847320]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 8 bytes
+[WARN] [1779346083.943109]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346086.029422]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 8 bytes
+[WARN] [1779346088.213066]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346090.315668]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 8 bytes
+[WARN] [1779346090.376030]: Modbus echo deviation warning: left_diff=249 right_diff=515 max=200 count=1/2
+[WARN] [1779346090.437616]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346090.471567]: Safe-stop on communication error triggered.
+[WARN] [1779346090.796002]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346090.961968]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346092.419807]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 8 bytes
+[WARN] [1779346094.612255]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 8 bytes
+[WARN] [1779346096.672749]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779346098.121317]: Modbus echo deviation warning: left_diff=289 right_diff=475 max=200 count=2/2
+[WARN] [1779346098.143305]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346098.211723]: Safe-stop on communication error triggered.
+[WARN] [1779346098.356650]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346098.502863]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346098.586053]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346098.716610]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 8 bytes
+[WARN] [1779346098.823081]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346098.919332]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346099.000344]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346099.062957]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346099.128775]: Modbus echo deviation warning: left_diff=263 right_diff=501 max=200 count=1/2
+[WARN] [1779346099.161829]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346099.265311]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346099.280325]: Safe-stop on communication error triggered.
+[WARN] [1779346099.411167]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346099.512567]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346099.623930]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346099.741025]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346099.820912]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346099.915140]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346100.037517]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346100.112193]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346100.166851]: Modbus echo deviation warning: left_diff=252 right_diff=512 max=200 count=1/2
+[WARN] [1779346100.212456]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346100.312769]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346100.333420]: Safe-stop on communication error triggered.
+[WARN] [1779346100.512929]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346100.627384]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346100.712676]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346100.825778]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346100.929323]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346101.032747]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346101.129926]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346101.213967]: Modbus echo deviation warning: left_diff=271 right_diff=493 max=200 count=2/2
+[WARN] [1779346101.220677]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346101.329769]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346101.349987]: Safe-stop on communication error triggered.
+[WARN] [1779346101.522363]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346101.625697]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346101.721491]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346101.831811]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346101.929134]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346102.029818]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346102.115545]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346102.210719]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346102.260869]: Modbus echo deviation warning: left_diff=269 right_diff=495 max=200 count=1/2
+[WARN] [1779346102.322824]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346102.418110]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346102.423301]: Safe-stop on communication error triggered.
+[WARN] [1779346102.561804]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346102.680522]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346102.763808]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346102.862939]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346102.962829]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346103.071550]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346103.162191]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346103.281434]: Modbus echo deviation warning: left_diff=238 right_diff=526 max=200 count=2/2
+[WARN] [1779346103.291066]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346103.361903]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346103.466191]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346103.502373]: Safe-stop on communication error triggered.
+[WARN] [1779346103.688401]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346103.779243]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346103.863182]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346103.966040]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346104.102285]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346104.162535]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346104.276486]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346104.313137]: Modbus echo deviation warning: left_diff=269 right_diff=495 max=200 count=1/2
+[WARN] [1779346104.363178]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346104.480904]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346104.550920]: Safe-stop on communication error triggered.
+[WARN] [1779346104.645032]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346104.706097]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346104.763351]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346104.867526]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346104.963968]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346112.422156]: Ignore /chassis/wheel_speed_cmd because cmd_vel source is active (hold=0.200s).
+[WARN] [1779346112.761116]: Modbus echo deviation warning: left_diff=307 right_diff=448 max=200 count=1/2
+[WARN] [1779346112.811826]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346112.815362]: Safe-stop on communication error triggered.
+[WARN] [1779346112.926638]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346113.016873]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346113.110563]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346113.226753]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346113.310746]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346113.417138]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346113.516042]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346118.713032]: Modbus echo deviation warning: left_diff=195 right_diff=262 max=200 count=1/2
+[WARN] [1779346118.765527]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346118.771597]: Safe-stop on communication error triggered.
+[WARN] [1779346118.972468]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346119.070920]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346119.162405]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346119.268925]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346119.366599]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346119.460795]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346119.562316]: Echo deviation protection triggered. Issuing safe stop.
+[WARN] [1779346119.662437]: Echo deviation protection triggered. Issuing safe stop.
+                                                                                                             

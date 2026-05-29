@@ -1,0 +1,168 @@
+# Aurora 雷达主机 IP 地址
+aurora_ip_address: 192.168.0.114
+
+# 地图话题名（OccupancyGrid）
+map_topic: /slamware_ros_sdk_server_node/map
+# 里程计话题名（Odometry）
+odom_topic: /slamware_ros_sdk_server_node/odom
+# 左相机图像话题名
+left_image_topic: /slamware_ros_sdk_server_node/left_image_raw
+# 右相机图像话题名
+right_image_topic: /slamware_ros_sdk_server_node/right_image_raw
+# 是否使用深度彩色图像（替代左右可见光）
+use_depth_colorized_image: false
+# 深度彩色图像话题名
+depth_image_colorized_topic: /slamware_ros_sdk_server_node/depth_image_colorized
+
+# 首帧图像保存目录
+first_frame_save_dir: temp
+# 启动时是否保存首帧图像
+save_first_frame_on_startup: false
+
+# 初始地图预览图保存目录
+initial_map_preview_dir: temp
+# 预览图最大边长上限（像素，所有 preview 类请求都会受此限制）
+preview_max_edge_cap: 640
+# 初始地图预览图最大边长（像素）
+initial_map_preview_max_edge: 640
+# 初始地图预览图格式（jpg/png）
+initial_map_preview_format: jpg
+
+# 路径规划预览图保存目录
+planned_path_preview_dir: temp
+# 路径规划预览图最大边长（像素）
+planned_path_preview_max_edge: 640
+# 路径规划预览图格式（jpg/png）
+planned_path_preview_format: jpg
+# 路径预览图是否叠加区域/路径等覆盖层
+planned_path_preview_include_overlay: true
+# 路径预览图是否绘制方向箭头
+planned_path_preview_show_direction: true
+# 路径预览图方向箭头采样步长（每 N 个点画一个）
+planned_path_preview_arrow_step: 10
+# 路径预览图方向箭头长度（像素）
+planned_path_preview_arrow_len_px: 12
+# 区域绘制时是否显示区域ID（false 时仅显示区域名称）
+draw_region_id_on_preview: true
+# 区域绘制时是否显示区域名称（false 时名称与ID都不显示）
+draw_region_label_on_preview: false
+
+# 是否开启调度状态持久化
+persist_state_enabled: true
+# 调度状态持久化目录
+persist_state_dir: temp/grinder_scheduler_state
+
+# 是否开启实时预览图输出
+live_preview_enabled: true
+# 实时预览图更新频率（Hz）
+live_preview_hz: 1.0
+# 实时预览图最大边长（像素）
+live_preview_max_edge: 640
+# 实时预览图格式（jpg/png）
+live_preview_format: jpg
+# 实时预览图输出文件路径
+live_preview_file: temp/aurora_map_preview_latest.jpg
+
+# 是否开启实时地图落盘
+live_map_enabled: true
+# 实时地图保存频率（Hz）
+live_map_hz: 1.0
+# 实时地图目录
+live_map_dir: temp/live_map
+# 实时地图 yaml 文件名
+live_map_yaml_name: map.yaml
+# 实时地图图像文件名（pgm）
+live_map_image_name: map1.pgm
+# LIVE_MAP 缓存清理策略：all(清理持久化+文件缓存) / memory_only(仅清理内存态覆盖层)
+live_map_cache_clear_mode: all
+
+# 导航栈使用的地图 yaml 路径
+navigation_map_yaml_path: catkin_ws/src/2-dnavigation-package/2dnavigation/teb_local_planner_tutorials/maps/map.yaml
+# 本地 STCM 地图文件目录
+stcm_local_dir: maps/raw
+
+# 从雷达获取 STCM 的服务名
+sync_get_stcm_service: /slamware_ros_sdk_server_node/sync_get_stcm
+# 向雷达下发 STCM 的服务名
+sync_set_stcm_service: /slamware_ros_sdk_server_node/sync_set_stcm
+# 切换地图服务名
+change_map_service: /change_map
+# 设置雷达建图模式话题
+set_map_update_topic: /slamware_ros_sdk_server_node/set_map_update
+# 设置雷达定位模式话题
+set_map_localization_topic: /slamware_ros_sdk_server_node/set_map_localization
+
+# 路径规划脚本路径
+planner_script_path: third_party/path_planner/mst25.py
+
+# 机器人宽度（米），影响路径间距计算
+vehicle_width: 0.8
+# 机器人长度（米），用于转弯半径计算
+vehicle_length: 1.531
+# 默认路径间距（米），建议为车宽的 80%-90%
+default_path_spacing: 0.425
+# 转弯半径（米），影响路径平滑
+turn_radius: 0.1
+# 重叠比例（0-1），建议 0.1-0.2
+overlap_ratio: 0
+# 膨胀半径（米），建议为宽度的 40%-60%
+inflation_radius: 0.06
+
+# SL-LinkA Python SDK 目录
+sl_linka_python_sdk_dir: third_party/sl_linka/sdk/python
+# SL-LinkA 监听地址
+sl_linka_host: 0.0.0.0
+# SL-LinkA 监听端口
+sl_linka_port: 8002
+
+# 是否由调度包内部启动 Aurora 驱动
+start_aurora_driver: false
+# Aurora 是否输出原始图像
+aurora_raw_image_on: true
+# Aurora 是否关闭预览图输出
+aurora_no_preview_image: false
+
+# 是否启用本地 RTSP 推流
+local_rtsp_enabled: true
+# 本地 RTSP 监听地址
+local_rtsp_host: 0.0.0.0
+# 外部访问 RTSP 时公布的主机地址（auto 表示自动推断）
+local_rtsp_public_host: auto
+# 本地 RTSP 端口
+local_rtsp_port: 8554
+# RTSP 推流帧率
+local_rtsp_fps: 15
+# RTSP 推流宽度（像素）
+local_rtsp_width: 640
+# 是否由调度包启动 mediamtx 服务
+local_rtsp_start_server: true
+# RTSP 编码器: auto/libx264/h264_v4l2m2m/h264_vaapi/h264_nvenc/h264_omx
+local_rtsp_encoder: libx264
+# mediamtx 可执行文件路径
+local_rtsp_mediamtx_path: tools/mediamtx/mediamtx
+# RTSP 相关日志目录
+local_rtsp_log_dir: temp
+
+# 调度主循环频率（Hz）
+scheduler_tick_hz: 5
+# 调度发布全局路径频率（Hz）
+global_plan_publish_hz: 2
+# 目标点到达阈值（米）：小于该值判定“到达当前 goal”，建议小于路径点间距（如 0.03）
+path_goal_reach_dist: 0.03
+# 当前段目标超时时间（秒）：超过后重发当前段终点（不切下一段）
+path_segment_timeout: 60.0
+# PathPlanRequest 是否按“所有已选区域”规划（true=有几个区域规划几次；false=仅按当前激活区域）
+path_plan_request_use_all_regions: true
+# 手动控制换向保护时间（秒）：前进/后退/左右切换时先发 0 速，避免驱动瞬时反转报错
+manual_reverse_guard_sec: 1.0
+
+# 视频流推送循环频率（Hz）
+stream_push_hz: 20
+# 是否启用视频流推送
+stream_enabled: true
+# 推流目标地址（RTMP）
+stream_url: rtmp://127.0.0.1:1935/live/grinder_main
+# 推流帧率
+stream_fps: 8
+# 推流宽度（像素）
+stream_width: 1280

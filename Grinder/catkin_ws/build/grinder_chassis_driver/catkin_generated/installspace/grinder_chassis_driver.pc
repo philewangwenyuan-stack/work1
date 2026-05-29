@@ -1,0 +1,8 @@
+prefix=/home/neardi/work/Grinder/catkin_ws/install
+
+Name: grinder_chassis_driver
+Description: Description of grinder_chassis_driver
+Version: 0.1.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib 
+Requires: diagnostic_msgs message_runtime rospy std_msgs

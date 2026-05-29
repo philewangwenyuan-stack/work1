@@ -1,0 +1,1370 @@
+... logging to /root/.ros/log/630bc664-54c4-11f1-8085-c285ead2937b/roslaunch-LPA3588-9438.log
+Checking log directory for disk usage. This may take a while.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/neardi/work/Grinder/catkin_ws/src/grinder_scheduler/launch/grinder_system.launch
+[1mstarted roslaunch server http://LPA3588:42609/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /chassis_driver/baudrate: 19200
+ * /chassis_driver/cmd_source_hold_sec: 0.2
+ * /chassis_driver/cmd_vel_deadband_angular: 0.0
+ * /chassis_driver/cmd_vel_deadband_linear: 0.0
+ * /chassis_driver/cmd_vel_drive_left_sign: 1
+ * /chassis_driver/cmd_vel_drive_right_sign: 1
+ * /chassis_driver/cmd_vel_drive_swap_lr: False
+ * /chassis_driver/cmd_vel_enabled: True
+ * /chassis_driver/cmd_vel_gear_ratio: 60.0
+ * /chassis_driver/cmd_vel_max_abs_wheel_rpm: 3000.0
+ * /chassis_driver/cmd_vel_max_angular: 1.6
+ * /chassis_driver/cmd_vel_max_input_v: 0.7
+ * /chassis_driver/cmd_vel_max_input_w: 1.6
+ * /chassis_driver/cmd_vel_max_linear: 0.7
+ * /chassis_driver/cmd_vel_scale: 1.0
+ * /chassis_driver/cmd_vel_topic: /cmd_vel
+ * /chassis_driver/cmd_vel_wheel_radius_m: 0.15
+ * /chassis_driver/cmd_vel_wheel_track_m: 0.79
+ * /chassis_driver/command_timeout: 5
+ * /chassis_driver/disc_speed_max: 32767
+ * /chassis_driver/disc_speed_min: -32768
+ * /chassis_driver/drive_left_sign: -1
+ * /chassis_driver/drive_right_sign: -1
+ * /chassis_driver/drive_swap_lr: False
+ * /chassis_driver/enable_cmd_ramp_limit: False
+ * /chassis_driver/enable_safe_stop_on_comm_error: False
+ * /chassis_driver/left_speed_max: 32767
+ * /chassis_driver/left_speed_min: -32768
+ * /chassis_driver/manual_drive_max_wheel_speed: 600
+ * /chassis_driver/manual_wheel_deadband_rpm: 30
+ * /chassis_driver/manual_wheel_hyst_enter_rpm: 60
+ * /chassis_driver/manual_wheel_hyst_exit_rpm: 30
+ * /chassis_driver/max_cmd_step_rpm: 50
+ * /chassis_driver/max_echo_deviation: 200
+ * /chassis_driver/max_echo_failures: 2
+ * /chassis_driver/max_retries: 3
+ * /chassis_driver/poll_rate_hz: 20.0
+ * /chassis_driver/port: /dev/ttyS0
+ * /chassis_driver/right_speed_max: 32767
+ * /chassis_driver/right_speed_min: -32768
+ * /chassis_driver/rs485_raw_log_enabled: False
+ * /chassis_driver/rs485_raw_log_file: temp/chassis_rs48...
+ * /chassis_driver/safe_stop_on_error_interval: 1.0
+ * /chassis_driver/slave_id: 1
+ * /chassis_driver/startup_zero_output: True
+ * /chassis_driver/stop_on_timeout: True
+ * /chassis_driver/task_enable_default: False
+ * /chassis_driver/timeout: 0.1
+ * /chassis_driver/write_verify: False
+ * /grinder_scheduler/aurora_ip_address: 192.168.11.1
+ * /grinder_scheduler/aurora_no_preview_image: False
+ * /grinder_scheduler/aurora_raw_image_on: True
+ * /grinder_scheduler/change_map_service: /change_map
+ * /grinder_scheduler/default_path_spacing: 0.425
+ * /grinder_scheduler/depth_image_colorized_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/first_frame_save_dir: temp
+ * /grinder_scheduler/global_plan_publish_hz: 2
+ * /grinder_scheduler/inflation_radius: 0.06
+ * /grinder_scheduler/initial_map_preview_dir: temp
+ * /grinder_scheduler/initial_map_preview_format: jpg
+ * /grinder_scheduler/initial_map_preview_max_edge: 320
+ * /grinder_scheduler/left_image_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/live_map_dir: temp/live_map
+ * /grinder_scheduler/live_map_enabled: True
+ * /grinder_scheduler/live_map_hz: 1.0
+ * /grinder_scheduler/live_map_image_name: map1.pgm
+ * /grinder_scheduler/live_map_yaml_name: map.yaml
+ * /grinder_scheduler/live_preview_enabled: True
+ * /grinder_scheduler/live_preview_file: temp/aurora_map_p...
+ * /grinder_scheduler/live_preview_format: jpg
+ * /grinder_scheduler/live_preview_hz: 1.0
+ * /grinder_scheduler/live_preview_max_edge: 320
+ * /grinder_scheduler/local_rtsp_enabled: True
+ * /grinder_scheduler/local_rtsp_encoder: libx264
+ * /grinder_scheduler/local_rtsp_fps: 15
+ * /grinder_scheduler/local_rtsp_host: 0.0.0.0
+ * /grinder_scheduler/local_rtsp_log_dir: temp
+ * /grinder_scheduler/local_rtsp_mediamtx_path: /home/neardi/work...
+ * /grinder_scheduler/local_rtsp_port: 8554
+ * /grinder_scheduler/local_rtsp_public_host: auto
+ * /grinder_scheduler/local_rtsp_start_server: True
+ * /grinder_scheduler/local_rtsp_width: 640
+ * /grinder_scheduler/manual_reverse_guard_sec: 1.0
+ * /grinder_scheduler/map_topic: /map
+ * /grinder_scheduler/navigation_map_yaml_path: /home/neardi/work...
+ * /grinder_scheduler/odom_topic: /odom
+ * /grinder_scheduler/overlap_ratio: 0
+ * /grinder_scheduler/path_goal_reach_dist: 0.03
+ * /grinder_scheduler/path_segment_timeout: 60.0
+ * /grinder_scheduler/persist_state_dir: temp/grinder_sche...
+ * /grinder_scheduler/persist_state_enabled: True
+ * /grinder_scheduler/planned_path_preview_arrow_len_px: 12
+ * /grinder_scheduler/planned_path_preview_arrow_step: 10
+ * /grinder_scheduler/planned_path_preview_dir: temp
+ * /grinder_scheduler/planned_path_preview_format: jpg
+ * /grinder_scheduler/planned_path_preview_include_overlay: True
+ * /grinder_scheduler/planned_path_preview_max_edge: 320
+ * /grinder_scheduler/planned_path_preview_show_direction: True
+ * /grinder_scheduler/planner_script_path: third_party/path_...
+ * /grinder_scheduler/right_image_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/save_first_frame_on_startup: False
+ * /grinder_scheduler/scheduler_tick_hz: 5
+ * /grinder_scheduler/set_map_localization_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/set_map_update_topic: /slamware_ros_sdk...
+ * /grinder_scheduler/sl_linka_host: 0.0.0.0
+ * /grinder_scheduler/sl_linka_port: 8002
+ * /grinder_scheduler/sl_linka_python_sdk_dir: third_party/sl_li...
+ * /grinder_scheduler/start_aurora_driver: False
+ * /grinder_scheduler/stcm_local_dir: maps/raw
+ * /grinder_scheduler/stream_enabled: True
+ * /grinder_scheduler/stream_fps: 8
+ * /grinder_scheduler/stream_push_hz: 20
+ * /grinder_scheduler/stream_url: rtmp://127.0.0.1:...
+ * /grinder_scheduler/stream_width: 1280
+ * /grinder_scheduler/sync_get_stcm_service: /slamware_ros_sdk...
+ * /grinder_scheduler/sync_set_stcm_service: /slamware_ros_sdk...
+ * /grinder_scheduler/turn_radius: 0.1
+ * /grinder_scheduler/use_depth_colorized_image: False
+ * /grinder_scheduler/vehicle_length: 1.531
+ * /grinder_scheduler/vehicle_width: 0.8
+ * /move_base/TebLocalPlannerROS/acc_lim_theta: 0.05
+ * /move_base/TebLocalPlannerROS/acc_lim_x: 0.1
+ * /move_base/TebLocalPlannerROS/allow_init_with_backwards_motion: False
+ * /move_base/TebLocalPlannerROS/complete_global_plan: False
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/cluster_max_distance: 0.2
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/cluster_min_pts: 2
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/convex_hull_min_pt_separation: 0.1
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_convert_outlier_pts: True
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_filter_remaining_outlier_pts: False
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_inlier_distance: 0.15
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_min_inliers: 10
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_no_iterations: 1500
+ * /move_base/TebLocalPlannerROS/costmap_converter/CostmapToLinesDBSRANSAC/ransac_remainig_outliers: 3
+ * /move_base/TebLocalPlannerROS/costmap_converter_plugin: 
+ * /move_base/TebLocalPlannerROS/costmap_converter_rate: 5
+ * /move_base/TebLocalPlannerROS/costmap_converter_spin_thread: True
+ * /move_base/TebLocalPlannerROS/costmap_obstacles_behind_robot_dist: 0.3
+ * /move_base/TebLocalPlannerROS/delete_detours_backwards: True
+ * /move_base/TebLocalPlannerROS/dt_hysteresis: 0.1
+ * /move_base/TebLocalPlannerROS/dt_ref: 0.4
+ * /move_base/TebLocalPlannerROS/dynamic_obstacle_inflation_dist: 0.3
+ * /move_base/TebLocalPlannerROS/enable_homotopy_class_planning: False
+ * /move_base/TebLocalPlannerROS/enable_multithreading: True
+ * /move_base/TebLocalPlannerROS/exact_arc_length: False
+ * /move_base/TebLocalPlannerROS/feasibility_check_no_poses: 2
+ * /move_base/TebLocalPlannerROS/footprint_model/type: point
+ * /move_base/TebLocalPlannerROS/free_goal_vel: False
+ * /move_base/TebLocalPlannerROS/global_plan_overwrite_orientation: False
+ * /move_base/TebLocalPlannerROS/global_plan_prune_distance: 1
+ * /move_base/TebLocalPlannerROS/global_plan_viapoint_sep: 0.5
+ * /move_base/TebLocalPlannerROS/h_signature_prescaler: 0.5
+ * /move_base/TebLocalPlannerROS/h_signature_threshold: 0.1
+ * /move_base/TebLocalPlannerROS/include_costmap_obstacles: True
+ * /move_base/TebLocalPlannerROS/include_dynamic_obstacles: False
+ * /move_base/TebLocalPlannerROS/inflation_dist: 0.6
+ * /move_base/TebLocalPlannerROS/max_global_plan_lookahead_dist: 1.0
+ * /move_base/TebLocalPlannerROS/max_number_classes: 4
+ * /move_base/TebLocalPlannerROS/max_ratio_detours_duration_best_duration: 3.0
+ * /move_base/TebLocalPlannerROS/max_samples: 200
+ * /move_base/TebLocalPlannerROS/max_vel_theta: 0.1
+ * /move_base/TebLocalPlannerROS/max_vel_x: 0.1
+ * /move_base/TebLocalPlannerROS/max_vel_x_backwards: 0.05
+ * /move_base/TebLocalPlannerROS/max_vel_y: 0.0
+ * /move_base/TebLocalPlannerROS/min_obstacle_dist: 0.5
+ * /move_base/TebLocalPlannerROS/min_turning_radius: 0.0
+ * /move_base/TebLocalPlannerROS/no_inner_iterations: 3
+ * /move_base/TebLocalPlannerROS/no_outer_iterations: 2
+ * /move_base/TebLocalPlannerROS/obstacle_cost_exponent: 4
+ * /move_base/TebLocalPlannerROS/obstacle_heading_threshold: 0.45
+ * /move_base/TebLocalPlannerROS/obstacle_poses_affected: 15
+ * /move_base/TebLocalPlannerROS/odom_topic: odom
+ * /move_base/TebLocalPlannerROS/optimization_activate: True
+ * /move_base/TebLocalPlannerROS/optimization_verbose: False
+ * /move_base/TebLocalPlannerROS/oscillation_filter_duration: 10
+ * /move_base/TebLocalPlannerROS/oscillation_omega_eps: 0.1
+ * /move_base/TebLocalPlannerROS/oscillation_recovery: True
+ * /move_base/TebLocalPlannerROS/oscillation_recovery_min_duration: 10
+ * /move_base/TebLocalPlannerROS/oscillation_v_eps: 0.1
+ * /move_base/TebLocalPlannerROS/penalty_epsilon: 0.03
+ * /move_base/TebLocalPlannerROS/publish_feedback: False
+ * /move_base/TebLocalPlannerROS/roadmap_graph_area_length_scale: 1.0
+ * /move_base/TebLocalPlannerROS/roadmap_graph_area_width: 5
+ * /move_base/TebLocalPlannerROS/roadmap_graph_no_samples: 15
+ * /move_base/TebLocalPlannerROS/selection_alternative_time_cost: False
+ * /move_base/TebLocalPlannerROS/selection_cost_hysteresis: 1.0
+ * /move_base/TebLocalPlannerROS/selection_obst_cost_scale: 100.0
+ * /move_base/TebLocalPlannerROS/selection_prefer_initial_plan: 0.9
+ * /move_base/TebLocalPlannerROS/shrink_horizon_backup: True
+ * /move_base/TebLocalPlannerROS/shrink_horizon_min_duration: 10
+ * /move_base/TebLocalPlannerROS/switching_blocking_period: 0.0
+ * /move_base/TebLocalPlannerROS/teb_autosize: True
+ * /move_base/TebLocalPlannerROS/viapoints_all_candidates: True
+ * /move_base/TebLocalPlannerROS/visualize_hc_graph: False
+ * /move_base/TebLocalPlannerROS/visualize_with_time_as_z_axis_scale: False
+ * /move_base/TebLocalPlannerROS/weight_acc_lim_theta: 1.0
+ * /move_base/TebLocalPlannerROS/weight_acc_lim_x: 1.0
+ * /move_base/TebLocalPlannerROS/weight_adapt_factor: 2
+ * /move_base/TebLocalPlannerROS/weight_dynamic_obstacle: 10
+ * /move_base/TebLocalPlannerROS/weight_dynamic_obstacle_inflation: 0.2
+ * /move_base/TebLocalPlannerROS/weight_inflation: 0.2
+ * /move_base/TebLocalPlannerROS/weight_kinematics_forward_drive: 800
+ * /move_base/TebLocalPlannerROS/weight_kinematics_nh: 1000
+ * /move_base/TebLocalPlannerROS/weight_kinematics_turning_radius: 1
+ * /move_base/TebLocalPlannerROS/weight_max_vel_theta: 1
+ * /move_base/TebLocalPlannerROS/weight_max_vel_x: 2
+ * /move_base/TebLocalPlannerROS/weight_obstacle: 100
+ * /move_base/TebLocalPlannerROS/weight_optimaltime: 1
+ * /move_base/TebLocalPlannerROS/weight_shortest_path: 1
+ * /move_base/TebLocalPlannerROS/weight_viapoint: 20
+ * /move_base/TebLocalPlannerROS/xy_goal_tolerance: 0.1
+ * /move_base/TebLocalPlannerROS/yaw_goal_tolerance: 0.1
+ * /move_base/base_global_planner: carrot_planner/Ca...
+ * /move_base/base_local_planner: teb_local_planner...
+ * /move_base/controller_frequency: 10.0
+ * /move_base/controller_patience: 10.0
+ * /move_base/global_costmap/always_send_full_costmap: True
+ * /move_base/global_costmap/footprint_padding: 0.0
+ * /move_base/global_costmap/global_frame: map
+ * /move_base/global_costmap/inflation_layer/cost_scaling_factor: 10.0
+ * /move_base/global_costmap/inflation_layer/enabled: True
+ * /move_base/global_costmap/inflation_layer/inflation_radius: 0.1
+ * /move_base/global_costmap/map_type: costmap
+ * /move_base/global_costmap/obstacle_layer/combination_method: 1
+ * /move_base/global_costmap/obstacle_layer/enabled: True
+ * /move_base/global_costmap/obstacle_layer/inflation_radius: 0.2
+ * /move_base/global_costmap/obstacle_layer/laser_scan_sensor/clearing: True
+ * /move_base/global_costmap/obstacle_layer/laser_scan_sensor/data_type: LaserScan
+ * /move_base/global_costmap/obstacle_layer/laser_scan_sensor/marking: True
+ * /move_base/global_costmap/obstacle_layer/laser_scan_sensor/topic: scan
+ * /move_base/global_costmap/obstacle_layer/observation_sources: laser_scan_sensor
+ * /move_base/global_costmap/obstacle_layer/obstacle_range: 3.0
+ * /move_base/global_costmap/obstacle_layer/raytrace_range: 4.0
+ * /move_base/global_costmap/obstacle_layer/track_unknown_space: True
+ * /move_base/global_costmap/plugins: [{'name': 'static...
+ * /move_base/global_costmap/publish_frequency: 2.0
+ * /move_base/global_costmap/robot_base_frame: base_link
+ * /move_base/global_costmap/robot_radius: 0.17
+ * /move_base/global_costmap/static_layer/enabled: True
+ * /move_base/global_costmap/static_layer/map_topic: map
+ * /move_base/global_costmap/static_map: True
+ * /move_base/global_costmap/transform_tolerance: 0.5
+ * /move_base/global_costmap/update_frequency: 2.0
+ * /move_base/local_costmap/always_send_full_costmap: True
+ * /move_base/local_costmap/footprint_padding: 0.0
+ * /move_base/local_costmap/global_frame: map
+ * /move_base/local_costmap/height: 5
+ * /move_base/local_costmap/inflation_layer/cost_scaling_factor: 10.0
+ * /move_base/local_costmap/inflation_layer/enabled: True
+ * /move_base/local_costmap/inflation_layer/inflation_radius: 0.1
+ * /move_base/local_costmap/map_type: costmap
+ * /move_base/local_costmap/obstacle_layer/combination_method: 1
+ * /move_base/local_costmap/obstacle_layer/enabled: True
+ * /move_base/local_costmap/obstacle_layer/inflation_radius: 0.2
+ * /move_base/local_costmap/obstacle_layer/laser_scan_sensor/clearing: True
+ * /move_base/local_costmap/obstacle_layer/laser_scan_sensor/data_type: LaserScan
+ * /move_base/local_costmap/obstacle_layer/laser_scan_sensor/marking: True
+ * /move_base/local_costmap/obstacle_layer/laser_scan_sensor/topic: scan
+ * /move_base/local_costmap/obstacle_layer/observation_sources: laser_scan_sensor
+ * /move_base/local_costmap/obstacle_layer/obstacle_range: 3.0
+ * /move_base/local_costmap/obstacle_layer/raytrace_range: 4.0
+ * /move_base/local_costmap/obstacle_layer/track_unknown_space: True
+ * /move_base/local_costmap/plugins: [{'name': 'static...
+ * /move_base/local_costmap/publish_frequency: 5.0
+ * /move_base/local_costmap/resolution: 0.1
+ * /move_base/local_costmap/robot_base_frame: base_link
+ * /move_base/local_costmap/robot_radius: 0.17
+ * /move_base/local_costmap/rolling_window: True
+ * /move_base/local_costmap/static_layer/enabled: True
+ * /move_base/local_costmap/static_layer/map_topic: map
+ * /move_base/local_costmap/static_map: False
+ * /move_base/local_costmap/transform_tolerance: 0.5
+ * /move_base/local_costmap/update_frequency: 5.0
+ * /move_base/local_costmap/width: 5
+ * /rosdistro: noetic
+ * /rosversion: 1.17.4
+ * /slamware_ros_sdk_server_node/angle_compensate: True
+ * /slamware_ros_sdk_server_node/camera_left: base_camera_left
+ * /slamware_ros_sdk_server_node/camera_right: base_camera_right
+ * /slamware_ros_sdk_server_node/imu_frame: base_imu_link
+ * /slamware_ros_sdk_server_node/imu_raw_data_period: 0.005
+ * /slamware_ros_sdk_server_node/ip_address: 192.168.11.1
+ * /slamware_ros_sdk_server_node/ladar_data_clockwise: True
+ * /slamware_ros_sdk_server_node/laser_frame: base_laser_link
+ * /slamware_ros_sdk_server_node/map_frame: map
+ * /slamware_ros_sdk_server_node/map_pub_period: 0.2
+ * /slamware_ros_sdk_server_node/no_preview_image: False
+ * /slamware_ros_sdk_server_node/odom_frame: odom
+ * /slamware_ros_sdk_server_node/raw_image_on: False
+ * /slamware_ros_sdk_server_node/robot_frame: base_link
+ * /slamware_ros_sdk_server_node/robot_pose_pub_period: 0.05
+ * /slamware_ros_sdk_server_node/robot_pose_topic: robot_pose
+ * /slamware_ros_sdk_server_node/scan_pub_period: 0.1
+ * /use_sim_time: False
+
+NODES
+  /
+    baselink2map (tf2_ros/static_transform_publisher)
+    chassis_driver (grinder_chassis_driver/chassis_driver_node.py)
+    grinder_scheduler (grinder_scheduler/scheduler_node.py)
+    move_base (move_base/move_base)
+    odom2map (tf2_ros/static_transform_publisher)
+    rviz (rviz/rviz)
+    slamware_ros_sdk_server_node (slamware_ros_sdk/slamware_ros_sdk_server_node)
+QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
+Cannot find EGLConfig, returning null config
+Unable to find an X11 visual which matches EGL config 0
+[0m[INFO] [1779333807.583359505]: Trying to connect to Aurora, tryCnt: 1.[0m
+[0m[INFO] [1779333807.593695589]: Selected device: tcp/192.168.11.1:7447[0m
+[0m[INFO] [1779333807.593749839]: Connecting to the selected device...[0m
+[0m[INFO] [1779333807.695687933]: Connected to the selected device[0m
+[0m[INFO] [1779333807.727322978]: Connected to Aurora, OK, tryCnt: 1.[0m
+[0m[INFO] [1779333807.727435561]: Odometry:0.1000[0m
+[0m[INFO] [1779333807.731096853]: RobotPose:0.0500[0m
+[0m[INFO] [1779333807.733624437]: ExploreMapUpdate:0.2000[0m
+[0m[INFO] [1779333807.733661187]: ExploreMapPublish:0.2000[0m
+[0m[INFO] [1779333807.736163103]: LaserScan:0.1000[0m
+[0m[INFO] [1779333807.737522562]: ServerImuRawDataWorker:0.0050[0m
+[0m[INFO] [1779333807.739495104]: RosConnectWorker:0.1000[0m
+[0m[INFO] [1779333807.742249896]: SystemStatus:0.0500[0m
+[0m[INFO] [1779333807.746659021]: StereoImage:0.0500[0m
+[0m[INFO] [1779333807.752699147]: PointCloud:0.1000[0m
+[0m[INFO] [1779333807.793520526]: SlamwareRosSdkServer, work thread begin.[0m
+[0m[INFO] [1779333807.793594901]: reset all 12 workers on work loop begin.[0m
+[0m[INFO] [1779333807.793764359]: Depth camera supported, subscription enabled, post-filtering on[0m
+[0m[INFO] [1779333807.793920984]: Semantic segmentation supported and subscription enabled[0m
+[0m[INFO] [1779333807.794030068]: Semantic segmentation label set: coco80[0m
+[0m[INFO] [1779333807.794088984]: Label ID: 0, Name: (null)[0m
+[0m[INFO] [1779333807.794119901]: Label ID: 1, Name: person[0m
+[0m[INFO] [1779333807.794147026]: Label ID: 2, Name: bicycle[0m
+[0m[INFO] [1779333807.794175901]: Label ID: 3, Name: car[0m
+[0m[INFO] [1779333807.794203026]: Label ID: 4, Name: motorcycle[0m
+[0m[INFO] [1779333807.794227526]: Label ID: 5, Name: airplane[0m
+[0m[INFO] [1779333807.794254943]: Label ID: 6, Name: bus[0m
+[0m[INFO] [1779333807.794282359]: Label ID: 7, Name: train[0m
+[0m[INFO] [1779333807.794305401]: Label ID: 8, Name: truck[0m
+[0m[INFO] [1779333807.794350026]: Label ID: 9, Name: boat[0m
+[0m[INFO] [1779333807.794381234]: Label ID: 10, Name: traffic light[0m
+[0m[INFO] [1779333807.794405443]: Label ID: 11, Name: fire hydrant[0m
+[0m[INFO] [1779333807.794435484]: Label ID: 12, Name: stop sign[0m
+[0m[INFO] [1779333807.794462901]: Label ID: 13, Name: parking meter[0m
+[0m[INFO] [1779333807.794486234]: Label ID: 14, Name: bench[0m
+[0m[INFO] [1779333807.794513359]: Label ID: 15, Name: bird[0m
+[0m[INFO] [1779333807.794541651]: Label ID: 16, Name: cat[0m
+[0m[INFO] [1779333807.794567609]: Label ID: 17, Name: dog[0m
+[0m[INFO] [1779333807.794595026]: Label ID: 18, Name: horse[0m
+[0m[INFO] [1779333807.794622151]: Label ID: 19, Name: sheep[0m
+[0m[INFO] [1779333807.794649859]: Label ID: 20, Name: cow[0m
+[0m[INFO] [1779333807.794676401]: Label ID: 21, Name: elephant[0m
+[0m[INFO] [1779333807.794703234]: Label ID: 22, Name: bear[0m
+[0m[INFO] [1779333807.794729776]: Label ID: 23, Name: zebra[0m
+[0m[INFO] [1779333807.794756901]: Label ID: 24, Name: giraffe[0m
+[0m[INFO] [1779333807.794783151]: Label ID: 25, Name: backpack[0m
+[0m[INFO] [1779333807.794809693]: Label ID: 26, Name: umbrella[0m
+[0m[INFO] [1779333807.794835943]: Label ID: 27, Name: handbag[0m
+[0m[INFO] [1779333807.794862776]: Label ID: 28, Name: tie[0m
+[0m[INFO] [1779333807.794889026]: Label ID: 29, Name: suitcase[0m
+[0m[INFO] [1779333807.794915859]: Label ID: 30, Name: frisbee[0m
+[0m[INFO] [1779333807.794942693]: Label ID: 31, Name: skis[0m
+[0m[INFO] [1779333807.794970401]: Label ID: 32, Name: snowboard[0m
+[0m[INFO] [1779333807.794997234]: Label ID: 33, Name: sports ball[0m
+[0m[INFO] [1779333807.795024651]: Label ID: 34, Name: kite[0m
+[0m[INFO] [1779333807.795075109]: Label ID: 35, Name: baseball bat[0m
+[0m[INFO] [1779333807.795110401]: Label ID: 36, Name: baseball glove[0m
+[0m[INFO] [1779333807.795138109]: Label ID: 37, Name: skateboard[0m
+[0m[INFO] [1779333807.795165234]: Label ID: 38, Name: surfboard[0m
+[0m[INFO] [1779333807.795192651]: Label ID: 39, Name: tennis racket[0m
+[0m[[33m[WARN] [1779333808.014216840]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1779333808.020195715]: global_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1779333808.631066568]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1779333808.631818193]: local_costmap: Pre-Hydro parameter "map_type" unused since "plugins" is provided[0m
+[33m[WARN] [1779333810.090877007]: The origin for the sensor at (-1.90, -4.10, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333811.590811282]: The origin for the sensor at (-1.90, -4.10, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[WARN] [1779333808.656932]: Planner module import failed, using fallback planner: [Errno 2] No such file or directory: '/home/neardi/work/Grinder/third_party/path_planner/mst25.py'
+[WARN] [1779333809.618174]: RTSP encoder probe failed, skip encoder=h264_v4l2m2m for stream left
+[WARN] [1779333809.813187]: RTSP encoder probe failed, skip encoder=h264_vaapi for stream left
+[WARN] [1779333810.004462]: RTSP encoder probe failed, skip encoder=h264_omx for stream left
+[WARN] [1779333810.788805]: RTSP encoder probe failed, skip encoder=h264_v4l2m2m for stream right
+[WARN] [1779333810.989165]: RTSP encoder probe failed, skip encoder=h264_vaapi for stream right
+[WARN] [1779333811.188181]: RTSP encoder probe failed, skip encoder=h264_omx for stream right
+[INFO] [1779333808.529768]: Loaded task registry state: 8 map-bound tasks
+[INFO] [1779333808.599947]: Loaded map overlay state: map_id=map_1778827104561 dir=/home/neardi/work/Grinder/temp/grinder_scheduler_state/map_states/map_1778827104561
+[INFO] [1779333808.602707]: Loaded scheduler local state from /home/neardi/work/Grinder/temp/grinder_scheduler_state
+[INFO] [1779333811.198094]: Starting mediamtx on rtsp://192.168.11.127:8554 using /home/neardi/work/Grinder/tools/mediamtx/mediamtx
+[INFO] [1779333811.553482]: mediamtx rtsp listener is ready on 127.0.0.1:8554
+Traceback (most recent call last):
+  File "/home/neardi/work/Grinder/catkin_ws/devel/lib/grinder_scheduler/scheduler_node.py", line 15, in <module>
+    exec(compile(fh.read(), python_script, 'exec'), context)
+  File "/home/neardi/work/Grinder/catkin_ws/src/grinder_scheduler/scripts/scheduler_node.py", line 7, in <module>
+    main()
+  File "/home/neardi/work/Grinder/catkin_ws/src/grinder_scheduler/src/grinder_scheduler/scheduler_node.py", line 4595, in main
+    node = SchedulerNode()
+  File "/home/neardi/work/Grinder/catkin_ws/src/grinder_scheduler/src/grinder_scheduler/scheduler_node.py", line 363, in __init__
+    self.sl_link_server = SlLinkAServer(
+  File "/home/neardi/work/Grinder/catkin_ws/src/grinder_scheduler/src/grinder_scheduler/sl_linka_adapter.py", line 17, in __init__
+    from sl_link.frame import SL_PROTOCOL_VERSION, SlFrame, SlFrameParser
+ModuleNotFoundError: No module named 'sl_link'
+[33m[WARN] [1779333812.590980716]: The origin for the sensor at (-1.90, -4.11, -2.16) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333813.590945692]: The origin for the sensor at (-1.90, -4.11, -2.16) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333814.591073501]: The origin for the sensor at (-1.90, -4.11, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333815.591194559]: The origin for the sensor at (-1.90, -4.11, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333816.591387493]: The origin for the sensor at (-1.90, -4.11, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333818.090911102]: The origin for the sensor at (-1.90, -4.11, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333819.090904786]: The origin for the sensor at (-1.90, -4.11, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333820.594040270]: The origin for the sensor at (-1.90, -4.11, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333822.091458838]: The origin for the sensor at (-1.90, -4.11, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333823.593848030]: The origin for the sensor at (-1.90, -4.11, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333825.090918639]: The origin for the sensor at (-1.90, -4.11, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333826.590953248]: The origin for the sensor at (-1.90, -4.11, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333827.590993598]: The origin for the sensor at (-1.90, -4.11, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333829.090899207]: The origin for the sensor at (-1.90, -4.11, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333830.590904692]: The origin for the sensor at (-1.90, -4.11, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333831.591321334]: The origin for the sensor at (-1.90, -4.10, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333833.091372068]: The origin for the sensor at (-1.90, -4.11, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333834.591027010]: The origin for the sensor at (-1.90, -4.11, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333835.591037736]: The origin for the sensor at (-1.90, -4.11, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333837.092508053]: The origin for the sensor at (-1.90, -4.11, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333838.590876495]: The origin for the sensor at (-1.90, -4.11, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333839.591643721]: The origin for the sensor at (-1.90, -4.11, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333841.090789788]: The origin for the sensor at (-1.90, -4.10, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333842.091681514]: The origin for the sensor at (-1.90, -4.11, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333843.590929331]: The origin for the sensor at (-1.90, -4.11, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333844.590950348]: The origin for the sensor at (-1.90, -4.10, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333846.090954041]: The origin for the sensor at (-1.90, -4.10, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333847.591096941]: The origin for the sensor at (-1.90, -4.10, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333848.591514167]: The origin for the sensor at (-1.90, -4.10, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333850.090841067]: The origin for the sensor at (-1.90, -4.10, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333851.091018876]: The origin for the sensor at (-1.90, -4.10, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333852.590821944]: The origin for the sensor at (-1.90, -4.10, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333853.591032836]: The origin for the sensor at (-1.90, -4.10, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333855.091041695]: The origin for the sensor at (-1.90, -4.10, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333856.091185045]: The origin for the sensor at (-1.90, -4.11, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333857.091826979]: The origin for the sensor at (-1.90, -4.10, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333858.592313338]: The origin for the sensor at (-1.90, -4.10, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333860.090886406]: The origin for the sensor at (-1.90, -4.10, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333861.091034881]: The origin for the sensor at (-1.90, -4.09, -2.18) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333862.592160490]: The origin for the sensor at (-1.89, -4.07, -2.18) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333864.091054849]: The origin for the sensor at (-1.89, -4.05, -2.19) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333865.591031708]: The origin for the sensor at (-1.90, -4.08, -2.18) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333866.591132392]: The origin for the sensor at (-1.90, -4.08, -2.18) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333867.591227951]: The origin for the sensor at (-1.90, -4.08, -2.18) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333869.090923518]: The origin for the sensor at (-1.89, -4.07, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333870.091160952]: The origin for the sensor at (-1.89, -4.07, -2.16) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333871.591504061]: The origin for the sensor at (-1.89, -4.07, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333872.591614662]: The origin for the sensor at (-1.89, -4.07, -2.16) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333874.090926896]: The origin for the sensor at (-1.89, -4.07, -2.16) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333875.091150329]: The origin for the sensor at (-1.89, -4.07, -2.16) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333876.591026022]: The origin for the sensor at (-1.89, -4.07, -2.16) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333878.090965214]: The origin for the sensor at (-1.89, -4.06, -2.18) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333879.091513523]: The origin for the sensor at (-1.89, -4.06, -2.18) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333880.591342757]: The origin for the sensor at (-1.89, -4.06, -2.18) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333882.090805908]: The origin for the sensor at (-1.89, -4.06, -2.18) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333883.091484092]: The origin for the sensor at (-1.89, -4.06, -2.18) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333884.590959034]: The origin for the sensor at (-1.89, -4.06, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333885.591202468]: The origin for the sensor at (-1.90, -4.08, -2.18) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333887.091952202]: The origin for the sensor at (-1.90, -4.08, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333888.591041019]: The origin for the sensor at (-1.90, -4.08, -2.18) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333889.591263203]: The origin for the sensor at (-1.90, -4.08, -2.18) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333891.091078812]: The origin for the sensor at (-1.90, -4.08, -2.18) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333892.091104246]: The origin for the sensor at (-1.90, -4.08, -2.18) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333893.590956355]: The origin for the sensor at (-1.90, -4.08, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333894.591050205]: The origin for the sensor at (-1.90, -4.08, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333896.091109398]: The origin for the sensor at (-1.90, -4.08, -2.18) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333897.591112048]: The origin for the sensor at (-1.90, -4.08, -2.17) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333899.091113658]: The origin for the sensor at (-1.90, -4.08, -2.18) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333900.091557091]: The origin for the sensor at (-1.96, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333901.590941659]: The origin for the sensor at (-1.97, -4.10, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333902.591186718]: The origin for the sensor at (-1.97, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333904.091065285]: The origin for the sensor at (-1.98, -4.10, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333905.091109010]: The origin for the sensor at (-1.97, -4.11, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333906.591134703]: The origin for the sensor at (-1.98, -4.11, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333908.091003978]: The origin for the sensor at (-1.96, -4.09, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333909.091096662]: The origin for the sensor at (-1.96, -4.09, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333910.591017605]: The origin for the sensor at (-1.97, -4.10, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333912.090927380]: The origin for the sensor at (-1.98, -4.11, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333913.091810231]: The origin for the sensor at (-1.98, -4.11, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333914.591118632]: The origin for the sensor at (-1.98, -4.11, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333916.090966074]: The origin for the sensor at (-1.98, -4.11, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333917.590910891]: The origin for the sensor at (-1.98, -4.11, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333918.591125158]: The origin for the sensor at (-1.98, -4.11, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333920.090978184]: The origin for the sensor at (-1.98, -4.11, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333921.091096118]: The origin for the sensor at (-1.98, -4.11, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333922.091393969]: The origin for the sensor at (-1.98, -4.11, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333923.100486445]: The origin for the sensor at (-1.98, -4.11, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333924.591124178]: The origin for the sensor at (-1.98, -4.11, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333926.091107162]: The origin for the sensor at (-1.98, -4.11, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333927.590949646]: The origin for the sensor at (-1.98, -4.11, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333928.591771080]: The origin for the sensor at (-1.98, -4.11, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333930.091153606]: The origin for the sensor at (-1.98, -4.11, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333931.091291706]: The origin for the sensor at (-1.98, -4.11, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333932.591022482]: The origin for the sensor at (-1.98, -4.11, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333933.591055874]: The origin for the sensor at (-1.98, -4.11, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333935.091048066]: The origin for the sensor at (-1.98, -4.11, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333936.091154709]: The origin for the sensor at (-1.99, -4.10, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333937.591256151]: The origin for the sensor at (-1.99, -4.10, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333939.091093302]: The origin for the sensor at (-1.99, -4.10, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333940.590816077]: The origin for the sensor at (-1.99, -4.10, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333941.591538428]: The origin for the sensor at (-1.99, -4.10, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333943.091531287]: The origin for the sensor at (-2.00, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333944.590880146]: The origin for the sensor at (-2.00, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333945.590914080]: The origin for the sensor at (-2.00, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333946.590958972]: The origin for the sensor at (-2.00, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333947.591134447]: The origin for the sensor at (-2.00, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333949.091163681]: The origin for the sensor at (-2.00, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333950.590942915]: The origin for the sensor at (-2.00, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333951.590947808]: The origin for the sensor at (-2.00, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333952.591026283]: The origin for the sensor at (-2.00, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333954.090853142]: The origin for the sensor at (-2.00, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333955.090885368]: The origin for the sensor at (-2.00, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333956.090957176]: The origin for the sensor at (-2.00, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333957.590969994]: The origin for the sensor at (-2.00, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333959.090981269]: The origin for the sensor at (-2.00, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333960.091095287]: The origin for the sensor at (-2.00, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333961.591904354]: The origin for the sensor at (-2.00, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333962.592313496]: The origin for the sensor at (-2.00, -4.10, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333964.090923063]: The origin for the sensor at (-2.01, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333965.091034497]: The origin for the sensor at (-2.01, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[WARN] [1779333807.802055]: Failed to send startup safe state: Serial read timeout on /dev/ttyS0 after 0 of 8 bytes
+[WARN] [1779333807.972231]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333810.062207]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333812.142357]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333814.225815]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333816.313124]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333818.405415]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333820.502481]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333822.516918]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333824.545756]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333826.652611]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333828.682667]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333830.771408]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333832.863234]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333834.960409]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333836.985106]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333839.080070]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333841.186836]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333843.199369]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333845.203536]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333847.289272]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333849.402515]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333851.514853]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333853.622198]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333855.682640]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333857.728402]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333859.733090]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333861.829106]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333863.888973]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333865.959415]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333868.028405]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333870.086349]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333872.169392]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333874.239506]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333876.313077]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333878.396515]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333880.480225]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333882.567449]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333884.570200]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333886.656828]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333888.743561]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333890.849766]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333892.926137]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333894.996119]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333897.092803]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333899.175644]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333901.280302]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333903.292227]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333905.362869]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333907.436348]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333909.496231]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333911.583905]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333913.589845]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333915.672814]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333917.733096]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333919.836469]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333921.922452]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333924.016277]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333926.118048]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333928.210017]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333930.309692]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333932.386822]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333934.463408]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333936.532939]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333938.596110]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333940.676061]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333942.680012]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333944.788876]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333946.873407]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333948.976267]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333951.060925]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333953.063472]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333955.095810]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333957.207188]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333959.322416]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333961.378981]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333963.460680]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[33m[WARN] [1779333966.091063056]: The origin for the sensor at (-2.01, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333967.091056573]: The origin for the sensor at (-2.01, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333968.591026724]: The origin for the sensor at (-2.01, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333969.591288824]: The origin for the sensor at (-2.01, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333971.091259684]: The origin for the sensor at (-2.01, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333972.590922709]: The origin for the sensor at (-2.01, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333973.591038893]: The origin for the sensor at (-2.01, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333974.591092619]: The origin for the sensor at (-2.01, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333975.591350511]: The origin for the sensor at (-2.01, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333977.090829911]: The origin for the sensor at (-2.01, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333978.090976762]: The origin for the sensor at (-2.01, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333979.091125112]: The origin for the sensor at (-2.01, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333980.591158430]: The origin for the sensor at (-2.01, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333982.091211580]: The origin for the sensor at (-2.01, -4.11, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333983.590976398]: The origin for the sensor at (-2.01, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333984.591136748]: The origin for the sensor at (-2.00, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333986.091730816]: The origin for the sensor at (-2.01, -4.11, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333987.591072175]: The origin for the sensor at (-2.01, -4.11, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333988.591410734]: The origin for the sensor at (-2.01, -4.11, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333990.091035968]: The origin for the sensor at (-2.00, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333991.091083860]: The origin for the sensor at (-2.00, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333992.091148919]: The origin for the sensor at (-2.00, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333993.591011694]: The origin for the sensor at (-2.00, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333994.591222795]: The origin for the sensor at (-2.00, -4.11, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333996.091096154]: The origin for the sensor at (-2.01, -4.11, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333997.091131254]: The origin for the sensor at (-2.01, -4.11, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333998.590954947]: The origin for the sensor at (-2.01, -4.11, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779333999.591141505]: The origin for the sensor at (-2.01, -4.11, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334001.091122864]: The origin for the sensor at (-2.01, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334002.591140974]: The origin for the sensor at (-2.01, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334003.593702366]: The origin for the sensor at (-2.01, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334005.091091808]: The origin for the sensor at (-2.01, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334006.091003325]: The origin for the sensor at (-2.01, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334007.091229842]: The origin for the sensor at (-2.01, -4.11, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334008.590791660]: The origin for the sensor at (-2.02, -4.09, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334009.591154510]: The origin for the sensor at (-2.01, -4.09, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334010.591212486]: The origin for the sensor at (-2.01, -4.09, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334012.091194136]: The origin for the sensor at (-2.01, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334013.591189287]: The origin for the sensor at (-2.01, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334015.091029354]: The origin for the sensor at (-2.01, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334016.091158663]: The origin for the sensor at (-2.00, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334017.591106522]: The origin for the sensor at (-2.02, -4.09, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334019.091124048]: The origin for the sensor at (-2.02, -4.09, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334020.591270574]: The origin for the sensor at (-2.01, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334022.091150225]: The origin for the sensor at (-2.02, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334023.591150625]: The origin for the sensor at (-2.02, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334025.091192609]: The origin for the sensor at (-2.02, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334026.591128552]: The origin for the sensor at (-2.02, -4.09, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334028.090959119]: The origin for the sensor at (-2.02, -4.09, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334029.591126853]: The origin for the sensor at (-2.02, -4.09, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334031.091097337]: The origin for the sensor at (-2.02, -4.09, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334032.591113613]: The origin for the sensor at (-2.02, -4.09, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334034.090950597]: The origin for the sensor at (-2.02, -4.09, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334035.091170822]: The origin for the sensor at (-2.02, -4.09, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334036.091194798]: The origin for the sensor at (-2.02, -4.09, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334037.590932699]: The origin for the sensor at (-2.02, -4.09, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334038.591182632]: The origin for the sensor at (-2.02, -4.09, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334040.090888408]: The origin for the sensor at (-2.02, -4.09, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334041.591128350]: The origin for the sensor at (-2.02, -4.09, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334043.091103001]: The origin for the sensor at (-2.02, -4.09, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334044.591202527]: The origin for the sensor at (-2.02, -4.09, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334045.591380336]: The origin for the sensor at (-2.02, -4.09, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334047.090937195]: The origin for the sensor at (-2.02, -4.09, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334048.091070712]: The origin for the sensor at (-2.02, -4.09, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334049.091166146]: The origin for the sensor at (-2.02, -4.09, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334050.591143713]: The origin for the sensor at (-2.02, -4.09, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334051.591256522]: The origin for the sensor at (-2.02, -4.09, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334053.091144464]: The origin for the sensor at (-2.02, -4.09, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334054.091235940]: The origin for the sensor at (-2.02, -4.09, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334055.591205340]: The origin for the sensor at (-2.02, -4.09, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334057.090994866]: The origin for the sensor at (-2.03, -4.08, -2.26) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334058.091222383]: The origin for the sensor at (-2.03, -4.08, -2.26) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334059.591144117]: The origin for the sensor at (-2.02, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334061.091203643]: The origin for the sensor at (-2.02, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334062.091279077]: The origin for the sensor at (-2.02, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334063.591124728]: The origin for the sensor at (-2.02, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334064.591180495]: The origin for the sensor at (-2.02, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334065.591186137]: The origin for the sensor at (-2.02, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334066.591255321]: The origin for the sensor at (-2.02, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334068.091001096]: The origin for the sensor at (-2.02, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334069.091522572]: The origin for the sensor at (-2.02, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334070.091616381]: The origin for the sensor at (-2.02, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334071.591247073]: The origin for the sensor at (-2.02, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334073.090960807]: The origin for the sensor at (-2.02, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334074.091068658]: The origin for the sensor at (-2.02, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334075.091184716]: The origin for the sensor at (-2.02, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334076.590966284]: The origin for the sensor at (-2.02, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334077.591280926]: The origin for the sensor at (-2.02, -4.08, -2.26) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334079.091052035]: The origin for the sensor at (-2.02, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334080.091360886]: The origin for the sensor at (-2.02, -4.08, -2.26) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334081.591170286]: The origin for the sensor at (-2.02, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334082.591151928]: The origin for the sensor at (-2.02, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334084.091217829]: The origin for the sensor at (-2.02, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334085.091157971]: The origin for the sensor at (-2.03, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334086.091226155]: The origin for the sensor at (-2.03, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334087.591103847]: The origin for the sensor at (-2.03, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334089.091163915]: The origin for the sensor at (-2.03, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334090.591254024]: The origin for the sensor at (-2.03, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334092.091197925]: The origin for the sensor at (-2.03, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334093.591091450]: The origin for the sensor at (-2.03, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334094.591147051]: The origin for the sensor at (-2.03, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334095.591132193]: The origin for the sensor at (-2.03, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334096.591390085]: The origin for the sensor at (-2.03, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334098.091047944]: The origin for the sensor at (-2.03, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334099.091298045]: The origin for the sensor at (-2.03, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334100.591138112]: The origin for the sensor at (-2.03, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334101.591139129]: The origin for the sensor at (-2.03, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334103.091284155]: The origin for the sensor at (-2.03, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334104.591117514]: The origin for the sensor at (-2.03, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334106.091014415]: The origin for the sensor at (-2.01, -4.09, -2.26) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334107.091454598]: The origin for the sensor at (-2.01, -4.08, -2.26) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334108.591189416]: The origin for the sensor at (-2.01, -4.09, -2.26) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334110.091212775]: The origin for the sensor at (-2.03, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334111.591113467]: The origin for the sensor at (-2.03, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334112.591214734]: The origin for the sensor at (-2.03, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334113.591199126]: The origin for the sensor at (-2.03, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334115.090907027]: The origin for the sensor at (-2.03, -4.09, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334116.091034586]: The origin for the sensor at (-2.03, -4.09, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334117.091252103]: The origin for the sensor at (-2.03, -4.09, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334118.091172787]: The origin for the sensor at (-2.03, -4.09, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334119.591137604]: The origin for the sensor at (-2.04, -4.09, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334121.091154505]: The origin for the sensor at (-2.04, -4.09, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334122.091316314]: The origin for the sensor at (-2.03, -4.09, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334123.591255506]: The origin for the sensor at (-2.03, -4.09, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334125.091120865]: The origin for the sensor at (-2.03, -4.09, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334126.591551641]: The origin for the sensor at (-2.04, -4.09, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[WARN] [1779333965.532577]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333967.616999]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333969.726888]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333971.829321]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333973.909960]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333975.989457]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333978.070535]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333980.100265]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333982.200307]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333984.267756]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333986.347432]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333988.423185]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333990.489447]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333992.576593]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333994.686670]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333996.797320]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779333998.806705]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334000.916933]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334002.919834]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334005.023247]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334007.089397]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334009.166665]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334011.273608]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334013.376909]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334015.481527]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334017.587228]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334019.593986]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334021.679888]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334023.792632]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334025.897362]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334027.966471]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334030.026346]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334032.096629]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334034.169636]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334036.229824]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334038.289764]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334040.360697]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334042.433425]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334044.499892]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334046.569596]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334048.633069]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334050.699853]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334052.776339]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334054.846732]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334056.936943]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334059.041037]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334061.147248]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334063.153435]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334065.266461]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334067.370233]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334069.481642]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334071.593965]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334073.703017]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334075.717063]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334077.826817]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334079.839724]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334081.944090]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334084.050338]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334086.051563]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334088.053923]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334090.146396]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334092.250945]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334094.346939]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334096.454124]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334098.542806]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334100.609970]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334102.715134]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334104.717196]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334106.812946]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334108.869860]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334110.926441]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334112.983065]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334115.049815]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334117.136771]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334119.199930]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334121.266179]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334123.371953]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334125.436168]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[33m[WARN] [1779334127.591548158]: The origin for the sensor at (-2.03, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334129.091175434]: The origin for the sensor at (-2.04, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334130.091362451]: The origin for the sensor at (-2.04, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334131.591065518]: The origin for the sensor at (-2.04, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334132.591115452]: The origin for the sensor at (-2.04, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334134.091185686]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334135.591023420]: The origin for the sensor at (-2.04, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334136.591306687]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334138.090960046]: The origin for the sensor at (-2.04, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334139.091089522]: The origin for the sensor at (-2.04, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334140.091269872]: The origin for the sensor at (-2.04, -4.09, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334141.591126731]: The origin for the sensor at (-2.04, -4.09, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334143.091112924]: The origin for the sensor at (-2.04, -4.09, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334144.591158408]: The origin for the sensor at (-2.04, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334145.591157633]: The origin for the sensor at (-2.04, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334147.091144701]: The origin for the sensor at (-2.04, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334148.590899476]: The origin for the sensor at (-2.04, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334149.591108744]: The origin for the sensor at (-2.04, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334150.591190552]: The origin for the sensor at (-2.04, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334152.091029578]: The origin for the sensor at (-2.04, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334153.091088762]: The origin for the sensor at (-2.04, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334154.091109946]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334155.591135388]: The origin for the sensor at (-2.03, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334156.591190822]: The origin for the sensor at (-2.03, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334158.091142014]: The origin for the sensor at (-2.03, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334159.091169740]: The origin for the sensor at (-2.03, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334160.591126182]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334162.091195708]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334163.591163817]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334165.091219093]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334166.591052660]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334167.591093469]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334168.591097194]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334170.090866887]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334171.091190154]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334172.091220838]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334173.591170280]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334175.091057931]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334176.590912373]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334177.591078724]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334178.591117491]: The origin for the sensor at (-2.03, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334179.591140800]: The origin for the sensor at (-2.04, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334180.591185442]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334182.090934592]: The origin for the sensor at (-2.03, -4.07, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334183.092740360]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334184.590904927]: The origin for the sensor at (-2.03, -4.07, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334186.090845536]: The origin for the sensor at (-2.03, -4.07, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334187.590864103]: The origin for the sensor at (-2.03, -4.07, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334188.590897704]: The origin for the sensor at (-2.03, -4.07, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334189.590932471]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334190.608166032]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334192.090980181]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334193.092471448]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334194.094378882]: The origin for the sensor at (-2.03, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334195.590878907]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334196.590998091]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334198.091093242]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334199.093147967]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334200.591023285]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334201.591213468]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334203.090979536]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334204.590879520]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334205.592308787]: The origin for the sensor at (-2.03, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334207.093652646]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334208.590926547]: The origin for the sensor at (-2.03, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334209.590986356]: The origin for the sensor at (-2.03, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334210.591133248]: The origin for the sensor at (-2.04, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334212.090893190]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334213.090932707]: The origin for the sensor at (-2.03, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334214.091136974]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334215.591027250]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334216.591620392]: The origin for the sensor at (-2.04, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334218.091524626]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334219.591689694]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334221.096085637]: The origin for the sensor at (-2.04, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334222.091766487]: The origin for the sensor at (-2.03, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334223.590888887]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334224.591071738]: The origin for the sensor at (-2.03, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334225.591191380]: The origin for the sensor at (-2.03, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334227.091107781]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334228.091074339]: The origin for the sensor at (-2.03, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334229.091309315]: The origin for the sensor at (-2.04, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334230.091677249]: The origin for the sensor at (-2.03, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334231.591016483]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334232.591152125]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334234.091761817]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334235.590927676]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334236.591859527]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334238.091386928]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334239.091502195]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334240.591873470]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334242.105266997]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334243.590874772]: The origin for the sensor at (-2.04, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334244.590847831]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334246.090997773]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334247.591183465]: The origin for the sensor at (-2.03, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334248.593043691]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334250.092667133]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334251.590920992]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334252.591278926]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334253.591751652]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334255.091767011]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334256.590932995]: The origin for the sensor at (-2.04, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334257.591230137]: The origin for the sensor at (-2.03, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334259.090879579]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334260.091346930]: The origin for the sensor at (-2.03, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334261.590984955]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334263.090842606]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334264.091315623]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334265.590952441]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334266.591076041]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334268.091113358]: The origin for the sensor at (-2.03, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334269.091274376]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334270.091281976]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334271.592952502]: The origin for the sensor at (-2.03, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334273.091285986]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334274.591231970]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334276.090949537]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334277.091307679]: The origin for the sensor at (-2.03, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334278.590875247]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334279.591108764]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334281.091314498]: The origin for the sensor at (-2.03, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334282.591013524]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334284.090813424]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334285.091567108]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334286.591553759]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334288.090941243]: The origin for the sensor at (-2.03, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334289.092315802]: The origin for the sensor at (-2.03, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[WARN] [1779334127.538074]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334129.633109]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334131.696452]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334133.756134]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334135.819494]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334137.886196]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334139.980479]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334142.083726]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334144.084159]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334146.180212]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334148.289974]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334150.393363]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334152.500169]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334154.605719]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334156.713339]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334158.816421]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334160.820272]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334162.930070]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334165.036397]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334167.133662]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334169.134126]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334171.226221]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334173.322790]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334175.389813]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334177.393101]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334179.503221]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334181.603829]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334183.612264]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334185.682982]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334187.789002]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334189.900257]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334191.972477]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334194.049134]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334196.149040]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334198.224241]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334200.310184]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334202.312577]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334204.395500]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334206.469503]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334208.582351]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334210.656058]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334212.764930]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334214.783315]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334216.883652]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334218.975883]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334221.082726]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334223.095944]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334225.188905]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334227.203343]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334229.208193]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334231.217123]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334233.329163]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334235.342629]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334237.453588]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334239.459152]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334241.539503]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334243.589138]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334245.659406]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334247.753086]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334249.825137]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334251.902043]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334253.949579]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334256.047943]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334258.132430]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334260.150245]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334262.249269]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334264.319356]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334266.420184]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334268.500736]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334270.591580]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334272.679631]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334274.762890]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334276.833008]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334278.917140]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334281.016290]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334283.116130]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334285.175723]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334287.249161]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[33m[WARN] [1779334290.590832869]: The origin for the sensor at (-2.03, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334291.591043636]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334293.090885287]: The origin for the sensor at (-2.03, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334294.091126388]: The origin for the sensor at (-2.03, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334295.590847830]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334296.591037722]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334298.091060873]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334299.093292182]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334300.590895957]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334301.591049391]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334302.591132700]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334304.090855184]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334305.090931409]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334306.591326019]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334308.091261128]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334309.591531945]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334311.091046512]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334312.091186946]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334313.591049222]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334314.591134197]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334316.090899890]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334317.091162865]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334318.591078141]: The origin for the sensor at (-2.04, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334319.591245866]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334321.090819975]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334322.093347618]: The origin for the sensor at (-2.04, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334323.591084643]: The origin for the sensor at (-2.04, -4.07, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334324.591381744]: The origin for the sensor at (-2.04, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334326.091021144]: The origin for the sensor at (-2.03, -4.07, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334327.591317129]: The origin for the sensor at (-2.03, -4.07, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334329.090943321]: The origin for the sensor at (-2.04, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334330.091151213]: The origin for the sensor at (-2.04, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334331.591078197]: The origin for the sensor at (-2.04, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334332.591073048]: The origin for the sensor at (-2.04, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334334.091806907]: The origin for the sensor at (-2.03, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334335.590931766]: The origin for the sensor at (-2.03, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334336.591034116]: The origin for the sensor at (-2.03, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334337.591127758]: The origin for the sensor at (-2.03, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334339.090842742]: The origin for the sensor at (-2.00, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334340.091320343]: The origin for the sensor at (-2.00, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334341.590946202]: The origin for the sensor at (-2.00, -4.08, -2.25) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334342.591065344]: The origin for the sensor at (-2.01, -4.09, -2.26) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334343.591074111]: The origin for the sensor at (-2.01, -4.09, -2.26) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334344.591076378]: The origin for the sensor at (-2.01, -4.09, -2.26) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334346.091040946]: The origin for the sensor at (-2.03, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334347.591221888]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334348.591349489]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334350.090893264]: The origin for the sensor at (-2.03, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334351.091054073]: The origin for the sensor at (-2.03, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334352.091193382]: The origin for the sensor at (-2.03, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334353.091289524]: The origin for the sensor at (-2.03, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334354.591209466]: The origin for the sensor at (-2.03, -4.08, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334356.091146992]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334357.591179893]: The origin for the sensor at (-2.03, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334359.091089877]: The origin for the sensor at (-2.05, -4.08, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334360.091143936]: The origin for the sensor at (-2.05, -4.08, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334361.591185170]: The origin for the sensor at (-2.05, -4.08, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334363.090881737]: The origin for the sensor at (-2.05, -4.08, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334364.090937213]: The origin for the sensor at (-2.05, -4.08, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334365.090918521]: The origin for the sensor at (-2.05, -4.08, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334366.090979455]: The origin for the sensor at (-2.06, -4.08, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334367.091188264]: The origin for the sensor at (-2.06, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334368.091329698]: The origin for the sensor at (-2.06, -4.08, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334369.591255557]: The origin for the sensor at (-2.06, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334371.091207999]: The origin for the sensor at (-2.06, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334372.592736608]: The origin for the sensor at (-2.06, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334374.091148176]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334375.591245118]: The origin for the sensor at (-2.06, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334376.591156594]: The origin for the sensor at (-2.06, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334378.091168036]: The origin for the sensor at (-2.06, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334379.591118395]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334381.090835212]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334382.091264396]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334383.591314339]: The origin for the sensor at (-2.06, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334385.090936114]: The origin for the sensor at (-2.06, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334386.091539215]: The origin for the sensor at (-2.07, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334387.591050324]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334388.591095883]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334389.591154483]: The origin for the sensor at (-2.07, -4.08, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334391.091000967]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334392.091070109]: The origin for the sensor at (-2.07, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334393.591180302]: The origin for the sensor at (-2.06, -4.08, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334395.091074077]: The origin for the sensor at (-2.07, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334396.591017228]: The origin for the sensor at (-2.07, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334397.591246954]: The origin for the sensor at (-2.07, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334399.091152229]: The origin for the sensor at (-2.06, -4.08, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334400.591107547]: The origin for the sensor at (-2.06, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334401.591135564]: The origin for the sensor at (-2.06, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334402.591155498]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334404.090984023]: The origin for the sensor at (-2.06, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334405.091155624]: The origin for the sensor at (-2.06, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334406.591141150]: The origin for the sensor at (-2.06, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334407.591305875]: The origin for the sensor at (-2.06, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334409.091071234]: The origin for the sensor at (-2.07, -4.08, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334410.591014926]: The origin for the sensor at (-2.07, -4.08, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334412.090983535]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334413.591282645]: The origin for the sensor at (-2.06, -4.08, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334415.091196462]: The origin for the sensor at (-2.06, -4.08, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334416.591108821]: The origin for the sensor at (-2.07, -4.08, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334417.591135463]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334419.091012947]: The origin for the sensor at (-2.06, -4.08, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334420.091292089]: The origin for the sensor at (-2.06, -4.08, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334421.591127740]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334422.591179632]: The origin for the sensor at (-2.07, -4.08, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334424.091077783]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334425.591061100]: The origin for the sensor at (-2.07, -4.08, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334426.591136201]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334427.591123426]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334428.591385402]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334430.090966552]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334431.091184403]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334432.091116420]: The origin for the sensor at (-2.07, -4.08, -2.21) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334433.590993529]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334434.599407505]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334436.091242947]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334437.591133223]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334439.093839457]: The origin for the sensor at (-2.06, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334440.591090066]: The origin for the sensor at (-2.06, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334442.091257758]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334443.591124909]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334445.091174726]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334446.591320294]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334448.091139403]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334449.091327003]: The origin for the sensor at (-2.07, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334450.591197279]: The origin for the sensor at (-2.06, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[WARN] [1779334289.259746]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334291.332356]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334293.396344]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334295.505807]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334297.610705]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334299.684164]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334301.764645]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334303.829842]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334305.905750]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334307.993095]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334310.099204]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334312.165916]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334314.171742]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334316.275940]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334318.373007]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334320.389964]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334322.481926]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334324.562657]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334326.565883]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334328.676851]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334330.754743]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334332.843155]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334334.936096]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334337.026473]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334339.088479]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334341.162832]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334343.252340]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334345.252495]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334347.349670]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334349.416432]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334351.516454]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334353.579589]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334355.653073]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334357.743429]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334359.844120]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334361.916268]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334364.017264]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334366.106486]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334368.183150]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334370.249233]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334372.252836]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334374.313758]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334376.386450]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334378.391586]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334380.488832]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334382.574425]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334384.580193]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334386.583018]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334388.688203]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334390.793327]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334392.904577]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334394.993453]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334397.102061]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334399.197219]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334401.300167]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334403.413719]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334405.523221]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334407.634908]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334409.747197]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334411.761180]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334413.866343]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334415.929561]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334417.996392]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334420.096290]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334422.199949]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334424.203656]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334426.299798]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334428.393974]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334430.489869]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334432.496659]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334434.567380]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334436.674008]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334438.709713]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334440.807715]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334442.917298]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334445.022576]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334447.114350]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334449.219980]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[33m[WARN] [1779334452.091083471]: The origin for the sensor at (-2.07, -4.08, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334453.091118530]: The origin for the sensor at (-2.07, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334454.091105922]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334455.091427481]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334456.591172923]: The origin for the sensor at (-2.07, -4.08, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334458.091620866]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334459.590962433]: The origin for the sensor at (-2.07, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334460.591098825]: The origin for the sensor at (-2.07, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334462.090924393]: The origin for the sensor at (-2.07, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334463.091333993]: The origin for the sensor at (-2.06, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334464.591450061]: The origin for the sensor at (-2.07, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334466.091311045]: The origin for the sensor at (-2.07, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334467.591062445]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334468.591411921]: The origin for the sensor at (-2.07, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334470.091038905]: The origin for the sensor at (-2.06, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334471.091095672]: The origin for the sensor at (-2.06, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334472.591153114]: The origin for the sensor at (-2.06, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334474.091164473]: The origin for the sensor at (-2.06, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334475.591055582]: The origin for the sensor at (-2.06, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334476.591177766]: The origin for the sensor at (-2.06, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334478.091071667]: The origin for the sensor at (-2.07, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334479.091190976]: The origin for the sensor at (-2.07, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334480.591141335]: The origin for the sensor at (-2.05, -4.07, -2.24) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334481.591206852]: The origin for the sensor at (-2.06, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334483.090995503]: The origin for the sensor at (-2.05, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334484.091215728]: The origin for the sensor at (-2.06, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334485.592563629]: The origin for the sensor at (-2.06, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334486.597872147]: The origin for the sensor at (-2.07, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334488.091055463]: The origin for the sensor at (-2.06, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334489.591322031]: The origin for the sensor at (-2.06, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334491.091076681]: The origin for the sensor at (-2.06, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334492.091790574]: The origin for the sensor at (-2.06, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334493.591038266]: The origin for the sensor at (-2.06, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334495.091064708]: The origin for the sensor at (-2.05, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334496.091195934]: The origin for the sensor at (-2.06, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334497.591097251]: The origin for the sensor at (-2.06, -4.09, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334499.090990985]: The origin for the sensor at (-2.06, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334500.091192502]: The origin for the sensor at (-2.06, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334501.591150695]: The origin for the sensor at (-2.06, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334503.091358179]: The origin for the sensor at (-2.06, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334504.591054496]: The origin for the sensor at (-2.06, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334506.091168814]: The origin for the sensor at (-2.06, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334507.091582664]: The origin for the sensor at (-2.06, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334508.591012106]: The origin for the sensor at (-2.06, -4.09, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334510.090889382]: The origin for the sensor at (-2.06, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334511.590988658]: The origin for the sensor at (-2.06, -4.08, -2.22) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334512.591225842]: The origin for the sensor at (-2.06, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[33m[WARN] [1779334514.091035367]: The origin for the sensor at (-2.06, -4.08, -2.23) is out of map bounds. So, the costmap cannot raytrace for it.[0m
+[0m[INFO] [1779333808.032170092]: global_costmap: Using plugin "static_layer"[0m
+[0m[INFO] [1779333808.082839305]: Requesting the map...[0m
+[0m[INFO] [1779333808.294944618]: Resizing costmap to 4 X 4 at 0.050000 m/pix[0m
+[0m[INFO] [1779333808.390627919]: Received a 4 X 4 map at 0.050000 m/pix[0m
+[0m[INFO] [1779333808.416183755]: global_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1779333808.440563008]:     Subscribed to Topics: laser_scan_sensor[0m
+[0m[INFO] [1779333808.527451100]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1779333808.633042319]: local_costmap: Using plugin "static_layer"[0m
+[0m[INFO] [1779333808.653795862]: Requesting the map...[0m
+[0m[INFO] [1779333808.656947029]: Resizing static layer to 4 X 4 at 0.050000 m/pix[0m
+[0m[INFO] [1779333808.757008248]: Received a 4 X 4 map at 0.050000 m/pix[0m
+[0m[INFO] [1779333808.761559415]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1779333808.767889749]:     Subscribed to Topics: laser_scan_sensor[0m
+[0m[INFO] [1779333808.957512185]: Created local_planner teb_local_planner/TebLocalPlannerROS[0m
+[0m[INFO] [1779333809.108569283]: Footprint model 'point' loaded for trajectory optimization.[0m
+[0m[INFO] [1779333809.109067158]: Parallel planning in distinctive topologies disabled.[0m
+[0m[INFO] [1779333809.109119658]: No costmap conversion plugin specified. All occupied costmap cells are treaten as point obstacles.[0m
+[0m[INFO] [1779333809.258534381]: max_vel_trans is not set, setting it equal to max_vel_x: 0.1[0m
+[0m[INFO] [1779333809.259185090]: Footprint model 'point' loaded for trajectory optimization.[0m
+[0m[INFO] [1779333809.708813468]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1779333809.726662303]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1779333809.842792898]: odom received![0m
+[WARN] [1779334451.329864]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334453.332308]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334455.393028]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334457.446491]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334459.516326]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334461.589710]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334463.656251]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334465.733333]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334467.806950]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334469.879132]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334471.939605]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334474.013033]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334476.083497]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334478.179089]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334480.273323]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334482.316851]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334484.330475]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334486.443156]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334488.556636]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334490.560138]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334492.669729]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334494.756395]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334496.774579]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334498.887780]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334500.963113]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334503.030022]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334505.035172]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334507.103890]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334509.219827]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334511.327441]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+[WARN] [1779334513.339327]: Modbus transport error: Serial read timeout on /dev/ttyS0 after 0 of 3 bytes
+INFO] [1779333807.795220359]: Label ID: 40, Name: bottle[0m
+[0m[INFO] [1779333807.795297068]: Label ID: 41, Name: wine glass[0m
+[0m[INFO] [1779333807.795325359]: Label ID: 42, Name: cup[0m
+[0m[INFO] [1779333807.795351318]: Label ID: 43, Name: fork[0m
+[0m[INFO] [1779333807.795379318]: Label ID: 44, Name: knife[0m
+[0m[INFO] [1779333807.795406151]: Label ID: 45, Name: spoon[0m
+[0m[INFO] [1779333807.795432693]: Label ID: 46, Name: bowl[0m
+[0m[INFO] [1779333807.795460693]: Label ID: 47, Name: banana[0m
+[0m[INFO] [1779333807.795487818]: Label ID: 48, Name: apple[0m
+[0m[INFO] [1779333807.795510859]: Label ID: 49, Name: sandwich[0m
+[0m[INFO] [1779333807.795535068]: Label ID: 50, Name: orange[0m
+[0m[INFO] [1779333807.795557818]: Label ID: 51, Name: broccoli[0m
+[0m[INFO] [1779333807.795586984]: Label ID: 52, Name: carrot[0m
+[0m[INFO] [1779333807.795609734]: Label ID: 53, Name: hot dog[0m
+[0m[INFO] [1779333807.795636276]: Label ID: 54, Name: pizza[0m
+[0m[INFO] [1779333807.795666318]: Label ID: 55, Name: donut[0m
+[0m[INFO] [1779333807.795689943]: Label ID: 56, Name: cake[0m
+[0m[INFO] [1779333807.795712984]: Label ID: 57, Name: chair[0m
+[0m[INFO] [1779333807.795742151]: Label ID: 58, Name: couch[0m
+[0m[INFO] [1779333807.795769568]: Label ID: 59, Name: potted plant[0m
+[0m[INFO] [1779333807.795792318]: Label ID: 60, Name: bed[0m
+[0m[INFO] [1779333807.795813901]: Label ID: 61, Name: dining table[0m
+[0m[INFO] [1779333807.795843359]: Label ID: 62, Name: toilet[0m
+[0m[INFO] [1779333807.795870484]: Label ID: 63, Name: tv[0m
+[0m[INFO] [1779333807.795893234]: Label ID: 64, Name: laptop[0m
+[0m[INFO] [1779333807.795914526]: Label ID: 65, Name: mouse[0m
+[0m[INFO] [1779333807.795941068]: Label ID: 66, Name: remote[0m
+[0m[INFO] [1779333807.795964109]: Label ID: 67, Name: keyboard[0m
+[0m[INFO] [1779333807.795989776]: Label ID: 68, Name: cell phone[0m
+[0m[INFO] [1779333807.796018651]: Label ID: 69, Name: microwave[0m
+[0m[INFO] [1779333807.796041401]: Label ID: 70, Name: oven[0m
+[0m[INFO] [1779333807.796062693]: Label ID: 71, Name: toaster[0m
+[0m[INFO] [1779333807.796090401]: Label ID: 72, Name: sink[0m
+[0m[INFO] [1779333807.796139984]: Label ID: 73, Name: refrigerator[0m
+[0m[INFO] [1779333807.796179943]: Label ID: 74, Name: book[0m
+[0m[INFO] [1779333807.796203568]: Label ID: 75, Name: clock[0m
+[0m[INFO] [1779333807.796231276]: Label ID: 76, Name: vase[0m
+[0m[INFO] [1779333807.796258401]: Label ID: 77, Name: scissors[0m
+[0m[INFO] [1779333807.796282026]: Label ID: 78, Name: teddy bear[0m
+[0m[INFO] [1779333807.796305651]: Label ID: 79, Name: hair drier[0m
+[0m[INFO] [1779333807.796333651]: Label ID: 80, Name: toothbrush[0m
+[0m[INFO] [1779333807.796424360]: Class colors generated[0m
+[0m[INFO] [1779333807.796464318]: successed to reinit all workers on work loop begin.[0m
+[0m[INFO] [1779333807.796514193]: try to reinit explore map.[0m
+[0m[INFO] [1779333807.796567860]: explore map initialized, resolution: 0.050000, moreCellCntToExtend: 32.[0m
+[0m[INFO] [1779333807.796604318]: try to sync whole explore map.[0m
+[0m[INFO] [1779333807.796643693]: known area: ((-0.100000, -0.100000), (0.200000, 0.200000)), cell rect : ((-2, -2), ( 4,  4)) [0m
+[0m[INFO] [1779333807.796690360]: whole explore map synchronized.[0m
+[0m[INFO] [1779333817.840062535]: sync the map after preview map generated.[0m
+[0m[INFO] [1779333817.840157035]: try to sync whole explore map.[0m
+[0m[INFO] [1779333817.840215952]: known area: ((-0.100000, -0.100000), (0.200000, 0.200000)), cell rect : ((-2, -2), ( 4,  4)) [0m
+[0m[INFO] [1779333817.840248035]: whole explore map synchronized.[0m

@@ -1,0 +1,91 @@
+{
+  "map_version": 8,
+  "last_edit_message": "UPSERT_WORK_REGION",
+  "regions": {
+    "work_regions": [
+      {
+        "name": "work_region_1",
+        "points": [
+          {
+            "x": -3.950000047683716,
+            "y": 3.299999952316284
+          },
+          {
+            "x": -3.700000047683716,
+            "y": -2.6500000953674316
+          },
+          {
+            "x": 3.25,
+            "y": -2.6500000953674316
+          },
+          {
+            "x": 3.0,
+            "y": 3.3499999046325684
+          }
+        ],
+        "region_id": "work_region_1",
+        "order_index": 10,
+        "enabled": true,
+        "color_argb": 0,
+        "closed": true,
+        "region_type": 1,
+        "global_direction": "x",
+        "start_pose": {
+          "x": -3.950000047683716,
+          "y": 3.3499999046325684,
+          "heading_deg": 0.0
+        },
+        "end_pose": {
+          "x": 3.25,
+          "y": -2.6500000953674316,
+          "heading_deg": 0.0
+        }
+      }
+    ],
+    "obstacle_regions": [
+      {
+        "name": "work_region_1",
+        "points": [
+          {
+            "x": -4.050000190734863,
+            "y": 3.450000047683716
+          },
+          {
+            "x": -3.8499999046325684,
+            "y": -2.799999952316284
+          },
+          {
+            "x": 3.450000047683716,
+            "y": -2.950000047683716
+          },
+          {
+            "x": 3.0999999046325684,
+            "y": 3.700000047683716
+          }
+        ],
+        "region_id": "work_region_1",
+        "order_index": 10,
+        "enabled": true,
+        "color_argb": 0,
+        "closed": true,
+        "region_type": 3,
+        "global_direction": "x",
+        "start_pose": {
+          "x": -4.050000190734863,
+          "y": 3.700000047683716,
+          "heading_deg": 0.0
+        },
+        "end_pose": {
+          "x": 3.450000047683716,
+          "y": -2.950000047683716,
+          "heading_deg": 0.0
+        }
+      }
+    ],
+    "crop_region": null
+  },
+  "overlay_shape": [
+    220,
+    156
+  ]
+}

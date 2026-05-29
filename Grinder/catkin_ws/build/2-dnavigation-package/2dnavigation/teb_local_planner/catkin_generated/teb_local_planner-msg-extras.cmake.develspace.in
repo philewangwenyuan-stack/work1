@@ -1,0 +1,2 @@
+set(teb_local_planner_MESSAGE_FILES "/home/neardi/work/Grinder/catkin_ws/src/2-dnavigation-package/2dnavigation/teb_local_planner/msg/TrajectoryPointMsg.msg;/home/neardi/work/Grinder/catkin_ws/src/2-dnavigation-package/2dnavigation/teb_local_planner/msg/TrajectoryMsg.msg;/home/neardi/work/Grinder/catkin_ws/src/2-dnavigation-package/2dnavigation/teb_local_planner/msg/FeedbackMsg.msg")
+set(teb_local_planner_SERVICE_FILES "")

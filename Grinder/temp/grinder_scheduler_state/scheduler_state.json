@@ -1,0 +1,12 @@
+{
+  "chassis_settings": {
+    "work_mode": 1,
+    "disc_speed_rpm": 1200,
+    "run_speed": 0.4
+  },
+  "active_map_id": "LIVE_MAP1",
+  "state": "READY",
+  "replan_requested": false,
+  "saved_at": 1779948364,
+  "persist_runtime_task_state": false
+}
