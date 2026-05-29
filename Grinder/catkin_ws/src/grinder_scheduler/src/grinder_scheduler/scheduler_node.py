@@ -10,6 +10,7 @@ import zlib
 import base64
 from datetime import datetime
 from collections import deque
+from copy import deepcopy
 from dataclasses import asdict
 
 import cv2
@@ -1053,6 +1054,204 @@ class SchedulerNode:
             source_pose["heading_deg"] = 0.0
         return source_pose
 
+    def _point_from_source_to_aligned_map(self, point, alignment_yaw):
+        aligned_x, aligned_y = self._transform_point_by_yaw(
+            point.get("x", 0.0),
+            point.get("y", 0.0),
+            float(alignment_yaw),
+        )
+        aligned_point = dict(point)
+        aligned_point["x"] = aligned_x
+        aligned_point["y"] = aligned_y
+        return aligned_point
+
+    def _points_from_source_to_aligned_map(self, points, alignment_yaw):
+        if not points:
+            return []
+        return [self._point_from_source_to_aligned_map(point, alignment_yaw) for point in points]
+
+    def _pose_from_source_to_aligned_map(self, pose, alignment_yaw):
+        if not isinstance(pose, dict) or not pose:
+            return {}
+        aligned_x, aligned_y = self._transform_point_by_yaw(
+            pose.get("x", 0.0),
+            pose.get("y", 0.0),
+            float(alignment_yaw),
+        )
+        aligned_pose = dict(pose)
+        aligned_pose["x"] = aligned_x
+        aligned_pose["y"] = aligned_y
+        try:
+            aligned_pose["heading_deg"] = float(pose.get("heading_deg", 0.0)) + math.degrees(float(alignment_yaw))
+        except Exception:
+            aligned_pose["heading_deg"] = 0.0
+        orientation = pose.get("orientation") if isinstance(pose, dict) else None
+        if isinstance(orientation, dict):
+            aligned_pose["orientation"] = self._yaw_to_quaternion(
+                self._yaw_from_quaternion(orientation) + float(alignment_yaw)
+            )
+        return aligned_pose
+
+    def _region_from_source_to_aligned_map(self, region, alignment_yaw):
+        if not isinstance(region, dict):
+            return region
+        aligned_region = deepcopy(region)
+        aligned_region["points"] = self._points_from_source_to_aligned_map(
+            region.get("points", []) or [],
+            alignment_yaw,
+        )
+        if isinstance(region.get("start_pose", None), dict) and region.get("start_pose"):
+            aligned_region["start_pose"] = self._pose_from_source_to_aligned_map(region.get("start_pose"), alignment_yaw)
+        if isinstance(region.get("end_pose", None), dict) and region.get("end_pose"):
+            aligned_region["end_pose"] = self._pose_from_source_to_aligned_map(region.get("end_pose"), alignment_yaw)
+        return aligned_region
+
+    def _build_aligned_planning_map(self, composed_map, map_info, alignment_yaw):
+        resolution = max(1e-9, float((map_info or {}).get("resolution", 0.05)))
+        origin_x = float((map_info or {}).get("origin_x", 0.0))
+        origin_y = float((map_info or {}).get("origin_y", 0.0))
+        aligned_grid, aligned_origin_x, aligned_origin_y = self._rotate_grid_to_aligned_frame(
+            composed_map,
+            origin_x,
+            origin_y,
+            resolution,
+            float(alignment_yaw),
+        )
+        aligned_map_info = dict(map_info or {})
+        aligned_map_info.update(
+            {
+                "width": int(aligned_grid.shape[1]),
+                "height": int(aligned_grid.shape[0]),
+                "origin_x": float(aligned_origin_x),
+                "origin_y": float(aligned_origin_y),
+                "resolution": resolution,
+                "frame_id": self._live_map_aligned_frame,
+                "source_frame_id": str((map_info or {}).get("frame_id", self._live_map_source_frame)),
+                "alignment_yaw": float(alignment_yaw),
+            }
+        )
+        return aligned_grid, aligned_map_info
+
+    def _task_config_for_aligned_planning(self, task_config, alignment_yaw):
+        direction = str(getattr(task_config, "global_direction", "x") or "x").strip().lower()
+        if direction not in ("x", "y"):
+            direction = "x"
+        return TaskConfigModel(
+            task_id=task_config.task_id,
+            map_id=task_config.map_id,
+            work_regions=[
+                self._region_from_source_to_aligned_map(region, alignment_yaw)
+                for region in list(task_config.work_regions or [])
+            ],
+            obstacle_regions=[
+                self._region_from_source_to_aligned_map(region, alignment_yaw)
+                for region in list(task_config.obstacle_regions or [])
+            ],
+            erase_regions=[
+                self._region_from_source_to_aligned_map(region, alignment_yaw)
+                for region in list(task_config.erase_regions or [])
+            ],
+            crop_region=(
+                self._region_from_source_to_aligned_map(task_config.crop_region, alignment_yaw)
+                if isinstance(task_config.crop_region, dict) and task_config.crop_region
+                else {}
+            ),
+            active_work_region_id=task_config.active_work_region_id,
+            selected_work_region_ids=list(task_config.selected_work_region_ids or []),
+            region_repeat_config=dict(task_config.region_repeat_config or {}),
+            vehicle_width=task_config.vehicle_width,
+            vehicle_length=task_config.vehicle_length,
+            default_path_spacing=task_config.default_path_spacing,
+            global_direction=direction,
+            turn_radius=task_config.turn_radius,
+            overlap_ratio=task_config.overlap_ratio,
+            inflation_radius=task_config.inflation_radius,
+            current_pose=self._pose_from_source_to_aligned_map(task_config.current_pose, alignment_yaw),
+            start_pose=self._pose_from_source_to_aligned_map(task_config.start_pose, alignment_yaw),
+            end_pose=self._pose_from_source_to_aligned_map(task_config.end_pose, alignment_yaw),
+        )
+
+    def _planner_path_from_aligned_to_source(self, planner_path, alignment_yaw, source_map_info):
+        if planner_path is None:
+            return None
+        source_frame = str((source_map_info or {}).get("frame_id", self._live_map_source_frame) or self._live_map_source_frame)
+        resolution = max(1e-9, float((source_map_info or {}).get("resolution", 0.05)))
+        origin_x = float((source_map_info or {}).get("origin_x", 0.0))
+        origin_y = float((source_map_info or {}).get("origin_y", 0.0))
+        converted_points = []
+        for point_index, point in enumerate(list(planner_path.points or [])):
+            if not isinstance(point, dict):
+                continue
+            source_point = deepcopy(point)
+            source_x, source_y = self._transform_point_by_yaw(
+                point.get("x", 0.0),
+                point.get("y", 0.0),
+                -float(alignment_yaw),
+            )
+            source_point["index"] = int(point_index)
+            source_point["x"] = float(source_x)
+            source_point["y"] = float(source_y)
+            source_point["col"] = float((source_x - origin_x) / resolution)
+            source_point["row"] = float((source_y - origin_y) / resolution)
+            orientation = point.get("orientation")
+            if isinstance(orientation, dict):
+                source_point["orientation"] = self._yaw_to_quaternion(
+                    self._yaw_from_quaternion(orientation) - float(alignment_yaw)
+                )
+            converted_points.append(source_point)
+        nav_path = self._build_nav_path_from_points(converted_points, source_frame)
+        return PlannerPath(
+            task_id=planner_path.task_id,
+            path_version=int(planner_path.path_version),
+            points=converted_points,
+            nav_path=nav_path,
+            length_m=float(planner_path.length_m),
+        )
+
+    def _path_points_for_external_map_frame(self, points):
+        source_frame = self._live_map_source_frame
+        if self.current_path is not None and self.current_path.nav_path is not None:
+            source_frame = self.current_path.nav_path.header.frame_id or source_frame
+        alignment_yaw = self._navigation_alignment_yaw()
+        if alignment_yaw is None:
+            return deepcopy(list(points or [])), source_frame, None
+
+        aligned_map_info = {}
+        try:
+            map_info = self.map_service.get_map_info()
+            composed_map = self.map_service.compose_map()
+            if map_info is not None and composed_map is not None:
+                _, aligned_map_info = self._build_aligned_planning_map(composed_map, map_info, alignment_yaw)
+        except Exception as exc:
+            rospy.logwarn_throttle(2.0, "Failed to build aligned map info for path chunks: %s", exc)
+
+        resolution = max(1e-9, float(aligned_map_info.get("resolution", 0.05)))
+        origin_x = float(aligned_map_info.get("origin_x", 0.0))
+        origin_y = float(aligned_map_info.get("origin_y", 0.0))
+        converted_points = []
+        for point_index, point in enumerate(list(points or [])):
+            if not isinstance(point, dict):
+                continue
+            aligned_point = deepcopy(point)
+            aligned_x, aligned_y = self._transform_point_by_yaw(
+                point.get("x", 0.0),
+                point.get("y", 0.0),
+                float(alignment_yaw),
+            )
+            aligned_point["index"] = int(point_index)
+            aligned_point["x"] = float(aligned_x)
+            aligned_point["y"] = float(aligned_y)
+            if aligned_map_info:
+                aligned_point["col"] = float((aligned_x - origin_x) / resolution)
+                aligned_point["row"] = float((aligned_y - origin_y) / resolution)
+            orientation = point.get("orientation")
+            if isinstance(orientation, dict):
+                aligned_point["orientation"] = self._yaw_to_quaternion(
+                    self._yaw_from_quaternion(orientation) + float(alignment_yaw)
+                )
+            converted_points.append(aligned_point)
+        return converted_points, self._live_map_aligned_frame, float(alignment_yaw)
+
     def _map_point_to_render_frame(self, point, render_map_info):
         try:
             point_x = float(point.get("x", 0.0))
@@ -2003,7 +2202,34 @@ class SchedulerNode:
                 start_pose=request_start_pose or {},
                 end_pose=request_end_pose or {},
             )
-            self.current_path = self.planner.plan(self.task_config.task_id or "task", composed_map, map_info, plan_task_config)
+            planning_map = composed_map
+            planning_map_info = map_info
+            planning_task_config = plan_task_config
+            planning_alignment_yaw = self._navigation_alignment_yaw()
+            if planning_alignment_yaw is not None:
+                planning_map, planning_map_info = self._build_aligned_planning_map(
+                    composed_map,
+                    map_info,
+                    planning_alignment_yaw,
+                )
+                planning_task_config = self._task_config_for_aligned_planning(plan_task_config, planning_alignment_yaw)
+                rospy.loginfo(
+                    "Planning in aligned frame: frame_id=%s source_frame=%s alignment_yaw=%.6f map_size=%sx%s",
+                    planning_map_info.get("frame_id", self._live_map_aligned_frame),
+                    map_info.get("frame_id", self._live_map_source_frame),
+                    float(planning_alignment_yaw),
+                    int(planning_map_info.get("width", 0)),
+                    int(planning_map_info.get("height", 0)),
+                )
+            planned_path = self.planner.plan(
+                self.task_config.task_id or "task",
+                planning_map,
+                planning_map_info,
+                planning_task_config,
+            )
+            if planning_alignment_yaw is not None:
+                planned_path = self._planner_path_from_aligned_to_source(planned_path, planning_alignment_yaw, map_info)
+            self.current_path = planned_path
             # Disable synthetic prepended start point:
             # if planner injected a first point marked as start_pose/current_pose,
             # drop it so navigation follows only planned region path points.
@@ -3996,11 +4222,16 @@ class SchedulerNode:
         pb = self.sl_link_server.pb
         request = pb.TaskPathRequest()
         request.ParseFromString(payload)
+        response_points, response_frame_id, response_alignment_yaw = self._path_points_for_external_map_frame(
+            self.current_path.points if self.current_path else []
+        )
         path_json = json.dumps(
             {
                 "task_id": self.task_config.task_id,
                 "path_version": self.current_path.path_version if self.current_path else 0,
-                "points": self.current_path.points if self.current_path else [],
+                "frame_id": response_frame_id,
+                "alignment_yaw": response_alignment_yaw,
+                "points": response_points,
             },
             ensure_ascii=False,
         ).encode("utf-8")

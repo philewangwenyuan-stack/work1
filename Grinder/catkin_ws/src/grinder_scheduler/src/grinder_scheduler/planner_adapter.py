@@ -215,8 +215,7 @@ class PlannerAdapter:
                 )
             region_direction = str(region.get("global_direction", "") or "").strip().lower() if isinstance(region, dict) else ""
             if region_direction not in ("x", "y"):
-                # Default policy: no region direction config -> use X direction.
-                region_direction = "x"
+                region_direction = direction_cfg
             single_stage = module.StageConfig(
                 stage_id=1,
                 boundary_polygon=boundary,
