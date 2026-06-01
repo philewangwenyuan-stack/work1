@@ -28,11 +28,16 @@
 		<param name="planner_frequency" value="1.0" />
 		<param name="planner_patience" value="5.0" /> -->
 		<param name="base_global_planner" value="carrot_planner/CarrotPlanner" />
-		<!-- <param name="planner_frequency" value="0" /> -->
+		<param name="planner_frequency" value="1.0" />
+		<param name="planner_patience" value="5.0" />
 
 		<param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
 		<param name="controller_frequency" value="10.0" />
 		<param name="controller_patience" value="10.0" />
+		<rosparam param="conservative_reset/layer_names">[obstacle_layer]</rosparam>
+		<param name="conservative_reset/force_updating" value="true" />
+		<rosparam param="aggressive_reset/layer_names">[obstacle_layer]</rosparam>
+		<param name="aggressive_reset/force_updating" value="true" />
 	</node>
 	<!-- <node pkg="topic_tools" type="relay" name="scan_relay" args="/slamware_ros_sdk_server_node/scan /scan" />
 	<node pkg="topic_tools" type="relay" name="map_relay" args="/slamware_ros_sdk_server_node/map /map" /> -->
