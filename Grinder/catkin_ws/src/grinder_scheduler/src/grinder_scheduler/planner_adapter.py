@@ -150,7 +150,19 @@ class PlannerAdapter:
             region_end_pose = dict(region.get("end_pose", {}) or {}) if isinstance(region, dict) else {}
             start_point = None
             start_source = "default_boundary"
-            if region_start_pose and self._world_point_in_region(float(region_start_pose.get("x", 0.0)), float(region_start_pose.get("y", 0.0)), region):
+            if has_request_start and self._world_point_in_region(start_x, start_y, region):
+                start_point = self._world_to_point(module, start_x, start_y, map_info, ratio)
+                start_source = "request_start"
+                rospy.loginfo(
+                    "Region planning start from request start_pose: region_idx=%d region_id=%s start=(%.3f,%.3f) start_grid=(%d,%d)",
+                    index,
+                    region_id or "<empty>",
+                    start_x,
+                    start_y,
+                    int(start_point.row),
+                    int(start_point.col),
+                )
+            elif region_start_pose and self._world_point_in_region(float(region_start_pose.get("x", 0.0)), float(region_start_pose.get("y", 0.0)), region):
                 sx = float(region_start_pose.get("x", 0.0))
                 sy = float(region_start_pose.get("y", 0.0))
                 start_point = self._world_to_point(module, sx, sy, map_info, ratio)
@@ -176,20 +188,19 @@ class PlannerAdapter:
                     int(start_point.row),
                     int(start_point.col),
                 )
-            elif has_request_start and self._world_point_in_region(start_x, start_y, region):
-                start_point = self._world_to_point(module, start_x, start_y, map_info, ratio)
-                start_source = "request_start"
+            end_point = boundary[-1]
+            if has_request_end and self._world_point_in_region(end_x, end_y, region):
+                end_point = self._world_to_point(module, end_x, end_y, map_info, ratio)
                 rospy.loginfo(
-                    "Region planning start from request start_pose: region_idx=%d region_id=%s start=(%.3f,%.3f) start_grid=(%d,%d)",
+                    "Region planning end from request end_pose: region_idx=%d region_id=%s end=(%.3f,%.3f) end_grid=(%d,%d)",
                     index,
                     region_id or "<empty>",
-                    start_x,
-                    start_y,
-                    int(start_point.row),
-                    int(start_point.col),
+                    end_x,
+                    end_y,
+                    int(end_point.row),
+                    int(end_point.col),
                 )
-            end_point = boundary[-1]
-            if region_end_pose and self._world_point_in_region(float(region_end_pose.get("x", 0.0)), float(region_end_pose.get("y", 0.0)), region):
+            elif region_end_pose and self._world_point_in_region(float(region_end_pose.get("x", 0.0)), float(region_end_pose.get("y", 0.0)), region):
                 ex = float(region_end_pose.get("x", 0.0))
                 ey = float(region_end_pose.get("y", 0.0))
                 end_point = self._world_to_point(module, ex, ey, map_info, ratio)
@@ -199,17 +210,6 @@ class PlannerAdapter:
                     region_id or "<empty>",
                     ex,
                     ey,
-                    int(end_point.row),
-                    int(end_point.col),
-                )
-            elif has_request_end and self._world_point_in_region(end_x, end_y, region):
-                end_point = self._world_to_point(module, end_x, end_y, map_info, ratio)
-                rospy.loginfo(
-                    "Region planning end from request end_pose: region_idx=%d region_id=%s end=(%.3f,%.3f) end_grid=(%d,%d)",
-                    index,
-                    region_id or "<empty>",
-                    end_x,
-                    end_y,
                     int(end_point.row),
                     int(end_point.col),
                 )
@@ -349,7 +349,10 @@ class PlannerAdapter:
                             col=int(round(float(last_end.col))),
                         )
                     elif seg_idx == 1 and lap == 1:
-                        robot_start = self._world_to_point(module, robot_x, robot_y, map_info, ratio)
+                        if has_request_start:
+                            robot_start = self._world_to_point(module, start_x, start_y, map_info, ratio)
+                        else:
+                            robot_start = self._world_to_point(module, robot_x, robot_y, map_info, ratio)
                         conn_start = module.Point(
                             row=int(round(float(robot_start.row))),
                             col=int(round(float(robot_start.col))),

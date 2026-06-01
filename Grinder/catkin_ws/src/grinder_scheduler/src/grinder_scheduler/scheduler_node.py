@@ -2088,7 +2088,7 @@ class SchedulerNode:
             )
         return TriggerResponse(success=False, message=self.last_error or "planning_failed")
 
-    def _plan_current_task(self, force_use_all_regions=False, request_start_pose=None, request_end_pose=None, request_global_direction="x"):
+    def _plan_current_task(self, force_use_all_regions=False, request_start_pose=None, request_end_pose=None, request_global_direction=None):
         # Always plan against the latest map edit overlay (work/obstacle regions).
         self._sync_task_regions_from_overlay()
         self._sync_task_map_binding(update_binding=True)
@@ -2140,6 +2140,18 @@ class SchedulerNode:
             self._set_error("Planning failed: no valid work region")
             rospy.logwarn("Planning aborted: no valid work region in overlay")
             return False
+        requested_direction = str(request_global_direction or "").strip().lower()
+        has_requested_direction = requested_direction in ("x", "y")
+        effective_global_direction = requested_direction if has_requested_direction else str(
+            self.task_config.global_direction or "x"
+        ).strip().lower()
+        if effective_global_direction not in ("x", "y"):
+            effective_global_direction = "x"
+        if has_requested_direction:
+            selected_work_regions = [
+                dict(region, global_direction=effective_global_direction) if isinstance(region, dict) else region
+                for region in selected_work_regions
+            ]
         map_info = self.map_service.get_map_info()
         composed_map = self.map_service.compose_map()
         if map_info is None or composed_map is None:
@@ -2194,7 +2206,7 @@ class SchedulerNode:
                 vehicle_width=self.task_config.vehicle_width,
                 vehicle_length=self.task_config.vehicle_length,
                 default_path_spacing=self.task_config.default_path_spacing,
-                global_direction=str(request_global_direction or "x").strip().lower() or "x",
+                global_direction=effective_global_direction,
                 turn_radius=self.task_config.turn_radius,
                 overlap_ratio=self.task_config.overlap_ratio,
                 inflation_radius=self.task_config.inflation_radius,
@@ -2264,8 +2276,10 @@ class SchedulerNode:
         # Only prepend current pose when task context exists.
         # For pure area preview planning (no task info), keep regions disconnected
         # from robot pose to avoid a fake line from current position.
-        if has_task_info:
+        if has_task_info and not request_start_pose:
             self._prepend_current_pose_as_start_point(map_info)
+        elif request_start_pose:
+            rospy.loginfo("Skip prepending current pose point because request_start_pose is provided")
         else:
             rospy.loginfo("Skip prepending current pose point because has_task_info=false")
         self._rebuild_goal_points()
