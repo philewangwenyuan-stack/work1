@@ -448,15 +448,6 @@ private:
   // flags
   bool initialized_; //!< Keeps track about the correct initialization of this class
   int count_; //!< Keeps count of the number of times the robot is oscillating around the goal
-// =============
-  enum class TrackState
-  {
-    ALIGNING,
-    TRACKING
-  };
-
-  TrackState track_state_;
-// =============
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 };
@@ -464,4 +455,3 @@ public:
 }; // end namespace teb_local_planner
 
 #endif // TEB_LOCAL_PLANNER_ROS_H_
-

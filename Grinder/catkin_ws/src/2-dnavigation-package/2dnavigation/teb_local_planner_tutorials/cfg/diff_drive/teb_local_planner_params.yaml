@@ -20,7 +20,7 @@ TebLocalPlannerROS:
     
  # Robot
          
- max_vel_x: 0.1 #机器人最大的线速度（前进方向，单位：m/s
+ max_vel_x: 0.15 #机器人最大的线速度（前进方向，单位：m/s
  max_vel_x_backwards: 0.05 #机器人最大的倒车线速度（单位：m/s）。
  max_vel_y: 0.0
  max_vel_theta: 0.1 #机器人最大的角速度（单位：rad/s）

@@ -75,11 +75,11 @@ cmd_vel_gear_ratio: 60.0
 # 速度缩放系数（整体增益）
 cmd_vel_scale: 1.0
 # 线速度上限（m/s）
-cmd_vel_max_linear: 0.1
+cmd_vel_max_linear: 0.15
 # 角速度上限（rad/s）
 cmd_vel_max_angular: 0.1
 # 输入线速度限幅（m/s）
-cmd_vel_max_input_v: 0.1
+cmd_vel_max_input_v: 0.15
 # 输入角速度限幅（rad/s）
 cmd_vel_max_input_w: 0.1
 # 换算后的轮速绝对值上限（rpm）

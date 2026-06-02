@@ -112,6 +112,15 @@ class SchedulerNode:
         self._goal_segment_yaw_threshold_deg = max(
             1.0, float(rospy.get_param("~path_goal_segment_yaw_threshold_deg", 25.0))
         )
+        self._corner_mid_enabled = bool(rospy.get_param("~path_corner_mid_enabled", True))
+        self._corner_mid_min_length = max(0.05, float(rospy.get_param("~path_corner_mid_min_length", 0.05)))
+        self._corner_mid_short_ratio = max(0.1, float(rospy.get_param("~path_corner_mid_short_ratio", 0.6)))
+        self._corner_mid_parallel_threshold_deg = max(
+            1.0, float(rospy.get_param("~path_corner_mid_parallel_threshold_deg", 35.0))
+        )
+        self._corner_mid_turn_min_angle_deg = max(
+            1.0, float(rospy.get_param("~path_corner_mid_turn_min_angle_deg", 45.0))
+        )
         self.last_chassis_status = None
         self._exec_mode = str(rospy.get_param("~path_execution_mode", "move_base_goal")).strip().lower()
         if self._exec_mode != "move_base_goal":
@@ -143,6 +152,35 @@ class SchedulerNode:
         self._exec_region_repeat_done = {}
         self._disc_follow_path_type = bool(rospy.get_param("~disc_follow_path_type", True))
         self._disc_last_mode = ""  # "cover" | "transition" | ""
+        self._disc_auto_cover_desired = False
+        self._disc_motion_guard_enabled = bool(rospy.get_param("~disc_motion_guard_enabled", True))
+        self._disc_stop_linear_threshold = max(
+            0.0, float(rospy.get_param("~disc_stop_linear_threshold", 0.01))
+        )
+        self._disc_stop_angular_threshold = max(
+            0.0, float(rospy.get_param("~disc_stop_angular_threshold", 0.01))
+        )
+        self._disc_resume_linear_threshold = max(
+            self._disc_stop_linear_threshold,
+            float(rospy.get_param("~disc_resume_linear_threshold", 0.02)),
+        )
+        self._disc_resume_angular_threshold = max(
+            self._disc_stop_angular_threshold,
+            float(rospy.get_param("~disc_resume_angular_threshold", 0.03)),
+        )
+        self._disc_stop_hold_sec = max(0.1, float(rospy.get_param("~disc_stop_hold_sec", 1.0)))
+        self._disc_switch_min_interval = max(
+            0.0, float(rospy.get_param("~disc_switch_min_interval", 2.0))
+        )
+        self._disc_cmd_vel_stale_sec = max(
+            0.1, float(rospy.get_param("~disc_cmd_vel_stale_sec", 1.0))
+        )
+        self._last_cmd_vel_time = 0.0
+        self._last_cmd_vel_linear = 0.0
+        self._last_cmd_vel_angular = 0.0
+        self._disc_stationary_since = 0.0
+        self._disc_motion_guard_stopped = False
+        self._disc_last_switch_time = 0.0
         self._task_stop_reason = ""
         self._last_task_result = {}
         # Task result color palette (repeat index -> color, BGR).
@@ -405,6 +443,7 @@ class SchedulerNode:
         self.light_pub = rospy.Publisher("/chassis/light_cmd", Bool, queue_size=10)
 
         rospy.Subscriber("/chassis/status", ChassisStatus, self._chassis_status_callback, queue_size=10)
+        rospy.Subscriber("/cmd_vel", Twist, self._cmd_vel_callback, queue_size=10)
         rospy.Service("~plan_now", Trigger, self._handle_plan_now)
 
         self.enable_service = rospy.ServiceProxy("/chassis/enable", EnableChassis)
@@ -643,6 +682,7 @@ class SchedulerNode:
                 self._resume_execution()
 
         self._tick_path_execution()
+        self._tick_disc_motion_guard()
         self._update_progress()
         self._publish_status()
         self._publish_diagnostics()
@@ -1697,6 +1737,58 @@ class SchedulerNode:
 
     def _chassis_status_callback(self, msg):
         self.last_chassis_status = msg
+
+    def _cmd_vel_callback(self, msg):
+        self._last_cmd_vel_linear = math.hypot(float(msg.linear.x), float(msg.linear.y))
+        self._last_cmd_vel_angular = abs(float(msg.angular.z))
+        self._last_cmd_vel_time = time.time()
+
+    def _reset_disc_motion_guard(self):
+        self._disc_stationary_since = 0.0
+        self._disc_motion_guard_stopped = False
+
+    def _tick_disc_motion_guard(self):
+        if not bool(self._disc_motion_guard_enabled):
+            return
+        if self.state != SchedulerState.RUNNING or not self._exec_active or not self._disc_auto_cover_desired:
+            self._disc_stationary_since = 0.0
+            self._disc_motion_guard_stopped = False
+            return
+
+        now = time.time()
+        stale = self._last_cmd_vel_time <= 0.0 or (now - self._last_cmd_vel_time) > self._disc_cmd_vel_stale_sec
+        linear = 0.0 if stale else float(self._last_cmd_vel_linear)
+        angular = 0.0 if stale else float(self._last_cmd_vel_angular)
+        moving_for_stop = linear > self._disc_stop_linear_threshold or angular > self._disc_stop_angular_threshold
+        moving_for_resume = linear > self._disc_resume_linear_threshold or angular > self._disc_resume_angular_threshold
+        can_switch = (now - self._disc_last_switch_time) >= self._disc_switch_min_interval
+
+        if moving_for_resume:
+            self._disc_stationary_since = 0.0
+            if self._disc_motion_guard_stopped and can_switch:
+                self.disc_enable_pub.publish(Bool(data=True))
+                self._disc_motion_guard_stopped = False
+                self._disc_last_switch_time = now
+                rospy.loginfo("Disc resumed by cmd_vel motion: linear=%.3f angular=%.3f", linear, angular)
+            return
+
+        if moving_for_stop:
+            self._disc_stationary_since = 0.0
+            return
+
+        if self._disc_stationary_since <= 0.0:
+            self._disc_stationary_since = now
+            return
+
+        if (
+            not self._disc_motion_guard_stopped
+            and (now - self._disc_stationary_since) >= self._disc_stop_hold_sec
+            and can_switch
+        ):
+            self.disc_enable_pub.publish(Bool(data=False))
+            self._disc_motion_guard_stopped = True
+            self._disc_last_switch_time = now
+            rospy.loginfo("Disc stopped by cmd_vel idle: stale=%s linear=%.3f angular=%.3f", stale, linear, angular)
 
     def _sync_task_regions_from_overlay(self):
         overlay_regions = self.map_service.get_overlay_regions() or {}
@@ -2846,9 +2938,10 @@ class SchedulerNode:
             self._exec_region_index = -1
         self._set_chassis_enabled(True)
         self.work_mode_pub.publish(UInt16(data=2))
-        self.disc_lift_pub.publish(UInt16(data=1))
         self.disc_speed_pub.publish(Int16(data=1200))
         self.disc_enable_pub.publish(Bool(data=True))
+        self._disc_auto_cover_desired = True
+        self._reset_disc_motion_guard()
         self.light_pub.publish(Bool(data=True))
         self._init_path_execution_cursor()
         self._exec_active = True
@@ -2871,6 +2964,8 @@ class SchedulerNode:
 
     def _pause_execution(self):
         self._exec_active = False
+        self._disc_auto_cover_desired = False
+        self._reset_disc_motion_guard()
         self._set_cmd_vel_forward_runtime_active(False, publish_zero=True, reason="task_pause")
         self._safe_stop_motion()
         self.disc_enable_pub.publish(Bool(data=False))
@@ -2883,6 +2978,8 @@ class SchedulerNode:
         self._set_chassis_enabled(True)
         self._disc_last_mode = ""
         self.disc_enable_pub.publish(Bool(data=True))
+        self._disc_auto_cover_desired = True
+        self._reset_disc_motion_guard()
         if self._exec_goal_index <= 0 or self._exec_goal_index >= len(self.current_path.points):
             self._init_path_execution_cursor()
         self._exec_active = True
@@ -2896,12 +2993,13 @@ class SchedulerNode:
 
     def _stop_execution(self):
         self._exec_active = False
+        self._disc_auto_cover_desired = False
+        self._reset_disc_motion_guard()
         self._mark_current_region_repeat_done()
         self._set_cmd_vel_forward_runtime_active(False, publish_zero=True, reason="task_stop")
         self._safe_stop_motion()
         self.disc_enable_pub.publish(Bool(data=False))
         self.light_pub.publish(Bool(data=False))
-        self.disc_lift_pub.publish(UInt16(data=2))
         self._set_chassis_enabled(False)
         self._exec_region_order = []
         self._exec_region_index = -1
@@ -3078,6 +3176,98 @@ class SchedulerNode:
             end_index = idx + 1
         return max(start_index, min(n - 1, end_index))
 
+    def _segment_length(self, cached_xy, start_idx, end_idx):
+        length = 0.0
+        for idx in range(max(0, int(start_idx)), max(0, int(end_idx))):
+            x0, y0 = cached_xy[idx]
+            x1, y1 = cached_xy[idx + 1]
+            length += math.hypot(x1 - x0, y1 - y0)
+        return length
+
+    def _segment_yaw(self, cached_xy, start_idx, end_idx):
+        start_idx = max(0, int(start_idx))
+        end_idx = max(start_idx, int(end_idx))
+        for idx in range(start_idx, end_idx):
+            x0, y0 = cached_xy[idx]
+            x1, y1 = cached_xy[idx + 1]
+            if math.hypot(x1 - x0, y1 - y0) > 1e-6:
+                return math.atan2(y1 - y0, x1 - x0)
+        if end_idx > start_idx:
+            x0, y0 = cached_xy[start_idx]
+            x1, y1 = cached_xy[end_idx]
+            return math.atan2(y1 - y0, x1 - x0)
+        return None
+
+    def _segment_orientation(self, cached_xy, start_idx, end_idx):
+        yaw = self._segment_yaw(cached_xy, start_idx, end_idx)
+        if yaw is None:
+            yaw = 0.0
+        return self._yaw_to_quaternion(yaw)
+
+    def _angle_abs_diff(self, a, b):
+        return abs(math.atan2(math.sin(float(a) - float(b)), math.cos(float(a) - float(b))))
+
+    def _segments_parallel_or_opposite(self, a, b):
+        diff = self._angle_abs_diff(a, b)
+        threshold = math.radians(float(self._corner_mid_parallel_threshold_deg))
+        return diff <= threshold or abs(math.pi - diff) <= threshold
+
+    def _segment_is_turn_between_rows(self, cur_yaw, ref_yaw):
+        diff = self._angle_abs_diff(cur_yaw, ref_yaw)
+        away_from_parallel = min(diff, abs(math.pi - diff))
+        return away_from_parallel >= math.radians(float(self._corner_mid_turn_min_angle_deg))
+
+    def _should_insert_corner_mid(self, segments, seg_pos):
+        if not bool(self._corner_mid_enabled):
+            return False
+        if seg_pos <= 0 or seg_pos >= len(segments) - 1:
+            return False
+        prev_seg = segments[seg_pos - 1]
+        cur_seg = segments[seg_pos]
+        next_seg = segments[seg_pos + 1]
+        cur_type = str(cur_seg.get("path_type", "") or "").strip().lower()
+        if cur_type == "connection":
+            return False
+        if str(prev_seg.get("path_type", "") or "").strip().lower() == "connection":
+            return False
+        if str(next_seg.get("path_type", "") or "").strip().lower() == "connection":
+            return False
+        if cur_seg["end"] <= cur_seg["start"]:
+            return False
+        cur_len = float(cur_seg.get("length", 0.0))
+        prev_len = float(prev_seg.get("length", 0.0))
+        next_len = float(next_seg.get("length", 0.0))
+        if cur_len < self._corner_mid_min_length:
+            return False
+        if cur_len >= min(prev_len, next_len) * self._corner_mid_short_ratio:
+            return False
+        if cur_seg.get("yaw") is None or prev_seg.get("yaw") is None or next_seg.get("yaw") is None:
+            return False
+        if not self._segments_parallel_or_opposite(prev_seg["yaw"], next_seg["yaw"]):
+            return False
+        return (
+            self._segment_is_turn_between_rows(cur_seg["yaw"], prev_seg["yaw"])
+            and self._segment_is_turn_between_rows(cur_seg["yaw"], next_seg["yaw"])
+        )
+
+    def _append_goal_point(self, points, cached_xy, path_index, goal_kind="segment", orientation=None):
+        path_index = max(0, min(len(points) - 1, int(path_index)))
+        if self._goal_points and int(self._goal_points[-1].get("path_index", -1)) == path_index:
+            return False
+        point = points[path_index]
+        quat = orientation if isinstance(orientation, dict) else self._resolve_point_orientation(point, path_index, cached_xy)
+        self._goal_points.append(
+            {
+                "path_index": int(path_index),
+                "x": float(point.get("x", 0.0)),
+                "y": float(point.get("y", 0.0)),
+                "path_type": str(point.get("path_type", "") or ""),
+                "goal_kind": str(goal_kind or "segment"),
+                "orientation": quat,
+            }
+        )
+        return True
+
     def _rebuild_goal_points(self):
         self._goal_points = []
         if self.current_path is None or not self.current_path.points:
@@ -3086,6 +3276,7 @@ class SchedulerNode:
         n = len(points)
         cursor = 0
         cached_xy = [(float(p.get("x", 0.0)), float(p.get("y", 0.0))) for p in points]
+        segments = []
         while cursor < n:
             end_idx = self._resolve_straight_segment_end_index(cursor)
             end_idx = max(cursor, min(n - 1, int(end_idx)))
@@ -3093,23 +3284,35 @@ class SchedulerNode:
             # If the segment has only one point, fall back to the segment end.
             goal_idx = end_idx - 1 if end_idx > cursor else end_idx
             goal_idx = max(cursor, min(n - 1, int(goal_idx)))
-            p = points[goal_idx]
-            quat = self._resolve_point_orientation(p, goal_idx, cached_xy)
-            self._goal_points.append(
+            segments.append(
                 {
-                    "path_index": int(goal_idx),
-                    "x": float(p.get("x", 0.0)),
-                    "y": float(p.get("y", 0.0)),
-                    "path_type": str(p.get("path_type", "") or ""),
-                    "orientation": quat,
+                    "start": int(cursor),
+                    "end": int(end_idx),
+                    "goal": int(goal_idx),
+                    "path_type": str(points[goal_idx].get("path_type", "") or ""),
+                    "length": self._segment_length(cached_xy, cursor, end_idx),
+                    "yaw": self._segment_yaw(cached_xy, cursor, end_idx),
                 }
             )
             if end_idx >= n - 1:
                 break
             cursor = end_idx + 1
+
+        for pos, segment in enumerate(segments):
+            if self._should_insert_corner_mid(segments, pos):
+                mid_idx = int((int(segment["start"]) + int(segment["end"])) // 2)
+                self._append_goal_point(
+                    points,
+                    cached_xy,
+                    mid_idx,
+                    goal_kind="corner_mid",
+                    orientation=self._segment_orientation(cached_xy, segment["start"], segment["end"]),
+                )
+            self._append_goal_point(points, cached_xy, segment["goal"], goal_kind="segment")
         # Do not force append the final point here: goal points are intentionally
         # chosen as segment-penultimate points per current execution strategy.
-        rospy.loginfo("Precomputed goal points: count=%d", len(self._goal_points))
+        corner_mid_count = sum(1 for item in self._goal_points if item.get("goal_kind") == "corner_mid")
+        rospy.loginfo("Precomputed goal points: count=%d corner_mid=%d", len(self._goal_points), corner_mid_count)
 
     def _init_path_execution_cursor(self):
         if self.current_path is None or not self.current_path.points:
@@ -3214,17 +3417,20 @@ class SchedulerNode:
         if not isinstance(path_point, dict):
             return
         path_type = str(path_point.get("path_type", "") or "").strip().lower()
-        # connection: transition path between regions -> disc up + disable
-        # others: in-region coverage path -> disc down + enable
+        # connection: transition path between regions -> disc off
+        # others: in-region coverage path -> disc on, with cmd_vel idle guard.
         target_mode = "transition" if path_type == "connection" else "cover"
         if target_mode == self._disc_last_mode:
             return
         if target_mode == "transition":
+            self._disc_auto_cover_desired = False
+            self._reset_disc_motion_guard()
             self.disc_enable_pub.publish(Bool(data=False))
-            self.disc_lift_pub.publish(UInt16(data=2))
         else:
-            self.disc_lift_pub.publish(UInt16(data=1))
-            self.disc_enable_pub.publish(Bool(data=True))
+            self._disc_auto_cover_desired = True
+            self._reset_disc_motion_guard()
+            if not self._disc_motion_guard_stopped:
+                self.disc_enable_pub.publish(Bool(data=True))
         self._disc_last_mode = target_mode
         rospy.loginfo(
             "Disc mode switched by path_type: mode=%s path_type=%s",
@@ -3261,10 +3467,11 @@ class SchedulerNode:
             if self._try_advance_to_next_region():
                 return
             self._exec_active = False
+            self._disc_auto_cover_desired = False
+            self._reset_disc_motion_guard()
             self._set_cmd_vel_forward_runtime_active(False, publish_zero=True, reason="task_complete")
             self.disc_enable_pub.publish(Bool(data=False))
             self.light_pub.publish(Bool(data=False))
-            self.disc_lift_pub.publish(UInt16(data=2))
             self._safe_stop_motion()
             self._exec_region_order = []
             self._exec_region_index = -1
@@ -3299,9 +3506,10 @@ class SchedulerNode:
             return False
         next_region_id = region_order[next_idx]
 
-        # Inter-region transfer: retract and stop disc before moving to next region.
+        # Inter-region transfer: stop disc before moving to next region.
+        self._disc_auto_cover_desired = False
+        self._reset_disc_motion_guard()
         self.disc_enable_pub.publish(Bool(data=False))
-        self.disc_lift_pub.publish(UInt16(data=2))
         self.task_config.active_work_region_id = next_region_id
         rospy.loginfo(
             "Switching to next work region: from=%s to=%s (%d/%d)",
@@ -3321,9 +3529,10 @@ class SchedulerNode:
 
         # Enter next region: enable working tool again.
         self._set_chassis_enabled(True)
-        self.disc_lift_pub.publish(UInt16(data=1))
         self.disc_speed_pub.publish(Int16(data=1200))
         self.disc_enable_pub.publish(Bool(data=True))
+        self._disc_auto_cover_desired = True
+        self._reset_disc_motion_guard()
         self.light_pub.publish(Bool(data=True))
         self._exec_region_order = region_order
         self._exec_region_index = next_idx
@@ -3396,10 +3605,11 @@ class SchedulerNode:
                 nearest_index = index
         self.current_path_index = nearest_index
         if self.state == SchedulerState.RUNNING and nearest_index >= len(self.current_path.points) - 1:
-            # Task finished: always stop disc rotation and lift disc for safety.
+            # Task finished: stop disc rotation without lifting.
+            self._disc_auto_cover_desired = False
+            self._reset_disc_motion_guard()
             self._set_cmd_vel_forward_runtime_active(False, publish_zero=True, reason="task_complete_progress")
             self.disc_enable_pub.publish(Bool(data=False))
-            self.disc_lift_pub.publish(UInt16(data=2))
             self.state = SchedulerState.COMPLETED
             self._task_stop_reason = "completed"
             self._finalize_task_result(stop_reason="completed")
@@ -4061,6 +4271,8 @@ class SchedulerNode:
         wheel.left_wheel_speed = 0
         wheel.right_wheel_speed = 0
         self.wheel_cmd_pub.publish(wheel)
+        self._disc_auto_cover_desired = False
+        self._reset_disc_motion_guard()
         self.disc_enable_pub.publish(Bool(data=False))
         self._set_chassis_enabled(False)
         rospy.logwarn("Emergency stop applied: wheels=0, disc=off, chassis_disabled.")

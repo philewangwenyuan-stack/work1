@@ -70,7 +70,7 @@ TebLocalPlannerROS::TebLocalPlannerROS() : costmap_ros_(NULL), tf_(NULL), costma
                                            costmap_converter_loader_("costmap_converter", "costmap_converter::BaseCostmapToPolygons"),
                                            dynamic_recfg_(NULL), custom_via_points_active_(false), goal_reached_(false), has_last_goal_(false), no_infeasible_plans_(0),
                                           //  last_preferred_rotdir_(RotType::none), initialized_(false), count_(0)
-                                           last_preferred_rotdir_(RotType::none), initialized_(false), count_(0), track_state_(TrackState::ALIGNING)
+                                           last_preferred_rotdir_(RotType::none), initialized_(false), count_(0)
 {
 }
 
@@ -238,12 +238,11 @@ bool TebLocalPlannerROS::setPlan(const std::vector<geometry_msgs::PoseStamped>& 
 
     if (goal_changed)
     {
-      track_state_ = TrackState::ALIGNING;
       count_ = 0;
       last_goal_ = PoseSE2(goal_x, goal_y, goal_yaw);
       has_last_goal_ = true;
       ROS_DEBUG(
-          "TebLocalPlannerROS: goal switch detected, reset to ALIGNING: x=%.3f y=%.3f yaw=%.3f",
+          "TebLocalPlannerROS: goal switch detected: x=%.3f y=%.3f yaw=%.3f",
           goal_x,
           goal_y,
           goal_yaw);
@@ -486,36 +485,10 @@ uint32_t TebLocalPlannerROS::computeVelocityCommands(const geometry_msgs::PoseSt
   
   // store last command (for recovery analysis etc.)
   last_cmd_ = cmd_vel.twist;
-// =========================================  
-  double align_exit = 0.05;
-  double align_w = std::min(0.10, std::fabs(cfg_.robot.max_vel_theta));
-
-  // 用 TEB 当前局部目标朝向来对齐，比前面那个 delta_orient 更合适
-  double align_delta_orient = g2o::normalize_theta(robot_goal_.theta() - robot_pose_.theta());
-
-  if (track_state_ == TrackState::ALIGNING)
+// =========================================
+  if (cmd_vel.twist.angular.z > -0.05 && cmd_vel.twist.angular.z < 0.05)
   {
-    cmd_vel.twist.linear.x = 0;
-    cmd_vel.twist.linear.y = 0;
-
-    if (std::fabs(align_delta_orient) > align_exit)
-    {
-      ROS_INFO("delta_orient: %f, 原地调整朝向.", align_delta_orient);
-      cmd_vel.twist.angular.z = align_delta_orient > 0 ? align_w : -align_w;
-    }
-    else
-    {
-      cmd_vel.twist.angular.z = 0;
-      track_state_ = TrackState::TRACKING;
-    }
-  }
-  else
-  {
-    // 直线跟踪阶段：清掉小角速度，避免 S 型左右修正
-    if (cmd_vel.twist.angular.z > -0.1 && cmd_vel.twist.angular.z < 0.1)
-    {
-      cmd_vel.twist.angular.z = 0;
-    }
+    cmd_vel.twist.angular.z = 0;
   }
 
   if (std::fabs(cmd_vel.twist.linear.x) > 0.01)
@@ -582,7 +555,6 @@ bool TebLocalPlannerROS::isGoalReached()
   if (goal_reached_)
   {
     count_ = 0;
-    track_state_ = TrackState::ALIGNING;
     ROS_INFO("GOAL Reached!");
     planner_->clearPlanner();
     return true;
