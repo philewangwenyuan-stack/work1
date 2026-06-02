@@ -24,6 +24,7 @@ TebLocalPlannerROS:
  max_vel_x_backwards: 0.05 #机器人最大的倒车线速度（单位：m/s）。
  max_vel_y: 0.0
  max_vel_theta: 0.1 #机器人最大的角速度（单位：rad/s）
+ use_proportional_saturation: True #速度限幅时按比例同时缩放线速度和角速度，拐角处更容易自动降线速度
  acc_lim_x: 0.1 #机器人 X 方向的加速度限制（单位：m/s²）
  acc_lim_theta: 0.05 #机器人角加速度限制（单位：rad/s²）
  min_turning_radius: 0.0 # diff-drive robot (can turn on place!)
@@ -39,7 +40,7 @@ TebLocalPlannerROS:
     
  xy_goal_tolerance: 0.12 #机器人进入目标点周围 0.3 米范围内即认为到达
  yaw_goal_tolerance: 0.05 #目标朝向的容差（单位：弧度）
- free_goal_vel: False #是否允许机器人在到达目标时带有零速度。
+ free_goal_vel: True #是否允许机器人在到达目标时带有非零速度，中间目标点可不停下直接通过
  complete_global_plan: True #是否必须走完全局路径上的所有点
     
  # Obstacles
