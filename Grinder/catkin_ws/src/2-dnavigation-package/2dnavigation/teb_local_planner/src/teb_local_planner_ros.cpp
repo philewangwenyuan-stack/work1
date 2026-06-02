@@ -68,9 +68,8 @@ namespace teb_local_planner
 
 TebLocalPlannerROS::TebLocalPlannerROS() : costmap_ros_(NULL), tf_(NULL), costmap_model_(NULL),
                                            costmap_converter_loader_("costmap_converter", "costmap_converter::BaseCostmapToPolygons"),
-                                           dynamic_recfg_(NULL), custom_via_points_active_(false), goal_reached_(false), has_last_goal_(false), no_infeasible_plans_(0),
-                                          //  last_preferred_rotdir_(RotType::none), initialized_(false), count_(0)
-                                           last_preferred_rotdir_(RotType::none), initialized_(false), count_(0)
+                                           dynamic_recfg_(NULL), custom_via_points_active_(false), goal_reached_(false), no_infeasible_plans_(0),
+                                           last_preferred_rotdir_(RotType::none), initialized_(false)
 {
 }
 
@@ -219,35 +218,6 @@ bool TebLocalPlannerROS::setPlan(const std::vector<geometry_msgs::PoseStamped>& 
             
   // reset goal_reached_ flag
   goal_reached_ = false;
-
-  if (!orig_global_plan.empty())
-  {
-    const geometry_msgs::PoseStamped& back = orig_global_plan.back();
-    const double goal_x = back.pose.position.x;
-    const double goal_y = back.pose.position.y;
-    const double goal_yaw = tf2::getYaw(back.pose.orientation);
-    bool goal_changed = !has_last_goal_;
-    if (has_last_goal_)
-    {
-      const double goal_distance = std::sqrt(
-          (goal_x - last_goal_.x()) * (goal_x - last_goal_.x()) +
-          (goal_y - last_goal_.y()) * (goal_y - last_goal_.y()));
-      const double goal_yaw_delta = std::fabs(g2o::normalize_theta(goal_yaw - last_goal_.theta()));
-      goal_changed = goal_distance > 0.05 || goal_yaw_delta > 0.1;
-    }
-
-    if (goal_changed)
-    {
-      count_ = 0;
-      last_goal_ = PoseSE2(goal_x, goal_y, goal_yaw);
-      has_last_goal_ = true;
-      ROS_DEBUG(
-          "TebLocalPlannerROS: goal switch detected: x=%.3f y=%.3f yaw=%.3f",
-          goal_x,
-          goal_y,
-          goal_yaw);
-    }
-  }
   
   return true;
 }
@@ -332,7 +302,6 @@ uint32_t TebLocalPlannerROS::computeVelocityCommands(const geometry_msgs::PoseSt
         || cfg_.goal_tolerance.free_goal_vel))
   {
     goal_reached_ = true;
-    count_ = 0;
     return mbf_msgs::ExePathResult::SUCCESS;
   }
 
@@ -486,49 +455,11 @@ uint32_t TebLocalPlannerROS::computeVelocityCommands(const geometry_msgs::PoseSt
   // store last command (for recovery analysis etc.)
   last_cmd_ = cmd_vel.twist;
 // =========================================
-  if (cmd_vel.twist.angular.z > -0.05 && cmd_vel.twist.angular.z < 0.05)
+  if (cmd_vel.twist.angular.z > -0.02 && cmd_vel.twist.angular.z < 0.02)
   {
     cmd_vel.twist.angular.z = 0;
   }
 
-  if (std::fabs(cmd_vel.twist.linear.x) > 0.01)
-  {
-    count_++;
-  }
-
-// ================================================================
-  // double kp = 0.5;
-  // double align_deadband = 0.2; // 小于这个角度误差不原地调头，单位 rad
-  // double min_align_w = 0.03;   // 小角速度死区，单位 rad/s
-  // double max_align_w = std::fabs(cfg_.robot.max_vel_theta);
-
-  // if (goal_reached_)
-  //   count_ = 0;
-
-  // if (std::fabs(delta_orient) > align_deadband && count_ == 0)
-  // {
-  //   ROS_INFO("delta_orient: %f, 原地调整朝向.", delta_orient);
-  //   cmd_vel.twist.linear.x = 0;
-  //   cmd_vel.twist.linear.y = 0;
-
-  //   double w = kp * delta_orient;
-
-  //   if (w > max_align_w)
-  //     w = max_align_w;
-  //   if (w < -max_align_w)
-  //     w = -max_align_w;
-
-  //   if (std::fabs(w) < min_align_w)
-  //     w = 0.0;
-
-  //   cmd_vel.twist.angular.z = w;
-  // }
-  // if (cmd_vel.twist.angular.z > max_align_w)cmd_vel.twist.angular.z = max_align_w;
-  // if (cmd_vel.twist.angular.z < -max_align_w)cmd_vel.twist.angular.z = -max_align_w;
-
-  // last_cmd_ = cmd_vel.twist;
-
-  
   // Now visualize everything    
   planner_->visualize();
   visualization_->publishObstacles(obstacles_, costmap_->getResolution());
@@ -537,24 +468,11 @@ uint32_t TebLocalPlannerROS::computeVelocityCommands(const geometry_msgs::PoseSt
   return mbf_msgs::ExePathResult::SUCCESS;
 }
 
-
-// bool TebLocalPlannerROS::isGoalReached()
-// {
-//   if (goal_reached_)
-//   {
-//     count_ = 0;
-//     ROS_INFO("GOAL Reached!");
-//     planner_->clearPlanner();
-//     return true;
-//   }
-//   return false;
-
 // ==========================
 bool TebLocalPlannerROS::isGoalReached()
 {
   if (goal_reached_)
   {
-    count_ = 0;
     ROS_INFO("GOAL Reached!");
     planner_->clearPlanner();
     return true;
