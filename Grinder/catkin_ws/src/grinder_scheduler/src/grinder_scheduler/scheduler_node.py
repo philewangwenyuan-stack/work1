@@ -108,6 +108,13 @@ class SchedulerNode:
         self.replan_requested = False
         self.current_path = None
         self.current_path_index = 0
+        self._path_arc_lengths = []
+        self._active_segments = []
+        self._active_segment_index = 0
+        self._active_segment_start_s = 0.0
+        self._active_segment_last_progress_s = 0.0
+        self._active_segment_last_switch_time = 0.0
+        self._active_segment_goal_sent_index = -1
         self._goal_points = []
         self._goal_segment_yaw_threshold_deg = max(
             1.0, float(rospy.get_param("~path_goal_segment_yaw_threshold_deg", 25.0))
@@ -129,7 +136,7 @@ class SchedulerNode:
                 self._exec_mode,
             )
             self._exec_mode = "move_base_goal"
-        # Deprecated: scheduler no longer publishes goals to /move_base_simple/goal.
+        # Segment execution uses this only to trigger move_base with the active segment endpoint.
         self._exec_goal_topic = rospy.get_param("~path_goal_topic", "/move_base_simple/goal")
         self._task_enable_topic = rospy.get_param("~task_enable_topic", "/chassis/task_enable")
         self._task_enable_runtime_active = False
@@ -137,6 +144,25 @@ class SchedulerNode:
         self._exec_goal_reach_dist = max(0.05, float(rospy.get_param("~path_goal_reach_dist", 0.12)))
         self._exec_goal_interval = max(0.1, float(rospy.get_param("~path_goal_interval", 1.0)))
         self._exec_segment_timeout = max(2.0, float(rospy.get_param("~path_segment_timeout", 10.0)))
+        self._active_segment_plan_topic = rospy.get_param(
+            "~active_segment_plan_topic", "/grinder/navigation/active_segment_plan"
+        )
+        self._active_segment_publish_hz = max(
+            0.2, float(rospy.get_param("~active_segment_publish_hz", 3.0))
+        )
+        self._segment_switch_distance_m = max(
+            0.05, float(rospy.get_param("~path_segment_switch_distance_m", 2.8))
+        )
+        self._segment_short_progress_ratio = min(
+            0.99,
+            max(0.1, float(rospy.get_param("~path_segment_short_progress_ratio", 0.85))),
+        )
+        self._segment_next_lane_leadin_m = max(
+            0.0, float(rospy.get_param("~path_segment_next_lane_leadin_m", 0.4))
+        )
+        self._segment_overlap_behind_m = max(
+            0.0, float(rospy.get_param("~path_segment_overlap_behind_m", 0.3))
+        )
         self._exec_max_linear = max(0.05, float(rospy.get_param("~path_exec_max_linear", 0.35)))
         self._exec_max_angular = max(0.1, float(rospy.get_param("~path_exec_max_angular", 0.9)))
         self._exec_k_linear = max(0.05, float(rospy.get_param("~path_exec_k_linear", 0.8)))
@@ -419,6 +445,9 @@ class SchedulerNode:
 
         self._global_plan_topic = rospy.get_param("~global_plan_topic", "/grinder/GlobalPlanner/plan")
         self.global_plan_pub = rospy.Publisher(self._global_plan_topic, Path, queue_size=1, latch=True)
+        self.active_segment_plan_pub = rospy.Publisher(
+            self._active_segment_plan_topic, Path, queue_size=1, latch=True
+        )
         self.goal_pub = rospy.Publisher(self._exec_goal_topic, PoseStamped, queue_size=10)
         self.task_enable_pub = rospy.Publisher(self._task_enable_topic, Bool, queue_size=10, latch=True)
         self.status_pub = rospy.Publisher("/scheduler/status", SchedulerStatus, queue_size=10)
@@ -465,6 +494,10 @@ class SchedulerNode:
         self.stream_timer = rospy.Timer(rospy.Duration(1.0 / stream_push_hz), self._stream_tick)
         plan_pub_hz = max(0.2, float(rospy.get_param("~global_plan_publish_hz", 1.0)))
         self.global_plan_timer = rospy.Timer(rospy.Duration(1.0 / plan_pub_hz), self._publish_global_plan_tick)
+        self.active_segment_timer = rospy.Timer(
+            rospy.Duration(1.0 / self._active_segment_publish_hz),
+            self._publish_active_segment_tick,
+        )
         # Default: do not allow chassis to consume /cmd_vel until task starts.
         self.task_enable_pub.publish(Bool(data=False))
 
@@ -527,6 +560,527 @@ class SchedulerNode:
             rospy.loginfo_throttle(2.0, "Published planned path to navigation: points=%d", len(msg.poses))
         except Exception as exc:
             rospy.logwarn_throttle(2.0, "Failed to publish path to navigation: %s", exc)
+
+    def _publish_active_segment_tick(self, _event):
+        if self.state != SchedulerState.RUNNING or not self._exec_active:
+            return
+        self._publish_active_segment_plan(reason="timer")
+
+    def _reset_active_segment_state(self):
+        self._path_arc_lengths = []
+        self._active_segments = []
+        self._active_segment_index = 0
+        self._active_segment_start_s = 0.0
+        self._active_segment_last_progress_s = 0.0
+        self._active_segment_last_switch_time = 0.0
+        self._active_segment_goal_sent_index = -1
+
+    def _path_cumulative_lengths(self, points):
+        lengths = []
+        total = 0.0
+        prev = None
+        for point in list(points or []):
+            x = float(point.get("x", 0.0))
+            y = float(point.get("y", 0.0))
+            if prev is not None:
+                total += math.hypot(x - prev[0], y - prev[1])
+            lengths.append(float(total))
+            prev = (x, y)
+        return lengths
+
+    def _ensure_path_arc_lengths(self):
+        if self.current_path is None or not self.current_path.points:
+            self._path_arc_lengths = []
+            return []
+        if len(self._path_arc_lengths) != len(self.current_path.points):
+            self._path_arc_lengths = self._path_cumulative_lengths(self.current_path.points)
+        return self._path_arc_lengths
+
+    def _index_at_arc_length(self, target_s):
+        path_s = self._ensure_path_arc_lengths()
+        if not path_s:
+            return 0
+        target_s = float(target_s)
+        for idx, value in enumerate(path_s):
+            if float(value) >= target_s:
+                return idx
+        return len(path_s) - 1
+
+    def _build_path_direction_runs(self):
+        runs = []
+        if self.current_path is None or not self.current_path.points:
+            return runs
+        points = self.current_path.points
+        path_s = self._ensure_path_arc_lengths()
+        n = len(points)
+        cursor = 0
+        cached_xy = [(float(p.get("x", 0.0)), float(p.get("y", 0.0))) for p in points]
+        while cursor < n:
+            end_idx = self._resolve_straight_segment_end_index(cursor)
+            end_idx = max(cursor, min(n - 1, int(end_idx)))
+            runs.append(
+                {
+                    "start": int(cursor),
+                    "end": int(end_idx),
+                    "goal": int(end_idx),
+                    "path_type": str(points[end_idx].get("path_type", "") or ""),
+                    "length": self._segment_length(cached_xy, cursor, end_idx),
+                    "yaw": self._segment_yaw(cached_xy, cursor, end_idx),
+                    "start_s": float(path_s[cursor]) if path_s else 0.0,
+                    "end_s": float(path_s[end_idx]) if path_s else 0.0,
+                }
+            )
+            if end_idx >= n - 1:
+                break
+            cursor = end_idx + 1
+        return runs
+
+    def _rebuild_active_segments(self):
+        self._active_segments = []
+        self._active_segment_index = 0
+        self._active_segment_start_s = 0.0
+        self._active_segment_last_progress_s = 0.0
+        self._active_segment_last_switch_time = 0.0
+        self._active_segment_goal_sent_index = -1
+        if self.current_path is None or not self.current_path.points:
+            self._path_arc_lengths = []
+            return
+        points = self.current_path.points
+        path_s = self._path_cumulative_lengths(points)
+        self._path_arc_lengths = path_s
+        if len(points) == 1:
+            self._active_segments = [
+                {
+                    "run_pos": 0,
+                    "start_index": 0,
+                    "end_index": 0,
+                    "start_s": 0.0,
+                    "end_s": 0.0,
+                    "length": 0.0,
+                }
+            ]
+            return
+
+        runs = self._build_path_direction_runs()
+        if not runs:
+            self._active_segments = [
+                {
+                    "run_pos": 0,
+                    "start_index": 0,
+                    "end_index": len(points) - 1,
+                    "start_s": 0.0,
+                    "end_s": float(path_s[-1]),
+                    "length": float(path_s[-1]),
+                }
+            ]
+            return
+
+        turn_positions = set()
+        for pos in range(len(runs)):
+            try:
+                if self._should_insert_corner_mid(runs, pos):
+                    turn_positions.add(pos)
+            except Exception:
+                pass
+
+        for pos, run in enumerate(runs):
+            if pos in turn_positions:
+                continue
+            start_s = float(run.get("start_s", 0.0))
+            end_s = float(run.get("end_s", start_s))
+            end_index = int(run.get("end", 0))
+            if pos + 1 < len(runs):
+                next_run = runs[pos + 1]
+                if pos + 1 in turn_positions:
+                    end_s = float(next_run.get("end_s", end_s))
+                    end_index = int(next_run.get("end", end_index))
+                    if pos + 2 < len(runs):
+                        lead_run = runs[pos + 2]
+                        lead_start_s = float(lead_run.get("start_s", end_s))
+                        lead_end_s = float(lead_run.get("end_s", lead_start_s))
+                        end_s = min(lead_end_s, lead_start_s + float(self._segment_next_lane_leadin_m))
+                        end_index = self._index_at_arc_length(end_s)
+                else:
+                    lead_start_s = float(next_run.get("start_s", end_s))
+                    lead_end_s = float(next_run.get("end_s", lead_start_s))
+                    if lead_end_s > lead_start_s:
+                        end_s = min(lead_end_s, lead_start_s + float(self._segment_next_lane_leadin_m))
+                        end_index = self._index_at_arc_length(end_s)
+            if end_s <= start_s + 1e-6 and int(run.get("end", 0)) < len(points) - 1:
+                continue
+            self._active_segments.append(
+                {
+                    "run_pos": int(pos),
+                    "start_index": int(run.get("start", 0)),
+                    "end_index": int(end_index),
+                    "start_s": float(start_s),
+                    "end_s": float(end_s),
+                    "length": max(0.0, float(end_s) - float(start_s)),
+                }
+            )
+
+        if not self._active_segments:
+            self._active_segments = [
+                {
+                    "run_pos": 0,
+                    "start_index": 0,
+                    "end_index": len(points) - 1,
+                    "start_s": 0.0,
+                    "end_s": float(path_s[-1]),
+                    "length": float(path_s[-1]),
+                }
+            ]
+        rospy.loginfo("Active path segments rebuilt: count=%d", len(self._active_segments))
+
+    def _interpolate_path_point_at_s(self, target_s):
+        points = list(self.current_path.points if self.current_path is not None else [])
+        path_s = self._ensure_path_arc_lengths()
+        if not points:
+            return {}
+        if len(points) == 1 or not path_s:
+            return dict(points[0])
+        target_s = max(0.0, min(float(target_s), float(path_s[-1])))
+        if target_s <= float(path_s[0]) + 1e-9:
+            return dict(points[0])
+        for idx in range(len(points) - 1):
+            s0 = float(path_s[idx])
+            s1 = float(path_s[idx + 1])
+            if target_s > s1 + 1e-9:
+                continue
+            denom = max(1e-9, s1 - s0)
+            ratio = max(0.0, min(1.0, (target_s - s0) / denom))
+            base = dict(points[idx + 1] if ratio >= 0.5 else points[idx])
+            x0 = float(points[idx].get("x", 0.0))
+            y0 = float(points[idx].get("y", 0.0))
+            x1 = float(points[idx + 1].get("x", 0.0))
+            y1 = float(points[idx + 1].get("y", 0.0))
+            base["x"] = x0 + (x1 - x0) * ratio
+            base["y"] = y0 + (y1 - y0) * ratio
+            if "row" in points[idx] and "row" in points[idx + 1]:
+                base["row"] = float(points[idx].get("row", 0.0)) + (
+                    float(points[idx + 1].get("row", 0.0)) - float(points[idx].get("row", 0.0))
+                ) * ratio
+            if "col" in points[idx] and "col" in points[idx + 1]:
+                base["col"] = float(points[idx].get("col", 0.0)) + (
+                    float(points[idx + 1].get("col", 0.0)) - float(points[idx].get("col", 0.0))
+                ) * ratio
+            base["point_type"] = "segment_boundary"
+            base["index"] = self._index_at_arc_length(target_s)
+            return base
+        return dict(points[-1])
+
+    def _slice_path_points_by_arc(self, start_s, end_s):
+        points = list(self.current_path.points if self.current_path is not None else [])
+        path_s = self._ensure_path_arc_lengths()
+        if not points:
+            return []
+        if not path_s:
+            return [dict(p) for p in points]
+        start_s = max(0.0, min(float(start_s), float(path_s[-1])))
+        end_s = max(start_s, min(float(end_s), float(path_s[-1])))
+        sliced = [self._interpolate_path_point_at_s(start_s)]
+        for idx, value in enumerate(path_s):
+            value = float(value)
+            if start_s + 1e-5 < value < end_s - 1e-5:
+                sliced.append(dict(points[idx]))
+        if end_s > start_s + 1e-5:
+            sliced.append(self._interpolate_path_point_at_s(end_s))
+
+        deduped = []
+        for point in sliced:
+            if not point:
+                continue
+            if deduped:
+                prev = deduped[-1]
+                if math.hypot(
+                    float(point.get("x", 0.0)) - float(prev.get("x", 0.0)),
+                    float(point.get("y", 0.0)) - float(prev.get("y", 0.0)),
+                ) < 1e-4:
+                    continue
+            deduped.append(point)
+        return deduped
+
+    def _path_tangent_quaternion_for_points(self, points, index):
+        if not points:
+            return self._yaw_to_quaternion(0.0)
+        index = max(0, min(len(points) - 1, int(index)))
+        cx = float(points[index].get("x", 0.0))
+        cy = float(points[index].get("y", 0.0))
+        for next_idx in range(index + 1, len(points)):
+            nx = float(points[next_idx].get("x", 0.0))
+            ny = float(points[next_idx].get("y", 0.0))
+            if math.hypot(nx - cx, ny - cy) > 1e-6:
+                return self._yaw_to_quaternion(math.atan2(ny - cy, nx - cx))
+        for prev_idx in range(index - 1, -1, -1):
+            px = float(points[prev_idx].get("x", 0.0))
+            py = float(points[prev_idx].get("y", 0.0))
+            if math.hypot(cx - px, cy - py) > 1e-6:
+                return self._yaw_to_quaternion(math.atan2(cy - py, cx - px))
+        return self._yaw_to_quaternion(0.0)
+
+    def _path_tangent_quaternion_at_s(self, target_s):
+        points = list(self.current_path.points if self.current_path is not None else [])
+        path_s = self._ensure_path_arc_lengths()
+        if len(points) < 2 or not path_s:
+            return self._yaw_to_quaternion(0.0)
+        target_s = max(0.0, min(float(target_s), float(path_s[-1])))
+        chosen = 0
+        for idx in range(len(points) - 1):
+            if float(path_s[idx]) - 1e-6 <= target_s <= float(path_s[idx + 1]) + 1e-6:
+                chosen = idx
+                break
+        if chosen >= len(points) - 1:
+            chosen = len(points) - 2
+        x0 = float(points[chosen].get("x", 0.0))
+        y0 = float(points[chosen].get("y", 0.0))
+        x1 = float(points[chosen + 1].get("x", 0.0))
+        y1 = float(points[chosen + 1].get("y", 0.0))
+        if math.hypot(x1 - x0, y1 - y0) <= 1e-6:
+            return self._path_tangent_quaternion_for_points(points, chosen)
+        return self._yaw_to_quaternion(math.atan2(y1 - y0, x1 - x0))
+
+    def _build_navigation_path_from_segment_points(self, segment_points):
+        nav_path = Path()
+        alignment_yaw = self._navigation_alignment_yaw()
+        source_frame = (
+            self.current_path.nav_path.header.frame_id
+            if self.current_path is not None
+            and self.current_path.nav_path is not None
+            and self.current_path.nav_path.header.frame_id
+            else self._live_map_source_frame
+        )
+        nav_path.header.frame_id = self._live_map_aligned_frame if alignment_yaw is not None else source_frame
+        nav_path.header.stamp = rospy.Time(0)
+        for idx, point in enumerate(segment_points):
+            raw_x = float(point.get("x", 0.0))
+            raw_y = float(point.get("y", 0.0))
+            nav_x, nav_y = self._point_to_navigation_frame(raw_x, raw_y, alignment_yaw)
+            quat = self._path_tangent_quaternion_for_points(segment_points, idx)
+            quat = self._quaternion_to_navigation_frame(quat, alignment_yaw)
+            pose = PoseStamped()
+            pose.header.frame_id = nav_path.header.frame_id
+            pose.header.stamp = rospy.Time(0)
+            pose.pose.position.x = float(nav_x)
+            pose.pose.position.y = float(nav_y)
+            pose.pose.orientation.x = float(quat["x"])
+            pose.pose.orientation.y = float(quat["y"])
+            pose.pose.orientation.z = float(quat["z"])
+            pose.pose.orientation.w = float(quat["w"])
+            nav_path.poses.append(pose)
+        return nav_path
+
+    def _active_segment_window_s(self):
+        if not self._active_segments:
+            return None
+        index = max(0, min(int(self._active_segment_index), len(self._active_segments) - 1))
+        segment = self._active_segments[index]
+        end_s = float(segment.get("end_s", 0.0))
+        start_s = float(self._active_segment_start_s)
+        if start_s >= end_s:
+            start_s = float(segment.get("start_s", 0.0))
+        start_s = max(0.0, min(start_s, end_s))
+        return start_s, end_s, segment
+
+    def _publish_active_segment_plan(self, reason=""):
+        try:
+            if self.current_path is None or not self.current_path.points:
+                return
+            if not self._active_segments:
+                self._rebuild_active_segments()
+            window = self._active_segment_window_s()
+            if window is None:
+                return
+            start_s, end_s, _segment = window
+            segment_points = self._slice_path_points_by_arc(start_s, end_s)
+            if not segment_points:
+                return
+            msg = self._build_navigation_path_from_segment_points(segment_points)
+            self.active_segment_plan_pub.publish(msg)
+            rospy.loginfo_throttle(
+                2.0,
+                "Published active segment plan: segment=%d/%d points=%d reason=%s",
+                int(self._active_segment_index) + 1,
+                len(self._active_segments),
+                len(msg.poses),
+                reason or "<empty>",
+            )
+        except Exception as exc:
+            rospy.logwarn_throttle(2.0, "Failed to publish active segment plan: %s", exc)
+
+    def _send_active_segment_goal(self, force=False, reason=""):
+        if self.current_path is None or not self.current_path.points:
+            return
+        if not self._active_segments:
+            self._rebuild_active_segments()
+        if not self._active_segments:
+            return
+        segment_index = max(0, min(int(self._active_segment_index), len(self._active_segments) - 1))
+        if (not force) and self._active_segment_goal_sent_index == segment_index:
+            return
+        segment = self._active_segments[segment_index]
+        goal_s = float(segment.get("end_s", 0.0))
+        endpoint = self._interpolate_path_point_at_s(goal_s)
+        goal_index = self._index_at_arc_length(goal_s)
+        quat = self._path_tangent_quaternion_at_s(goal_s)
+        self.goal_pub.publish(self._build_navigation_goal_msg(endpoint, goal_index, quat))
+        self._active_segment_goal_sent_index = segment_index
+        self._exec_goal_start_time = time.time()
+        rospy.loginfo(
+            "Published active segment goal: segment=%d/%d path_index=%d x=%.3f y=%.3f reason=%s",
+            segment_index + 1,
+            len(self._active_segments),
+            int(goal_index),
+            float(endpoint.get("x", 0.0)),
+            float(endpoint.get("y", 0.0)),
+            reason or "<empty>",
+        )
+
+    def _project_pose_to_path_progress(self, x, y, min_s=None, max_s=None):
+        points = list(self.current_path.points if self.current_path is not None else [])
+        path_s = self._ensure_path_arc_lengths()
+        if not points:
+            return {"progress_s": 0.0, "index": 0, "distance": float("inf")}
+        if len(points) == 1 or not path_s:
+            return {
+                "progress_s": 0.0,
+                "index": 0,
+                "distance": math.hypot(float(points[0].get("x", 0.0)) - x, float(points[0].get("y", 0.0)) - y),
+            }
+        min_bound = 0.0 if min_s is None else max(0.0, float(min_s))
+        max_bound = float(path_s[-1]) if max_s is None else min(float(path_s[-1]), float(max_s))
+        if max_bound < min_bound:
+            max_bound = min_bound
+        best = {"progress_s": min_bound, "index": 0, "distance": float("inf")}
+        for idx in range(len(points) - 1):
+            s0 = float(path_s[idx])
+            s1 = float(path_s[idx + 1])
+            if s1 < min_bound - 1e-6 or s0 > max_bound + 1e-6:
+                continue
+            x0 = float(points[idx].get("x", 0.0))
+            y0 = float(points[idx].get("y", 0.0))
+            x1 = float(points[idx + 1].get("x", 0.0))
+            y1 = float(points[idx + 1].get("y", 0.0))
+            dx = x1 - x0
+            dy = y1 - y0
+            seg_len_sq = dx * dx + dy * dy
+            if seg_len_sq <= 1e-12:
+                raw_s = s0
+            else:
+                t = ((float(x) - x0) * dx + (float(y) - y0) * dy) / seg_len_sq
+                t = max(0.0, min(1.0, t))
+                raw_s = s0 + (s1 - s0) * t
+            raw_s = max(min_bound, min(max_bound, raw_s))
+            interp = self._interpolate_path_point_at_s(raw_s)
+            px = float(interp.get("x", 0.0))
+            py = float(interp.get("y", 0.0))
+            distance = math.hypot(px - float(x), py - float(y))
+            if distance < float(best["distance"]):
+                best = {
+                    "progress_s": float(raw_s),
+                    "index": self._index_at_arc_length(raw_s),
+                    "distance": float(distance),
+                }
+        if best["distance"] == float("inf"):
+            interp = self._interpolate_path_point_at_s(min_bound)
+            best = {
+                "progress_s": float(min_bound),
+                "index": self._index_at_arc_length(min_bound),
+                "distance": math.hypot(float(interp.get("x", 0.0)) - float(x), float(interp.get("y", 0.0)) - float(y)),
+            }
+        return best
+
+    def _project_robot_to_active_segment(self):
+        pose = self.aurora_bridge.get_pose()
+        window = self._active_segment_window_s()
+        if window is None:
+            return self._project_pose_to_path_progress(float(pose.get("x", 0.0)), float(pose.get("y", 0.0)))
+        start_s, end_s, _segment = window
+        return self._project_pose_to_path_progress(
+            float(pose.get("x", 0.0)),
+            float(pose.get("y", 0.0)),
+            min_s=start_s,
+            max_s=end_s,
+        )
+
+    def _activate_segment(self, segment_index, projection=None, send_goal=True, reason=""):
+        if not self._active_segments:
+            self._rebuild_active_segments()
+        if not self._active_segments:
+            return False
+        segment_index = max(0, min(int(segment_index), len(self._active_segments) - 1))
+        if projection is None:
+            pose = self.aurora_bridge.get_pose()
+            projection = self._project_pose_to_path_progress(float(pose.get("x", 0.0)), float(pose.get("y", 0.0)))
+        progress_s = float(projection.get("progress_s", 0.0))
+        self._active_segment_index = segment_index
+        self._active_segment_start_s = max(0.0, progress_s - float(self._segment_overlap_behind_m))
+        self._active_segment_last_progress_s = progress_s
+        self._active_segment_goal_sent_index = -1
+        self.current_path_index = max(self.current_path_index, int(projection.get("index", self.current_path_index)))
+        self._publish_active_segment_plan(reason=reason or "segment_activate")
+        if send_goal:
+            self._send_active_segment_goal(force=True, reason=reason or "segment_activate")
+        return True
+
+    def _init_segment_execution_cursor(self):
+        if self.current_path is None or not self.current_path.points:
+            self.current_path_index = 0
+            self._reset_active_segment_state()
+            return
+        if not self._active_segments:
+            self._rebuild_active_segments()
+        pose = self.aurora_bridge.get_pose()
+        projection = self._project_pose_to_path_progress(float(pose.get("x", 0.0)), float(pose.get("y", 0.0)))
+        progress_s = float(projection.get("progress_s", 0.0))
+        target_index = len(self._active_segments) - 1 if self._active_segments else 0
+        for idx, segment in enumerate(self._active_segments):
+            if float(segment.get("end_s", 0.0)) > progress_s + 0.05:
+                target_index = idx
+                break
+        self.current_path_index = int(projection.get("index", 0))
+        self._activate_segment(target_index, projection=projection, send_goal=False, reason="cursor_init")
+
+    def _switch_to_next_active_segment(self, projection):
+        if not self._active_segments:
+            return False
+        if self._active_segment_index >= len(self._active_segments) - 1:
+            return False
+        now = time.time()
+        if now - float(self._active_segment_last_switch_time) < 0.2:
+            return False
+        self._active_segment_last_switch_time = now
+        next_index = int(self._active_segment_index) + 1
+        return self._activate_segment(
+            next_index,
+            projection=projection,
+            send_goal=True,
+            reason="segment_switch",
+        )
+
+    def _finish_path_execution(self, stop_reason="completed"):
+        if self.current_path is None or not self.current_path.points:
+            return
+        self._mark_current_region_repeat_done()
+        if self._try_advance_to_next_region():
+            return
+        self._exec_active = False
+        self._disc_auto_cover_desired = False
+        self._reset_disc_motion_guard()
+        self._set_cmd_vel_forward_runtime_active(False, publish_zero=True, reason="task_complete")
+        self.disc_enable_pub.publish(Bool(data=False))
+        self.light_pub.publish(Bool(data=False))
+        self._safe_stop_motion()
+        self._exec_region_order = []
+        self._exec_region_index = -1
+        self.state = SchedulerState.COMPLETED
+        self._task_stop_reason = str(stop_reason or "completed")
+        self._finalize_task_result(stop_reason=self._task_stop_reason)
+        rospy.loginfo(
+            "Path execution completed: task_id=%s path_version=%s reason=%s",
+            self.current_path.task_id,
+            self.current_path.path_version,
+            self._task_stop_reason,
+        )
 
     def _navigation_alignment_yaw(self):
         if not self._live_map_align_to_initial_yaw:
@@ -1599,7 +2153,7 @@ class SchedulerNode:
                     length_m=float(path_payload.get("length_m", 0.0)),
                 )
                 self.current_path_index = 0
-                self._rebuild_goal_points()
+                self._rebuild_active_segments()
             rospy.loginfo("Loaded scheduler local state from %s", self._persist_state_dir)
         except Exception as exc:
             rospy.logwarn("Failed to load scheduler local state: %s", exc)
@@ -2374,7 +2928,7 @@ class SchedulerNode:
             rospy.loginfo("Skip prepending current pose point because request_start_pose is provided")
         else:
             rospy.loginfo("Skip prepending current pose point because has_task_info=false")
-        self._rebuild_goal_points()
+        self._rebuild_active_segments()
         self.current_path.nav_path.header.stamp = rospy.Time.now()
         for pose in self.current_path.nav_path.poses:
             pose.header.stamp = self.current_path.nav_path.header.stamp
@@ -2943,16 +3497,17 @@ class SchedulerNode:
         self._disc_auto_cover_desired = True
         self._reset_disc_motion_guard()
         self.light_pub.publish(Bool(data=True))
-        self._init_path_execution_cursor()
+        self._init_segment_execution_cursor()
         self._exec_active = True
-        self._exec_publish_start_pose_once = True
+        self._exec_publish_start_pose_once = False
         self._exec_region_repeat_done = {}
         self._task_stop_reason = ""
         self._set_cmd_vel_forward_runtime_active(True, publish_zero=False, reason="task_start_nav_cmd_vel_forward")
         self._exec_last_send_time = 0.0
         self._exec_goal_start_time = time.time()
         self._publish_path_to_navigation(publish_goal=False, reason="task_start")
-        self._dispatch_current_goal(force=True)
+        self._publish_active_segment_plan(reason="task_start")
+        self._send_active_segment_goal(force=True, reason="task_start")
         self.state = SchedulerState.RUNNING
         rospy.loginfo(
             "Task execution started: regions=%s active=%s mode=%s",
@@ -2980,14 +3535,16 @@ class SchedulerNode:
         self.disc_enable_pub.publish(Bool(data=True))
         self._disc_auto_cover_desired = True
         self._reset_disc_motion_guard()
-        if self._exec_goal_index <= 0 or self._exec_goal_index >= len(self.current_path.points):
-            self._init_path_execution_cursor()
+        if not self._active_segments:
+            self._rebuild_active_segments()
+        self._init_segment_execution_cursor()
         self._exec_active = True
-        self._exec_publish_start_pose_once = True
+        self._exec_publish_start_pose_once = False
         self._set_cmd_vel_forward_runtime_active(True, publish_zero=False, reason="task_resume_nav_cmd_vel_forward")
         self._exec_goal_start_time = time.time()
         self._publish_path_to_navigation(publish_goal=False, reason="task_resume")
-        self._dispatch_current_goal(force=True)
+        self._publish_active_segment_plan(reason="task_resume")
+        self._send_active_segment_goal(force=True, reason="task_resume")
         self.state = SchedulerState.RUNNING
         return True, "Task resumed"
 
@@ -3536,11 +4093,13 @@ class SchedulerNode:
         self.light_pub.publish(Bool(data=True))
         self._exec_region_order = region_order
         self._exec_region_index = next_idx
-        self._init_path_execution_cursor()
+        self._init_segment_execution_cursor()
         self._exec_active = True
         self._exec_last_send_time = 0.0
         self._exec_goal_start_time = time.time()
-        self._dispatch_current_goal(force=True)
+        self._publish_active_segment_plan(reason="next_region")
+        self._send_active_segment_goal(force=True, reason="next_region")
+        self.state = SchedulerState.RUNNING
         return True
 
     def _tick_path_execution(self):
@@ -3551,31 +4110,61 @@ class SchedulerNode:
         if self.current_path is None or not self.current_path.points:
             self._exec_active = False
             return
-        if not self._goal_points:
-            self._rebuild_goal_points()
-        if not self._goal_points:
+        if not self._active_segments:
+            self._rebuild_active_segments()
+        if not self._active_segments:
             self._exec_active = False
             return
-        if self._exec_goal_index < 0 or self._exec_goal_index >= len(self._goal_points):
-            self._exec_goal_index = max(0, min(self._exec_goal_index, len(self._goal_points) - 1))
-        goal = self._goal_points[self._exec_goal_index]
+        self._active_segment_index = max(
+            0, min(int(self._active_segment_index), len(self._active_segments) - 1)
+        )
+        projection = self._project_robot_to_active_segment()
+        observed_progress_s = float(projection.get("progress_s", 0.0))
+        progress_s = max(float(self._active_segment_last_progress_s), observed_progress_s)
+        self._active_segment_last_progress_s = progress_s
+        self.current_path_index = max(self.current_path_index, int(projection.get("index", self.current_path_index)))
+        if 0 <= self.current_path_index < len(self.current_path.points):
+            self._apply_disc_state_for_path_point(self.current_path.points[self.current_path_index])
+
+        path_s = self._ensure_path_arc_lengths()
+        final_point = self.current_path.points[-1]
         pose = self.aurora_bridge.get_pose()
-        dist = math.hypot(float(goal.get("x", 0.0)) - pose["x"], float(goal.get("y", 0.0)) - pose["y"])
-        if dist <= self._exec_goal_reach_dist:
-            self.current_path_index = max(self.current_path_index, int(goal.get("path_index", 0)))
-            self._advance_goal_or_finish()
+        final_dist = math.hypot(
+            float(final_point.get("x", 0.0)) - float(pose.get("x", 0.0)),
+            float(final_point.get("y", 0.0)) - float(pose.get("y", 0.0)),
+        )
+        is_last_segment = self._active_segment_index >= len(self._active_segments) - 1
+        if is_last_segment:
+            remaining_final_s = float(path_s[-1]) - progress_s if path_s else final_dist
+            if final_dist <= self._exec_goal_reach_dist or remaining_final_s <= self._exec_goal_reach_dist:
+                self.current_path_index = len(self.current_path.points) - 1
+                self._finish_path_execution(stop_reason="completed")
+                return
+            if self._active_segment_goal_sent_index != self._active_segment_index:
+                self._send_active_segment_goal(force=True, reason="last_segment_goal_missing")
             return
-        if (time.time() - self._exec_goal_start_time) > self._exec_segment_timeout:
-            rospy.logwarn(
-                "Path execution timeout on segment-goal=%d dist=%.3f, republish current segment endpoint",
-                int(goal.get("path_index", self._exec_goal_index)),
-                dist,
-            )
-            # Do not advance on timeout; keep current segment goal and republish it.
-            self._dispatch_current_goal(force=True)
-            self._exec_goal_start_time = time.time()
+
+        segment = self._active_segments[self._active_segment_index]
+        segment_start_s = float(segment.get("start_s", 0.0))
+        segment_end_s = float(segment.get("end_s", segment_start_s))
+        segment_len = max(0.0, segment_end_s - segment_start_s)
+        next_segment = self._active_segments[self._active_segment_index + 1]
+        next_segment_start_s = float(next_segment.get("start_s", segment_end_s))
+        should_switch = False
+        if segment_len <= float(self._segment_switch_distance_m):
+            ratio = 1.0 if segment_len <= 1e-6 else (progress_s - segment_start_s) / segment_len
+            should_switch = ratio >= float(self._segment_short_progress_ratio)
+        else:
+            should_switch = (segment_end_s - progress_s) <= float(self._segment_switch_distance_m)
+        if progress_s >= segment_end_s - 1e-3:
+            should_switch = True
+        if progress_s < next_segment_start_s - 1e-3:
+            should_switch = False
+        if should_switch:
+            self._switch_to_next_active_segment(projection)
             return
-        self._dispatch_current_goal(force=False)
+        if self._active_segment_goal_sent_index != self._active_segment_index:
+            self._send_active_segment_goal(force=True, reason="segment_goal_missing")
 
     def _set_chassis_enabled(self, enabled):
         # Requirement update:
@@ -3596,6 +4185,21 @@ class SchedulerNode:
             self.current_path_index = 0
             return
         pose = self.aurora_bridge.get_pose()
+        if self.state == SchedulerState.RUNNING and self._active_segments:
+            projection = self._project_robot_to_active_segment()
+            self.current_path_index = max(self.current_path_index, int(projection.get("index", self.current_path_index)))
+            final_point = self.current_path.points[-1]
+            final_dist = math.hypot(
+                float(final_point.get("x", 0.0)) - float(pose.get("x", 0.0)),
+                float(final_point.get("y", 0.0)) - float(pose.get("y", 0.0)),
+            )
+            if (
+                self._active_segment_index >= len(self._active_segments) - 1
+                and final_dist <= self._exec_goal_reach_dist
+            ):
+                self.current_path_index = len(self.current_path.points) - 1
+                self._finish_path_execution(stop_reason="completed_progress")
+            return
         nearest_index = 0
         nearest_distance = float("inf")
         for index, point in enumerate(self.current_path.points):
@@ -3605,14 +4209,7 @@ class SchedulerNode:
                 nearest_index = index
         self.current_path_index = nearest_index
         if self.state == SchedulerState.RUNNING and nearest_index >= len(self.current_path.points) - 1:
-            # Task finished: stop disc rotation without lifting.
-            self._disc_auto_cover_desired = False
-            self._reset_disc_motion_guard()
-            self._set_cmd_vel_forward_runtime_active(False, publish_zero=True, reason="task_complete_progress")
-            self.disc_enable_pub.publish(Bool(data=False))
-            self.state = SchedulerState.COMPLETED
-            self._task_stop_reason = "completed"
-            self._finalize_task_result(stop_reason="completed")
+            self._finish_path_execution(stop_reason="completed_progress")
 
     def _publish_status(self):
         pose = self.aurora_bridge.get_pose()

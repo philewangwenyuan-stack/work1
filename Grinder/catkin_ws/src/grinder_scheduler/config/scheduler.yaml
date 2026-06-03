@@ -151,6 +151,13 @@ local_rtsp_log_dir: temp
 scheduler_tick_hz: 5
 # 调度发布全局路径频率（Hz）
 global_plan_publish_hz: 2
+# Active navigation segment path (full path display remains on /grinder/GlobalPlanner/plan)
+active_segment_plan_topic: /grinder/navigation/active_segment_plan
+active_segment_publish_hz: 3.0
+path_segment_switch_distance_m: 2.8
+path_segment_short_progress_ratio: 0.85
+path_segment_next_lane_leadin_m: 0.4
+path_segment_overlap_behind_m: 0.3
 # 目标点到达阈值（米）：小于该值判定“到达当前 goal”，建议小于路径点间距（如 0.03）
 path_goal_reach_dist: 0.12
 # 当前段目标超时时间（秒）：超过后重发当前段终点（不切下一段）

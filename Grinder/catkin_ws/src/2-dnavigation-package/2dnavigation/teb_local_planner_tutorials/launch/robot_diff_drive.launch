@@ -30,6 +30,11 @@
 		<param name="base_global_planner" value="carrot_planner/CarrotPlanner" />
 		<param name="planner_frequency" value="1.0" />
 		<param name="planner_patience" value="5.0" />
+		<param name="CarrotPlanner/use_external_plan" value="true" />
+		<param name="CarrotPlanner/external_plan_topic" value="/grinder/navigation/active_segment_plan" />
+		<param name="CarrotPlanner/external_plan_max_age_s" value="2.0" />
+		<param name="CarrotPlanner/external_plan_goal_tolerance_m" value="0.5" />
+		<param name="CarrotPlanner/external_plan_wait_timeout_s" value="0.2" />
 
 		<param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
 		<param name="controller_frequency" value="10.0" />

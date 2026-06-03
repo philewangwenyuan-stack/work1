@@ -7,6 +7,7 @@ find_package(catkin REQUIRED
     base_local_planner
     costmap_2d
     nav_core
+    nav_msgs
     pluginlib
     roscpp
     tf2
@@ -28,6 +29,7 @@ catkin_package(
     base_local_planner
     costmap_2d
     nav_core
+    nav_msgs
     pluginlib
     roscpp
     tf2
@@ -54,5 +56,4 @@ install(DIRECTORY include/${PROJECT_NAME}/
 install(FILES bgp_plugin.xml
     DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
-
 

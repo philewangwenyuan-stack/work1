@@ -26,6 +26,7 @@
     <depend>costmap_2d</depend>
     <depend>eigen</depend>
     <depend>nav_core</depend>
+    <depend>nav_msgs</depend>
     <depend>pluginlib</depend>
     <depend>roscpp</depend>
     <depend>tf2</depend>
@@ -35,5 +36,4 @@
         <nav_core plugin="${prefix}/bgp_plugin.xml" />
     </export>
 </package>
-
 

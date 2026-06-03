@@ -40,6 +40,10 @@
 #include <tf2/convert.h>
 #include <tf2/utils.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/thread/locks.hpp>
+#include <algorithm>
+#include <cmath>
 
 //register this planner as a BaseGlobalPlanner plugin
 PLUGINLIB_EXPORT_CLASS(carrot_planner::CarrotPlanner, nav_core::BaseGlobalPlanner)
@@ -47,14 +51,21 @@ PLUGINLIB_EXPORT_CLASS(carrot_planner::CarrotPlanner, nav_core::BaseGlobalPlanne
 namespace carrot_planner {
 
   CarrotPlanner::CarrotPlanner()
-  : costmap_ros_(NULL), costmap_(NULL), world_model_(NULL), initialized_(false){}
+  : costmap_ros_(NULL), costmap_(NULL), world_model_(NULL), use_external_plan_(true),
+    external_plan_max_age_s_(2.0), external_plan_goal_tolerance_m_(0.5),
+    external_plan_wait_timeout_s_(0.2), has_external_plan_(false), initialized_(false){}
 
   CarrotPlanner::CarrotPlanner(std::string name, costmap_2d::Costmap2DROS* costmap_ros)
-  : costmap_ros_(NULL), costmap_(NULL), world_model_(NULL), initialized_(false){
+  : costmap_ros_(NULL), costmap_(NULL), world_model_(NULL), use_external_plan_(true),
+    external_plan_max_age_s_(2.0), external_plan_goal_tolerance_m_(0.5),
+    external_plan_wait_timeout_s_(0.2), has_external_plan_(false), initialized_(false){
     initialize(name, costmap_ros);
   }
 
   CarrotPlanner::~CarrotPlanner() {
+    if (external_plan_spinner_) {
+      external_plan_spinner_->stop();
+    }
     // deleting a nullptr is a noop
     delete world_model_;
   }
@@ -67,7 +78,24 @@ namespace carrot_planner {
       ros::NodeHandle private_nh("~/" + name);
       private_nh.param("step_size", step_size_, costmap_->getResolution());
       private_nh.param("min_dist_from_robot", min_dist_from_robot_, 0.10);
+      private_nh.param("use_external_plan", use_external_plan_, true);
+      private_nh.param("external_plan_topic", external_plan_topic_, std::string("/grinder/navigation/active_segment_plan"));
+      private_nh.param("external_plan_max_age_s", external_plan_max_age_s_, 2.0);
+      private_nh.param("external_plan_goal_tolerance_m", external_plan_goal_tolerance_m_, 0.5);
+      private_nh.param("external_plan_wait_timeout_s", external_plan_wait_timeout_s_, 0.2);
       world_model_ = new base_local_planner::CostmapModel(*costmap_); 
+
+      if (use_external_plan_) {
+        ros::NodeHandle external_nh;
+        external_nh.setCallbackQueue(&external_plan_queue_);
+        external_plan_sub_ = external_nh.subscribe<nav_msgs::Path>(
+            external_plan_topic_, 1, &CarrotPlanner::externalPlanCB, this);
+        external_plan_spinner_.reset(new ros::AsyncSpinner(1, &external_plan_queue_));
+        external_plan_spinner_->start();
+        ROS_INFO("CarrotPlanner external segment plan enabled: topic=%s max_age=%.3fs goal_tol=%.3fm wait=%.3fs",
+            external_plan_topic_.c_str(), external_plan_max_age_s_,
+            external_plan_goal_tolerance_m_, external_plan_wait_timeout_s_);
+      }
 
       initialized_ = true;
     }
@@ -111,6 +139,21 @@ namespace carrot_planner {
           costmap_ros_->getGlobalFrameID().c_str(), goal.header.frame_id.c_str());
       return false;
     }
+
+    if (use_external_plan_ && getExternalPlanForGoal(goal, plan)) {
+      ROS_INFO_THROTTLE(2.0, "CarrotPlanner returned external active segment plan: points=%lu",
+          static_cast<unsigned long>(plan.size()));
+      return true;
+    }
+
+    ROS_WARN_THROTTLE(2.0, "CarrotPlanner external active segment unavailable or unmatched; falling back to two-point carrot plan.");
+    return makeCarrotPlan(start, goal, plan);
+  }
+
+  bool CarrotPlanner::makeCarrotPlan(const geometry_msgs::PoseStamped& start,
+      const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan){
+
+    plan.clear();
 
     const double start_yaw = tf2::getYaw(start.pose.orientation);
     const double goal_yaw = tf2::getYaw(goal.pose.orientation);
@@ -169,7 +212,82 @@ namespace carrot_planner {
     new_goal.pose.orientation.w = goal_quat.w();
 
     plan.push_back(new_goal);
-    return (done);
+    if (!done) {
+      ROS_WARN_THROTTLE(2.0, "CarrotPlanner fallback could not find a valid footprint target; returning start-clamped two-point plan.");
+    }
+    return true;
+  }
+
+  void CarrotPlanner::externalPlanCB(const nav_msgs::Path::ConstPtr& path_msg) {
+    boost::mutex::scoped_lock lock(external_plan_mutex_);
+    latest_external_plan_ = *path_msg;
+    latest_external_plan_receive_time_ = ros::Time::now();
+    has_external_plan_ = !latest_external_plan_.poses.empty();
+    external_plan_cv_.notify_all();
+  }
+
+  bool CarrotPlanner::getExternalPlanForGoal(const geometry_msgs::PoseStamped& goal,
+      std::vector<geometry_msgs::PoseStamped>& plan) {
+    if (!use_external_plan_) {
+      return false;
+    }
+    ros::Time deadline = ros::Time::now() + ros::Duration(std::max(0.0, external_plan_wait_timeout_s_));
+    boost::unique_lock<boost::mutex> lock(external_plan_mutex_);
+    while (ros::ok()) {
+      if (copyMatchingExternalPlanLocked(goal, plan)) {
+        return true;
+      }
+      if (ros::Time::now() >= deadline) {
+        return false;
+      }
+      external_plan_cv_.timed_wait(lock, boost::posix_time::milliseconds(20));
+    }
+    return false;
+  }
+
+  bool CarrotPlanner::copyMatchingExternalPlanLocked(const geometry_msgs::PoseStamped& goal,
+      std::vector<geometry_msgs::PoseStamped>& plan) {
+    if (!has_external_plan_ || latest_external_plan_.poses.size() < 2) {
+      return false;
+    }
+    const ros::Time now = ros::Time::now();
+    if (external_plan_max_age_s_ > 0.0 &&
+        (now - latest_external_plan_receive_time_).toSec() > external_plan_max_age_s_) {
+      ROS_WARN_THROTTLE(2.0, "External active segment plan is stale: age=%.3fs max=%.3fs",
+          (now - latest_external_plan_receive_time_).toSec(), external_plan_max_age_s_);
+      return false;
+    }
+    const std::string plan_frame = latest_external_plan_.header.frame_id.empty()
+        ? latest_external_plan_.poses.front().header.frame_id
+        : latest_external_plan_.header.frame_id;
+    if (plan_frame != costmap_ros_->getGlobalFrameID()) {
+      ROS_WARN_THROTTLE(2.0, "External active segment frame mismatch: plan=%s global=%s",
+          plan_frame.c_str(), costmap_ros_->getGlobalFrameID().c_str());
+      return false;
+    }
+
+    const geometry_msgs::PoseStamped& last_pose = latest_external_plan_.poses.back();
+    const double dx = last_pose.pose.position.x - goal.pose.position.x;
+    const double dy = last_pose.pose.position.y - goal.pose.position.y;
+    const double goal_dist = std::sqrt(dx * dx + dy * dy);
+    if (goal_dist > external_plan_goal_tolerance_m_) {
+      ROS_WARN_THROTTLE(2.0, "External active segment endpoint mismatch: dist=%.3fm tol=%.3fm points=%lu",
+          goal_dist, external_plan_goal_tolerance_m_,
+          static_cast<unsigned long>(latest_external_plan_.poses.size()));
+      return false;
+    }
+
+    plan.clear();
+    plan.reserve(latest_external_plan_.poses.size());
+    for (std::size_t i = 0; i < latest_external_plan_.poses.size(); ++i) {
+      geometry_msgs::PoseStamped pose = latest_external_plan_.poses[i];
+      if (pose.header.frame_id.empty()) {
+        pose.header.frame_id = plan_frame;
+      }
+      pose.header.stamp = ros::Time(0);
+      plan.push_back(pose);
+    }
+    return true;
   }
 
 };
