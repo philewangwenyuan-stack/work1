@@ -594,7 +594,8 @@ namespace move_base {
       if (last_goal != temp_goal)
       {
         planner_plan_->clear();
-      last_goal = temp_goal;
+        last_goal = temp_goal;
+      }
       bool gotPlan = n.ok() && makePlan(temp_goal, *planner_plan_);
 
       if(gotPlan){
@@ -642,7 +643,6 @@ namespace move_base {
 
       //take the mutex for the next iteration
       
-    }
     lock.lock();
       //setup sleep interface if needed
       if(planner_frequency_ > 0){

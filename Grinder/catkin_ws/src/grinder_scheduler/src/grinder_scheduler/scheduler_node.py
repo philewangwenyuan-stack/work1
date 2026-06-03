@@ -113,6 +113,8 @@ class SchedulerNode:
         self._active_segment_index = 0
         self._active_segment_start_s = 0.0
         self._active_segment_last_progress_s = 0.0
+        self._active_segment_stall_progress_s = 0.0
+        self._active_segment_last_progress_update_time = time.time()
         self._active_segment_last_switch_time = 0.0
         self._active_segment_goal_sent_index = -1
         self._goal_points = []
@@ -158,10 +160,16 @@ class SchedulerNode:
             max(0.1, float(rospy.get_param("~path_segment_short_progress_ratio", 0.85))),
         )
         self._segment_next_lane_leadin_m = max(
-            0.0, float(rospy.get_param("~path_segment_next_lane_leadin_m", 0.4))
+            0.0, float(rospy.get_param("~path_segment_next_lane_leadin_m", 0.7))
         )
         self._segment_overlap_behind_m = max(
             0.0, float(rospy.get_param("~path_segment_overlap_behind_m", 0.3))
+        )
+        self._active_segment_goal_refresh_s = max(
+            0.0, float(rospy.get_param("~active_segment_goal_refresh_s", 2.0))
+        )
+        self._active_segment_progress_epsilon_m = max(
+            0.001, float(rospy.get_param("~active_segment_progress_epsilon_m", 0.1))
         )
         self._exec_max_linear = max(0.05, float(rospy.get_param("~path_exec_max_linear", 0.35)))
         self._exec_max_angular = max(0.1, float(rospy.get_param("~path_exec_max_angular", 0.9)))
@@ -572,6 +580,8 @@ class SchedulerNode:
         self._active_segment_index = 0
         self._active_segment_start_s = 0.0
         self._active_segment_last_progress_s = 0.0
+        self._active_segment_stall_progress_s = 0.0
+        self._active_segment_last_progress_update_time = time.time()
         self._active_segment_last_switch_time = 0.0
         self._active_segment_goal_sent_index = -1
 
@@ -640,6 +650,8 @@ class SchedulerNode:
         self._active_segment_index = 0
         self._active_segment_start_s = 0.0
         self._active_segment_last_progress_s = 0.0
+        self._active_segment_stall_progress_s = 0.0
+        self._active_segment_last_progress_update_time = time.time()
         self._active_segment_last_switch_time = 0.0
         self._active_segment_goal_sent_index = -1
         if self.current_path is None or not self.current_path.points:
@@ -1015,6 +1027,8 @@ class SchedulerNode:
         self._active_segment_index = segment_index
         self._active_segment_start_s = max(0.0, progress_s - float(self._segment_overlap_behind_m))
         self._active_segment_last_progress_s = progress_s
+        self._active_segment_stall_progress_s = progress_s
+        self._active_segment_last_progress_update_time = time.time()
         self._active_segment_goal_sent_index = -1
         self.current_path_index = max(self.current_path_index, int(projection.get("index", self.current_path_index)))
         self._publish_active_segment_plan(reason=reason or "segment_activate")
@@ -1056,6 +1070,22 @@ class SchedulerNode:
             send_goal=True,
             reason="segment_switch",
         )
+
+    def _refresh_active_segment_goal_if_stalled(self, now, reason="stalled_goal_refresh"):
+        if float(self._active_segment_goal_refresh_s) <= 0.0:
+            return False
+        stalled_for = float(now) - float(self._active_segment_last_progress_update_time)
+        if stalled_for < float(self._active_segment_goal_refresh_s):
+            return False
+        rospy.logwarn_throttle(
+            2.0,
+            "Active segment progress stalled for %.2fs; refreshing segment plan and move_base goal",
+            stalled_for,
+        )
+        self._publish_active_segment_plan(reason=reason)
+        self._send_active_segment_goal(force=True, reason=reason)
+        self._active_segment_last_progress_update_time = float(now)
+        return True
 
     def _finish_path_execution(self, stop_reason="completed"):
         if self.current_path is None or not self.current_path.points:
@@ -1586,14 +1616,20 @@ class SchedulerNode:
     def _initial_pose_alignment_yaw_from_pose(self, pose):
         if self._initial_pose_alignment_yaw is not None:
             return self._initial_pose_alignment_yaw
-        if not isinstance(pose, dict) or "orientation" not in pose:
-            return None
+        if not isinstance(pose, dict):
+            self._initial_pose_alignment_yaw = 0.0
+            rospy.logwarn_throttle(
+                2.0,
+                "Initial pose unavailable; using zero yaw fallback for %s publishing",
+                self._live_map_aligned_frame,
+            )
+            return self._initial_pose_alignment_yaw
         try:
             heading_deg = float(pose.get("heading_deg", 0.0))
         except Exception:
-            return None
+            heading_deg = 0.0
         if not math.isfinite(heading_deg):
-            return None
+            heading_deg = 0.0
         self._initial_pose_alignment_yaw = -math.radians(heading_deg)
         rospy.loginfo("Map preview yaw alignment initialized from odom: %.6f rad", self._initial_pose_alignment_yaw)
         return self._initial_pose_alignment_yaw
@@ -4118,9 +4154,13 @@ class SchedulerNode:
         self._active_segment_index = max(
             0, min(int(self._active_segment_index), len(self._active_segments) - 1)
         )
+        now = time.time()
         projection = self._project_robot_to_active_segment()
         observed_progress_s = float(projection.get("progress_s", 0.0))
         progress_s = max(float(self._active_segment_last_progress_s), observed_progress_s)
+        if progress_s > float(self._active_segment_stall_progress_s) + float(self._active_segment_progress_epsilon_m):
+            self._active_segment_stall_progress_s = progress_s
+            self._active_segment_last_progress_update_time = now
         self._active_segment_last_progress_s = progress_s
         self.current_path_index = max(self.current_path_index, int(projection.get("index", self.current_path_index)))
         if 0 <= self.current_path_index < len(self.current_path.points):
@@ -4142,6 +4182,8 @@ class SchedulerNode:
                 return
             if self._active_segment_goal_sent_index != self._active_segment_index:
                 self._send_active_segment_goal(force=True, reason="last_segment_goal_missing")
+            else:
+                self._refresh_active_segment_goal_if_stalled(now, reason="last_segment_stalled_refresh")
             return
 
         segment = self._active_segments[self._active_segment_index]
@@ -4159,12 +4201,16 @@ class SchedulerNode:
         if progress_s >= segment_end_s - 1e-3:
             should_switch = True
         if progress_s < next_segment_start_s - 1e-3:
+            # Keep TEB on the current lane until the next segment can start from
+            # the robot's vicinity; the effective early-switch margin is lead-in.
             should_switch = False
         if should_switch:
             self._switch_to_next_active_segment(projection)
             return
         if self._active_segment_goal_sent_index != self._active_segment_index:
             self._send_active_segment_goal(force=True, reason="segment_goal_missing")
+        else:
+            self._refresh_active_segment_goal_if_stalled(now)
 
     def _set_chassis_enabled(self, enabled):
         # Requirement update:

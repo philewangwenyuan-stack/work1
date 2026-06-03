@@ -154,9 +154,11 @@ global_plan_publish_hz: 2
 # Active navigation segment path (full path display remains on /grinder/GlobalPlanner/plan)
 active_segment_plan_topic: /grinder/navigation/active_segment_plan
 active_segment_publish_hz: 3.0
+active_segment_goal_refresh_s: 2.0
+active_segment_progress_epsilon_m: 0.1
 path_segment_switch_distance_m: 2.8
 path_segment_short_progress_ratio: 0.85
-path_segment_next_lane_leadin_m: 0.4
+path_segment_next_lane_leadin_m: 0.7
 path_segment_overlap_behind_m: 0.3
 # 目标点到达阈值（米）：小于该值判定“到达当前 goal”，建议小于路径点间距（如 0.03）
 path_goal_reach_dist: 0.12
