@@ -102,7 +102,7 @@ class ChassisDriverNode:
         self.cmd_vel_max_linear = float(rospy.get_param("~cmd_vel_max_linear", 0.6))
         self.cmd_vel_max_angular = float(rospy.get_param("~cmd_vel_max_angular", 1.5))
         self.cmd_vel_max_input_v = float(rospy.get_param("~cmd_vel_max_input_v", 0.083))
-        self.cmd_vel_max_input_w = float(rospy.get_param("~cmd_vel_max_input_w", 0.1))
+        self.cmd_vel_max_input_w = float(rospy.get_param("~cmd_vel_max_input_w", 0.15))
         self.cmd_vel_max_abs_wheel_rpm = float(rospy.get_param("~cmd_vel_max_abs_wheel_rpm", 1500.0))
         self.cmd_vel_deadband_linear = float(rospy.get_param("~cmd_vel_deadband_linear", 0.0))
         self.cmd_vel_deadband_angular = float(rospy.get_param("~cmd_vel_deadband_angular", 0.0))

@@ -77,11 +77,11 @@ cmd_vel_scale: 1.0
 # 线速度上限（m/s）
 cmd_vel_max_linear: 0.15
 # 角速度上限（rad/s）
-cmd_vel_max_angular: 0.1
+cmd_vel_max_angular: 0.15
 # 输入线速度限幅（m/s）
 cmd_vel_max_input_v: 0.15
 # 输入角速度限幅（rad/s）
-cmd_vel_max_input_w: 0.1
+cmd_vel_max_input_w: 0.15
 # 换算后的轮速绝对值上限（rpm）
 cmd_vel_max_abs_wheel_rpm: 3000.0
 # 线速度死区（小于该值按 0 处理）
@@ -105,7 +105,7 @@ cmd_vel_drive_swap_lr: false
 
 # 是否启用 /cmd_vel 平滑滤波：
 # true 表示底盘驱动在把 /cmd_vel 转成左右轮速前，会先做死区、加速度限制和转向反向确认。
-cmd_vel_filter_enabled: true
+cmd_vel_filter_enabled: False
 
 # 线速度变化率限制，单位 m/s^2：
 # 0.20 表示线速度每秒最多变化 0.20 m/s。

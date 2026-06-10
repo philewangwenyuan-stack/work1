@@ -14,19 +14,18 @@ TebLocalPlannerROS:
  global_plan_viapoint_sep: 0.2 #-1表示禁用此功能。如果设为正数，TEB 会强制轨迹经过全局路径上的这些点。
  global_plan_prune_distance: 1 #在机器人后方 1 米处的全局路径点会被剪掉，不再参与规划。
  exact_arc_length: False #False时使用直线距离近似，计算更快；True时更精确但更慢。
- #feasibility_check_no_poses: 5 #在生成轨迹后，检查前 5 个点是否与障碍物碰撞。
  feasibility_check_no_poses: 5 #在生成轨迹后，检查前 5 个点是否与障碍物碰撞。
  publish_feedback: False #反馈信息可用于 RViz 显示规划器的内部状态
     
  # Robot
          
  max_vel_x: 0.15 #机器人最大的线速度（前进方向，单位：m/s
- max_vel_x_backwards: 0.05 #机器人最大的倒车线速度（单位：m/s）。
+ max_vel_x_backwards: 0.01 #机器人最大的倒车线速度（单位：m/s）。
  max_vel_y: 0.0
- max_vel_theta: 0.1 #机器人最大的角速度（单位：rad/s）
+ max_vel_theta: 0.15 #机器人最大的角速度（单位：rad/s）
  use_proportional_saturation: True #速度限幅时按比例同时缩放线速度和角速度，拐角处更容易自动降线速度
  acc_lim_x: 0.1 #机器人 X 方向的加速度限制（单位：m/s²）
- acc_lim_theta: 0.05 #机器人角加速度限制（单位：rad/s²）
+ acc_lim_theta: 0.1 #机器人角加速度限制（单位：rad/s²）
  min_turning_radius: 0.0 # diff-drive robot (can turn on place!)
 
 #  footprint_model:
@@ -74,7 +73,7 @@ TebLocalPlannerROS:
  weight_acc_lim_x: 1.0 #限制加速度的权重
  weight_acc_lim_theta: 1.0 #限制角加速度的权重
  weight_kinematics_nh: 1000 #非全向（Non-Holonomic）运动学约束的权重（非常重要，确保差分车不横向漂移）
- weight_kinematics_forward_drive: 800 #“尽量向前开，不要倒车/反复前后切换”的权重
+ weight_kinematics_forward_drive: 1500 #“尽量向前开，不要倒车/反复前后切换”的权重
  weight_kinematics_turning_radius: 1
  weight_optimaltime: 1 # must be > 0
  weight_shortest_path: 1
