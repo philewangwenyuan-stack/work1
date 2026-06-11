@@ -3528,7 +3528,7 @@ class SchedulerNode:
             self._exec_region_index = -1
         self._set_chassis_enabled(True)
         self.work_mode_pub.publish(UInt16(data=2))
-        self.disc_speed_pub.publish(Int16(data=1200))
+        self.disc_speed_pub.publish(Int16(data=1000))
         self.disc_enable_pub.publish(Bool(data=True))
         self._disc_auto_cover_desired = True
         self._reset_disc_motion_guard()
@@ -4122,7 +4122,7 @@ class SchedulerNode:
 
         # Enter next region: enable working tool again.
         self._set_chassis_enabled(True)
-        self.disc_speed_pub.publish(Int16(data=1200))
+        self.disc_speed_pub.publish(Int16(data=1000))
         self.disc_enable_pub.publish(Bool(data=True))
         self._disc_auto_cover_desired = True
         self._reset_disc_motion_guard()
