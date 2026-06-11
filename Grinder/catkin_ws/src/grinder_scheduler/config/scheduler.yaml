@@ -104,7 +104,7 @@ vehicle_width: 0.8
 # 机器人长度（米），用于转弯半径计算
 vehicle_length: 1.531
 # 默认路径间距（米），建议为车宽的 80%-90%
-default_path_spacing: 0.925
+default_path_spacing: 0.825
 # 转弯半径（米），影响路径平滑
 turn_radius: 0.1
 # 重叠比例（0-1），建议 0.1-0.2
