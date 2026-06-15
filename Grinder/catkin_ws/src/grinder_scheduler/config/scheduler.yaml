@@ -9,6 +9,15 @@ odom_topic: /slamware_ros_sdk_server_node/odom
 left_image_topic: /slamware_ros_sdk_server_node/left_image_raw
 # 右相机图像话题名
 right_image_topic: /slamware_ros_sdk_server_node/right_image_raw
+
+# Chassis manual override topic used during joystick/manual escape.
+manual_override_topic: /chassis/manual_override
+
+# Manual escape disc behavior. Speed <= 0 uses current chassis disc setting.
+manual_drive_auto_disc_enabled: true
+manual_drive_auto_disc_stop_on_idle: false
+manual_drive_auto_disc_speed_rpm: 0
+manual_drive_auto_disc_refresh_sec: 1.0
 # 是否使用深度彩色图像（替代左右可见光）
 use_depth_colorized_image: false
 # 深度彩色图像话题名

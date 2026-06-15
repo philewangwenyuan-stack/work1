@@ -66,6 +66,21 @@ cmd_vel_enabled: true
 cmd_vel_topic: /cmd_vel
 # 任务导航使能默认值（false: 忽略 /cmd_vel；true: 处理 /cmd_vel）
 task_enable_default: false
+
+# Localization watchdog: stop chassis and disc when SLAM status is unsafe.
+localization_watchdog_enabled: true
+localization_system_status_topic: /slamware_ros_sdk_server_node/system_status
+localization_relocalization_status_topic: /slamware_ros_sdk_server_node/relocalization_status
+localization_status_timeout_sec: 1.0
+localization_watchdog_cancel_topic: /move_base/cancel
+localization_watchdog_cancel_period_sec: 1.0
+# If false, keep watchdog locked after localization recovers until manual release.
+localization_watchdog_auto_release: true
+localization_watchdog_release_service: /chassis/localization_watchdog_release
+# Restore commands saved before watchdog lock when localization recovers.
+# Keep false for safest behavior; set true only if the site wants auto-resume.
+localization_watchdog_restore_motion_on_release: false
+localization_watchdog_restore_disc_on_release: false
 # 轮距（米），用于角速度换算
 cmd_vel_wheel_track_m: 0.79
 # 轮半径（米），用于线速度换算
@@ -90,6 +105,13 @@ cmd_vel_deadband_linear: 0.0
 cmd_vel_deadband_angular: 0.0
 # 指令源保持时间（秒），超过后可回落到默认源
 cmd_source_hold_sec: 0.2
+
+# Manual escape override: when enabled, ignore /cmd_vel so joystick/manual wheel commands win.
+manual_override_enabled: true
+manual_override_topic: /chassis/manual_override
+manual_override_service: /chassis/set_manual_override
+manual_override_cancel_navigation: true
+manual_override_bypass_localization_watchdog: true
 
 # 轮系方向修正：
 # -1 表示该轮方向取反，1 表示不取反

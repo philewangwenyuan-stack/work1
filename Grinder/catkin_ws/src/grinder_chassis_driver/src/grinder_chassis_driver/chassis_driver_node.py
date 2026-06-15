@@ -6,9 +6,12 @@ import time
 import math
 
 import rospy
+from actionlib_msgs.msg import GoalID
 from diagnostic_msgs.msg import DiagnosticArray, DiagnosticStatus, KeyValue
 from geometry_msgs.msg import Twist
+from slamware_ros_sdk.msg import RelocalizationStatus, SystemStatus
 from std_msgs.msg import Bool, Int16, UInt16
+from std_srvs.srv import SetBool, SetBoolResponse, Trigger, TriggerResponse
 
 from grinder_chassis_driver.msg import ChassisStatus, WheelSpeedCommand, WheelSpeedState
 from grinder_chassis_driver.srv import (
@@ -41,6 +44,42 @@ from grinder_chassis_driver.register_map import (
     RegisterSnapshot,
     clamp,
 )
+
+
+LOCALIZATION_BLOCKING_SYSTEM_STATUSES = frozenset(
+    (
+        "DeviceInitFailed",
+        "DeviceTrackingLost",
+    )
+)
+LOCALIZATION_RECOVERED_SYSTEM_STATUSES = frozenset(
+    (
+        "DeviceInited",
+        "DeviceRunning",
+        "DeviceLoopClosure",
+        "DeviceOptimizationCompleted",
+    )
+)
+LOCALIZATION_BLOCKING_RELOCALIZATION_STATUSES = frozenset(
+    (
+        "RelocalizationRunning",
+        "RelocalizationFailed",
+    )
+)
+LOCALIZATION_RECOVERED_RELOCALIZATION_STATUSES = frozenset(
+    (
+        "RelocalizationNone",
+        "RelocalizationSucceed",
+        "RelocalizationCanceled",
+    )
+)
+
+
+def _get_bool_param(name, default):
+    value = rospy.get_param(name, default)
+    if isinstance(value, str):
+        return value.strip().lower() in ("1", "true", "yes", "on")
+    return bool(value)
 
 
 class ChassisDriverNode:
@@ -128,6 +167,15 @@ class ChassisDriverNode:
             self.manual_wheel_hyst_enter_rpm = self.manual_wheel_hyst_exit_rpm
         self._manual_last_left_input = 0
         self._manual_last_right_input = 0
+        self.manual_override_enabled = _get_bool_param("~manual_override_enabled", True)
+        self.manual_override_topic = rospy.get_param("~manual_override_topic", "/chassis/manual_override")
+        self.manual_override_service = rospy.get_param("~manual_override_service", "/chassis/set_manual_override")
+        self.manual_override_cancel_navigation = _get_bool_param("~manual_override_cancel_navigation", True)
+        self.manual_override_bypass_localization_watchdog = _get_bool_param(
+            "~manual_override_bypass_localization_watchdog",
+            True,
+        )
+        self._manual_override_active = False
         # Direction correction:
         # default to +1/+1 (no inversion), and leave fine-tuning to YAML params.
         self.drive_left_sign = -1 if int(rospy.get_param("~drive_left_sign", 1)) < 0 else 1
@@ -137,6 +185,46 @@ class ChassisDriverNode:
         self.cmd_vel_drive_right_sign = -1 if int(rospy.get_param("~cmd_vel_drive_right_sign", 1)) < 0 else 1
         self.cmd_vel_drive_swap_lr = bool(rospy.get_param("~cmd_vel_drive_swap_lr", False))
         self._last_cmd_vel_recv_monotonic = 0.0
+        self.localization_watchdog_enabled = _get_bool_param("~localization_watchdog_enabled", True)
+        self.localization_system_status_topic = rospy.get_param(
+            "~localization_system_status_topic",
+            "/slamware_ros_sdk_server_node/system_status",
+        )
+        self.localization_relocalization_status_topic = rospy.get_param(
+            "~localization_relocalization_status_topic",
+            "/slamware_ros_sdk_server_node/relocalization_status",
+        )
+        self.localization_status_timeout_sec = float(rospy.get_param("~localization_status_timeout_sec", 1.0))
+        self.localization_watchdog_cancel_topic = rospy.get_param(
+            "~localization_watchdog_cancel_topic",
+            "/move_base/cancel",
+        )
+        self.localization_watchdog_cancel_period_sec = float(
+            rospy.get_param("~localization_watchdog_cancel_period_sec", 1.0)
+        )
+        self.localization_watchdog_auto_release = _get_bool_param("~localization_watchdog_auto_release", True)
+        self.localization_watchdog_release_service = rospy.get_param(
+            "~localization_watchdog_release_service",
+            "/chassis/localization_watchdog_release",
+        )
+        self.localization_watchdog_restore_motion_on_release = _get_bool_param(
+            "~localization_watchdog_restore_motion_on_release",
+            False,
+        )
+        self.localization_watchdog_restore_disc_on_release = _get_bool_param(
+            "~localization_watchdog_restore_disc_on_release",
+            False,
+        )
+        now_mono = time.monotonic()
+        self._localization_system_status = ""
+        self._localization_relocalization_status = ""
+        self._localization_system_status_time = now_mono - max(0.0, self.localization_status_timeout_sec) - 0.001
+        self._localization_watchdog_locked = False
+        self._localization_watchdog_reason = ""
+        self._localization_watchdog_waiting_manual_release = False
+        self._localization_watchdog_saved_command = None
+        self._last_localization_watchdog_stop_time = 0.0
+        self._last_localization_watchdog_cancel_time = 0.0
 
         self.transport = ModbusTransport(
             port=self.port,
@@ -151,6 +239,15 @@ class ChassisDriverNode:
         self.wheel_speed_pub = rospy.Publisher("/chassis/wheel_speed_state", WheelSpeedState, queue_size=10)
         self.status_pub = rospy.Publisher("/chassis/status", ChassisStatus, queue_size=10)
         self.diagnostics_pub = rospy.Publisher("/diagnostics", DiagnosticArray, queue_size=10)
+        self.localization_cancel_pub = None
+        if self.localization_watchdog_enabled or (
+            self.manual_override_enabled and self.manual_override_cancel_navigation
+        ):
+            self.localization_cancel_pub = rospy.Publisher(
+                self.localization_watchdog_cancel_topic,
+                GoalID,
+                queue_size=1,
+            )
 
         rospy.Subscriber("/chassis/wheel_speed_cmd", WheelSpeedCommand, self._handle_wheel_speed_cmd, queue_size=10)
         if self.cmd_vel_enabled:
@@ -161,9 +258,32 @@ class ChassisDriverNode:
         rospy.Subscriber("/chassis/work_mode_cmd", UInt16, self._handle_work_mode_cmd, queue_size=10)
         rospy.Subscriber("/chassis/disc_lift_cmd", UInt16, self._handle_disc_lift_cmd, queue_size=10)
         rospy.Subscriber("/chassis/light_cmd", Bool, self._handle_light_cmd, queue_size=10)
+        if self.manual_override_enabled:
+            rospy.Subscriber(self.manual_override_topic, Bool, self._handle_manual_override_cmd, queue_size=10)
+        if self.localization_watchdog_enabled:
+            rospy.Subscriber(
+                self.localization_system_status_topic,
+                SystemStatus,
+                self._handle_localization_system_status,
+                queue_size=10,
+            )
+            rospy.Subscriber(
+                self.localization_relocalization_status_topic,
+                RelocalizationStatus,
+                self._handle_localization_relocalization_status,
+                queue_size=10,
+            )
 
         rospy.Service("/chassis/enable", EnableChassis, self._handle_enable_service)
         rospy.Service("/chassis/clear_fault", ClearFault, self._handle_clear_fault_service)
+        if self.localization_watchdog_enabled:
+            rospy.Service(
+                self.localization_watchdog_release_service,
+                Trigger,
+                self._handle_localization_watchdog_release,
+            )
+        if self.manual_override_enabled:
+            rospy.Service(self.manual_override_service, SetBool, self._handle_manual_override_service)
 
         if self.startup_zero_output:
             self._apply_startup_safe_state()
@@ -183,8 +303,265 @@ class ChassisDriverNode:
         except ModbusTransportError as exc:
             rospy.logwarn("Failed to send startup safe state: %s", exc)
 
+    def _handle_localization_system_status(self, msg):
+        status = str(msg.status)
+        with self._lock:
+            self._localization_system_status = status
+            self._localization_system_status_time = time.monotonic()
+        self._refresh_localization_watchdog("system_status={}".format(status))
+
+    def _handle_localization_relocalization_status(self, msg):
+        status = str(msg.status)
+        with self._lock:
+            self._localization_relocalization_status = status
+        self._refresh_localization_watchdog("relocalization_status={}".format(status))
+
+    def _get_localization_watchdog_state(self, now):
+        reasons = []
+        with self._lock:
+            system_status = self._localization_system_status
+            relocalization_status = self._localization_relocalization_status
+            system_status_age = now - self._localization_system_status_time
+
+        if system_status in LOCALIZATION_BLOCKING_SYSTEM_STATUSES:
+            reasons.append("system_status={}".format(system_status))
+        elif system_status in LOCALIZATION_RECOVERED_SYSTEM_STATUSES:
+            pass
+
+        timeout_sec = float(self.localization_status_timeout_sec)
+        if timeout_sec > 0.0 and system_status_age > timeout_sec:
+            if system_status:
+                reasons.append("system_status timeout %.2fs (%s)" % (system_status_age, system_status))
+            else:
+                reasons.append("system_status timeout %.2fs" % system_status_age)
+
+        if relocalization_status in LOCALIZATION_BLOCKING_RELOCALIZATION_STATUSES:
+            reasons.append("relocalization_status={}".format(relocalization_status))
+        elif relocalization_status in LOCALIZATION_RECOVERED_RELOCALIZATION_STATUSES:
+            pass
+
+        return bool(reasons), "; ".join(reasons)
+
+    def _refresh_localization_watchdog(self, source=""):
+        if not self.localization_watchdog_enabled:
+            return False
+
+        now = time.monotonic()
+        unsafe, reason = self._get_localization_watchdog_state(now)
+        release_now = False
+        with self._lock:
+            was_locked = self._localization_watchdog_locked
+            was_waiting_manual = self._localization_watchdog_waiting_manual_release
+            if unsafe:
+                self._localization_watchdog_locked = True
+                self._localization_watchdog_waiting_manual_release = False
+                self._localization_watchdog_reason = reason
+            elif was_locked and not self.localization_watchdog_auto_release:
+                self._localization_watchdog_locked = True
+                self._localization_watchdog_waiting_manual_release = True
+                self._localization_watchdog_reason = "localization recovered; waiting for manual release"
+            else:
+                self._localization_watchdog_locked = False
+                self._localization_watchdog_waiting_manual_release = False
+                self._localization_watchdog_reason = ""
+                release_now = was_locked
+
+            locked = self._localization_watchdog_locked
+            locked_reason = self._localization_watchdog_reason
+            waiting_manual = self._localization_watchdog_waiting_manual_release
+            newly_locked = locked and not was_locked
+            newly_waiting_manual = waiting_manual and not was_waiting_manual
+
+        manual_bypass = self._manual_override_bypasses_localization_watchdog()
+
+        if locked:
+            if newly_locked:
+                self._save_localization_watchdog_restore_command()
+                rospy.logwarn("Localization watchdog locked: %s", locked_reason)
+            elif newly_waiting_manual:
+                rospy.logwarn("Localization recovered, but watchdog remains locked until manual release.")
+            self._issue_localization_watchdog_stop(
+                force=newly_locked,
+                stop_motion=not manual_bypass,
+                stop_disc=not manual_bypass,
+            )
+        elif release_now:
+            self._restore_localization_watchdog_outputs()
+            if source:
+                rospy.loginfo("Localization watchdog released by %s", source)
+            else:
+                rospy.loginfo("Localization watchdog released")
+        return locked
+
+    def _localization_watchdog_blocks_commands(self, allow_manual_bypass=False):
+        if not self.localization_watchdog_enabled:
+            return False
+        locked = self._refresh_localization_watchdog("command")
+        if locked and allow_manual_bypass and self._manual_override_bypasses_localization_watchdog():
+            return False
+        return locked
+
+    def _issue_localization_watchdog_stop(self, force=False, stop_motion=True, stop_disc=True):
+        now = time.monotonic()
+        period = max(0.1, float(self.localization_watchdog_cancel_period_sec))
+        with self._lock:
+            if stop_motion:
+                self.command.left_wheel_speed = 0
+                self.command.right_wheel_speed = 0
+            if stop_disc:
+                self.command.disc_speed = 0
+                self.command.disc_enable = DISC_ENABLE_OFF
+            self.last_command_time = rospy.Time.now()
+            write_due = force or (now - self._last_localization_watchdog_stop_time) >= period
+            cancel_due = force or (now - self._last_localization_watchdog_cancel_time) >= period
+            if write_due:
+                self._last_localization_watchdog_stop_time = now
+            if cancel_due:
+                self._last_localization_watchdog_cancel_time = now
+
+        self._reset_cmd_vel_filter()
+        if write_due:
+            try:
+                self._write_all_outputs(force=True)
+            except ModbusTransportError as exc:
+                self._handle_transport_error(exc)
+        if cancel_due:
+            self._publish_localization_cancel()
+
+    def _save_localization_watchdog_restore_command(self):
+        with self._lock:
+            self._localization_watchdog_saved_command = ChassisCommand(**self.command.__dict__)
+
+    def _restore_localization_watchdog_outputs(self):
+        with self._lock:
+            saved_command = self._localization_watchdog_saved_command
+            self._localization_watchdog_saved_command = None
+            if saved_command is None:
+                return
+
+            if self.localization_watchdog_restore_motion_on_release:
+                self.command.left_wheel_speed = saved_command.left_wheel_speed
+                self.command.right_wheel_speed = saved_command.right_wheel_speed
+            else:
+                self.command.left_wheel_speed = 0
+                self.command.right_wheel_speed = 0
+
+            if self.localization_watchdog_restore_disc_on_release:
+                self.command.disc_speed = saved_command.disc_speed
+                self.command.disc_enable = saved_command.disc_enable
+            else:
+                self.command.disc_speed = 0
+                self.command.disc_enable = DISC_ENABLE_OFF
+
+            self.last_command_time = rospy.Time.now()
+            should_write = self.enabled and (
+                self.localization_watchdog_restore_motion_on_release
+                or self.localization_watchdog_restore_disc_on_release
+            )
+
+        if not should_write:
+            rospy.loginfo("Localization watchdog released; outputs remain stopped by restore config.")
+            return
+
+        try:
+            self._write_all_outputs(force=True)
+            rospy.loginfo(
+                "Localization watchdog restored outputs: motion=%s disc=%s",
+                str(self.localization_watchdog_restore_motion_on_release),
+                str(self.localization_watchdog_restore_disc_on_release),
+            )
+        except ModbusTransportError as exc:
+            self._handle_transport_error(exc)
+
+    def _handle_localization_watchdog_release(self, _request):
+        if not self.localization_watchdog_enabled:
+            return TriggerResponse(success=True, message="Localization watchdog is disabled.")
+
+        unsafe, reason = self._get_localization_watchdog_state(time.monotonic())
+        if unsafe:
+            with self._lock:
+                self._localization_watchdog_locked = True
+                self._localization_watchdog_waiting_manual_release = False
+                self._localization_watchdog_reason = reason
+            self._issue_localization_watchdog_stop(force=True)
+            return TriggerResponse(success=False, message="Localization is still unsafe: {}".format(reason))
+
+        with self._lock:
+            was_locked = self._localization_watchdog_locked
+            self._localization_watchdog_locked = False
+            self._localization_watchdog_waiting_manual_release = False
+            self._localization_watchdog_reason = ""
+
+        if was_locked:
+            self._restore_localization_watchdog_outputs()
+            return TriggerResponse(success=True, message="Localization watchdog released.")
+        return TriggerResponse(success=True, message="Localization watchdog was already released.")
+
+    def _publish_localization_cancel(self):
+        if self.localization_cancel_pub is None:
+            return
+        self.localization_cancel_pub.publish(GoalID())
+
+    def _handle_manual_override_cmd(self, msg):
+        self._set_manual_override(bool(msg.data), "topic")
+
+    def _handle_manual_override_service(self, request):
+        enabled = bool(request.data)
+        if not self.manual_override_enabled:
+            return SetBoolResponse(success=False, message="Manual override is disabled.")
+        self._set_manual_override(enabled, "service")
+        return SetBoolResponse(success=True, message="Manual override set to {}".format(str(enabled)))
+
+    def _manual_override_bypasses_localization_watchdog(self):
+        return (
+            self.manual_override_enabled
+            and self._manual_override_active
+            and self.manual_override_bypass_localization_watchdog
+        )
+
+    def _set_manual_override(self, enabled, source):
+        if not self.manual_override_enabled:
+            return
+        enabled = bool(enabled)
+        with self._lock:
+            was_active = self._manual_override_active
+            self._manual_override_active = enabled
+            if enabled:
+                self._last_cmd_vel_recv_monotonic = 0.0
+
+        if enabled == was_active:
+            return
+
+        self._reset_cmd_vel_filter()
+        if enabled:
+            rospy.logwarn("Manual override enabled by %s; ignoring cmd_vel and allowing wheel_speed_cmd.", source)
+            if self.manual_override_cancel_navigation:
+                self._publish_localization_cancel()
+            with self._lock:
+                self.command.left_wheel_speed = 0
+                self.command.right_wheel_speed = 0
+                self.last_command_time = rospy.Time.now()
+            if self.enabled:
+                self._write_motion_registers()
+        else:
+            rospy.loginfo("Manual override disabled by %s; cmd_vel arbitration restored.", source)
+            if self.localization_watchdog_enabled:
+                self._refresh_localization_watchdog("manual_override_off")
+
+    def _manual_override_blocks_cmd_vel(self):
+        return self.manual_override_enabled and self._manual_override_active
+
+    def _log_localization_watchdog_reject(self, source):
+        with self._lock:
+            reason = self._localization_watchdog_reason or "locked"
+        rospy.logwarn_throttle(2.0, "Ignore %s while localization watchdog is locked: %s", source, reason)
+
     def _handle_wheel_speed_cmd(self, msg):
-        if self.cmd_vel_enabled:
+        manual_override = self._manual_override_blocks_cmd_vel()
+        if self._localization_watchdog_blocks_commands(allow_manual_bypass=True):
+            self._log_localization_watchdog_reject("/chassis/wheel_speed_cmd")
+            return
+        if self.cmd_vel_enabled and not manual_override:
             now_mono = time.monotonic()
             recent_cmd_vel = (now_mono - self._last_cmd_vel_recv_monotonic) <= max(0.0, self.cmd_source_hold_sec)
             if recent_cmd_vel:
@@ -296,6 +673,13 @@ class ChassisDriverNode:
     #=================================================================================================================
 
     def _handle_cmd_vel(self, msg):
+        if self._manual_override_blocks_cmd_vel():
+            self._reset_cmd_vel_filter()
+            rospy.logwarn_throttle(2.0, "Ignore %s while manual override is active.", self.cmd_vel_topic)
+            return
+        if self._localization_watchdog_blocks_commands():
+            self._log_localization_watchdog_reject(self.cmd_vel_topic)
+            return
         # if not self.task_enable:
         #     return
         if not self.task_enable:
@@ -404,12 +788,18 @@ class ChassisDriverNode:
         )
 
     def _handle_disc_speed_cmd(self, msg):
+        if self._localization_watchdog_blocks_commands(allow_manual_bypass=True):
+            self._log_localization_watchdog_reject("/chassis/disc_speed_cmd")
+            return
         with self._lock:
             self.command.disc_speed = clamp(msg.data, self.disc_speed_min, self.disc_speed_max)
         if self.enabled:
             self._write_single_output(REGISTER_DISC_SPEED, self.command.disc_speed, signed=True)
 
     def _handle_disc_enable_cmd(self, msg):
+        if self._localization_watchdog_blocks_commands(allow_manual_bypass=True):
+            self._log_localization_watchdog_reject("/chassis/disc_enable_cmd")
+            return
         with self._lock:
             self.command.disc_enable = DISC_ENABLE_ON if msg.data else DISC_ENABLE_OFF
         if self.enabled:
@@ -526,6 +916,7 @@ class ChassisDriverNode:
             self._handle_transport_error(exc)
 
     def _poll_once(self, _event):
+        self._refresh_localization_watchdog("timer")
         self._enforce_command_timeout()
         try:
             registers = self.transport.read_register_block(
@@ -597,6 +988,16 @@ class ChassisDriverNode:
             level = DiagnosticStatus.OK if connected else DiagnosticStatus.ERROR
             message = "connected" if connected else (self.last_error or "disconnected")
             consecutive_failures = self.consecutive_failures
+            manual_override_active = self._manual_override_active
+            localization_watchdog_locked = self._localization_watchdog_locked
+            localization_watchdog_reason = self._localization_watchdog_reason
+            localization_watchdog_waiting_manual_release = self._localization_watchdog_waiting_manual_release
+            localization_system_status = self._localization_system_status
+            localization_relocalization_status = self._localization_relocalization_status
+
+        if connected and localization_watchdog_locked:
+            level = DiagnosticStatus.WARN
+            message = "localization watchdog locked: {}".format(localization_watchdog_reason or "locked")
 
         diag = DiagnosticStatus()
         diag.name = "grinder_chassis_driver"
@@ -608,6 +1009,30 @@ class ChassisDriverNode:
             KeyValue(key="baudrate", value=str(self.baudrate)),
             KeyValue(key="slave_id", value=str(self.slave_id)),
             KeyValue(key="consecutive_failures", value=str(consecutive_failures)),
+            KeyValue(key="manual_override_enabled", value=str(self.manual_override_enabled)),
+            KeyValue(key="manual_override_active", value=str(manual_override_active)),
+            KeyValue(
+                key="manual_override_bypass_localization_watchdog",
+                value=str(self.manual_override_bypass_localization_watchdog),
+            ),
+            KeyValue(key="localization_watchdog_enabled", value=str(self.localization_watchdog_enabled)),
+            KeyValue(key="localization_watchdog_locked", value=str(localization_watchdog_locked)),
+            KeyValue(key="localization_watchdog_reason", value=str(localization_watchdog_reason)),
+            KeyValue(key="localization_watchdog_auto_release", value=str(self.localization_watchdog_auto_release)),
+            KeyValue(
+                key="localization_watchdog_waiting_manual_release",
+                value=str(localization_watchdog_waiting_manual_release),
+            ),
+            KeyValue(
+                key="localization_watchdog_restore_motion_on_release",
+                value=str(self.localization_watchdog_restore_motion_on_release),
+            ),
+            KeyValue(
+                key="localization_watchdog_restore_disc_on_release",
+                value=str(self.localization_watchdog_restore_disc_on_release),
+            ),
+            KeyValue(key="localization_system_status", value=str(localization_system_status)),
+            KeyValue(key="localization_relocalization_status", value=str(localization_relocalization_status)),
         ]
 
         array = DiagnosticArray()

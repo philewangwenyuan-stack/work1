@@ -141,6 +141,7 @@ class SchedulerNode:
         # Segment execution uses this only to trigger move_base with the active segment endpoint.
         self._exec_goal_topic = rospy.get_param("~path_goal_topic", "/move_base_simple/goal")
         self._task_enable_topic = rospy.get_param("~task_enable_topic", "/chassis/task_enable")
+        self._manual_override_topic = rospy.get_param("~manual_override_topic", "/chassis/manual_override")
         self._task_enable_runtime_active = False
         self._path_plan_request_use_all_regions = bool(rospy.get_param("~path_plan_request_use_all_regions", True))
         self._exec_goal_reach_dist = max(0.05, float(rospy.get_param("~path_goal_reach_dist", 0.12)))
@@ -215,6 +216,15 @@ class SchedulerNode:
         self._disc_stationary_since = 0.0
         self._disc_motion_guard_stopped = False
         self._disc_last_switch_time = 0.0
+        self._manual_override_forced = False
+        self._manual_drive_auto_disc_enabled = bool(rospy.get_param("~manual_drive_auto_disc_enabled", True))
+        self._manual_drive_auto_disc_stop_on_idle = bool(rospy.get_param("~manual_drive_auto_disc_stop_on_idle", False))
+        self._manual_drive_auto_disc_speed_rpm = int(rospy.get_param("~manual_drive_auto_disc_speed_rpm", 0))
+        self._manual_drive_auto_disc_refresh_sec = max(
+            0.1, float(rospy.get_param("~manual_drive_auto_disc_refresh_sec", 1.0))
+        )
+        self._manual_drive_auto_disc_active = False
+        self._manual_drive_last_auto_disc_time = 0.0
         self._task_stop_reason = ""
         self._last_task_result = {}
         # Task result color palette (repeat index -> color, BGR).
@@ -473,6 +483,7 @@ class SchedulerNode:
             )
 
         self.wheel_cmd_pub = rospy.Publisher("/chassis/wheel_speed_cmd", WheelSpeedCommand, queue_size=10)
+        self.manual_override_pub = rospy.Publisher(self._manual_override_topic, Bool, queue_size=10)
         self.disc_speed_pub = rospy.Publisher("/chassis/disc_speed_cmd", Int16, queue_size=10)
         self.disc_enable_pub = rospy.Publisher("/chassis/disc_enable_cmd", Bool, queue_size=10)
         self.work_mode_pub = rospy.Publisher("/chassis/work_mode_cmd", UInt16, queue_size=10)
@@ -4921,6 +4932,23 @@ class SchedulerNode:
         rospy.logwarn("Emergency stop applied: wheels=0, disc=off, chassis_disabled.")
 
     def _handle_manual_drive(self, motion, speed_ratio, remote_x=0.0, remote_y=0.0):
+        if float(speed_ratio) < 0.0:
+            enabled = float(remote_x) > 0.5
+            self._manual_override_forced = enabled
+            self.manual_override_pub.publish(Bool(data=enabled))
+            if not enabled:
+                wheel = WheelSpeedCommand()
+                wheel.left_wheel_speed = 0
+                wheel.right_wheel_speed = 0
+                self.wheel_cmd_pub.publish(wheel)
+                self._manual_last_left_cmd = 0
+                self._manual_last_right_cmd = 0
+                if self._manual_drive_auto_disc_stop_on_idle:
+                    self.disc_enable_pub.publish(Bool(data=False))
+                    self._manual_drive_auto_disc_active = False
+            rospy.loginfo("Manual override forced by control command: %s", str(enabled))
+            return
+
         base_max = int(self._manual_drive_base_speed)
         base = int(max(0.0, min(1.0, speed_ratio)) * base_max)
         wheel = WheelSpeedCommand()
@@ -4962,6 +4990,7 @@ class SchedulerNode:
         now = time.time()
         next_left = int(wheel.left_wheel_speed)
         next_right = int(wheel.right_wheel_speed)
+        manual_override_active = self._manual_override_forced or abs(next_left) > 0 or abs(next_right) > 0
         reverse_switch = (
             (
                 abs(self._manual_last_left_cmd) > 0
@@ -5000,9 +5029,35 @@ class SchedulerNode:
             if now - self._last_manual_enable_try > 1.0:
                 self._last_manual_enable_try = now
                 self._set_chassis_enabled(True)
+        self._apply_manual_drive_disc_state(moving)
+        self.manual_override_pub.publish(Bool(data=manual_override_active))
         self.wheel_cmd_pub.publish(wheel)
         self._manual_last_left_cmd = int(wheel.left_wheel_speed)
         self._manual_last_right_cmd = int(wheel.right_wheel_speed)
+
+    def _apply_manual_drive_disc_state(self, moving):
+        if not self._manual_drive_auto_disc_enabled:
+            return
+        if moving:
+            now = time.time()
+            if (
+                not self._manual_drive_auto_disc_active
+                or (now - self._manual_drive_last_auto_disc_time) >= self._manual_drive_auto_disc_refresh_sec
+            ):
+                speed = int(self._manual_drive_auto_disc_speed_rpm)
+                if speed <= 0:
+                    speed = int(self._chassis_settings.get("disc_speed_rpm", 1200))
+                speed = max(-32768, min(32767, speed))
+                self.disc_speed_pub.publish(Int16(data=speed))
+                self.disc_enable_pub.publish(Bool(data=True))
+                self._manual_drive_auto_disc_active = True
+                self._manual_drive_last_auto_disc_time = now
+                rospy.loginfo("Manual drive auto disc enabled: speed=%d", speed)
+            return
+        if self._manual_drive_auto_disc_active and self._manual_drive_auto_disc_stop_on_idle:
+            self.disc_enable_pub.publish(Bool(data=False))
+            self._manual_drive_auto_disc_active = False
+            rospy.loginfo("Manual drive auto disc disabled on idle.")
 
     def handle_task_config(self, payload):
         pb = self.sl_link_server.pb

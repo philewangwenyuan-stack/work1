@@ -437,6 +437,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self._remote_y = 0.0
         self._remote_send_enabled = False
         self._remote_sent_nonzero = False
+        self._remote_auto_disc_active = False
+        self._remote_last_auto_disc_time = 0.0
         self._map_chunk_state = {}
         self._preview_map_meta = None
         self._preview_map_base_pixmap = None
@@ -591,6 +593,12 @@ class MainWindow(QtWidgets.QMainWindow):
         )
         self.remote_enable = QtWidgets.QCheckBox("启用遥感连续发送")
         self.remote_enable.setChecked(True)
+        self.manual_override_check = QtWidgets.QCheckBox("手动脱困模式")
+        self.manual_override_check.setChecked(False)
+        self.remote_auto_disc_check = QtWidgets.QCheckBox("遥感时自动开磨盘")
+        self.remote_auto_disc_check.setChecked(True)
+        self.remote_auto_disc_stop_check = QtWidgets.QCheckBox("停止遥感时关磨盘")
+        self.remote_auto_disc_stop_check.setChecked(False)
         self.remote_speed = QtWidgets.QDoubleSpinBox()
         self.remote_speed.setRange(0.1, 1.0)
         self.remote_speed.setSingleStep(0.1)
@@ -807,6 +815,9 @@ class MainWindow(QtWidgets.QMainWindow):
         remote_layout.addWidget(self.remote_speed, 0, 1)
         remote_layout.addWidget(self.remote_enable, 0, 2, 1, 2)
         remote_layout.addWidget(self.remote_xy, 0, 4, 1, 2)
+        remote_layout.addWidget(self.manual_override_check, 1, 0, 1, 2)
+        remote_layout.addWidget(self.remote_auto_disc_check, 1, 2)
+        remote_layout.addWidget(self.remote_auto_disc_stop_check, 2, 0, 1, 3)
         # Manual direction buttons are removed from UI by requirement.
         remote_layout.addWidget(self.btn_emergency_stop, 4, 0, 1, 3)
         remote_layout.addWidget(self.remote_stick, 1, 3, 4, 3)
@@ -1191,6 +1202,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.map_fast_mode.toggled.connect(self._on_map_fast_mode_toggled)
         self.remote_stick.value_changed.connect(self._on_joystick_value_changed)
         self.remote_enable.toggled.connect(self._on_remote_enable_changed)
+        self.manual_override_check.toggled.connect(self._send_manual_override)
         self.clear_all_log_btn.clicked.connect(self.log_text.clear)
         self.clear_reqresp_log_btn.clicked.connect(self.reqresp_log_text.clear)
 
@@ -2234,6 +2246,31 @@ class MainWindow(QtWidgets.QMainWindow):
         cmd.manual_drive.speed_ratio = float(self.remote_speed.value())
         self._send(pb.MSG_ID_CONTROL_COMMAND, pb.COMP_CONTROL, cmd)
 
+    def _send_manual_override(self, enabled: bool):
+        cmd = pb.ControlCommand()
+        cmd.manual_drive.motion = int(pb.MANUAL_MOTION_STOP)
+        cmd.manual_drive.speed_ratio = -1.0
+        cmd.manual_drive.remote_x = 1.0 if bool(enabled) else 0.0
+        cmd.manual_drive.remote_y = 0.0
+        self._append_log(f"发送手动脱困模式: enabled={bool(enabled)}")
+        self._send(pb.MSG_ID_CONTROL_COMMAND, pb.COMP_CONTROL, cmd)
+
+    def _maybe_send_remote_auto_disc(self, moving: bool):
+        if not self.remote_auto_disc_check.isChecked():
+            return
+        now = time.time()
+        if moving:
+            if self._remote_auto_disc_active and (now - self._remote_last_auto_disc_time) < 1.0:
+                return
+            self._send_disc_enable(True)
+            self._remote_auto_disc_active = True
+            self._remote_last_auto_disc_time = now
+            return
+        if self._remote_auto_disc_active and self.remote_auto_disc_stop_check.isChecked():
+            self._send_disc_enable(False)
+            self._remote_auto_disc_active = False
+            self._remote_last_auto_disc_time = now
+
     def _send_manual_motion(self, motion: int):
         cmd = pb.ControlCommand()
         cmd.manual_drive.motion = int(motion)
@@ -2379,6 +2416,10 @@ class MainWindow(QtWidgets.QMainWindow):
         else:
             self.remote_timer.stop()
             self._append_log("遥感连续发送已关闭")
+            if self._remote_sent_nonzero and self.client._running:
+                self._send_remote(0.0, 0.0)
+                self._remote_sent_nonzero = False
+            self._maybe_send_remote_auto_disc(False)
 
     def _send_remote_continuous(self):
         if not self._remote_send_enabled:
@@ -2387,6 +2428,7 @@ class MainWindow(QtWidgets.QMainWindow):
             return
         moving = abs(self._remote_x) > 0.02 or abs(self._remote_y) > 0.02
         if moving:
+            self._maybe_send_remote_auto_disc(True)
             self._send_remote(self._remote_x, self._remote_y)
             self._remote_sent_nonzero = True
             return
@@ -2394,6 +2436,7 @@ class MainWindow(QtWidgets.QMainWindow):
         if self._remote_sent_nonzero:
             self._send_remote(0.0, 0.0)
             self._remote_sent_nonzero = False
+        self._maybe_send_remote_auto_disc(False)
 
     def _send(self, msg_id, comp_id, proto_msg):
         try:
