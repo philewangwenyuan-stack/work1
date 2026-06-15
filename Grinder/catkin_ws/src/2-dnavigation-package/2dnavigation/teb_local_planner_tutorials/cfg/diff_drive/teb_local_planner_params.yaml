@@ -10,7 +10,7 @@ TebLocalPlannerROS:
  max_samples: 200 #防止轨迹过长导致内存溢出或计算超时
  global_plan_overwrite_orientation: False #是否根据自身的运动学模型重新计算路径点的朝向，而不是完全照搬全局规划器的朝向
  allow_init_with_backwards_motion: False #如果目标点在机器人后方，TEB 允许生成倒车的轨迹。这对差分驱动机器人很重要
- max_global_plan_lookahead_dist: 1.5 #TEB 只会处理全局路径中离机器人 1.5 米以内的部分，避免处理过远的无用路径
+ max_global_plan_lookahead_dist: 2.5 #TEB 只会处理全局路径中离机器人 1.5 米以内的部分，避免处理过远的无用路径
  global_plan_viapoint_sep: 0.2 #-1表示禁用此功能。如果设为正数，TEB 会强制轨迹经过全局路径上的这些点。
  global_plan_prune_distance: 1 #在机器人后方 1 米处的全局路径点会被剪掉，不再参与规划。
  exact_arc_length: False #False时使用直线距离近似，计算更快；True时更精确但更慢。
@@ -44,8 +44,8 @@ TebLocalPlannerROS:
     
  # Obstacles
     
- min_obstacle_dist: 0.25 # 机器人（轮廓点）与障碍物之间的最小期望距离（单位：米）
- inflation_dist: 0.35 # 障碍物的膨胀距离（单位：米）,在代价地图中，障碍物周围 0.6 米内的区域会有代价梯度
+ min_obstacle_dist: 0.3 # 机器人（轮廓点）与障碍物之间的最小期望距离（单位：米）
+ inflation_dist: 0.6 # 障碍物的膨胀距离（单位：米）,在代价地图中，障碍物周围 0.6 米内的区域会有代价梯度
  include_costmap_obstacles: True #这是必须的，否则 TEB 将无法感知周围环境
  costmap_obstacles_behind_robot_dist: 0.3 #考虑机器人后方多远范围内的障碍物
  obstacle_poses_affected: 15 #受单个障碍物影响的轨迹样本点数量
