@@ -81,6 +81,11 @@ localization_watchdog_release_service: /chassis/localization_watchdog_release
 # Keep false for safest behavior; set true only if the site wants auto-resume.
 localization_watchdog_restore_motion_on_release: false
 localization_watchdog_restore_disc_on_release: false
+# Shadow localization monitor integration. Default is warn_only: diagnostics only,
+# no chassis lock. Set to safety_stop to lock on /localization_monitor/fault.
+localization_monitor_action_mode: warn_only
+localization_monitor_fault_topic: /localization_monitor/fault
+localization_monitor_fault_timeout_sec: 0.0
 # 轮距（米），用于角速度换算
 cmd_vel_wheel_track_m: 0.79
 # 轮半径（米），用于线速度换算

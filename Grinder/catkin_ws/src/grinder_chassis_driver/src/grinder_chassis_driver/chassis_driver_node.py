@@ -215,10 +215,23 @@ class ChassisDriverNode:
             "~localization_watchdog_restore_disc_on_release",
             False,
         )
+        self.localization_monitor_action_mode = rospy.get_param(
+            "~localization_monitor_action_mode",
+            "warn_only",
+        ).strip().lower()
+        self.localization_monitor_fault_topic = rospy.get_param(
+            "~localization_monitor_fault_topic",
+            "/localization_monitor/fault",
+        )
+        self.localization_monitor_fault_timeout_sec = float(
+            rospy.get_param("~localization_monitor_fault_timeout_sec", 0.0)
+        )
         now_mono = time.monotonic()
         self._localization_system_status = ""
         self._localization_relocalization_status = ""
         self._localization_system_status_time = now_mono - max(0.0, self.localization_status_timeout_sec) - 0.001
+        self._localization_monitor_fault = False
+        self._localization_monitor_fault_time = now_mono
         self._localization_watchdog_locked = False
         self._localization_watchdog_reason = ""
         self._localization_watchdog_waiting_manual_release = False
@@ -273,6 +286,12 @@ class ChassisDriverNode:
                 self._handle_localization_relocalization_status,
                 queue_size=10,
             )
+            rospy.Subscriber(
+                self.localization_monitor_fault_topic,
+                Bool,
+                self._handle_localization_monitor_fault,
+                queue_size=10,
+            )
 
         rospy.Service("/chassis/enable", EnableChassis, self._handle_enable_service)
         rospy.Service("/chassis/clear_fault", ClearFault, self._handle_clear_fault_service)
@@ -316,12 +335,21 @@ class ChassisDriverNode:
             self._localization_relocalization_status = status
         self._refresh_localization_watchdog("relocalization_status={}".format(status))
 
+    def _handle_localization_monitor_fault(self, msg):
+        fault = bool(msg.data)
+        with self._lock:
+            self._localization_monitor_fault = fault
+            self._localization_monitor_fault_time = time.monotonic()
+        self._refresh_localization_watchdog("localization_monitor_fault={}".format(fault))
+
     def _get_localization_watchdog_state(self, now):
         reasons = []
         with self._lock:
             system_status = self._localization_system_status
             relocalization_status = self._localization_relocalization_status
             system_status_age = now - self._localization_system_status_time
+            localization_monitor_fault = self._localization_monitor_fault
+            localization_monitor_fault_age = now - self._localization_monitor_fault_time
 
         if system_status in LOCALIZATION_BLOCKING_SYSTEM_STATUSES:
             reasons.append("system_status={}".format(system_status))
@@ -339,6 +367,13 @@ class ChassisDriverNode:
             reasons.append("relocalization_status={}".format(relocalization_status))
         elif relocalization_status in LOCALIZATION_RECOVERED_RELOCALIZATION_STATUSES:
             pass
+
+        if self.localization_monitor_action_mode == "safety_stop":
+            if localization_monitor_fault:
+                reasons.append("localization_monitor_fault")
+            timeout_sec = float(self.localization_monitor_fault_timeout_sec)
+            if timeout_sec > 0.0 and localization_monitor_fault_age > timeout_sec:
+                reasons.append("localization_monitor_fault timeout %.2fs" % localization_monitor_fault_age)
 
         return bool(reasons), "; ".join(reasons)
 
@@ -668,7 +703,7 @@ class ChassisDriverNode:
         self._last_filtered_angular = float(angular)
         self._last_cmd_filter_time = now
 
-        return float(linear), float(angular)    
+        return float(linear), float(angular)
 
     #=================================================================================================================
 
@@ -994,6 +1029,7 @@ class ChassisDriverNode:
             localization_watchdog_waiting_manual_release = self._localization_watchdog_waiting_manual_release
             localization_system_status = self._localization_system_status
             localization_relocalization_status = self._localization_relocalization_status
+            localization_monitor_fault = self._localization_monitor_fault
 
         if connected and localization_watchdog_locked:
             level = DiagnosticStatus.WARN
@@ -1033,6 +1069,9 @@ class ChassisDriverNode:
             ),
             KeyValue(key="localization_system_status", value=str(localization_system_status)),
             KeyValue(key="localization_relocalization_status", value=str(localization_relocalization_status)),
+            KeyValue(key="localization_monitor_action_mode", value=str(self.localization_monitor_action_mode)),
+            KeyValue(key="localization_monitor_fault_topic", value=str(self.localization_monitor_fault_topic)),
+            KeyValue(key="localization_monitor_fault", value=str(localization_monitor_fault)),
         ]
 
         array = DiagnosticArray()

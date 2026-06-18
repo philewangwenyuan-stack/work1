@@ -1,8 +1,13 @@
 <launch>
+  <arg name="localization_monitor_action_mode" default="warn_only" />
+  <arg name="localization_monitor_fault_topic" default="/localization_monitor/fault" />
+
   <node pkg="grinder_chassis_driver"
         type="chassis_driver_node.py"
         name="chassis_driver"
         output="screen">
     <rosparam command="load" file="$(find grinder_chassis_driver)/config/chassis_driver.yaml" />
+    <param name="localization_monitor_action_mode" value="$(arg localization_monitor_action_mode)" />
+    <param name="localization_monitor_fault_topic" value="$(arg localization_monitor_fault_topic)" />
   </node>
 </launch>
