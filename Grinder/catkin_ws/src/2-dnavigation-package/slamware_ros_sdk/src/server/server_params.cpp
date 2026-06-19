@@ -39,7 +39,7 @@ namespace slamware_ros_sdk
         camera_right = "camera_right";
         odom_frame = "odom";
 
-        robot_pose_pub_period = 0.05f;
+        robot_pose_pub_period = 0.02f;
         scan_pub_period = 0.1f;
         map_update_period = 0.2f;
         map_pub_period = 0.2f;
@@ -53,8 +53,9 @@ namespace slamware_ros_sdk
         stereo_image_pub_period = 0.05f;
         point_cloud_pub_period = 0.1f;
         robot_basic_state_pub_period = 0.1f;
-        odometry_pub_period = 0.1f;
+        odometry_pub_period = 0.02f;
         enhanced_imaging_pub_period = 0.05f;
+        pose_quality_pub_period = 0.05f;
 
         scan_topic = "/slamware_ros_sdk_server_node/scan";
         robot_pose_topic = "/slamware_ros_sdk_server_node/robot_pose";
@@ -68,6 +69,20 @@ namespace slamware_ros_sdk
         point_cloud_topic_name = "/slamware_ros_sdk_server_node/point_cloud";
         stereo_keypoints_topic_name = "/slamware_ros_sdk_server_node/stereo_keypoints";
         imu_raw_data_topic = "/slamware_ros_sdk_server_node/imu_raw_data";
+        pose_quality_topic_name = "/slamware_ros_sdk_server_node/pose_quality";
+
+        pose_augmentation_enabled = true;
+        pose_augmentation_frequency_hz = 50;
+        pose_augmentation_mode = "imu_vision_mixed";
+        pose_augmentation_smoothing_enabled = false;
+        pose_augmentation_smoothing_factor = 0.3f;
+        pose_augmentation_fallback_to_raw = true;
+        pose_augmentation_timeout_sec = 0.25f;
+        pose_quality_covariance_timeout_sec = 1.0f;
+        pose_quality_warn_xy95_m = 0.10f;
+        pose_quality_fault_xy95_m = 0.30f;
+        pose_quality_warn_yaw_deg = 3.0f;
+        pose_quality_fault_yaw_deg = 5.0f;
 
         // Enhanced imaging topics
         depth_image_raw_topic_name = "/slamware_ros_sdk_server_node/depth_image_raw";
@@ -127,6 +142,7 @@ namespace slamware_ros_sdk
         nhRos.getParam("point_cloud_pub_period", point_cloud_pub_period);
         nhRos.getParam("robot_basic_state_pub_period", robot_basic_state_pub_period);
         nhRos.getParam("odometry_pub_period", odometry_pub_period);
+        nhRos.getParam("pose_quality_pub_period", pose_quality_pub_period);
 
         nhRos.getParam("scan_topic", scan_topic);
         nhRos.getParam("robot_pose_topic", robot_pose_topic);
@@ -140,6 +156,19 @@ namespace slamware_ros_sdk
         nhRos.getParam("point_cloud_topic_name", point_cloud_topic_name);
         nhRos.getParam("stereo_keypoints_topic_name", stereo_keypoints_topic_name);
         nhRos.getParam("imu_raw_data_topic", imu_raw_data_topic);
+        nhRos.getParam("pose_quality_topic_name", pose_quality_topic_name);
+        nhRos.getParam("pose_augmentation_enabled", pose_augmentation_enabled);
+        nhRos.getParam("pose_augmentation_frequency_hz", pose_augmentation_frequency_hz);
+        nhRos.getParam("pose_augmentation_mode", pose_augmentation_mode);
+        nhRos.getParam("pose_augmentation_smoothing_enabled", pose_augmentation_smoothing_enabled);
+        nhRos.getParam("pose_augmentation_smoothing_factor", pose_augmentation_smoothing_factor);
+        nhRos.getParam("pose_augmentation_fallback_to_raw", pose_augmentation_fallback_to_raw);
+        nhRos.getParam("pose_augmentation_timeout_sec", pose_augmentation_timeout_sec);
+        nhRos.getParam("pose_quality_covariance_timeout_sec", pose_quality_covariance_timeout_sec);
+        nhRos.getParam("pose_quality_warn_xy95_m", pose_quality_warn_xy95_m);
+        nhRos.getParam("pose_quality_fault_xy95_m", pose_quality_fault_xy95_m);
+        nhRos.getParam("pose_quality_warn_yaw_deg", pose_quality_warn_yaw_deg);
+        nhRos.getParam("pose_quality_fault_yaw_deg", pose_quality_fault_yaw_deg);
         // 0528=============================================Enhanced imaging topics
         nhRos.getParam("slam_pose_is_laser_frame", slam_pose_is_laser_frame);
         nhRos.getParam("publish_laser_pose_tf", publish_laser_pose_tf);

@@ -8,6 +8,11 @@
 #include <stdexcept>
 #include <cmath>
 #include <chrono>
+#include <algorithm>
+#include <limits>
+#include <cstring>
+#include <cctype>
+#include <cstdint>
 #include <sensor_msgs/Image.h>
 #include <opencv2/opencv.hpp>
 #include <cv_bridge/cv_bridge.h>
@@ -20,9 +25,11 @@ namespace slamware_ros_sdk
         : state_(ServerStateNotInit),
           isStopRequested_(false),
           nh_("~"),
+          auroraSdk_(nullptr),
+          raw_img_listener_(nullptr),
+          auroraSdkConnected_(false),
           relocalization_active_(false),
-          cancel_requested_(false),
-          raw_img_listener_(nullptr)
+          cancel_requested_(false)
     {
         //
     }
@@ -78,6 +85,277 @@ namespace slamware_ros_sdk
         auto aurora = safeGetAuroraSdk();
         if (aurora)
             aurora->controller.resyncMapData();
+    }
+
+    bool SlamwareRosSdkServer::selectCurrentPose(
+        rp::standalone::aurora::RemoteSDK *sdk,
+        slamtec_aurora_sdk_pose_se3_t &pose,
+        uint64_t &timestampNs,
+        std::string &poseSource,
+        bool &augmentationActive,
+        bool &augmentationFallback)
+    {
+        poseSource = "raw";
+        augmentationActive = false;
+        augmentationFallback = false;
+
+        const ros::Time now = ros::Time::now();
+        const double timeoutSec = std::max(0.02f, params_.pose_augmentation_timeout_sec);
+        if (params_.pose_augmentation_enabled)
+        {
+            std::lock_guard<std::mutex> lkGuard(workDatLock_);
+            if (workDat_ && workDat_->hasAugmentedPose && workDat_->poseAugmentationStarted)
+            {
+                const double age = (now - workDat_->augmentedPoseRosTime).toSec();
+                if (age >= 0.0 && age <= timeoutSec)
+                {
+                    pose = workDat_->augmentedPose;
+                    timestampNs = workDat_->augmentedPoseTimestampNs;
+                    poseSource = "augmented";
+                    augmentationActive = true;
+                    workDat_->selectedPoseSource = poseSource;
+                    workDat_->selectedPoseTimestampNs = timestampNs;
+                    workDat_->selectedPoseRosTime = now;
+                    if (!workDat_->hasSelectedPose)
+                    {
+                        workDat_->hasSelectedPose = true;
+                        workDat_->firstSelectedPoseRosTime = now;
+                    }
+                    return true;
+                }
+                augmentationFallback = true;
+            }
+            else if (workDat_ && workDat_->poseAugmentationFailed)
+            {
+                augmentationFallback = true;
+            }
+        }
+
+        if (!sdk)
+            return false;
+        if (params_.pose_augmentation_enabled && !params_.pose_augmentation_fallback_to_raw)
+            return false;
+
+        if (!sdk->dataProvider.getCurrentPoseSE3WithTimestamp(pose, timestampNs))
+            return false;
+
+        poseSource = params_.pose_augmentation_enabled ? "raw_fallback" : "raw";
+        std::lock_guard<std::mutex> lkGuard(workDatLock_);
+        if (workDat_)
+        {
+            workDat_->selectedPoseSource = poseSource;
+            workDat_->selectedPoseTimestampNs = timestampNs;
+            workDat_->selectedPoseRosTime = now;
+            if (!workDat_->hasSelectedPose)
+            {
+                workDat_->hasSelectedPose = true;
+                workDat_->firstSelectedPoseRosTime = now;
+            }
+        }
+        return true;
+    }
+
+    void SlamwareRosSdkServer::handlePoseAugmentationResult(
+        uint64_t timestampNs,
+        slamtec_aurora_sdk_pose_augmentation_mode_t mode,
+        const slamtec_aurora_sdk_pose_se3_t &pose)
+    {
+        std::lock_guard<std::mutex> lkGuard(workDatLock_);
+        if (!workDat_)
+            return;
+        if (workDat_->hasAugmentedPose && timestampNs <= workDat_->augmentedPoseTimestampNs)
+            return;
+        workDat_->augmentedPose = pose;
+        workDat_->augmentedPoseTimestampNs = timestampNs;
+        workDat_->augmentedPoseRosTime = ros::Time::now();
+        workDat_->augmentedPoseMode = mode;
+        workDat_->hasAugmentedPose = true;
+    }
+
+    void SlamwareRosSdkServer::handlePoseCovariance(
+        uint64_t timestampNs,
+        const rp::standalone::aurora::PoseCovariance &covariance)
+    {
+        slamtec_aurora_sdk_pose_covariance_readable_t readable;
+        memset(&readable, 0, sizeof(readable));
+        const bool readableOk = covariance.toHumanReadable(readable);
+
+        std::lock_guard<std::mutex> lkGuard(workDatLock_);
+        if (!workDat_)
+            return;
+        if (workDat_->hasPoseCovariance && timestampNs <= workDat_->poseCovarianceTimestampNs)
+            return;
+        workDat_->poseCovariance = covariance;
+        if (readableOk)
+            workDat_->poseCovarianceReadable = readable;
+        workDat_->poseCovarianceTimestampNs = timestampNs;
+        workDat_->poseCovarianceRosTime = ros::Time::now();
+        workDat_->hasPoseCovariance = readableOk;
+    }
+
+    void SlamwareRosSdkServer::updateSystemStatus(const std::string &status)
+    {
+        std::lock_guard<std::mutex> lkGuard(workDatLock_);
+        if (!workDat_)
+            return;
+        workDat_->latestSystemStatus = status;
+        workDat_->latestSystemStatusRosTime = ros::Time::now();
+    }
+
+    void SlamwareRosSdkServer::updateRelocalizationStatus(const std::string &status)
+    {
+        std::lock_guard<std::mutex> lkGuard(workDatLock_);
+        if (!workDat_)
+            return;
+        workDat_->latestRelocalizationStatus = status;
+        workDat_->latestRelocalizationStatusRosTime = ros::Time::now();
+    }
+
+    void SlamwareRosSdkServer::fillPoseQualityMsg(slamware_ros_sdk::PoseQuality &msg)
+    {
+        const ros::Time now = ros::Time::now();
+        bool hasCovariance = false;
+        bool hasSelectedPose = false;
+        bool poseAugmentationStarted = false;
+        bool poseAugmentationFailed = false;
+        std::string poseSource = "raw";
+        std::string systemStatus;
+        std::string relocalizationStatus;
+        std::string augmentationFailureReason;
+        uint64_t poseTimestampNs = 0;
+        uint64_t covarianceTimestampNs = 0;
+        ros::Time selectedPoseRosTime;
+        ros::Time firstSelectedPoseRosTime;
+        ros::Time covarianceRosTime;
+        slamtec_aurora_sdk_pose_covariance_readable_t readable;
+        memset(&readable, 0, sizeof(readable));
+
+        {
+            std::lock_guard<std::mutex> lkGuard(workDatLock_);
+            if (workDat_)
+            {
+                hasCovariance = workDat_->hasPoseCovariance;
+                hasSelectedPose = workDat_->hasSelectedPose;
+                poseAugmentationStarted = workDat_->poseAugmentationStarted;
+                poseAugmentationFailed = workDat_->poseAugmentationFailed;
+                poseSource = workDat_->selectedPoseSource.empty() ? "raw" : workDat_->selectedPoseSource;
+                systemStatus = workDat_->latestSystemStatus;
+                relocalizationStatus = workDat_->latestRelocalizationStatus;
+                augmentationFailureReason = workDat_->poseAugmentationFailureReason;
+                poseTimestampNs = workDat_->selectedPoseTimestampNs;
+                covarianceTimestampNs = workDat_->poseCovarianceTimestampNs;
+                selectedPoseRosTime = workDat_->selectedPoseRosTime;
+                firstSelectedPoseRosTime = workDat_->firstSelectedPoseRosTime;
+                covarianceRosTime = workDat_->poseCovarianceRosTime;
+                readable = workDat_->poseCovarianceReadable;
+            }
+        }
+
+        const float warnXy = params_.pose_quality_warn_xy95_m;
+        const float faultXy = params_.pose_quality_fault_xy95_m;
+        const float warnYaw = params_.pose_quality_warn_yaw_deg;
+        const float faultYaw = params_.pose_quality_fault_yaw_deg;
+        const double covarianceTimeout = std::max(0.1f, params_.pose_quality_covariance_timeout_sec);
+        const double poseAge = selectedPoseRosTime.isZero() ? std::numeric_limits<double>::infinity() : (now - selectedPoseRosTime).toSec();
+        const double covarianceAge = covarianceRosTime.isZero() ? std::numeric_limits<double>::infinity() : (now - covarianceRosTime).toSec();
+        const double selectedLifetime = firstSelectedPoseRosTime.isZero() ? 0.0 : (now - firstSelectedPoseRosTime).toSec();
+        const float xy95 = readable.position_radius_95_xy;
+        const float yawSigma = readable.rotation_1sigma_rpy_deg[2];
+
+        msg.header.stamp = now;
+        msg.header.frame_id = params_.map_frame;
+        msg.pose_source = poseSource;
+        msg.pose_augmentation_enabled = params_.pose_augmentation_enabled;
+        msg.pose_augmentation_active = poseAugmentationStarted && poseSource == "augmented";
+        msg.pose_augmentation_fallback = params_.pose_augmentation_enabled && poseSource != "augmented";
+        msg.pose_timestamp_ns = poseTimestampNs;
+        msg.pose_age_sec = std::isfinite(poseAge) ? static_cast<float>(std::max(0.0, poseAge)) : -1.0f;
+        msg.covariance_available = hasCovariance;
+        msg.covariance_timestamp_ns = covarianceTimestampNs;
+        msg.covariance_age_sec = std::isfinite(covarianceAge) ? static_cast<float>(std::max(0.0, covarianceAge)) : -1.0f;
+        msg.xy95_m = hasCovariance ? xy95 : 0.0f;
+        msg.yaw_1sigma_deg = hasCovariance ? yawSigma : 0.0f;
+        msg.warn_xy95_m = warnXy;
+        msg.fault_xy95_m = faultXy;
+        msg.warn_yaw_deg = warnYaw;
+        msg.fault_yaw_deg = faultYaw;
+        msg.system_status = systemStatus;
+        msg.relocalization_status = relocalizationStatus;
+
+        auto setState = [&msg](uint8_t state, const std::string &label, const std::string &reason)
+        {
+            msg.state = state;
+            msg.state_label = label;
+            msg.reason = reason;
+        };
+
+        if (systemStatus.empty())
+        {
+            setState(PoseQuality::STATE_UNKNOWN, "UNKNOWN", "waiting_for_system_status");
+            return;
+        }
+
+        if (systemStatus == "DeviceInitFailed" ||
+            systemStatus == "DeviceTrackingLost" ||
+            systemStatus == "DeviceRelocFailed" ||
+            systemStatus == "DeviceRelocRunning" ||
+            systemStatus == "DeviceMapLoadingStarted")
+        {
+            setState(PoseQuality::STATE_FAULT, "FAULT", "system_status=" + systemStatus);
+            return;
+        }
+
+        if (relocalizationStatus == "RelocalizationRunning" ||
+            relocalizationStatus == "RelocalizationFailed")
+        {
+            setState(PoseQuality::STATE_FAULT, "FAULT", "relocalization_status=" + relocalizationStatus);
+            return;
+        }
+
+        if (poseAugmentationFailed && poseSource == "raw_fallback")
+        {
+            msg.reason = augmentationFailureReason;
+        }
+
+        if (!hasSelectedPose)
+        {
+            setState(PoseQuality::STATE_UNKNOWN, "UNKNOWN", "waiting_for_pose");
+            return;
+        }
+
+        if (!hasCovariance)
+        {
+            if (selectedLifetime >= covarianceTimeout)
+                setState(PoseQuality::STATE_FAULT, "FAULT", "covariance_unavailable");
+            else
+                setState(PoseQuality::STATE_UNKNOWN, "UNKNOWN", "waiting_for_covariance");
+            return;
+        }
+
+        if (!std::isfinite(covarianceAge) || covarianceAge > covarianceTimeout)
+        {
+            setState(PoseQuality::STATE_FAULT, "FAULT", "covariance_timeout");
+            return;
+        }
+
+        if (!std::isfinite(xy95) || !std::isfinite(yawSigma))
+        {
+            setState(PoseQuality::STATE_UNKNOWN, "UNKNOWN", "covariance_invalid");
+            return;
+        }
+
+        if (xy95 >= faultXy || yawSigma >= faultYaw)
+        {
+            setState(PoseQuality::STATE_FAULT, "FAULT", "covariance_fault");
+            return;
+        }
+        if (xy95 >= warnXy || yawSigma >= warnYaw)
+        {
+            setState(PoseQuality::STATE_WARN, "WARN", "covariance_warn");
+            return;
+        }
+
+        setState(PoseQuality::STATE_OK, "OK", msg.reason.empty() ? "ok" : msg.reason);
     }
 
     std::chrono::milliseconds SlamwareRosSdkServer::sfConvFloatSecToBoostMs_(
@@ -184,6 +462,13 @@ namespace slamware_ros_sdk
                 serverWorkers_.push_back(svrWk);
             }
 
+            if (0 < params_.pose_quality_pub_period)
+            {
+                ROS_INFO("PoseQuality:%.4f", params_.pose_quality_pub_period);
+                auto svrWk = std::make_shared<ServerPoseQualityWorker>(this, "PoseQuality", sfConvFloatSecToBoostMs_(params_.pose_quality_pub_period));
+                serverWorkers_.push_back(svrWk);
+            }
+
             {
                 ROS_INFO("StereoImage:%.4f", params_.stereo_image_pub_period);
                 // add ServerStereoImageWorker
@@ -281,7 +566,10 @@ namespace slamware_ros_sdk
             workDat_.reset();
         }
         if(raw_img_listener_)
+        {
             delete raw_img_listener_;
+            raw_img_listener_ = nullptr;
+        }
         state_.store(ServerStateNotInit);
     }
 
@@ -499,14 +787,36 @@ namespace slamware_ros_sdk
         const SetMapUpdateRequest::ConstPtr &msg)
     {
         auto aurora = safeGetAuroraSdk();
-        aurora->controller.requireMappingMode();
+        if (!aurora)
+            return;
+        if (msg && msg->enabled)
+        {
+            ROS_INFO("Map update requested: enabled=true; switching Aurora to mapping mode.");
+            aurora->controller.requireMappingMode();
+        }
+        else
+        {
+            ROS_INFO("Map update requested: enabled=false; switching Aurora to pure localization mode.");
+            aurora->controller.requirePureLocalizationMode();
+        }
     }
 
     void SlamwareRosSdkServer::msgCbSetMapLocalization_(
         const SetMapLocalizationRequest::ConstPtr &msg)
     {
         auto aurora = safeGetAuroraSdk();
-        aurora->controller.requirePureLocalizationMode();
+        if (!aurora)
+            return;
+        if (!msg || msg->enabled)
+        {
+            ROS_INFO("Map localization requested: enabled=true; switching Aurora to pure localization mode.");
+            aurora->controller.requirePureLocalizationMode();
+        }
+        else
+        {
+            ROS_INFO("Map localization requested: enabled=false; switching Aurora to mapping mode.");
+            aurora->controller.requireMappingMode();
+        }
     }
 
     bool SlamwareRosSdkServer::srvCbSyncGetStcm_(
@@ -744,19 +1054,121 @@ namespace slamware_ros_sdk
         auroraSdkConnected_.store(true);
         //start raw image stream according to config
         auroraSdk_->controller.setRawDataSubscription(params_.raw_image_on); 
+        startPoseAugmentation_();
     }
 
     void SlamwareRosSdkServer::disconnectAuroraSdk_()
     {
         if (auroraSdkConnected_.load())
         {
+            stopPoseAugmentation_();
             {
                 std::lock_guard<std::mutex> lkGuard(auroraSdkLock_);
                 auroraSdk_->lidar2DMapBuilder.stopPreviewMapBackgroundUpdate();
                 auroraSdk_->disconnect();
                 auroraSdk_->release();
+                auroraSdk_ = nullptr;
             }
             auroraSdkConnected_.store(false);
+        }
+    }
+
+    void SlamwareRosSdkServer::startPoseAugmentation_()
+    {
+        if (!params_.pose_augmentation_enabled)
+        {
+            std::lock_guard<std::mutex> lkGuard(workDatLock_);
+            if (workDat_)
+            {
+                workDat_->poseAugmentationStarted = false;
+                workDat_->poseAugmentationFailed = false;
+                workDat_->poseAugmentationFailureReason.clear();
+            }
+            ROS_INFO("Pose augmentation disabled by parameter.");
+            return;
+        }
+
+        auto aurora = safeGetAuroraSdk();
+        if (!aurora)
+            return;
+
+        slamtec_aurora_sdk_pose_augmentation_config_t config;
+        memset(&config, 0, sizeof(config));
+        switch (params_.pose_augmentation_frequency_hz)
+        {
+        case 200:
+            config.output_frequency = SLAMTEC_AURORA_SDK_POSE_OUTPUT_FREQ_200HZ;
+            break;
+        case 100:
+            config.output_frequency = SLAMTEC_AURORA_SDK_POSE_OUTPUT_FREQ_100HZ;
+            break;
+        case 0:
+            config.output_frequency = SLAMTEC_AURORA_SDK_POSE_OUTPUT_FREQ_HIGHEST_POSSIBLE;
+            break;
+        case 50:
+        default:
+            config.output_frequency = SLAMTEC_AURORA_SDK_POSE_OUTPUT_FREQ_50HZ;
+            break;
+        }
+        config.enable_smoothing = params_.pose_augmentation_smoothing_enabled ? 1 : 0;
+        config.smoothing_factor = params_.pose_augmentation_smoothing_factor;
+
+        std::string modeText = params_.pose_augmentation_mode;
+        std::transform(modeText.begin(), modeText.end(), modeText.begin(), ::tolower);
+        slamtec_aurora_sdk_pose_augmentation_mode_t mode =
+            (modeText == "visual_only" || modeText == "visual") ?
+                SLAMTEC_AURORA_SDK_POSE_AUGMENTATION_MODE_VISUAL_ONLY :
+                SLAMTEC_AURORA_SDK_POSE_AUGMENTATION_MODE_IMU_VISION_MIXED;
+
+        slamtec_aurora_sdk_errorcode_t errcode = SLAMTEC_AURORA_SDK_ERRORCODE_OK;
+        const bool ok = aurora->dataProvider.startPoseAugmentation(mode, config, &errcode);
+        {
+            std::lock_guard<std::mutex> lkGuard(workDatLock_);
+            if (workDat_)
+            {
+                workDat_->poseAugmentationStarted = ok;
+                workDat_->poseAugmentationFailed = !ok;
+                workDat_->poseAugmentationFailureReason = ok ? "" : ("startPoseAugmentation failed errcode=" + std::to_string(errcode));
+                workDat_->hasAugmentedPose = false;
+            }
+        }
+
+        if (ok)
+        {
+            ROS_INFO("Pose augmentation started: mode=%s frequency=%dHz smoothing=%s factor=%.3f",
+                     modeText.c_str(),
+                     params_.pose_augmentation_frequency_hz,
+                     params_.pose_augmentation_smoothing_enabled ? "true" : "false",
+                     params_.pose_augmentation_smoothing_factor);
+        }
+        else
+        {
+            ROS_WARN("Pose augmentation failed to start, using raw pose fallback: errcode=%d", errcode);
+        }
+    }
+
+    void SlamwareRosSdkServer::stopPoseAugmentation_()
+    {
+        auto aurora = safeGetAuroraSdk();
+        if (!aurora)
+            return;
+
+        bool shouldStop = false;
+        {
+            std::lock_guard<std::mutex> lkGuard(workDatLock_);
+            shouldStop = workDat_ && workDat_->poseAugmentationStarted;
+            if (workDat_)
+            {
+                workDat_->poseAugmentationStarted = false;
+                workDat_->hasAugmentedPose = false;
+            }
+        }
+
+        if (shouldStop)
+        {
+            slamtec_aurora_sdk_errorcode_t errcode = SLAMTEC_AURORA_SDK_ERRORCODE_OK;
+            if (!aurora->dataProvider.stopPoseAugmentation(&errcode))
+                ROS_WARN("Failed to stop pose augmentation cleanly: errcode=%d", errcode);
         }
     }
 
@@ -839,6 +1251,7 @@ namespace slamware_ros_sdk
     }
 
     void RawImageListener::Init(SlamwareRosSdkServer* ros_sdk_server){
+        rosSdkServer_ = ros_sdk_server;
         auto srvParams = ros_sdk_server->serverParams_();
         auto nhRos = ros_sdk_server->rosNodeHandle_();
         pubLeftRawImage_ = nhRos.advertise<sensor_msgs::Image>(srvParams.left_image_raw_topic_name, 5);
@@ -889,6 +1302,23 @@ namespace slamware_ros_sdk
             pubRightRawImage_.publish(rightImage);
         }
 
+    }
+
+    void RawImageListener::onPoseAugmentationResult(
+        uint64_t timestamp_ns,
+        slamtec_aurora_sdk_pose_augmentation_mode_t mode,
+        const slamtec_aurora_sdk_pose_se3_t& pose)
+    {
+        if (rosSdkServer_)
+            rosSdkServer_->handlePoseAugmentationResult(timestamp_ns, mode, pose);
+    }
+
+    void RawImageListener::onPoseCovariance(
+        uint64_t timestamp_ns,
+        const rp::standalone::aurora::PoseCovariance& covariance)
+    {
+        if (rosSdkServer_)
+            rosSdkServer_->handlePoseCovariance(timestamp_ns, covariance);
     }
     
 }

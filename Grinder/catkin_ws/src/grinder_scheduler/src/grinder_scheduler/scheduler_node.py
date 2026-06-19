@@ -3519,7 +3519,7 @@ class SchedulerNode:
     def _start_execution(self):
         try:
             self._switch_to_localization_mode_after_map_save()
-            rospy.loginfo("Task start pre-check: radar switched to localization mode")
+            rospy.loginfo("Task start pre-check: requested radar pure localization mode")
         except Exception as exc:
             rospy.logwarn("Task start blocked: failed to switch radar to localization mode: %s", exc)
             return False, "Failed to switch radar to localization mode: {}".format(exc)
@@ -5469,18 +5469,18 @@ class SchedulerNode:
                 # This ensures next time LIVE_MAP is entered, it starts with empty regions.
                 if prev_map_id == self._live_map_id:
                     self._remove_map_overlay_state_for_map(prev_map_id)
-            localization_switched = False
+            localization_requested = False
             localization_err = ""
             try:
                 self._switch_to_localization_mode_after_map_save()
-                localization_switched = True
+                localization_requested = True
             except Exception as loc_exc:
                 localization_err = str(loc_exc)
-                rospy.logwarn("Map saved but failed to switch localization mode: %s", localization_err)
+                rospy.logwarn("Map saved but failed to request localization mode: %s", localization_err)
             self._attach_runtime_map_paths(response, False)
             self._save_local_state()
             response.result = pb.RESULT_SUCCESS
-            response.message = "map_saved_and_localization_on" if localization_switched else "map_saved"
+            response.message = "map_saved_and_localization_requested" if localization_requested else "map_saved"
             if localization_err:
                 response.message = "{} ({})".format(response.message, localization_err)
             if hasattr(response, "map_id"):
@@ -5626,16 +5626,31 @@ class SchedulerNode:
         return response.SerializeToString(), pb.MSG_ID_TASK_RESULT_RESPONSE, pb.COMP_SCHEDULER
 
     def _switch_to_localization_mode_after_map_save(self):
+        if self._set_map_update_pub is None or SetMapUpdateRequest is None:
+            raise RuntimeError("set_map_update publisher is unavailable")
         if self._set_map_localization_pub is None or SetMapLocalizationRequest is None:
             raise RuntimeError("set_map_localization publisher is unavailable")
-        conn = int(self._set_map_localization_pub.get_num_connections())
-        if conn <= 0:
+        update_conn = int(self._set_map_update_pub.get_num_connections())
+        localization_conn = int(self._set_map_localization_pub.get_num_connections())
+        if update_conn <= 0:
+            raise RuntimeError("set_map_update has no subscribers; check slamware_ros_sdk node")
+        if localization_conn <= 0:
             raise RuntimeError("set_map_localization has no subscribers; check slamware_ros_sdk node")
-        msg = SetMapLocalizationRequest()
-        msg.enabled = True
+        update_msg = SetMapUpdateRequest()
+        update_msg.enabled = False
+        if MapKind is not None:
+            update_msg.kind.kind = int(MapKind.EXPLORERMAP)
+        localization_msg = SetMapLocalizationRequest()
+        localization_msg.enabled = True
         for _ in range(12):
-            self._set_map_localization_pub.publish(msg)
+            self._set_map_update_pub.publish(update_msg)
+            self._set_map_localization_pub.publish(localization_msg)
             rospy.sleep(0.15)
+        rospy.loginfo(
+            "Pure localization mode requested: set_map_update=false subscribers=%d, set_map_localization=true subscribers=%d",
+            update_conn,
+            localization_conn,
+        )
 
     def handle_map_mode_request(self, payload):
         pb = self.sl_link_server.pb
@@ -5669,25 +5684,38 @@ class SchedulerNode:
                     response.result = pb.RESULT_SUCCESS
                     response.message = "mapping_mode_command_published enabled=1 subscribers={}".format(conn)
                 else:
-                    # aurora_ros set_map_update callback ignores msg.enabled and always enters mapping mode.
-                    # To support "mapping off" without modifying aurora_ros, switch to localization mode.
+                    if self._set_map_update_pub is None or SetMapUpdateRequest is None:
+                        raise RuntimeError("set_map_update publisher is unavailable")
                     if self._set_map_localization_pub is None or SetMapLocalizationRequest is None:
                         raise RuntimeError(
                             "mapping_off fallback requires set_map_localization publisher, but it is unavailable"
                         )
-                    conn = int(self._set_map_localization_pub.get_num_connections())
-                    if conn <= 0:
+                    update_conn = int(self._set_map_update_pub.get_num_connections())
+                    localization_conn = int(self._set_map_localization_pub.get_num_connections())
+                    if update_conn <= 0:
+                        raise RuntimeError(
+                            "mapping_off failed: set_map_update has no subscribers; check slamware_ros_sdk node"
+                        )
+                    if localization_conn <= 0:
                         raise RuntimeError(
                             "mapping_off fallback failed: set_map_localization has no subscribers; check slamware_ros_sdk node"
                         )
-                    msg = SetMapLocalizationRequest()
-                    msg.enabled = True
+                    update_msg = SetMapUpdateRequest()
+                    update_msg.enabled = False
+                    if MapKind is not None:
+                        update_msg.kind.kind = int(MapKind.EXPLORERMAP)
+                    localization_msg = SetMapLocalizationRequest()
+                    localization_msg.enabled = True
                     for _ in range(12):
-                        self._set_map_localization_pub.publish(msg)
+                        self._set_map_update_pub.publish(update_msg)
+                        self._set_map_localization_pub.publish(localization_msg)
                         rospy.sleep(0.15)
                     response.result = pb.RESULT_SUCCESS
                     response.message = (
-                        "mapping_off_fallback_to_localization enabled=1 subscribers={}".format(conn)
+                        "mapping_off_requested set_map_update=0 subscribers={} set_map_localization=1 subscribers={}".format(
+                            update_conn,
+                            localization_conn,
+                        )
                     )
             elif request.mode == pb.MAP_MODE_LOCALIZATION:
                 if self._set_map_localization_pub is None or SetMapLocalizationRequest is None:

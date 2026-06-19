@@ -12,6 +12,11 @@
   <arg name="publish_laser_pose_tf" default="false" />
   <arg name="align_map_to_initial_yaw" default="true" />
   <arg name="aligned_map_frame" default="map_aligned" />
+  <arg name="pose_augmentation_enabled" default="true" />
+  <arg name="pose_augmentation_frequency_hz" default="50" />
+  <arg name="pose_augmentation_mode" default="imu_vision_mixed" />
+  <arg name="pose_augmentation_smoothing_enabled" default="false" />
+  <arg name="pose_augmentation_smoothing_factor" default="0.3" />
 
   <!-- 主节点 -->
   <node pkg="slamware_ros_sdk" type="slamware_ros_sdk_server_node" name="slamware_ros_sdk_server_node" output="screen">
@@ -39,10 +44,23 @@
     <param name="base_to_laser_pitch"      value="$(arg base_to_laser_pitch)"/>
     <param name="base_to_laser_yaw"        value="$(arg base_to_laser_yaw)"/>
 
-    <param name="robot_pose_pub_period"    value="0.05"/>
+    <param name="robot_pose_pub_period"    value="0.02"/>
+    <param name="odometry_pub_period"      value="0.02"/>
+    <param name="pose_quality_pub_period"  value="0.05"/>
     <param name="scan_pub_period"          value="0.1"/>
     <param name="map_pub_period"           value="0.2"/>
     <param name="imu_raw_data_period"      value="0.005"/>
+    <param name="pose_augmentation_enabled" value="$(arg pose_augmentation_enabled)"/>
+    <param name="pose_augmentation_frequency_hz" value="$(arg pose_augmentation_frequency_hz)"/>
+    <param name="pose_augmentation_mode" value="$(arg pose_augmentation_mode)"/>
+    <param name="pose_augmentation_smoothing_enabled" value="$(arg pose_augmentation_smoothing_enabled)"/>
+    <param name="pose_augmentation_smoothing_factor" value="$(arg pose_augmentation_smoothing_factor)"/>
+    <param name="pose_augmentation_timeout_sec" value="0.25"/>
+    <param name="pose_quality_covariance_timeout_sec" value="1.0"/>
+    <param name="pose_quality_warn_xy95_m" value="0.10"/>
+    <param name="pose_quality_fault_xy95_m" value="0.30"/>
+    <param name="pose_quality_warn_yaw_deg" value="3.0"/>
+    <param name="pose_quality_fault_yaw_deg" value="5.0"/>
 
     <param name="ladar_data_clockwise"     value="true"/>
     <param name="robot_pose_topic"         value="robot_pose"/>

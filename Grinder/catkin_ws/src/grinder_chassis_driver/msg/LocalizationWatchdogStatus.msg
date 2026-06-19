@@ -1,0 +1,18 @@
+std_msgs/Header header
+
+bool locked
+bool command_blocked
+bool recovery_glide_active
+string state
+string reason
+
+float32 recovery_distance_m
+float32 recovery_remaining_m
+float32 recovery_duration_sec
+float32 front_obstacle_distance_m
+bool scan_fresh
+
+string pose_quality_state
+string pose_quality_reason
+string system_status
+string relocalization_status

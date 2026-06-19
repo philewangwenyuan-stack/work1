@@ -44,6 +44,7 @@ namespace slamware_ros_sdk
         float robot_basic_state_pub_period;
         float odometry_pub_period;
         float enhanced_imaging_pub_period;
+        float pose_quality_pub_period;
 
         float event_period;
 
@@ -59,10 +60,24 @@ namespace slamware_ros_sdk
         std::string imu_raw_data_topic;
         std::string robot_pose_topic;
         std::string odom_topic;
+        std::string pose_quality_topic_name;
         std::string odom_frame;
         std::string depth_image_raw_topic_name;
         std::string depth_image_colorized_topic_name;
         std::string semantic_segmentation_topic_name;
+
+        bool pose_augmentation_enabled;
+        int pose_augmentation_frequency_hz;
+        std::string pose_augmentation_mode;
+        bool pose_augmentation_smoothing_enabled;
+        float pose_augmentation_smoothing_factor;
+        bool pose_augmentation_fallback_to_raw;
+        float pose_augmentation_timeout_sec;
+        float pose_quality_covariance_timeout_sec;
+        float pose_quality_warn_xy95_m;
+        float pose_quality_fault_xy95_m;
+        float pose_quality_warn_yaw_deg;
+        float pose_quality_fault_yaw_deg;
      
         // 0528修改==========================================================================
         bool slam_pose_is_laser_frame;

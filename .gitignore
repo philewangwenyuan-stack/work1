@@ -1,0 +1,30 @@
+# Codex / local tooling
+.codex-log/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# ROS / catkin generated output
+Grinder/catkin_ws/build/
+Grinder/catkin_ws/devel/
+Grinder/catkin_ws/install/
+Grinder/catkin_ws/logs/
+Grinder/catkin_ws/.catkin_tools/
+
+# Runtime/generated state
+Grinder/temp/
+Grinder/maps/
+*.bag
+*.active
+
+# Temporary office lock files
+~$*
+
+# Common binary/archive payloads
+*.rar
+*.zip
+*.tar
+*.tar.gz
+*.tgz

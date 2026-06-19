@@ -5,20 +5,7 @@
   <arg name="aurora_no_preview_image" default="false" />
   <arg name="start_navigation" default="true" />
   <arg name="start_chassis_driver" default="false" />
-  <arg name="start_localization_shadow" default="false" />
   <arg name="navigation_map_yaml_path" default="$(find teb_local_planner_tutorials)/maps/map.yaml" />
-  <arg name="localization_shadow_map_yaml" default="$(find grinder_scheduler)/../../../temp/live_map/map.yaml" />
-  <arg name="localization_shadow_scan_topic" default="/slamware_ros_sdk_server_node/scan" />
-  <arg name="localization_shadow_amcl_gui_publish_rate_hz" default="5.0" />
-  <arg name="localization_monitor_check_hz" default="10.0" />
-  <arg name="localization_monitor_status_publish_hz" default="2.0" />
-  <arg name="localization_monitor_diagnostics_publish_hz" default="1.0" />
-  <arg name="localization_monitor_action_mode" default="warn_only" />
-  <arg name="localization_monitor_fault_topic" default="/localization_monitor/fault" />
-  <arg name="localization_monitor_warn_position_m" default="0.30" />
-  <arg name="localization_monitor_fault_position_m" default="0.60" />
-  <arg name="localization_monitor_warn_yaw_deg" default="10.0" />
-  <arg name="localization_monitor_fault_yaw_deg" default="20.0" />
   <arg name="local_rtsp_mediamtx_path" default="tools/mediamtx/mediamtx" />
   <arg name="map_topic" default="/map" />
   <arg name="odom_topic" default="/odom" />
@@ -34,6 +21,11 @@
   <arg name="publish_laser_pose_tf" default="false" />
   <arg name="align_map_to_initial_yaw" default="true" />
   <arg name="aligned_map_frame" default="map_aligned" />
+  <arg name="aurora_pose_augmentation_enabled" default="true" />
+  <arg name="aurora_pose_augmentation_frequency_hz" default="50" />
+  <arg name="aurora_pose_augmentation_mode" default="imu_vision_mixed" />
+  <arg name="aurora_pose_augmentation_smoothing_enabled" default="false" />
+  <arg name="aurora_pose_augmentation_smoothing_factor" default="0.3" />
   
 
   <!-- 1) Aurora driver: start independently in the system launch -->
@@ -49,13 +41,15 @@
     <arg name="publish_laser_pose_tf" value="$(arg publish_laser_pose_tf)" />
     <arg name="align_map_to_initial_yaw" value="$(arg align_map_to_initial_yaw)" />
     <arg name="aligned_map_frame" value="$(arg aligned_map_frame)" />
+    <arg name="pose_augmentation_enabled" value="$(arg aurora_pose_augmentation_enabled)" />
+    <arg name="pose_augmentation_frequency_hz" value="$(arg aurora_pose_augmentation_frequency_hz)" />
+    <arg name="pose_augmentation_mode" value="$(arg aurora_pose_augmentation_mode)" />
+    <arg name="pose_augmentation_smoothing_enabled" value="$(arg aurora_pose_augmentation_smoothing_enabled)" />
+    <arg name="pose_augmentation_smoothing_factor" value="$(arg aurora_pose_augmentation_smoothing_factor)" />
   </include>
 
   <!-- 2) chassis driver -->
-  <include if="$(arg start_chassis_driver)" file="$(find grinder_chassis_driver)/launch/chassis_driver.launch">
-    <arg name="localization_monitor_action_mode" value="$(arg localization_monitor_action_mode)" />
-    <arg name="localization_monitor_fault_topic" value="$(arg localization_monitor_fault_topic)" />
-  </include>
+  <include if="$(arg start_chassis_driver)" file="$(find grinder_chassis_driver)/launch/chassis_driver.launch" />
 
   <!-- 3) scheduler (aurora already launched above, avoid duplicate startup) -->
   <include file="$(find grinder_scheduler)/launch/scheduler.launch">
@@ -70,25 +64,7 @@
     <arg name="right_image_topic" value="$(arg right_image_topic)" />
   </include>
 
-  <!-- 4) shadow laser localization and monitor (does not publish map->odom) -->
-  <include if="$(arg start_localization_shadow)"
-           file="$(find grinder_scheduler)/launch/localization_shadow.launch">
-    <arg name="localization_shadow_enabled" value="true" />
-    <arg name="localization_shadow_map_yaml" value="$(arg localization_shadow_map_yaml)" />
-    <arg name="localization_shadow_scan_topic" value="$(arg localization_shadow_scan_topic)" />
-    <arg name="localization_shadow_amcl_gui_publish_rate_hz" value="$(arg localization_shadow_amcl_gui_publish_rate_hz)" />
-    <arg name="localization_monitor_check_hz" value="$(arg localization_monitor_check_hz)" />
-    <arg name="localization_monitor_status_publish_hz" value="$(arg localization_monitor_status_publish_hz)" />
-    <arg name="localization_monitor_diagnostics_publish_hz" value="$(arg localization_monitor_diagnostics_publish_hz)" />
-    <arg name="localization_monitor_action_mode" value="$(arg localization_monitor_action_mode)" />
-    <arg name="localization_monitor_fault_topic" value="$(arg localization_monitor_fault_topic)" />
-    <arg name="localization_monitor_warn_position_m" value="$(arg localization_monitor_warn_position_m)" />
-    <arg name="localization_monitor_fault_position_m" value="$(arg localization_monitor_fault_position_m)" />
-    <arg name="localization_monitor_warn_yaw_deg" value="$(arg localization_monitor_warn_yaw_deg)" />
-    <arg name="localization_monitor_fault_yaw_deg" value="$(arg localization_monitor_fault_yaw_deg)" />
-  </include>
-
-  <!-- 5) navigation stack -->
+  <!-- 4) navigation stack -->
   <include if="$(arg start_navigation)"
            file="$(find teb_local_planner_tutorials)/launch/robot_diff_drive.launch" />
 </launch>

@@ -1,3 +1,21 @@
 {
-    "cmake.sourceDirectory": "E:/CODE/C++/work1/Grinder/catkin_ws/src"
+    "cmake.sourceDirectory": "E:/work1/Grinder/catkin_ws/src",
+    "files.exclude": {
+        "**/__pycache__": true,
+        "Grinder/catkin_ws/build": true,
+        "Grinder/catkin_ws/devel": true,
+        "Grinder/catkin_ws/install": true,
+        "Grinder/catkin_ws/logs": true,
+        "Grinder/temp": true
+    },
+    "search.exclude": {
+        "**/__pycache__": true,
+        "Grinder/catkin_ws/build": true,
+        "Grinder/catkin_ws/devel": true,
+        "Grinder/catkin_ws/install": true,
+        "Grinder/catkin_ws/logs": true,
+        "Grinder/temp": true,
+        "Grinder/third_party": true,
+        "Grinder/tools": true
+    }
 }

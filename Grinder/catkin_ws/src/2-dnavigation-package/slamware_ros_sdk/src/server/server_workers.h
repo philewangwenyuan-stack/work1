@@ -16,6 +16,7 @@
 #include <aurora_pubsdk_inc.h>
 #include <slamware_ros_sdk/SystemStatus.h>
 #include <slamware_ros_sdk/RelocalizationStatus.h>
+#include <slamware_ros_sdk/PoseQuality.h>
 #include <aurora_pubsdk_inc.h>
 #include <optional>
 #include <chrono>
@@ -233,6 +234,26 @@ namespace slamware_ros_sdk
         ros::Publisher pubRelocalizaitonStatus_;
         std::optional<slamtec_aurora_sdk_device_status_t> lastDeviceStatus_;
         std::optional<slamtec_aurora_sdk_relocalization_status_type_t> lastRelocalizationStatus_;
+    };
+
+    //////////////////////////////////////////////////////////////////////////
+
+    class ServerPoseQualityWorker : public ServerWorkerBase
+    {
+    public:
+        typedef ServerWorkerBase super_t;
+
+    public:
+        ServerPoseQualityWorker(SlamwareRosSdkServer *pRosSdkServer, const std::string &wkName, const std::chrono::milliseconds &triggerInterval);
+        virtual ~ServerPoseQualityWorker();
+
+        virtual bool reinitWorkLoop();
+
+    protected:
+        virtual void doPerform();
+
+    private:
+        ros::Publisher pubPoseQuality_;
     };
 
     //////////////////////////////////////////////////////////////////////////

@@ -7,6 +7,7 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   message_generation
   rospy
+  sensor_msgs
   slamware_ros_sdk
   std_msgs
   std_srvs
@@ -19,6 +20,7 @@ add_message_files(
   WheelSpeedCommand.msg
   WheelSpeedState.msg
   ChassisStatus.msg
+  LocalizationWatchdogStatus.msg
 )
 
 add_service_files(
@@ -33,7 +35,7 @@ generate_messages(
 )
 
 catkin_package(
-  CATKIN_DEPENDS actionlib_msgs diagnostic_msgs geometry_msgs message_runtime rospy slamware_ros_sdk std_msgs std_srvs
+  CATKIN_DEPENDS actionlib_msgs diagnostic_msgs geometry_msgs message_runtime rospy sensor_msgs slamware_ros_sdk std_msgs std_srvs
 )
 
 catkin_install_python(PROGRAMS

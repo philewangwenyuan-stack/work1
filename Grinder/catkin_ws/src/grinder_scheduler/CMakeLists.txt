@@ -33,7 +33,6 @@ catkin_package(
 )
 
 catkin_install_python(PROGRAMS
-  scripts/localization_monitor_node.py
   scripts/scheduler_node.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

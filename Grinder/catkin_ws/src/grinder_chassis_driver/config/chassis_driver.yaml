@@ -71,9 +71,13 @@ task_enable_default: false
 localization_watchdog_enabled: true
 localization_system_status_topic: /slamware_ros_sdk_server_node/system_status
 localization_relocalization_status_topic: /slamware_ros_sdk_server_node/relocalization_status
+localization_pose_quality_topic: /slamware_ros_sdk_server_node/pose_quality
+localization_pose_quality_timeout_sec: 1.0
+localization_pose_quality_block_unknown: true
 localization_status_timeout_sec: 1.0
 localization_watchdog_cancel_topic: /move_base/cancel
 localization_watchdog_cancel_period_sec: 1.0
+localization_watchdog_status_topic: /chassis/localization_watchdog_status
 # If false, keep watchdog locked after localization recovers until manual release.
 localization_watchdog_auto_release: true
 localization_watchdog_release_service: /chassis/localization_watchdog_release
@@ -81,11 +85,14 @@ localization_watchdog_release_service: /chassis/localization_watchdog_release
 # Keep false for safest behavior; set true only if the site wants auto-resume.
 localization_watchdog_restore_motion_on_release: false
 localization_watchdog_restore_disc_on_release: false
-# Shadow localization monitor integration. Default is warn_only: diagnostics only,
-# no chassis lock. Set to safety_stop to lock on /localization_monitor/fault.
-localization_monitor_action_mode: warn_only
-localization_monitor_fault_topic: /localization_monitor/fault
-localization_monitor_fault_timeout_sec: 0.0
+localization_recovery_glide_enabled: true
+localization_recovery_glide_speed_mps: 0.05
+localization_recovery_max_distance_m: 0.30
+localization_recovery_max_duration_sec: 10.0
+localization_recovery_scan_topic: /slamware_ros_sdk_server_node/scan
+localization_recovery_scan_timeout_sec: 0.5
+localization_recovery_front_sector_deg: 45.0
+localization_recovery_obstacle_stop_m: 0.40
 # 轮距（米），用于角速度换算
 cmd_vel_wheel_track_m: 0.79
 # 轮半径（米），用于线速度换算

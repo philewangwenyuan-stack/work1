@@ -224,23 +224,21 @@ namespace slamware_ros_sdk
         }
 
         slamtec_aurora_sdk_pose_se3_t pose;
-        // auroraSDK->dataProvider.getCurrentPoseSE3(pose);
-        uint64_t pose_timestamp;
-        if(auroraSDK->dataProvider.getCurrentPoseSE3WithTimestamp(pose,pose_timestamp))
-        {
-            if(pose_timestamp>lastTimestamp_)
-            {
-                lastTimestamp_ = pose_timestamp;
-            }
-            else
-            {
-                return;
-            }
-        }
-        else
-        {
+        uint64_t pose_timestamp = 0;
+        std::string poseSource;
+        bool augmentationActive = false;
+        bool augmentationFallback = false;
+        if (!rosSdkServer()->selectCurrentPose(
+                auroraSDK,
+                pose,
+                pose_timestamp,
+                poseSource,
+                augmentationActive,
+                augmentationFallback))
             return;
-        }
+        if (pose_timestamp <= lastTimestamp_)
+            return;
+        lastTimestamp_ = pose_timestamp;
         //0528=========================================================
         tf::Transform robotPoseTransform = makePoseTransform(pose);
         if (srvParams.slam_pose_is_laser_frame)
@@ -1254,6 +1252,7 @@ namespace slamware_ros_sdk
             }
 
             lastDeviceStatus_ = result.status;
+            rosSdkServer()->updateSystemStatus(resp.status);
             pubSystemStatus_.publish(resp);
         }
 
@@ -1308,8 +1307,40 @@ namespace slamware_ros_sdk
             }
 
             lastRelocalizationStatus_ = reloc_status.status;
+            rosSdkServer()->updateRelocalizationStatus(reloc_resp.status);
             pubRelocalizaitonStatus_.publish(reloc_resp);
         }
+    }
+
+    ServerPoseQualityWorker::ServerPoseQualityWorker(
+        SlamwareRosSdkServer *pRosSdkServer,
+        const std::string &wkName,
+        const std::chrono::milliseconds &triggerInterval)
+        : super_t(pRosSdkServer, wkName, triggerInterval)
+    {
+        const auto &srvParams = serverParams();
+        auto nhRos = rosNodeHandle();
+        pubPoseQuality_ = nhRos.advertise<slamware_ros_sdk::PoseQuality>(srvParams.pose_quality_topic_name, 10);
+    }
+
+    ServerPoseQualityWorker::~ServerPoseQualityWorker()
+    {
+        //
+    }
+
+    bool ServerPoseQualityWorker::reinitWorkLoop()
+    {
+        if (!this->super_t::reinitWorkLoop())
+            return false;
+        isWorkLoopInitOk_ = true;
+        return isWorkLoopInitOk_;
+    }
+
+    void ServerPoseQualityWorker::doPerform()
+    {
+        slamware_ros_sdk::PoseQuality msg;
+        rosSdkServer()->fillPoseQualityMsg(msg);
+        pubPoseQuality_.publish(msg);
     }
 
     ServerStereoImageWorker::ServerStereoImageWorker(

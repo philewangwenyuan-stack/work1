@@ -132,6 +132,7 @@ add_message_files(
   RelocalizationCancelRequest.msg
   SystemStatus.msg
   RelocalizationStatus.msg
+  PoseQuality.msg
 )
 
 add_service_files(

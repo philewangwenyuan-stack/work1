@@ -9,11 +9,17 @@ import rospy
 from actionlib_msgs.msg import GoalID
 from diagnostic_msgs.msg import DiagnosticArray, DiagnosticStatus, KeyValue
 from geometry_msgs.msg import Twist
-from slamware_ros_sdk.msg import RelocalizationStatus, SystemStatus
+from sensor_msgs.msg import LaserScan
+from slamware_ros_sdk.msg import PoseQuality, RelocalizationStatus, SystemStatus
 from std_msgs.msg import Bool, Int16, UInt16
 from std_srvs.srv import SetBool, SetBoolResponse, Trigger, TriggerResponse
 
-from grinder_chassis_driver.msg import ChassisStatus, WheelSpeedCommand, WheelSpeedState
+from grinder_chassis_driver.msg import (
+    ChassisStatus,
+    LocalizationWatchdogStatus,
+    WheelSpeedCommand,
+    WheelSpeedState,
+)
 from grinder_chassis_driver.srv import (
     ClearFault,
     ClearFaultResponse,
@@ -194,6 +200,17 @@ class ChassisDriverNode:
             "~localization_relocalization_status_topic",
             "/slamware_ros_sdk_server_node/relocalization_status",
         )
+        self.localization_pose_quality_topic = rospy.get_param(
+            "~localization_pose_quality_topic",
+            "/slamware_ros_sdk_server_node/pose_quality",
+        )
+        self.localization_pose_quality_timeout_sec = float(
+            rospy.get_param("~localization_pose_quality_timeout_sec", 1.0)
+        )
+        self.localization_pose_quality_block_unknown = _get_bool_param(
+            "~localization_pose_quality_block_unknown",
+            True,
+        )
         self.localization_status_timeout_sec = float(rospy.get_param("~localization_status_timeout_sec", 1.0))
         self.localization_watchdog_cancel_topic = rospy.get_param(
             "~localization_watchdog_cancel_topic",
@@ -215,29 +232,56 @@ class ChassisDriverNode:
             "~localization_watchdog_restore_disc_on_release",
             False,
         )
-        self.localization_monitor_action_mode = rospy.get_param(
-            "~localization_monitor_action_mode",
-            "warn_only",
-        ).strip().lower()
-        self.localization_monitor_fault_topic = rospy.get_param(
-            "~localization_monitor_fault_topic",
-            "/localization_monitor/fault",
+        self.localization_watchdog_status_topic = rospy.get_param(
+            "~localization_watchdog_status_topic",
+            "/chassis/localization_watchdog_status",
         )
-        self.localization_monitor_fault_timeout_sec = float(
-            rospy.get_param("~localization_monitor_fault_timeout_sec", 0.0)
+        self.localization_recovery_glide_enabled = _get_bool_param(
+            "~localization_recovery_glide_enabled",
+            True,
+        )
+        self.localization_recovery_glide_speed_mps = float(
+            rospy.get_param("~localization_recovery_glide_speed_mps", 0.05)
+        )
+        self.localization_recovery_max_distance_m = float(
+            rospy.get_param("~localization_recovery_max_distance_m", 0.30)
+        )
+        self.localization_recovery_max_duration_sec = float(
+            rospy.get_param("~localization_recovery_max_duration_sec", 10.0)
+        )
+        self.localization_recovery_scan_topic = rospy.get_param(
+            "~localization_recovery_scan_topic",
+            "/slamware_ros_sdk_server_node/scan",
+        )
+        self.localization_recovery_scan_timeout_sec = float(
+            rospy.get_param("~localization_recovery_scan_timeout_sec", 0.5)
+        )
+        self.localization_recovery_front_sector_deg = float(
+            rospy.get_param("~localization_recovery_front_sector_deg", 45.0)
+        )
+        self.localization_recovery_obstacle_stop_m = float(
+            rospy.get_param("~localization_recovery_obstacle_stop_m", 0.40)
         )
         now_mono = time.monotonic()
         self._localization_system_status = ""
         self._localization_relocalization_status = ""
+        self._localization_pose_quality_state = ""
+        self._localization_pose_quality_reason = ""
+        self._localization_pose_quality_time = now_mono - max(0.0, self.localization_pose_quality_timeout_sec) - 0.001
         self._localization_system_status_time = now_mono - max(0.0, self.localization_status_timeout_sec) - 0.001
-        self._localization_monitor_fault = False
-        self._localization_monitor_fault_time = now_mono
         self._localization_watchdog_locked = False
         self._localization_watchdog_reason = ""
         self._localization_watchdog_waiting_manual_release = False
         self._localization_watchdog_saved_command = None
         self._last_localization_watchdog_stop_time = 0.0
         self._last_localization_watchdog_cancel_time = 0.0
+        self._recovery_glide_active = False
+        self._recovery_glide_start_time = 0.0
+        self._recovery_glide_distance_m = 0.0
+        self._recovery_glide_last_update_time = 0.0
+        self._recovery_glide_stop_reason = ""
+        self._front_obstacle_distance_m = float("inf")
+        self._last_scan_time = 0.0
 
         self.transport = ModbusTransport(
             port=self.port,
@@ -252,6 +296,11 @@ class ChassisDriverNode:
         self.wheel_speed_pub = rospy.Publisher("/chassis/wheel_speed_state", WheelSpeedState, queue_size=10)
         self.status_pub = rospy.Publisher("/chassis/status", ChassisStatus, queue_size=10)
         self.diagnostics_pub = rospy.Publisher("/diagnostics", DiagnosticArray, queue_size=10)
+        self.localization_watchdog_status_pub = rospy.Publisher(
+            self.localization_watchdog_status_topic,
+            LocalizationWatchdogStatus,
+            queue_size=10,
+        )
         self.localization_cancel_pub = None
         if self.localization_watchdog_enabled or (
             self.manual_override_enabled and self.manual_override_cancel_navigation
@@ -287,9 +336,15 @@ class ChassisDriverNode:
                 queue_size=10,
             )
             rospy.Subscriber(
-                self.localization_monitor_fault_topic,
-                Bool,
-                self._handle_localization_monitor_fault,
+                self.localization_pose_quality_topic,
+                PoseQuality,
+                self._handle_pose_quality,
+                queue_size=10,
+            )
+            rospy.Subscriber(
+                self.localization_recovery_scan_topic,
+                LaserScan,
+                self._handle_recovery_scan,
                 queue_size=10,
             )
 
@@ -335,21 +390,55 @@ class ChassisDriverNode:
             self._localization_relocalization_status = status
         self._refresh_localization_watchdog("relocalization_status={}".format(status))
 
-    def _handle_localization_monitor_fault(self, msg):
-        fault = bool(msg.data)
+    def _handle_pose_quality(self, msg):
+        state = str(getattr(msg, "state_label", "") or "").strip().upper()
+        if not state:
+            state = {
+                getattr(PoseQuality, "STATE_OK", 1): "OK",
+                getattr(PoseQuality, "STATE_WARN", 2): "WARN",
+                getattr(PoseQuality, "STATE_FAULT", 3): "FAULT",
+                getattr(PoseQuality, "STATE_UNKNOWN", 0): "UNKNOWN",
+            }.get(int(getattr(msg, "state", 0)), "UNKNOWN")
+        reason = str(getattr(msg, "reason", "") or "")
         with self._lock:
-            self._localization_monitor_fault = fault
-            self._localization_monitor_fault_time = time.monotonic()
-        self._refresh_localization_watchdog("localization_monitor_fault={}".format(fault))
+            self._localization_pose_quality_state = state
+            self._localization_pose_quality_reason = reason
+            self._localization_pose_quality_time = time.monotonic()
+        self._refresh_localization_watchdog("pose_quality={}:{}".format(state, reason))
+
+    def _handle_recovery_scan(self, msg):
+        min_front = self._front_scan_min_distance(msg)
+        with self._lock:
+            self._front_obstacle_distance_m = min_front
+            self._last_scan_time = time.monotonic()
+
+    def _front_scan_min_distance(self, msg):
+        half_sector = math.radians(max(1.0, float(self.localization_recovery_front_sector_deg)) * 0.5)
+        best = float("inf")
+        angle = float(msg.angle_min)
+        increment = float(msg.angle_increment)
+        if not math.isfinite(increment) or abs(increment) <= 1e-9:
+            return best
+        for value in msg.ranges:
+            if -half_sector <= angle <= half_sector:
+                distance = float(value)
+                if math.isfinite(distance):
+                    min_range = float(msg.range_min or 0.0)
+                    max_range = float(msg.range_max or 0.0)
+                    if distance >= min_range and (max_range <= 0.0 or distance <= max_range):
+                        best = min(best, distance)
+            angle += increment
+        return best
 
     def _get_localization_watchdog_state(self, now):
         reasons = []
         with self._lock:
             system_status = self._localization_system_status
             relocalization_status = self._localization_relocalization_status
+            pose_quality_state = self._localization_pose_quality_state
+            pose_quality_reason = self._localization_pose_quality_reason
+            pose_quality_age = now - self._localization_pose_quality_time
             system_status_age = now - self._localization_system_status_time
-            localization_monitor_fault = self._localization_monitor_fault
-            localization_monitor_fault_age = now - self._localization_monitor_fault_time
 
         if system_status in LOCALIZATION_BLOCKING_SYSTEM_STATUSES:
             reasons.append("system_status={}".format(system_status))
@@ -368,12 +457,17 @@ class ChassisDriverNode:
         elif relocalization_status in LOCALIZATION_RECOVERED_RELOCALIZATION_STATUSES:
             pass
 
-        if self.localization_monitor_action_mode == "safety_stop":
-            if localization_monitor_fault:
-                reasons.append("localization_monitor_fault")
-            timeout_sec = float(self.localization_monitor_fault_timeout_sec)
-            if timeout_sec > 0.0 and localization_monitor_fault_age > timeout_sec:
-                reasons.append("localization_monitor_fault timeout %.2fs" % localization_monitor_fault_age)
+        timeout_sec = float(self.localization_pose_quality_timeout_sec)
+        if timeout_sec > 0.0 and pose_quality_age > timeout_sec:
+            if pose_quality_state:
+                reasons.append("pose_quality timeout %.2fs (%s)" % (pose_quality_age, pose_quality_state))
+            else:
+                reasons.append("pose_quality timeout %.2fs" % pose_quality_age)
+
+        if pose_quality_state == "FAULT":
+            reasons.append("pose_quality=FAULT:{}".format(pose_quality_reason))
+        elif pose_quality_state == "UNKNOWN" and self.localization_pose_quality_block_unknown:
+            reasons.append("pose_quality=UNKNOWN:{}".format(pose_quality_reason))
 
         return bool(reasons), "; ".join(reasons)
 
@@ -412,6 +506,7 @@ class ChassisDriverNode:
         if locked:
             if newly_locked:
                 self._save_localization_watchdog_restore_command()
+                self._start_recovery_glide(now)
                 rospy.logwarn("Localization watchdog locked: %s", locked_reason)
             elif newly_waiting_manual:
                 rospy.logwarn("Localization recovered, but watchdog remains locked until manual release.")
@@ -421,6 +516,7 @@ class ChassisDriverNode:
                 stop_disc=not manual_bypass,
             )
         elif release_now:
+            self._reset_recovery_glide()
             self._restore_localization_watchdog_outputs()
             if source:
                 rospy.loginfo("Localization watchdog released by %s", source)
@@ -436,13 +532,123 @@ class ChassisDriverNode:
             return False
         return locked
 
+    def _start_recovery_glide(self, now):
+        with self._lock:
+            self._recovery_glide_active = bool(self.localization_recovery_glide_enabled)
+            self._recovery_glide_start_time = now
+            self._recovery_glide_distance_m = 0.0
+            self._recovery_glide_last_update_time = now
+            self._recovery_glide_stop_reason = ""
+
+    def _reset_recovery_glide(self):
+        with self._lock:
+            self._recovery_glide_active = False
+            self._recovery_glide_start_time = 0.0
+            self._recovery_glide_distance_m = 0.0
+            self._recovery_glide_last_update_time = 0.0
+            self._recovery_glide_stop_reason = ""
+
+    def _linear_velocity_to_cmd_vel_wheels(self, linear_mps):
+        if self.cmd_vel_wheel_radius_m <= 0.0 or self.cmd_vel_gear_ratio == 0.0:
+            return 0, 0
+        rpm_factor = 60.0 / (2.0 * math.pi * self.cmd_vel_wheel_radius_m)
+        rpm = float(linear_mps) * rpm_factor * self.cmd_vel_gear_ratio * self.cmd_vel_scale
+        max_abs_rpm = abs(float(self.cmd_vel_max_abs_wheel_rpm))
+        if max_abs_rpm > 0.0:
+            rpm = max(-max_abs_rpm, min(max_abs_rpm, rpm))
+        left_cmd = int(round(rpm))
+        right_cmd = int(round(rpm))
+        return self._apply_drive_direction_cmd_vel(left_cmd, right_cmd)
+
+    def _feedback_wheels_to_linear_mps(self, left_speed, right_speed):
+        left = int(left_speed)
+        right = int(right_speed)
+        if self.cmd_vel_drive_swap_lr:
+            left, right = right, left
+        left = left * self.cmd_vel_drive_left_sign
+        right = right * self.cmd_vel_drive_right_sign
+        denom = self.cmd_vel_gear_ratio * self.cmd_vel_scale
+        if self.cmd_vel_wheel_radius_m <= 0.0 or abs(denom) <= 1e-9:
+            return 0.0
+        wheel_rpm = (float(left) + float(right)) * 0.5 / denom
+        return wheel_rpm * (2.0 * math.pi * self.cmd_vel_wheel_radius_m) / 60.0
+
+    def _update_recovery_glide_distance(self, now):
+        with self._lock:
+            if not self._recovery_glide_active:
+                self._recovery_glide_last_update_time = now
+                return
+            last = self._recovery_glide_last_update_time or now
+            dt = max(0.0, min(0.5, now - last))
+            self._recovery_glide_last_update_time = now
+            snapshot = RegisterSnapshot(**self.snapshot.__dict__)
+            connected = self.connected
+        if dt <= 0.0:
+            return
+        if connected:
+            speed = abs(self._feedback_wheels_to_linear_mps(
+                snapshot.left_wheel_speed,
+                snapshot.right_wheel_speed,
+            ))
+        else:
+            speed = abs(float(self.localization_recovery_glide_speed_mps))
+        with self._lock:
+            self._recovery_glide_distance_m += speed * dt
+
+    def _recovery_scan_is_clear(self, now):
+        with self._lock:
+            scan_age = now - self._last_scan_time if self._last_scan_time > 0.0 else float("inf")
+            front_distance = self._front_obstacle_distance_m
+        if scan_age > max(0.05, float(self.localization_recovery_scan_timeout_sec)):
+            return False, "scan_timeout"
+        if front_distance <= max(0.0, float(self.localization_recovery_obstacle_stop_m)):
+            return False, "front_obstacle=%.3fm" % front_distance
+        return True, ""
+
+    def _can_recovery_glide(self, now):
+        if not self.localization_recovery_glide_enabled:
+            return False, "disabled"
+        if not self.task_enable:
+            return False, "task_disabled"
+        if not self.enabled:
+            return False, "chassis_disabled"
+        with self._lock:
+            if not self._recovery_glide_active:
+                return False, self._recovery_glide_stop_reason or "inactive"
+        self._update_recovery_glide_distance(now)
+        with self._lock:
+            distance = self._recovery_glide_distance_m
+            start_time = self._recovery_glide_start_time
+        max_distance = max(0.0, float(self.localization_recovery_max_distance_m))
+        max_duration = max(0.0, float(self.localization_recovery_max_duration_sec))
+        if max_distance <= 0.0 or distance >= max_distance:
+            return False, "max_distance"
+        if max_duration <= 0.0 or (start_time > 0.0 and (now - start_time) >= max_duration):
+            return False, "max_duration"
+        return self._recovery_scan_is_clear(now)
+
     def _issue_localization_watchdog_stop(self, force=False, stop_motion=True, stop_disc=True):
         now = time.monotonic()
         period = max(0.1, float(self.localization_watchdog_cancel_period_sec))
+        glide_allowed = False
+        glide_stop_reason = ""
+        if stop_motion:
+            glide_allowed, glide_stop_reason = self._can_recovery_glide(now)
+        left_glide, right_glide = self._linear_velocity_to_cmd_vel_wheels(
+            max(0.0, float(self.localization_recovery_glide_speed_mps))
+        )
         with self._lock:
             if stop_motion:
-                self.command.left_wheel_speed = 0
-                self.command.right_wheel_speed = 0
+                if glide_allowed:
+                    self.command.left_wheel_speed = left_glide
+                    self.command.right_wheel_speed = right_glide
+                    self._recovery_glide_active = True
+                    self._recovery_glide_stop_reason = ""
+                else:
+                    self.command.left_wheel_speed = 0
+                    self.command.right_wheel_speed = 0
+                    self._recovery_glide_active = False
+                    self._recovery_glide_stop_reason = glide_stop_reason
             if stop_disc:
                 self.command.disc_speed = 0
                 self.command.disc_enable = DISC_ENABLE_OFF
@@ -471,6 +677,7 @@ class ChassisDriverNode:
         with self._lock:
             saved_command = self._localization_watchdog_saved_command
             self._localization_watchdog_saved_command = None
+            self._recovery_glide_active = False
             if saved_command is None:
                 return
 
@@ -968,6 +1175,7 @@ class ChassisDriverNode:
             self._handle_transport_error(exc)
 
         self._publish_state()
+        self._publish_localization_watchdog_status()
         self._publish_diagnostics()
 
     def _enforce_command_timeout(self):
@@ -1016,6 +1224,43 @@ class ChassisDriverNode:
         status_msg.last_error = last_error
         self.status_pub.publish(status_msg)
 
+    def _publish_localization_watchdog_status(self):
+        now = rospy.Time.now()
+        mono = time.monotonic()
+        with self._lock:
+            locked = self._localization_watchdog_locked
+            reason = self._localization_watchdog_reason
+            recovery_active = self._recovery_glide_active
+            recovery_distance = self._recovery_glide_distance_m
+            recovery_start = self._recovery_glide_start_time
+            front_distance = self._front_obstacle_distance_m
+            scan_fresh = (
+                self._last_scan_time > 0.0
+                and (mono - self._last_scan_time) <= max(0.05, float(self.localization_recovery_scan_timeout_sec))
+            )
+            pose_quality_state = self._localization_pose_quality_state
+            pose_quality_reason = self._localization_pose_quality_reason
+            system_status = self._localization_system_status
+            relocalization_status = self._localization_relocalization_status
+
+        msg = LocalizationWatchdogStatus()
+        msg.header.stamp = now
+        msg.locked = bool(locked)
+        msg.command_blocked = bool(locked and not self._manual_override_bypasses_localization_watchdog())
+        msg.recovery_glide_active = bool(recovery_active)
+        msg.state = "LOCKED" if locked else "OK"
+        msg.reason = reason
+        msg.recovery_distance_m = float(max(0.0, recovery_distance))
+        msg.recovery_remaining_m = float(max(0.0, float(self.localization_recovery_max_distance_m) - recovery_distance))
+        msg.recovery_duration_sec = float(max(0.0, mono - recovery_start)) if recovery_start > 0.0 else 0.0
+        msg.front_obstacle_distance_m = float(front_distance) if math.isfinite(front_distance) else -1.0
+        msg.scan_fresh = bool(scan_fresh)
+        msg.pose_quality_state = pose_quality_state
+        msg.pose_quality_reason = pose_quality_reason
+        msg.system_status = system_status
+        msg.relocalization_status = relocalization_status
+        self.localization_watchdog_status_pub.publish(msg)
+
     def _publish_diagnostics(self):
         now = rospy.Time.now()
         with self._lock:
@@ -1029,7 +1274,13 @@ class ChassisDriverNode:
             localization_watchdog_waiting_manual_release = self._localization_watchdog_waiting_manual_release
             localization_system_status = self._localization_system_status
             localization_relocalization_status = self._localization_relocalization_status
-            localization_monitor_fault = self._localization_monitor_fault
+            localization_pose_quality_state = self._localization_pose_quality_state
+            localization_pose_quality_reason = self._localization_pose_quality_reason
+            recovery_glide_active = self._recovery_glide_active
+            recovery_glide_distance_m = self._recovery_glide_distance_m
+            recovery_glide_stop_reason = self._recovery_glide_stop_reason
+            front_obstacle_distance_m = self._front_obstacle_distance_m
+            scan_age = time.monotonic() - self._last_scan_time if self._last_scan_time > 0.0 else float("inf")
 
         if connected and localization_watchdog_locked:
             level = DiagnosticStatus.WARN
@@ -1069,9 +1320,17 @@ class ChassisDriverNode:
             ),
             KeyValue(key="localization_system_status", value=str(localization_system_status)),
             KeyValue(key="localization_relocalization_status", value=str(localization_relocalization_status)),
-            KeyValue(key="localization_monitor_action_mode", value=str(self.localization_monitor_action_mode)),
-            KeyValue(key="localization_monitor_fault_topic", value=str(self.localization_monitor_fault_topic)),
-            KeyValue(key="localization_monitor_fault", value=str(localization_monitor_fault)),
+            KeyValue(key="localization_pose_quality_topic", value=str(self.localization_pose_quality_topic)),
+            KeyValue(key="localization_pose_quality_state", value=str(localization_pose_quality_state)),
+            KeyValue(key="localization_pose_quality_reason", value=str(localization_pose_quality_reason)),
+            KeyValue(key="recovery_glide_active", value=str(recovery_glide_active)),
+            KeyValue(key="recovery_glide_distance_m", value="{:.3f}".format(recovery_glide_distance_m)),
+            KeyValue(key="recovery_glide_stop_reason", value=str(recovery_glide_stop_reason)),
+            KeyValue(
+                key="front_obstacle_distance_m",
+                value="{:.3f}".format(front_obstacle_distance_m) if math.isfinite(front_obstacle_distance_m) else "inf",
+            ),
+            KeyValue(key="scan_age_sec", value="{:.2f}".format(scan_age) if math.isfinite(scan_age) else "inf"),
         ]
 
         array = DiagnosticArray()

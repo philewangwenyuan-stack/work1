@@ -20,6 +20,7 @@
 #include <slamware_ros_sdk/ClearMapRequest.h>
 #include <slamware_ros_sdk/SetMapUpdateRequest.h>
 #include <slamware_ros_sdk/SetMapLocalizationRequest.h>
+#include <slamware_ros_sdk/PoseQuality.h>
 #include <message_filters/subscriber.h>
 
 #include <atomic>
@@ -37,9 +38,12 @@ namespace slamware_ros_sdk
         public:
             void Init(SlamwareRosSdkServer* ros_sdk_server);
             virtual void onRawCamImageData (uint64_t timestamp_ns, const RemoteImageRef& left, const RemoteImageRef& right);
+            virtual void onPoseAugmentationResult(uint64_t timestamp_ns, slamtec_aurora_sdk_pose_augmentation_mode_t mode, const slamtec_aurora_sdk_pose_se3_t& pose) override;
+            virtual void onPoseCovariance(uint64_t timestamp_ns, const rp::standalone::aurora::PoseCovariance& covariance) override;
         private:
             ros::Publisher pubLeftRawImage_,pubRightRawImage_;
             std::string CameraFrameLeftId,CameraFrameRightId;
+            SlamwareRosSdkServer* rosSdkServer_;
    };
     
     
@@ -64,6 +68,20 @@ namespace slamware_ros_sdk
             std::lock_guard<std::mutex> lkGuard(auroraSdkLock_);
             return auroraSdk_;
         }
+        bool selectCurrentPose(rp::standalone::aurora::RemoteSDK *sdk,
+                               slamtec_aurora_sdk_pose_se3_t &pose,
+                               uint64_t &timestampNs,
+                               std::string &poseSource,
+                               bool &augmentationActive,
+                               bool &augmentationFallback);
+        void handlePoseAugmentationResult(uint64_t timestampNs,
+                                          slamtec_aurora_sdk_pose_augmentation_mode_t mode,
+                                          const slamtec_aurora_sdk_pose_se3_t &pose);
+        void handlePoseCovariance(uint64_t timestampNs,
+                                  const rp::standalone::aurora::PoseCovariance &covariance);
+        void updateSystemStatus(const std::string &status);
+        void updateRelocalizationStatus(const std::string &status);
+        void fillPoseQualityMsg(slamware_ros_sdk::PoseQuality &msg);
 
     private:
         enum ServerState
@@ -158,6 +176,8 @@ namespace slamware_ros_sdk
         void loopTryConnectToAuroraSdk_();
         void connectAuroraSdk_();
         void disconnectAuroraSdk_();
+        void startPoseAugmentation_();
+        void stopPoseAugmentation_();
         bool discoverAndSelectAuroraDevice(rp::standalone::aurora::RemoteSDK *sdk, rp::standalone::aurora::SDKServerConnectionDesc &selectedDeviceDesc);
         //////////////////////////////////////////////////////////////////////////
         void checkRelocalizationStatus();
