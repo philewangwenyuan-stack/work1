@@ -33,6 +33,9 @@ right_speed_max: 32767
 disc_speed_min: -32768
 # 磨盘速度寄存器最大值（驱动原始单位）
 disc_speed_max: 32767
+# 磨盘速度每个控制周期最大变化量，避免恢复时电流冲击
+disc_speed_max_step: 200
+enable_disc_speed_ramp_limit: true
 
 # 相邻两次下发速度的最大变化量（rpm），用于抑制突变抖动
 max_cmd_step_rpm: 50
@@ -67,13 +70,18 @@ cmd_vel_topic: /cmd_vel
 # 任务导航使能默认值（false: 忽略 /cmd_vel；true: 处理 /cmd_vel）
 task_enable_default: false
 
-# Localization watchdog: stop chassis and disc when SLAM status is unsafe.
+# Localization watchdog: block navigation/wheel motion when SLAM status is unsafe.
 localization_watchdog_enabled: true
 localization_system_status_topic: /slamware_ros_sdk_server_node/system_status
 localization_relocalization_status_topic: /slamware_ros_sdk_server_node/relocalization_status
 localization_pose_quality_topic: /slamware_ros_sdk_server_node/pose_quality
 localization_pose_quality_timeout_sec: 1.0
 localization_pose_quality_block_unknown: true
+localization_pose_quality_warn_glide: true
+# pose_quality already folds system/relocalization/covariance together. Keep
+# these false unless field testing proves a direct status lock is needed.
+localization_watchdog_use_system_status: false
+localization_watchdog_use_relocalization_status: false
 localization_status_timeout_sec: 1.0
 localization_watchdog_cancel_topic: /move_base/cancel
 localization_watchdog_cancel_period_sec: 1.0
@@ -85,11 +93,18 @@ localization_watchdog_release_service: /chassis/localization_watchdog_release
 # Keep false for safest behavior; set true only if the site wants auto-resume.
 localization_watchdog_restore_motion_on_release: false
 localization_watchdog_restore_disc_on_release: false
+# Some chassis controllers use disc rotation as a travel interlock. Keep false
+# so localization watchdog blocks wheel speed without forcing the disc off.
+localization_watchdog_stop_disc_on_lock: false
+# During localization watchdog lock, keep the disc enabled but reduce the saved
+# disc speed to this ratio. 0.5 means half of the speed before watchdog lock.
+localization_watchdog_disc_speed_scale: 0.5
 localization_recovery_glide_enabled: true
+localization_watchdog_stop_disc_when_not_gliding: true
 localization_recovery_glide_speed_mps: 0.05
 localization_recovery_max_distance_m: 0.30
 localization_recovery_max_duration_sec: 10.0
-localization_recovery_scan_topic: /slamware_ros_sdk_server_node/scan
+localization_recovery_scan_topic: /scan
 localization_recovery_scan_timeout_sec: 0.5
 localization_recovery_front_sector_deg: 45.0
 localization_recovery_obstacle_stop_m: 0.40
@@ -122,7 +137,7 @@ cmd_source_hold_sec: 0.2
 manual_override_enabled: true
 manual_override_topic: /chassis/manual_override
 manual_override_service: /chassis/set_manual_override
-manual_override_cancel_navigation: true
+manual_override_cancel_navigation: false
 manual_override_bypass_localization_watchdog: true
 
 # 轮系方向修正：

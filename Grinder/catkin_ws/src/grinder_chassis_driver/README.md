@@ -7,8 +7,8 @@
 - 底盘输出：左右轮速度、磨盘转速、磨盘启停、工作模式、升降和照明。
 - 状态回读：周期读取寄存器并发布 `/chassis/status`、`/chassis/wheel_speed_state` 和 `/diagnostics`。
 - `/cmd_vel` 转换：根据轮距、轮半径、减速比和方向修正参数生成左右轮转速。
-- 手动接管：支持 `/chassis/manual_override`，接管时忽略 `/cmd_vel` 并可取消导航目标。
-- 定位看门狗：根据 Aurora system/relocalization 状态和 `/pose_quality` 锁定底盘，阻断错误位姿下的导航速度。
+- 手动接管：支持 `/chassis/manual_override`，接管时忽略 `/cmd_vel`；默认不取消 move_base 目标，退出手动后继续接收 `/cmd_vel`。
+- 定位看门狗：默认只根据 `/pose_quality` 锁定底盘，system/relocalization 状态保留为可观测字段。
 
 ## 定位看门狗
 
@@ -23,12 +23,15 @@
 
 - `/chassis/localization_watchdog_status`
 
-触发 FAULT 或状态超时后：
+触发 WARN/FAULT/UNKNOWN 或 pose_quality 超时后：
 
 - 周期发布 `/move_base/cancel`，阻止 move_base 持续按错误位姿输出。
 - 屏蔽 `/cmd_vel` 和普通底盘命令。
-- 关闭磨盘。
-- 仅在任务使能且底盘 enabled 时允许本体系 `+x` 低速滑行。
+- `pose_quality=WARN/FAULT/UNKNOWN/超时` 时都尝试低速蠕动，磨盘按 `localization_watchdog_disc_speed_scale` 降到锁定前速度的 0.5。
+- 蠕动命令为本体系直行，左右轮等幅，不叠加角速度。
+- 只有不能安全蠕动时才停车并默认停磨盘，例如 scan 超时、前方障碍、超过距离/时间上限、任务未使能或底盘未 enable；如现场硬件要求锁定即停磨盘，可将 `localization_watchdog_stop_disc_on_lock` 设为 `true`。
+- 磨盘速度写入带斜坡限幅，默认每周期最多变化 `disc_speed_max_step=200`，避免恢复时电流冲击。
+- 仅在任务使能且底盘 enabled 时允许本体系 `+x` 低速蠕动。
 
 默认滑行策略：
 
@@ -81,3 +84,8 @@ roslaunch grinder_chassis_driver chassis_driver.launch
 - `localization_recovery_glide_speed_mps`
 - `localization_recovery_max_distance_m`
 - `localization_recovery_obstacle_stop_m`
+- `localization_watchdog_stop_disc_on_lock`
+- `localization_watchdog_stop_disc_when_not_gliding`
+- `localization_watchdog_disc_speed_scale`
+- `disc_speed_max_step`
+- `manual_override_cancel_navigation`

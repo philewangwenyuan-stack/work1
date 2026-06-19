@@ -100,6 +100,7 @@ class ChassisDriverNode:
         self.last_command_time = rospy.Time.now()
         self.last_sent_left_wheel_speed = 0
         self.last_sent_right_wheel_speed = 0
+        self.last_sent_disc_speed = 0
         self.echo_failure_count = 0
         self._last_written_block = None
         self._last_written_registers = {}
@@ -121,6 +122,8 @@ class ChassisDriverNode:
         self.right_speed_max = rospy.get_param("~right_speed_max", INT16_MAX)
         self.disc_speed_min = rospy.get_param("~disc_speed_min", INT16_MIN)
         self.disc_speed_max = rospy.get_param("~disc_speed_max", INT16_MAX)
+        self.disc_speed_max_step = int(rospy.get_param("~disc_speed_max_step", 200))
+        self.enable_disc_speed_ramp_limit = bool(rospy.get_param("~enable_disc_speed_ramp_limit", True))
         self.max_cmd_step_rpm = int(rospy.get_param("~max_cmd_step_rpm", 50))
         self.enable_cmd_ramp_limit = bool(rospy.get_param("~enable_cmd_ramp_limit", True))
         self.max_echo_deviation = int(rospy.get_param("~max_echo_deviation", 200))
@@ -176,7 +179,7 @@ class ChassisDriverNode:
         self.manual_override_enabled = _get_bool_param("~manual_override_enabled", True)
         self.manual_override_topic = rospy.get_param("~manual_override_topic", "/chassis/manual_override")
         self.manual_override_service = rospy.get_param("~manual_override_service", "/chassis/set_manual_override")
-        self.manual_override_cancel_navigation = _get_bool_param("~manual_override_cancel_navigation", True)
+        self.manual_override_cancel_navigation = _get_bool_param("~manual_override_cancel_navigation", False)
         self.manual_override_bypass_localization_watchdog = _get_bool_param(
             "~manual_override_bypass_localization_watchdog",
             True,
@@ -211,6 +214,18 @@ class ChassisDriverNode:
             "~localization_pose_quality_block_unknown",
             True,
         )
+        self.localization_pose_quality_warn_glide = _get_bool_param(
+            "~localization_pose_quality_warn_glide",
+            True,
+        )
+        self.localization_watchdog_use_system_status = _get_bool_param(
+            "~localization_watchdog_use_system_status",
+            False,
+        )
+        self.localization_watchdog_use_relocalization_status = _get_bool_param(
+            "~localization_watchdog_use_relocalization_status",
+            False,
+        )
         self.localization_status_timeout_sec = float(rospy.get_param("~localization_status_timeout_sec", 1.0))
         self.localization_watchdog_cancel_topic = rospy.get_param(
             "~localization_watchdog_cancel_topic",
@@ -232,12 +247,27 @@ class ChassisDriverNode:
             "~localization_watchdog_restore_disc_on_release",
             False,
         )
+        self.localization_watchdog_stop_disc_on_lock = _get_bool_param(
+            "~localization_watchdog_stop_disc_on_lock",
+            False,
+        )
+        self.localization_watchdog_disc_speed_scale = float(
+            rospy.get_param("~localization_watchdog_disc_speed_scale", 0.5)
+        )
+        self.localization_watchdog_disc_speed_scale = max(
+            0.0,
+            min(1.0, self.localization_watchdog_disc_speed_scale),
+        )
         self.localization_watchdog_status_topic = rospy.get_param(
             "~localization_watchdog_status_topic",
             "/chassis/localization_watchdog_status",
         )
         self.localization_recovery_glide_enabled = _get_bool_param(
             "~localization_recovery_glide_enabled",
+            True,
+        )
+        self.localization_watchdog_stop_disc_when_not_gliding = _get_bool_param(
+            "~localization_watchdog_stop_disc_when_not_gliding",
             True,
         )
         self.localization_recovery_glide_speed_mps = float(
@@ -440,22 +470,24 @@ class ChassisDriverNode:
             pose_quality_age = now - self._localization_pose_quality_time
             system_status_age = now - self._localization_system_status_time
 
-        if system_status in LOCALIZATION_BLOCKING_SYSTEM_STATUSES:
-            reasons.append("system_status={}".format(system_status))
-        elif system_status in LOCALIZATION_RECOVERED_SYSTEM_STATUSES:
-            pass
+        if self.localization_watchdog_use_system_status:
+            if system_status in LOCALIZATION_BLOCKING_SYSTEM_STATUSES:
+                reasons.append("system_status={}".format(system_status))
+            elif system_status in LOCALIZATION_RECOVERED_SYSTEM_STATUSES:
+                pass
 
-        timeout_sec = float(self.localization_status_timeout_sec)
-        if timeout_sec > 0.0 and system_status_age > timeout_sec:
-            if system_status:
-                reasons.append("system_status timeout %.2fs (%s)" % (system_status_age, system_status))
-            else:
-                reasons.append("system_status timeout %.2fs" % system_status_age)
+            timeout_sec = float(self.localization_status_timeout_sec)
+            if timeout_sec > 0.0 and system_status_age > timeout_sec:
+                if system_status:
+                    reasons.append("system_status timeout %.2fs (%s)" % (system_status_age, system_status))
+                else:
+                    reasons.append("system_status timeout %.2fs" % system_status_age)
 
-        if relocalization_status in LOCALIZATION_BLOCKING_RELOCALIZATION_STATUSES:
-            reasons.append("relocalization_status={}".format(relocalization_status))
-        elif relocalization_status in LOCALIZATION_RECOVERED_RELOCALIZATION_STATUSES:
-            pass
+        if self.localization_watchdog_use_relocalization_status:
+            if relocalization_status in LOCALIZATION_BLOCKING_RELOCALIZATION_STATUSES:
+                reasons.append("relocalization_status={}".format(relocalization_status))
+            elif relocalization_status in LOCALIZATION_RECOVERED_RELOCALIZATION_STATUSES:
+                pass
 
         timeout_sec = float(self.localization_pose_quality_timeout_sec)
         if timeout_sec > 0.0 and pose_quality_age > timeout_sec:
@@ -466,6 +498,8 @@ class ChassisDriverNode:
 
         if pose_quality_state == "FAULT":
             reasons.append("pose_quality=FAULT:{}".format(pose_quality_reason))
+        elif pose_quality_state == "WARN" and self.localization_pose_quality_warn_glide:
+            reasons.append("pose_quality=WARN:{}".format(pose_quality_reason))
         elif pose_quality_state == "UNKNOWN" and self.localization_pose_quality_block_unknown:
             reasons.append("pose_quality=UNKNOWN:{}".format(pose_quality_reason))
 
@@ -513,7 +547,8 @@ class ChassisDriverNode:
             self._issue_localization_watchdog_stop(
                 force=newly_locked,
                 stop_motion=not manual_bypass,
-                stop_disc=not manual_bypass,
+                stop_disc=(not manual_bypass) and self.localization_watchdog_stop_disc_on_lock,
+                reduce_disc=not manual_bypass,
             )
         elif release_now:
             self._reset_recovery_glide()
@@ -559,6 +594,17 @@ class ChassisDriverNode:
         left_cmd = int(round(rpm))
         right_cmd = int(round(rpm))
         return self._apply_drive_direction_cmd_vel(left_cmd, right_cmd)
+
+    def _straight_glide_wheel_cmd(self):
+        left_cmd, right_cmd = self._linear_velocity_to_cmd_vel_wheels(
+            max(0.0, float(self.localization_recovery_glide_speed_mps))
+        )
+        magnitude = min(abs(int(left_cmd)), abs(int(right_cmd)))
+        if magnitude <= 0:
+            return 0, 0
+        left_sign = -1 if int(left_cmd) < 0 else 1
+        right_sign = -1 if int(right_cmd) < 0 else 1
+        return left_sign * magnitude, right_sign * magnitude
 
     def _feedback_wheels_to_linear_mps(self, left_speed, right_speed):
         left = int(left_speed)
@@ -613,8 +659,11 @@ class ChassisDriverNode:
         if not self.enabled:
             return False, "chassis_disabled"
         with self._lock:
+            waiting_manual_release = self._localization_watchdog_waiting_manual_release
             if not self._recovery_glide_active:
                 return False, self._recovery_glide_stop_reason or "inactive"
+        if waiting_manual_release:
+            return False, "waiting_manual_release"
         self._update_recovery_glide_distance(now)
         with self._lock:
             distance = self._recovery_glide_distance_m
@@ -627,16 +676,14 @@ class ChassisDriverNode:
             return False, "max_duration"
         return self._recovery_scan_is_clear(now)
 
-    def _issue_localization_watchdog_stop(self, force=False, stop_motion=True, stop_disc=True):
+    def _issue_localization_watchdog_stop(self, force=False, stop_motion=True, stop_disc=True, reduce_disc=True):
         now = time.monotonic()
         period = max(0.1, float(self.localization_watchdog_cancel_period_sec))
         glide_allowed = False
         glide_stop_reason = ""
         if stop_motion:
             glide_allowed, glide_stop_reason = self._can_recovery_glide(now)
-        left_glide, right_glide = self._linear_velocity_to_cmd_vel_wheels(
-            max(0.0, float(self.localization_recovery_glide_speed_mps))
-        )
+        left_glide, right_glide = self._straight_glide_wheel_cmd()
         with self._lock:
             if stop_motion:
                 if glide_allowed:
@@ -649,9 +696,22 @@ class ChassisDriverNode:
                     self.command.right_wheel_speed = 0
                     self._recovery_glide_active = False
                     self._recovery_glide_stop_reason = glide_stop_reason
-            if stop_disc:
+            should_stop_disc = stop_disc or (
+                reduce_disc
+                and self.localization_watchdog_stop_disc_when_not_gliding
+                and stop_motion
+                and not glide_allowed
+            )
+            if should_stop_disc:
                 self.command.disc_speed = 0
                 self.command.disc_enable = DISC_ENABLE_OFF
+            elif reduce_disc:
+                saved_command = self._localization_watchdog_saved_command
+                base_disc_speed = saved_command.disc_speed if saved_command is not None else self.command.disc_speed
+                scaled_disc_speed = int(round(float(base_disc_speed) * self.localization_watchdog_disc_speed_scale))
+                self.command.disc_speed = clamp(scaled_disc_speed, self.disc_speed_min, self.disc_speed_max)
+                if saved_command is not None:
+                    self.command.disc_enable = saved_command.disc_enable
             self.last_command_time = rospy.Time.now()
             write_due = force or (now - self._last_localization_watchdog_stop_time) >= period
             cancel_due = force or (now - self._last_localization_watchdog_cancel_time) >= period
@@ -691,9 +751,6 @@ class ChassisDriverNode:
             if self.localization_watchdog_restore_disc_on_release:
                 self.command.disc_speed = saved_command.disc_speed
                 self.command.disc_enable = saved_command.disc_enable
-            else:
-                self.command.disc_speed = 0
-                self.command.disc_enable = DISC_ENABLE_OFF
 
             self.last_command_time = rospy.Time.now()
             should_write = self.enabled and (
@@ -702,7 +759,7 @@ class ChassisDriverNode:
             )
 
         if not should_write:
-            rospy.loginfo("Localization watchdog released; outputs remain stopped by restore config.")
+            rospy.loginfo("Localization watchdog released; outputs remain at watchdog-held values by restore config.")
             return
 
         try:
@@ -1036,7 +1093,7 @@ class ChassisDriverNode:
         with self._lock:
             self.command.disc_speed = clamp(msg.data, self.disc_speed_min, self.disc_speed_max)
         if self.enabled:
-            self._write_single_output(REGISTER_DISC_SPEED, self.command.disc_speed, signed=True)
+            self._write_disc_speed_step(force=True)
 
     def _handle_disc_enable_cmd(self, msg):
         if self._localization_watchdog_blocks_commands(allow_manual_bypass=True):
@@ -1122,6 +1179,36 @@ class ChassisDriverNode:
                 self.transport.write_uint16(register_address, value)
             with self._lock:
                 self._last_written_registers[register_address] = int(value)
+                if register_address == REGISTER_DISC_SPEED:
+                    self.last_sent_disc_speed = int(value)
+            self._mark_connected()
+        except ModbusTransportError as exc:
+            self._handle_transport_error(exc)
+
+    def _apply_disc_ramp_limit(self, target, last_value):
+        if not self.enable_disc_speed_ramp_limit:
+            return int(target)
+        step = max(0, int(self.disc_speed_max_step))
+        if step <= 0:
+            return int(target)
+        delta = int(target) - int(last_value)
+        if delta > step:
+            return int(last_value) + step
+        if delta < -step:
+            return int(last_value) - step
+        return int(target)
+
+    def _write_disc_speed_step(self, force=False):
+        with self._lock:
+            target = 0 if not self.enabled else clamp(self.command.disc_speed, self.disc_speed_min, self.disc_speed_max)
+            disc_speed = self._apply_disc_ramp_limit(target, self.last_sent_disc_speed)
+            if not force and int(disc_speed) == int(self.last_sent_disc_speed):
+                return
+        try:
+            self.transport.write_int16(REGISTER_DISC_SPEED, disc_speed)
+            with self._lock:
+                self.last_sent_disc_speed = int(disc_speed)
+                self._last_written_registers[REGISTER_DISC_SPEED] = int(disc_speed)
             self._mark_connected()
         except ModbusTransportError as exc:
             self._handle_transport_error(exc)
@@ -1134,6 +1221,9 @@ class ChassisDriverNode:
                 block[1] = 0
                 block[2] = 0
                 block[3] = DISC_ENABLE_OFF
+            target_disc_speed = 0 if not self.enabled else clamp(self.command.disc_speed, self.disc_speed_min, self.disc_speed_max)
+            disc_speed = self._apply_disc_ramp_limit(target_disc_speed, self.last_sent_disc_speed)
+            block[2] = disc_speed & 0xFFFF
             block_tuple = tuple(int(x) for x in block)
             if not force and self._last_written_block == block_tuple:
                 return
@@ -1142,8 +1232,10 @@ class ChassisDriverNode:
             self._last_written_block = block_tuple
             self.last_sent_left_wheel_speed = int(block[0])
             self.last_sent_right_wheel_speed = int(block[1])
+            self.last_sent_disc_speed = int(disc_speed)
             for index, value in enumerate(block):
                 self._last_written_registers[READ_BLOCK_START + index] = int(value)
+            self._last_written_registers[REGISTER_DISC_SPEED] = int(disc_speed)
         self._mark_connected()
 
     def _issue_safe_stop(self):
@@ -1160,6 +1252,7 @@ class ChassisDriverNode:
     def _poll_once(self, _event):
         self._refresh_localization_watchdog("timer")
         self._enforce_command_timeout()
+        self._write_disc_speed_step()
         try:
             registers = self.transport.read_register_block(
                 READ_BLOCK_START,
@@ -1302,6 +1395,7 @@ class ChassisDriverNode:
                 key="manual_override_bypass_localization_watchdog",
                 value=str(self.manual_override_bypass_localization_watchdog),
             ),
+            KeyValue(key="manual_override_cancel_navigation", value=str(self.manual_override_cancel_navigation)),
             KeyValue(key="localization_watchdog_enabled", value=str(self.localization_watchdog_enabled)),
             KeyValue(key="localization_watchdog_locked", value=str(localization_watchdog_locked)),
             KeyValue(key="localization_watchdog_reason", value=str(localization_watchdog_reason)),
@@ -1317,6 +1411,29 @@ class ChassisDriverNode:
             KeyValue(
                 key="localization_watchdog_restore_disc_on_release",
                 value=str(self.localization_watchdog_restore_disc_on_release),
+            ),
+            KeyValue(
+                key="localization_watchdog_stop_disc_on_lock",
+                value=str(self.localization_watchdog_stop_disc_on_lock),
+            ),
+            KeyValue(
+                key="localization_watchdog_disc_speed_scale",
+                value=str(self.localization_watchdog_disc_speed_scale),
+            ),
+            KeyValue(key="disc_speed_max_step", value=str(self.disc_speed_max_step)),
+            KeyValue(key="enable_disc_speed_ramp_limit", value=str(self.enable_disc_speed_ramp_limit)),
+            KeyValue(key="localization_pose_quality_warn_glide", value=str(self.localization_pose_quality_warn_glide)),
+            KeyValue(
+                key="localization_watchdog_stop_disc_when_not_gliding",
+                value=str(self.localization_watchdog_stop_disc_when_not_gliding),
+            ),
+            KeyValue(
+                key="localization_watchdog_use_system_status",
+                value=str(self.localization_watchdog_use_system_status),
+            ),
+            KeyValue(
+                key="localization_watchdog_use_relocalization_status",
+                value=str(self.localization_watchdog_use_relocalization_status),
             ),
             KeyValue(key="localization_system_status", value=str(localization_system_status)),
             KeyValue(key="localization_relocalization_status", value=str(localization_relocalization_status)),
