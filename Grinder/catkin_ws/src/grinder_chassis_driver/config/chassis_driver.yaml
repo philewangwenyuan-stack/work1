@@ -33,8 +33,9 @@ right_speed_max: 32767
 disc_speed_min: -32768
 # 磨盘速度寄存器最大值（驱动原始单位）
 disc_speed_max: 32767
-# 磨盘速度每个控制周期最大变化量，避免恢复时电流冲击
+# 磨盘速度每个控制周期最大变化量（驱动原始单位），避免恢复时电流冲击
 disc_speed_max_step: 200
+# 是否启用磨盘速度斜坡限幅；true 时磨盘速度会按 disc_speed_max_step 逐步变化
 enable_disc_speed_ramp_limit: true
 
 # 相邻两次下发速度的最大变化量（rpm），用于抑制突变抖动
@@ -70,43 +71,61 @@ cmd_vel_topic: /cmd_vel
 # 任务导航使能默认值（false: 忽略 /cmd_vel；true: 处理 /cmd_vel）
 task_enable_default: false
 
-# Localization watchdog: block navigation/wheel motion when SLAM status is unsafe.
+# 定位看门狗：定位质量异常时接管底盘，阻断自动导航速度，并尝试安全蠕动恢复
 localization_watchdog_enabled: true
+# Aurora 系统状态话题，仅用于显示；默认不直接作为锁车条件
 localization_system_status_topic: /slamware_ros_sdk_server_node/system_status
+# Aurora 重定位状态话题，仅用于显示；默认不直接作为锁车条件
 localization_relocalization_status_topic: /slamware_ros_sdk_server_node/relocalization_status
+# 定位质量话题；看门狗默认只用这个话题做触发条件
 localization_pose_quality_topic: /slamware_ros_sdk_server_node/pose_quality
+# pose_quality 超过该时间未刷新则触发看门狗
 localization_pose_quality_timeout_sec: 1.0
+# true 时 pose_quality=UNKNOWN 也触发看门狗
 localization_pose_quality_block_unknown: true
+# true 时 pose_quality=WARN 也触发看门狗并进入蠕动恢复
 localization_pose_quality_warn_glide: true
-# pose_quality already folds system/relocalization/covariance together. Keep
-# these false unless field testing proves a direct status lock is needed.
+# pose_quality 已经融合 system/relocalization/covariance；默认不再重复用 system_status 锁车
 localization_watchdog_use_system_status: false
+# pose_quality 已经融合 system/relocalization/covariance；默认不再重复用 relocalization_status 锁车
 localization_watchdog_use_relocalization_status: false
+# 仅当启用 localization_watchdog_use_system_status 时生效：system_status 超时锁车
 localization_status_timeout_sec: 1.0
+# 看门狗锁定时周期发布 cancel，避免 move_base 按坏定位继续发速度
 localization_watchdog_cancel_topic: /move_base/cancel
+# cancel 发布周期
 localization_watchdog_cancel_period_sec: 1.0
+# 看门狗状态输出话题
 localization_watchdog_status_topic: /chassis/localization_watchdog_status
-# If false, keep watchdog locked after localization recovers until manual release.
+# true 时定位恢复后自动解锁；false 时需要调用 localization_watchdog_release_service 手动解锁
 localization_watchdog_auto_release: true
+# 手动释放看门狗服务；仅在 auto_release=false 或需要人工强制释放时使用
 localization_watchdog_release_service: /chassis/localization_watchdog_release
-# Restore commands saved before watchdog lock when localization recovers.
-# Keep false for safest behavior; set true only if the site wants auto-resume.
+# 定位恢复时是否恢复锁定前轮速；默认 false，避免恢复瞬间继续旧速度
 localization_watchdog_restore_motion_on_release: false
+# 定位恢复时是否恢复锁定前磨盘速度；默认 false，由任务逻辑重新下发，且磨盘斜坡限幅会保护电流
 localization_watchdog_restore_disc_on_release: false
-# Some chassis controllers use disc rotation as a travel interlock. Keep false
-# so localization watchdog blocks wheel speed without forcing the disc off.
+# true 时看门狗一锁定就停磨盘；默认 false，因为当前底盘“磨盘不转车动不了”
 localization_watchdog_stop_disc_on_lock: false
-# During localization watchdog lock, keep the disc enabled but reduce the saved
-# disc speed to this ratio. 0.5 means half of the speed before watchdog lock.
+# 蠕动时磨盘降速比例；0.5 表示使用锁定前磨盘速度的一半
 localization_watchdog_disc_speed_scale: 0.5
+# 是否允许看门狗锁定期间低速直行蠕动
 localization_recovery_glide_enabled: true
+# 不能安全蠕动时是否停磨盘；true 表示停车时磨盘也停
 localization_watchdog_stop_disc_when_not_gliding: true
+# 蠕动直行速度（m/s）；左右轮等幅，不叠加角速度
 localization_recovery_glide_speed_mps: 0.05
+# 单次看门狗锁定最多蠕动距离（m）
 localization_recovery_max_distance_m: 0.30
+# 单次看门狗锁定最多蠕动时间（s）
 localization_recovery_max_duration_sec: 10.0
+# 蠕动避障使用的 LaserScan 话题；该话题必须与机器人前方方向一致
 localization_recovery_scan_topic: /scan
+# scan 超过该时间未刷新则禁止蠕动并停车
 localization_recovery_scan_timeout_sec: 0.5
+# 前方避障扇区角度（deg）；45 表示检查 -22.5deg 到 +22.5deg
 localization_recovery_front_sector_deg: 45.0
+# 前方扇区内最近障碍距离小于等于该值时禁止蠕动并停车
 localization_recovery_obstacle_stop_m: 0.40
 # 轮距（米），用于角速度换算
 cmd_vel_wheel_track_m: 0.79
@@ -133,11 +152,13 @@ cmd_vel_deadband_angular: 0.0
 # 指令源保持时间（秒），超过后可回落到默认源
 cmd_source_hold_sec: 0.2
 
-# Manual escape override: when enabled, ignore /cmd_vel so joystick/manual wheel commands win.
+# 手动接管：开启后忽略 /cmd_vel，让人工轮速命令优先
 manual_override_enabled: true
 manual_override_topic: /chassis/manual_override
 manual_override_service: /chassis/set_manual_override
+# true 时开启手动接管会 cancel move_base；默认 false，便于人工绕障后继续原导航目标
 manual_override_cancel_navigation: false
+# true 时手动轮速/磨盘命令可绕过定位看门狗
 manual_override_bypass_localization_watchdog: true
 
 # 轮系方向修正：

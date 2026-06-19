@@ -1733,6 +1733,15 @@ class SchedulerNode:
             )
         return aligned_pose
 
+    def _get_sl_display_pose(self):
+        pose = self.aurora_bridge.get_pose()
+        if not self._live_map_align_to_initial_yaw:
+            return pose
+        yaw = self._lookup_live_map_alignment_yaw()
+        if yaw is None:
+            return pose
+        return self._pose_from_source_to_aligned_map(pose, yaw) or pose
+
     def _region_from_source_to_aligned_map(self, region, alignment_yaw):
         if not isinstance(region, dict):
             return region
@@ -4269,7 +4278,7 @@ class SchedulerNode:
             self._finish_path_execution(stop_reason="completed_progress")
 
     def _publish_status(self):
-        pose = self.aurora_bridge.get_pose()
+        pose = self._get_sl_display_pose()
         message = SchedulerStatus()
         message.header.stamp = rospy.Time.now()
         message.task_id = self.task_config.task_id
@@ -4519,7 +4528,7 @@ class SchedulerNode:
             report.disc_enabled = self.last_chassis_status.disc_enabled
             report.light_enabled = self.last_chassis_status.light_enabled
             report.chassis_enabled = self.last_chassis_status.enabled
-        pose = self.aurora_bridge.get_pose()
+        pose = self._get_sl_display_pose()
         report.position.x = pose["x"]
         report.position.y = pose["y"]
         report.position.heading_deg = pose["heading_deg"]
@@ -4536,7 +4545,7 @@ class SchedulerNode:
         map_info = self.map_service.get_map_info()
         report.map_version = map_info["map_version"] if map_info else 0
         report.message = self.last_error or self.state.value
-        pose = self.aurora_bridge.get_pose()
+        pose = self._get_sl_display_pose()
         report.position.x = pose["x"]
         report.position.y = pose["y"]
         report.position.heading_deg = pose["heading_deg"]
