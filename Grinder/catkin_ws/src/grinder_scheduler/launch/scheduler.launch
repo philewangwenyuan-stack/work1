@@ -5,7 +5,7 @@
   <arg name="navigation_map_yaml_path" default="$(find teb_local_planner_tutorials)/maps/map.yaml" />
   <arg name="local_rtsp_mediamtx_path" default="tools/mediamtx/mediamtx" />
   <arg name="map_topic" default="/map" />
-  <arg name="odom_topic" default="/slamware_ros_sdk_server_node/odom" />
+  <arg name="odom_topic" default="/odom" />
   <arg name="left_image_topic" default="/slamware_ros_sdk_server_node/left_image_raw" />
   <arg name="right_image_topic" default="/slamware_ros_sdk_server_node/right_image_raw" />
 

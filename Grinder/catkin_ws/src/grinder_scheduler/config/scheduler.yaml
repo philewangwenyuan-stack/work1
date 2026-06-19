@@ -88,6 +88,12 @@ live_map_align_to_initial_yaw: true
 live_map_source_frame: map
 live_map_aligned_frame: map_aligned
 live_map_align_yaw_timeout: 0.05
+# SL 平板 status 的朝向角约定。true 表示把 ROS 逆时针为正的 yaw
+# 转成平板/屏幕常用的顺时针为正，修正“RViz 往左、平板往右”的显示反向。
+sl_status_heading_clockwise: true
+# SL 平板 status 的固定角度补偿，单位 deg。正值会在发给平板前继续增加 heading_deg，
+# 用于补偿 APP 图标素材车头、屏幕坐标 0 度方向等固定夹角；不影响 ROS/RViz/TEB。
+sl_status_heading_offset_deg: 0.0
 
 # 导航栈使用的地图 yaml 路径
 navigation_map_yaml_path: catkin_ws/src/2-dnavigation-package/2dnavigation/teb_local_planner_tutorials/maps/map.yaml

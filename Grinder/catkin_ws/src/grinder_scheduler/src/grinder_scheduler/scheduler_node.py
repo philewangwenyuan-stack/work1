@@ -345,6 +345,12 @@ class SchedulerNode:
         self._live_map_align_yaw_timeout = max(
             0.01, float(rospy.get_param("~live_map_align_yaw_timeout", 0.05))
         )
+        self._sl_status_heading_clockwise = bool(
+            rospy.get_param("~sl_status_heading_clockwise", True)
+        )
+        self._sl_status_heading_offset_deg = float(
+            rospy.get_param("~sl_status_heading_offset_deg", 0.0)
+        )
         self._live_map_last_rotated_version = None
         self._live_map_last_rotated_yaw = None
         self._live_map_last_rotated_grid = None
@@ -1741,6 +1747,25 @@ class SchedulerNode:
         if yaw is None:
             return pose
         return self._pose_from_source_to_aligned_map(pose, yaw) or pose
+
+    @staticmethod
+    def _normalize_heading_deg(heading_deg):
+        try:
+            value = float(heading_deg)
+        except Exception:
+            value = 0.0
+        if not math.isfinite(value):
+            value = 0.0
+        return (value + 180.0) % 360.0 - 180.0
+
+    def _get_sl_status_pose(self):
+        pose = dict(self._get_sl_display_pose() or {})
+        heading = self._normalize_heading_deg(pose.get("heading_deg", 0.0))
+        if self._sl_status_heading_clockwise:
+            heading = -heading
+        heading += self._sl_status_heading_offset_deg
+        pose["heading_deg"] = self._normalize_heading_deg(heading)
+        return pose
 
     def _region_from_source_to_aligned_map(self, region, alignment_yaw):
         if not isinstance(region, dict):
@@ -4528,7 +4553,7 @@ class SchedulerNode:
             report.disc_enabled = self.last_chassis_status.disc_enabled
             report.light_enabled = self.last_chassis_status.light_enabled
             report.chassis_enabled = self.last_chassis_status.enabled
-        pose = self._get_sl_display_pose()
+        pose = self._get_sl_status_pose()
         report.position.x = pose["x"]
         report.position.y = pose["y"]
         report.position.heading_deg = pose["heading_deg"]
@@ -4545,7 +4570,7 @@ class SchedulerNode:
         map_info = self.map_service.get_map_info()
         report.map_version = map_info["map_version"] if map_info else 0
         report.message = self.last_error or self.state.value
-        pose = self._get_sl_display_pose()
+        pose = self._get_sl_status_pose()
         report.position.x = pose["x"]
         report.position.y = pose["y"]
         report.position.heading_deg = pose["heading_deg"]
