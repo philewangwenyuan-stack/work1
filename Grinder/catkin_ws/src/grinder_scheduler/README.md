@@ -60,3 +60,44 @@ roslaunch grinder_scheduler scheduler.launch
 - 查看底盘使能：`rostopic echo /chassis/task_enable`
 - 查看定位质量：`rostopic echo /slamware_ros_sdk_server_node/pose_quality`
 - 查看看门狗状态：`rostopic echo /chassis/localization_watchdog_status`
+## map_aligned and saved-map alignment
+
+`map_aligned` is the external/business map frame used by the tablet, RViz,
+task regions, path points, and navigation costmaps. The scheduler keeps tablet
+status and preview poses on the same `map_aligned` adapter; APP-only heading
+conversion is limited to `sl_status_heading_clockwise` and
+`sl_status_heading_offset_deg`.
+
+Saved map records store:
+
+- `alignment_yaw_rad`
+- `aligned_front_yaw_deg`
+- `alignment_mode`
+- `aligned_frame`
+- `source_frame`
+
+On map save/download the current alignment is written into the registry. On
+upload, map switch, or restart, the scheduler calls
+`/slamware_ros_sdk_server_node/set_map_alignment` to restore that value. Legacy
+records without alignment metadata are migrated once using the current live
+alignment.
+
+## Tablet Planning Contract
+
+The tablet should treat `PathPlanRequest` as the only default command that
+generates or refreshes the executable task path. The executable path is a
+composition of stable per-work-region bow coverage segments plus connector
+segments between regions/laps. Obstacle/avoidance regions default to affecting
+only connector planning; they do not change the internal bow coverage pattern.
+
+`TaskConfig` updates and saves task/region settings. `MapEdit` updates map
+overlays and marks any existing path stale. `TaskCommand START` reuses the
+already planned `current_path`; it only falls back to planning when no path
+exists or the saved path was explicitly marked stale.
+
+Compatibility switches are available but default to `false`:
+
+- `task_config_auto_plan`
+- `map_edit_auto_plan_when_idle`
+- `obstacle_regions_affect_coverage`
+- `current_pose_seeds_task_coverage`

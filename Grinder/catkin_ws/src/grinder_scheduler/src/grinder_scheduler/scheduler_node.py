@@ -44,10 +44,19 @@ from grinder_scheduler.sl_linka_adapter import SlLinkAServer
 
 try:
     from slamware_ros_sdk.srv import SyncGetStcm, SyncSetStcm
-    from slamware_ros_sdk.msg import MapKind, SetMapLocalizationRequest, SetMapUpdateRequest
 except Exception:
     SyncGetStcm = None
     SyncSetStcm = None
+
+try:
+    from slamware_ros_sdk.srv import SetMapAlignment
+except Exception:
+    SetMapAlignment = None
+
+try:
+    from slamware_ros_sdk.msg import ClearMapRequest, MapKind, SetMapLocalizationRequest, SetMapUpdateRequest
+except Exception:
+    ClearMapRequest = None
     MapKind = None
     SetMapLocalizationRequest = None
     SetMapUpdateRequest = None
@@ -144,6 +153,9 @@ class SchedulerNode:
         self._manual_override_topic = rospy.get_param("~manual_override_topic", "/chassis/manual_override")
         self._task_enable_runtime_active = False
         self._path_plan_request_use_all_regions = bool(rospy.get_param("~path_plan_request_use_all_regions", True))
+        self._task_config_auto_plan = bool(rospy.get_param("~task_config_auto_plan", False))
+        self._map_edit_auto_plan_when_idle = bool(rospy.get_param("~map_edit_auto_plan_when_idle", False))
+        self._current_path_config_signature = ""
         self._exec_goal_reach_dist = max(0.05, float(rospy.get_param("~path_goal_reach_dist", 0.12)))
         self._exec_goal_interval = max(0.1, float(rospy.get_param("~path_goal_interval", 1.0)))
         self._exec_segment_timeout = max(2.0, float(rospy.get_param("~path_segment_timeout", 10.0)))
@@ -342,6 +354,8 @@ class SchedulerNode:
         )
         self._live_map_source_frame = str(rospy.get_param("~live_map_source_frame", "map")).strip() or "map"
         self._live_map_aligned_frame = str(rospy.get_param("~live_map_aligned_frame", "map_aligned")).strip() or "map_aligned"
+        self._map_alignment_mode = str(rospy.get_param("~map_alignment_mode", "exact_front")).strip() or "exact_front"
+        self._aligned_front_yaw_deg = float(rospy.get_param("~aligned_front_yaw_deg", 90.0))
         self._live_map_align_yaw_timeout = max(
             0.01, float(rospy.get_param("~live_map_align_yaw_timeout", 0.05))
         )
@@ -356,6 +370,8 @@ class SchedulerNode:
         self._live_map_last_rotated_grid = None
         self._live_map_last_rotated_origin = None
         self._initial_pose_alignment_yaw = None
+        self._pending_map_alignment_restore = None
+        self._pending_map_alignment_next_time = 0.0
         self._tf_buffer = None
         self._tf_listener = None
         if self._live_map_align_to_initial_yaw and tf2_ros is not None:
@@ -402,6 +418,9 @@ class SchedulerNode:
         self._sync_set_stcm_service = rospy.get_param(
             "~sync_set_stcm_service", "/slamware_ros_sdk_server_node/sync_set_stcm"
         )
+        self._set_map_alignment_service = rospy.get_param(
+            "~set_map_alignment_service", "/slamware_ros_sdk_server_node/set_map_alignment"
+        )
         self._change_map_service = rospy.get_param("~change_map_service", "/change_map")
         self._set_map_update_topic = rospy.get_param(
             "~set_map_update_topic", "/slamware_ros_sdk_server_node/set_map_update"
@@ -409,9 +428,30 @@ class SchedulerNode:
         self._set_map_localization_topic = rospy.get_param(
             "~set_map_localization_topic", "/slamware_ros_sdk_server_node/set_map_localization"
         )
+        self._clear_map_topic = rospy.get_param(
+            "~clear_map_topic",
+            "/slamware_ros_sdk_server_node/clear_map",
+        )
+        self._aurora_map_reset_retries = max(1, int(rospy.get_param("~aurora_map_reset_retries", 5)))
+        self._aurora_map_reset_retry_interval_sec = max(
+            0.02, float(rospy.get_param("~aurora_map_reset_retry_interval_sec", 0.15))
+        )
+        self._aurora_map_reset_ignore_same_stamp_sec = max(
+            0.0, float(rospy.get_param("~aurora_map_reset_ignore_same_stamp_sec", 1.5))
+        )
+        self._recorded_map_ready_timeout_sec = max(
+            0.5, float(rospy.get_param("~recorded_map_ready_timeout_sec", 5.0))
+        )
+        self._recorded_map_min_known_cells = max(
+            1, int(rospy.get_param("~recorded_map_min_known_cells", 16))
+        )
         self._sync_get_proxy = None
         self._sync_set_proxy = None
+        self._set_map_alignment_proxy = None
         self._change_map_proxy = None
+        self._aurora_loaded_recorded_map_id = ""
+        self._aurora_map_reset_previous_stamp = None
+        self._aurora_map_reset_ignore_until = 0.0
 
         self.map_service = MapService()
         self.map_service.set_draw_region_id_on_preview(
@@ -479,6 +519,7 @@ class SchedulerNode:
         self.diagnostics_pub = rospy.Publisher("/diagnostics", DiagnosticArray, queue_size=10)
         self._set_map_update_pub = None
         self._set_map_localization_pub = None
+        self._clear_map_pub = None
         if SetMapUpdateRequest is not None:
             self._set_map_update_pub = rospy.Publisher(
                 self._set_map_update_topic, SetMapUpdateRequest, queue_size=2
@@ -487,6 +528,8 @@ class SchedulerNode:
             self._set_map_localization_pub = rospy.Publisher(
                 self._set_map_localization_topic, SetMapLocalizationRequest, queue_size=2
             )
+        if ClearMapRequest is not None:
+            self._clear_map_pub = rospy.Publisher(self._clear_map_topic, ClearMapRequest, queue_size=2)
 
         self.wheel_cmd_pub = rospy.Publisher("/chassis/wheel_speed_cmd", WheelSpeedCommand, queue_size=10)
         self.manual_override_pub = rospy.Publisher(self._manual_override_topic, Bool, queue_size=10)
@@ -510,6 +553,7 @@ class SchedulerNode:
             host=rospy.get_param("~sl_linka_host", "0.0.0.0"),
             port=rospy.get_param("~sl_linka_port", 8002),
             callback_handler=self,
+            trace_requests=bool(rospy.get_param("~sl_linka_trace_requests", False)),
         )
         self.sl_link_server.start()
 
@@ -601,6 +645,111 @@ class SchedulerNode:
         self._active_segment_last_progress_update_time = time.time()
         self._active_segment_last_switch_time = 0.0
         self._active_segment_goal_sent_index = -1
+
+    def _normalize_for_signature(self, value):
+        if isinstance(value, dict):
+            return {
+                str(key): self._normalize_for_signature(value[key])
+                for key in sorted(value.keys(), key=lambda item: str(item))
+            }
+        if isinstance(value, (list, tuple)):
+            return [self._normalize_for_signature(item) for item in value]
+        if isinstance(value, float):
+            return round(float(value), 6)
+        if isinstance(value, (int, bool)) or value is None:
+            return value
+        return str(value)
+
+    def _task_config_signature(self):
+        payload = {
+            "map_id": self.task_config.map_id or self._current_map_id(),
+            "work_regions": self.task_config.work_regions,
+            "obstacle_regions": self.task_config.obstacle_regions,
+            "erase_regions": self.task_config.erase_regions,
+            "crop_region": self.task_config.crop_region,
+            "active_work_region_id": self.task_config.active_work_region_id,
+            "selected_work_region_ids": self.task_config.selected_work_region_ids,
+            "region_repeat_config": self.task_config.region_repeat_config,
+            "vehicle_width": self.task_config.vehicle_width,
+            "vehicle_length": self.task_config.vehicle_length,
+            "default_path_spacing": self.task_config.default_path_spacing,
+            "global_direction": self.task_config.global_direction,
+            "turn_radius": self.task_config.turn_radius,
+            "overlap_ratio": self.task_config.overlap_ratio,
+            "inflation_radius": self.task_config.inflation_radius,
+        }
+        return json.dumps(
+            self._normalize_for_signature(payload),
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=True,
+        )
+
+    def _mark_current_path_stale(self, reason, clear_idle=True):
+        reason_text = str(reason or "unknown").strip() or "unknown"
+        self._current_path_config_signature = ""
+        self.replan_requested = True
+        should_clear = bool(clear_idle) and self.state not in (SchedulerState.RUNNING,)
+        if should_clear and self.current_path is not None:
+            self.current_path = None
+            self.current_path_index = 0
+            self._goal_points = []
+            self._reset_active_segment_state()
+            rospy.loginfo("Cleared stale planned path: reason=%s", reason_text)
+        else:
+            rospy.loginfo("Marked planned path stale: reason=%s state=%s", reason_text, self.state.value)
+
+    def _source_map_bounds(self):
+        map_info = self.map_service.get_map_info()
+        if not map_info:
+            return None
+        try:
+            resolution = max(1e-9, float(map_info.get("resolution", 0.0)))
+            width = max(1, int(map_info.get("width", 0)))
+            height = max(1, int(map_info.get("height", 0)))
+            origin_x = float(map_info.get("origin_x", 0.0))
+            origin_y = float(map_info.get("origin_y", 0.0))
+        except Exception:
+            return None
+        return {
+            "min_x": origin_x,
+            "max_x": origin_x + float(width) * resolution,
+            "min_y": origin_y,
+            "max_y": origin_y + float(height) * resolution,
+        }
+
+    def _clamp_source_point_to_map_bounds(self, point):
+        if not isinstance(point, dict) or not point:
+            return point, False
+        bounds = self._source_map_bounds()
+        if bounds is None:
+            return point, False
+        try:
+            x = float(point.get("x", 0.0))
+            y = float(point.get("y", 0.0))
+        except Exception:
+            return point, False
+        clamped_x = min(max(x, bounds["min_x"]), bounds["max_x"])
+        clamped_y = min(max(y, bounds["min_y"]), bounds["max_y"])
+        if abs(clamped_x - x) <= 1e-9 and abs(clamped_y - y) <= 1e-9:
+            return point, False
+        output = dict(point)
+        output["x"] = clamped_x
+        output["y"] = clamped_y
+        return output, True
+
+    def _clamp_source_points_to_map_bounds(self, points):
+        changed = False
+        output = []
+        for point in list(points or []):
+            clamped, point_changed = self._clamp_source_point_to_map_bounds(point)
+            output.append(clamped)
+            changed = changed or point_changed
+        return output, changed
+
+    def _clamp_source_pose_to_map_bounds(self, pose):
+        clamped, changed = self._clamp_source_point_to_map_bounds(pose)
+        return (dict(clamped), changed) if isinstance(clamped, dict) else (clamped, changed)
 
     def _path_cumulative_lengths(self, points):
         lengths = []
@@ -1258,7 +1407,10 @@ class SchedulerNode:
         return int(self._goal_points[-1].get("path_index", 0))
 
     def _tick(self, _event):
+        self._tick_pending_map_alignment_restore()
         raw_map = self.aurora_bridge.get_map()
+        if self._should_ignore_raw_map_after_reset(raw_map):
+            raw_map = None
         if raw_map is not None:
             self.map_service.set_raw_map(raw_map)
             current_map_id = self._current_map_id()
@@ -1614,6 +1766,11 @@ class SchedulerNode:
         return yaml_path, image_path
 
     def _lookup_live_map_alignment_yaw(self):
+        current_map_id = self._current_map_id()
+        if current_map_id and current_map_id != self._live_map_id:
+            record = self._find_recorded_map_by_id(current_map_id)
+            if isinstance(record, dict) and self._is_finite_number(record.get("alignment_yaw_rad")):
+                return float(record.get("alignment_yaw_rad"))
         if self._tf_buffer is not None:
             try:
                 transform = self._tf_buffer.lookup_transform(
@@ -1628,7 +1785,10 @@ class SchedulerNode:
                     return float(yaw)
             except Exception as exc:
                 rospy.logwarn_throttle(2.0, "Failed to lookup live map alignment yaw: %s", exc)
-        return self._initial_pose_alignment_yaw_from_pose(self.aurora_bridge.get_initial_pose())
+        bridge = getattr(self, "aurora_bridge", None)
+        if bridge is None:
+            return None
+        return self._initial_pose_alignment_yaw_from_pose(bridge.get_initial_pose())
 
     def _initial_pose_alignment_yaw_from_pose(self, pose):
         if self._initial_pose_alignment_yaw is not None:
@@ -1647,8 +1807,15 @@ class SchedulerNode:
             heading_deg = 0.0
         if not math.isfinite(heading_deg):
             heading_deg = 0.0
-        self._initial_pose_alignment_yaw = -math.radians(heading_deg)
-        rospy.loginfo("Map preview yaw alignment initialized from odom: %.6f rad", self._initial_pose_alignment_yaw)
+        front_yaw_rad = math.radians(float(self._aligned_front_yaw_deg))
+        self._initial_pose_alignment_yaw = front_yaw_rad - math.radians(heading_deg)
+        rospy.loginfo(
+            "Map preview yaw alignment initialized from odom: mode=%s alignment_yaw_rad=%.6f initial_heading_deg=%.3f aligned_front_yaw_deg=%.3f",
+            str(self._map_alignment_mode),
+            self._initial_pose_alignment_yaw,
+            heading_deg,
+            self._aligned_front_yaw_deg,
+        )
         return self._initial_pose_alignment_yaw
 
     def _map_preview_alignment_kwargs(self):
@@ -2027,6 +2194,298 @@ class SchedulerNode:
         if self._sync_set_proxy is None:
             self._sync_set_proxy = rospy.ServiceProxy(self._sync_set_stcm_service, SyncSetStcm)
 
+    def _ensure_map_alignment_proxy(self):
+        if SetMapAlignment is None:
+            raise RuntimeError("slamware_ros_sdk SetMapAlignment service is unavailable")
+        if self._set_map_alignment_proxy is None:
+            self._set_map_alignment_proxy = rospy.ServiceProxy(self._set_map_alignment_service, SetMapAlignment)
+
+    def _raw_map_stamp_key(self, raw_map):
+        if raw_map is None:
+            return None
+        try:
+            stamp = raw_map.header.stamp
+            return (int(getattr(stamp, "secs", 0)), int(getattr(stamp, "nsecs", 0)))
+        except Exception:
+            return None
+
+    def _raw_map_known_cell_count(self, raw_map):
+        try:
+            info = raw_map.info
+            width = int(info.width)
+            height = int(info.height)
+            if width <= 0 or height <= 0:
+                return 0
+            data = np.asarray(raw_map.data, dtype=np.int16)
+            if int(data.size) != width * height:
+                return 0
+            return int(np.count_nonzero(data >= 0))
+        except Exception:
+            return 0
+
+    def _is_raw_map_usable(self, raw_map, require_known_cells=False):
+        if raw_map is None:
+            return False
+        try:
+            info = raw_map.info
+            width = int(info.width)
+            height = int(info.height)
+            if width <= 0 or height <= 0:
+                return False
+            if len(raw_map.data) != width * height:
+                return False
+            if require_known_cells and self._raw_map_known_cell_count(raw_map) < self._recorded_map_min_known_cells:
+                return False
+            return True
+        except Exception:
+            return False
+
+    def _wait_for_raw_map_ready(self, reason="", timeout_sec=2.0, require_known_cells=False, previous_stamp=None):
+        deadline = time.time() + max(0.0, float(timeout_sec))
+        last_known = 0
+        while not rospy.is_shutdown() and time.time() <= deadline:
+            raw_map = self.aurora_bridge.get_map()
+            stamp_key = self._raw_map_stamp_key(raw_map)
+            if previous_stamp is not None and stamp_key == previous_stamp:
+                rospy.sleep(0.05)
+                continue
+            if self._is_raw_map_usable(raw_map, require_known_cells=require_known_cells):
+                known_cells = self._raw_map_known_cell_count(raw_map)
+                self.map_service.set_raw_map(raw_map)
+                rospy.loginfo(
+                    "Raw map ready: reason=%s stamp=%s size=%dx%d known_cells=%d",
+                    str(reason or ""),
+                    str(stamp_key),
+                    int(raw_map.info.width),
+                    int(raw_map.info.height),
+                    int(known_cells),
+                )
+                return raw_map
+            last_known = self._raw_map_known_cell_count(raw_map)
+            rospy.sleep(0.05)
+        rospy.logwarn(
+            "Raw map not ready: reason=%s timeout=%.2fs require_known=%s previous_stamp=%s last_known_cells=%d",
+            str(reason or ""),
+            float(timeout_sec),
+            str(bool(require_known_cells)).lower(),
+            str(previous_stamp),
+            int(last_known),
+        )
+        return None
+
+    def _request_aurora_map_reset(self, reason=""):
+        self._aurora_loaded_recorded_map_id = ""
+        previous_raw = self.aurora_bridge.get_map()
+        self._aurora_map_reset_previous_stamp = self._raw_map_stamp_key(previous_raw)
+        self._aurora_map_reset_ignore_until = time.time() + self._aurora_map_reset_ignore_same_stamp_sec
+        try:
+            self.map_service.clear_raw_map(clear_regions=False)
+        except Exception:
+            pass
+        if self._clear_map_pub is None or ClearMapRequest is None:
+            rospy.logwarn("Aurora map clear skipped: clear_map publisher is unavailable reason=%s", str(reason or ""))
+            return False
+        msg = ClearMapRequest()
+        wait_deadline = time.time() + 0.5
+        while (
+            not rospy.is_shutdown()
+            and int(self._clear_map_pub.get_num_connections()) <= 0
+            and time.time() < wait_deadline
+        ):
+            rospy.sleep(0.05)
+        conn = int(self._clear_map_pub.get_num_connections())
+        for _ in range(self._aurora_map_reset_retries):
+            self._clear_map_pub.publish(msg)
+            rospy.sleep(self._aurora_map_reset_retry_interval_sec)
+        rospy.loginfo(
+            "Aurora live map clear requested: reason=%s topic=%s subscribers=%d previous_stamp=%s",
+            str(reason or ""),
+            self._clear_map_topic,
+            conn,
+            str(self._aurora_map_reset_previous_stamp),
+        )
+        return True
+
+    def _should_ignore_raw_map_after_reset(self, raw_map):
+        if raw_map is None:
+            return False
+        if time.time() > float(self._aurora_map_reset_ignore_until or 0.0):
+            return False
+        previous = self._aurora_map_reset_previous_stamp
+        return previous is not None and self._raw_map_stamp_key(raw_map) == previous
+
+    def _is_finite_number(self, value):
+        try:
+            return math.isfinite(float(value))
+        except Exception:
+            return False
+
+    def _alignment_metadata_from_yaw(self, yaw, source):
+        if not self._is_finite_number(yaw):
+            return {}
+        return {
+            "alignment_yaw_rad": float(yaw),
+            "aligned_front_yaw_deg": float(self._aligned_front_yaw_deg),
+            "alignment_mode": str(self._map_alignment_mode or "exact_front"),
+            "aligned_frame": str(self._live_map_aligned_frame),
+            "source_frame": str(self._live_map_source_frame),
+            "alignment_source": str(source or "unknown"),
+        }
+
+    def _record_alignment_metadata(self, record, metadata, save_state=False):
+        if not isinstance(record, dict) or not isinstance(metadata, dict):
+            return False
+        if not self._is_finite_number(metadata.get("alignment_yaw_rad")):
+            return False
+        record["alignment_yaw_rad"] = float(metadata["alignment_yaw_rad"])
+        record["aligned_front_yaw_deg"] = float(
+            metadata.get("aligned_front_yaw_deg", self._aligned_front_yaw_deg)
+        )
+        record["alignment_mode"] = str(metadata.get("alignment_mode", self._map_alignment_mode or "exact_front"))
+        record["aligned_frame"] = str(metadata.get("aligned_frame", self._live_map_aligned_frame))
+        record["source_frame"] = str(metadata.get("source_frame", self._live_map_source_frame))
+        record["alignment_source"] = str(metadata.get("alignment_source", "unknown"))
+        if save_state:
+            self._save_map_registry_state()
+        return True
+
+    def _current_alignment_metadata(self, source):
+        if not self._live_map_align_to_initial_yaw:
+            return {}
+        yaw = self._lookup_live_map_alignment_yaw()
+        if yaw is None:
+            return {}
+        return self._alignment_metadata_from_yaw(yaw, source)
+
+    def _apply_map_alignment_to_sdk(self, yaw, source, aligned_front_yaw_deg=None):
+        if not self._live_map_align_to_initial_yaw:
+            return False
+        if not self._is_finite_number(yaw):
+            return False
+        try:
+            self._ensure_map_alignment_proxy()
+            response = self._set_map_alignment_proxy(
+                enabled=True,
+                yaw_rad=float(yaw),
+                aligned_front_yaw_deg=float(
+                    self._aligned_front_yaw_deg if aligned_front_yaw_deg is None else aligned_front_yaw_deg
+                ),
+                source=str(source or "scheduler"),
+            )
+            accepted = bool(getattr(response, "accepted", False))
+            if not accepted:
+                rospy.logwarn(
+                    "SDK map alignment rejected: yaw=%.6f source=%s message=%s",
+                    float(yaw),
+                    str(source or ""),
+                    str(getattr(response, "message", "")),
+                )
+            return accepted
+        except Exception as exc:
+            rospy.logwarn_throttle(
+                2.0,
+                "Failed to apply SDK map alignment via %s: %s",
+                self._set_map_alignment_service,
+                exc,
+            )
+            return False
+
+    def _restore_recorded_map_alignment(self, map_id, reason=""):
+        if not self._live_map_align_to_initial_yaw:
+            return False
+        record = self._find_recorded_map_by_id(map_id)
+        if not isinstance(record, dict):
+            return False
+
+        yaw = record.get("alignment_yaw_rad", None)
+        if not self._is_finite_number(yaw):
+            metadata = self._current_alignment_metadata("legacy_migration")
+            if not metadata:
+                self._pending_map_alignment_restore = {
+                    "map_id": str(map_id),
+                    "reason": str(reason or "legacy_migration"),
+                    "await_yaw": True,
+                }
+                self._pending_map_alignment_next_time = 0.0
+                rospy.loginfo_throttle(
+                    5.0,
+                    "Waiting for map alignment yaw before migrating legacy map: map_id=%s reason=%s",
+                    str(map_id),
+                    str(reason or ""),
+                )
+                return False
+            if self._record_alignment_metadata(record, metadata, save_state=True):
+                yaw = metadata.get("alignment_yaw_rad")
+                rospy.loginfo(
+                    "Migrated legacy map alignment: map_id=%s alignment_yaw_rad=%.6f aligned_front_yaw_deg=%.3f",
+                    str(map_id),
+                    float(yaw),
+                    float(metadata.get("aligned_front_yaw_deg", self._aligned_front_yaw_deg)),
+                )
+
+        if not self._is_finite_number(yaw):
+            return False
+        self._initial_pose_alignment_yaw = float(yaw)
+        front_deg = float(record.get("aligned_front_yaw_deg", self._aligned_front_yaw_deg))
+        applied = self._apply_map_alignment_to_sdk(
+            float(yaw),
+            "registry:{}{}".format(str(map_id), (":{}".format(reason) if reason else "")),
+            aligned_front_yaw_deg=front_deg,
+        )
+        if applied:
+            self._pending_map_alignment_restore = None
+        else:
+            self._pending_map_alignment_restore = {
+                "map_id": str(map_id),
+                "yaw": float(yaw),
+                "front_deg": float(front_deg),
+                "reason": str(reason or "restore"),
+            }
+            self._pending_map_alignment_next_time = 0.0
+        rospy.loginfo(
+            "Restored map alignment: map_id=%s alignment_yaw_rad=%.6f aligned_front_yaw_deg=%.3f sdk_applied=%s%s",
+            str(map_id),
+            float(yaw),
+            front_deg,
+            str(applied).lower(),
+            (" reason={}".format(reason) if reason else ""),
+        )
+        return True
+
+    def _tick_pending_map_alignment_restore(self):
+        pending = self._pending_map_alignment_restore
+        if not isinstance(pending, dict):
+            return
+        now = time.time()
+        if now < float(self._pending_map_alignment_next_time or 0.0):
+            return
+        self._pending_map_alignment_next_time = now + 1.0
+        if bool(pending.get("await_yaw", False)):
+            self._restore_recorded_map_alignment(
+                pending.get("map_id", ""),
+                reason=pending.get("reason", "legacy_migration"),
+            )
+            return
+        yaw = pending.get("yaw", None)
+        if not self._is_finite_number(yaw):
+            self._pending_map_alignment_restore = None
+            return
+        applied = self._apply_map_alignment_to_sdk(
+            float(yaw),
+            "registry_retry:{}:{}".format(
+                str(pending.get("map_id", "")),
+                str(pending.get("reason", "restore")),
+            ),
+            aligned_front_yaw_deg=float(pending.get("front_deg", self._aligned_front_yaw_deg)),
+        )
+        if applied:
+            rospy.loginfo(
+                "Pending map alignment restore applied: map_id=%s alignment_yaw_rad=%.6f",
+                str(pending.get("map_id", "")),
+                float(yaw),
+            )
+            self._pending_map_alignment_restore = None
+
     def _map_state_dirname(self, map_id):
         text = str(map_id or "").strip() or self._live_map_id
         safe = re.sub(r"[^0-9A-Za-z._-]", "_", text)
@@ -2141,6 +2600,7 @@ class SchedulerNode:
                 "active_map_id": self._current_map_id(),
                 "state": self.state.value,
                 "replan_requested": bool(self.replan_requested),
+                "current_path_config_signature": self._current_path_config_signature,
                 "saved_at": int(time.time()),
                 "persist_runtime_task_state": bool(self._persist_runtime_task_state),
             }
@@ -2174,12 +2634,14 @@ class SchedulerNode:
             if not os.path.exists(state_path):
                 self.task_config.map_id = self._current_map_id()
                 self._load_map_overlay_state_for_map(self._current_map_id())
+                self._restore_recorded_map_alignment(self._current_map_id(), reason="startup_no_state")
                 return
             with open(state_path, "r", encoding="utf-8") as handle:
                 payload = json.load(handle)
             if (not self._map_registry) and isinstance(payload.get("map_registry", {}), dict):
                 # Backward compatibility: migrate old embedded map_registry.
                 self._map_registry = payload.get("map_registry", {})
+                self._normalize_map_registry(save_state=False)
                 self._save_map_registry_state()
             loaded_chassis = payload.get("chassis_settings", {})
             if isinstance(loaded_chassis, dict):
@@ -2216,12 +2678,20 @@ class SchedulerNode:
                 cfg_map_id = str(self.task_config.map_id or "").strip()
                 if cfg_map_id:
                     self._active_map_id = cfg_map_id
+            if self._active_map_id != self._live_map_id and self._find_recorded_map_by_id(self._active_map_id) is None:
+                rospy.logwarn(
+                    "Persisted active map is unavailable; fallback to LIVE_MAP: map_id=%s",
+                    self._active_map_id,
+                )
+                self._active_map_id = self._live_map_id
             self._load_task_registry_state()
             self.task_config.map_id = self._current_map_id()
             self._load_map_overlay_state_for_map(self._current_map_id())
+            self._restore_recorded_map_alignment(self._current_map_id(), reason="startup")
             if self._persist_runtime_task_state:
                 self._sync_task_map_binding(update_binding=False)
             self.replan_requested = bool(payload.get("replan_requested", False))
+            self._current_path_config_signature = str(payload.get("current_path_config_signature", "") or "")
 
             path_payload = payload.get("current_path")
             if self._persist_runtime_task_state and path_payload and path_payload.get("points"):
@@ -2341,6 +2811,7 @@ class SchedulerNode:
                 registry = payload.get("map_registry", {})
                 if isinstance(registry, dict):
                     self._map_registry = registry
+                    self._normalize_map_registry(save_state=True)
         except Exception as exc:
             rospy.logwarn("Failed to load map registry state: %s", exc)
 
@@ -2522,6 +2993,9 @@ class SchedulerNode:
         prev_map_id = str(self._active_map_id or "").strip() or self._live_map_id
         if next_map_id == prev_map_id:
             self.task_config.map_id = next_map_id
+            if next_map_id == self._live_map_id:
+                self._aurora_loaded_recorded_map_id = ""
+            self._restore_recorded_map_alignment(next_map_id, reason=reason or "active_map_unchanged")
             return
 
         self._save_map_overlay_state_for_map(prev_map_id)
@@ -2550,7 +3024,10 @@ class SchedulerNode:
 
         self._active_map_id = next_map_id
         self.task_config.map_id = next_map_id
+        if next_map_id == self._live_map_id:
+            self._aurora_loaded_recorded_map_id = ""
         self._load_map_overlay_state_for_map(next_map_id)
+        self._restore_recorded_map_alignment(next_map_id, reason=reason or "active_map_switch")
         # Force one-shot map switch sync in next tick.
         self._last_seen_map_id = ""
         rospy.loginfo(
@@ -2851,7 +3328,19 @@ class SchedulerNode:
             except Exception as exc:
                 rospy.logwarn("Navigation map refresh before planning failed: %s", exc)
         selected_work_regions = self._resolve_plan_work_regions(force_use_all_regions=force_use_all_regions)
-        has_task_info = bool(list(self.task_config.selected_work_region_ids or [])) or bool(
+        effective_plan_selected_ids = [
+            str(region.get("region_id", "")).strip()
+            for region in list(selected_work_regions or [])
+            if str(region.get("region_id", "")).strip()
+        ]
+        configured_selected_ids = [
+            str(rid).strip()
+            for rid in list(self.task_config.selected_work_region_ids or [])
+            if str(rid).strip()
+        ]
+        if (not force_use_all_regions) and configured_selected_ids:
+            effective_plan_selected_ids = configured_selected_ids
+        has_task_info = bool(effective_plan_selected_ids) or bool(
             dict(self.task_config.region_repeat_config or {})
         )
         rospy.loginfo(
@@ -2879,6 +3368,13 @@ class SchedulerNode:
                 dict(region, global_direction=effective_global_direction) if isinstance(region, dict) else region
                 for region in selected_work_regions
             ]
+        if self._current_map_id() != self._live_map_id:
+            try:
+                self._ensure_active_recorded_map_loaded_to_aurora(reason="plan_current_task")
+            except Exception as exc:
+                rospy.logwarn("Planning skipped: failed to load active recorded map: %s", exc)
+                self._set_error("Cannot plan without recorded map: {}".format(exc))
+                return False
         map_info = self.map_service.get_map_info()
         composed_map = self.map_service.compose_map()
         if map_info is None or composed_map is None:
@@ -2928,7 +3424,7 @@ class SchedulerNode:
                 erase_regions=self.task_config.erase_regions,
                 crop_region=self.task_config.crop_region,
                 active_work_region_id=self.task_config.active_work_region_id,
-                selected_work_region_ids=self.task_config.selected_work_region_ids,
+                selected_work_region_ids=effective_plan_selected_ids,
                 region_repeat_config=self.task_config.region_repeat_config,
                 vehicle_width=self.task_config.vehicle_width,
                 vehicle_length=self.task_config.vehicle_length,
@@ -3013,6 +3509,8 @@ class SchedulerNode:
         self.current_path.nav_path.header.stamp = rospy.Time.now()
         for pose in self.current_path.nav_path.poses:
             pose.header.stamp = self.current_path.nav_path.header.stamp
+        self._current_path_config_signature = self._task_config_signature()
+        self.replan_requested = False
         self._publish_path_to_navigation(publish_goal=False, reason="plan_success")
         self.current_path_index = 0
         self.state = SchedulerState.READY
@@ -3431,8 +3929,75 @@ class SchedulerNode:
             raw_name = matched.group(1).strip("_").strip()
             map_id = matched.group(2)
             return (raw_name or "地图"), map_id
-        fallback_id = datetime.now().strftime("%Y%m%d_%H%M%S")
+        stable_source = os.path.abspath(str(stcm_path or base or "")).encode("utf-8", errors="ignore")
+        fallback_id = "map_{}".format(zlib.crc32(stable_source) & 0xFFFFFFFF)
         return (base or "地图"), fallback_id
+
+    def _normalize_map_registry(self, save_state=False):
+        if not isinstance(self._map_registry, dict):
+            self._map_registry = {}
+            return
+        by_map_id = {}
+        removed = 0
+        for key, record in list(self._map_registry.items()):
+            if not isinstance(record, dict):
+                removed += 1
+                continue
+            raw_path = str(record.get("path", "") or key or "").strip()
+            if not raw_path:
+                removed += 1
+                continue
+            abs_path = os.path.abspath(raw_path)
+            if not os.path.isfile(abs_path):
+                removed += 1
+                continue
+            parsed_name, parsed_id = self._split_map_name_and_id_from_path(abs_path)
+            stored_map_id = str(record.get("map_id", "") or "").strip()
+            if str(parsed_id).startswith("map_") and re.match(r"^\d{8}_\d{6}$", stored_map_id or ""):
+                map_id = str(parsed_id)
+            else:
+                map_id = stored_map_id or str(parsed_id)
+            if not map_id:
+                removed += 1
+                continue
+            normalized = dict(record)
+            normalized["path"] = abs_path
+            normalized["map_id"] = map_id
+            normalized["name"] = str(normalized.get("name", "") or "").strip() or parsed_name
+            try:
+                normalized["size_bytes"] = int(os.path.getsize(abs_path))
+            except Exception:
+                normalized["size_bytes"] = int(normalized.get("size_bytes", 0) or 0)
+            try:
+                normalized["saved_at"] = int(normalized.get("saved_at", 0) or 0)
+            except Exception:
+                normalized["saved_at"] = 0
+            if not str(normalized.get("created_at", "") or "").strip():
+                normalized["created_at"] = _format_ts_s(normalized.get("saved_at", 0))
+
+            existing = by_map_id.get(map_id)
+            if isinstance(existing, dict):
+                existing_saved_at = int(existing.get("saved_at", 0) or 0)
+                if int(normalized.get("saved_at", 0) or 0) < existing_saved_at:
+                    removed += 1
+                    continue
+                removed += 1
+            by_map_id[map_id] = normalized
+
+        next_registry = {}
+        for record in by_map_id.values():
+            path = str(record.get("path", "") or "").strip()
+            if path:
+                next_registry[path] = record
+        if next_registry != self._map_registry:
+            self._map_registry = next_registry
+            rospy.loginfo(
+                "Normalized map registry: maps=%d removed=%d",
+                len(self._map_registry),
+                removed,
+            )
+            if save_state:
+                self._save_map_registry_state()
 
     def _register_saved_map(
         self,
@@ -3446,6 +4011,7 @@ class SchedulerNode:
         thumb_b64="",
         thumb_width=0,
         thumb_height=0,
+        alignment_metadata=None,
     ):
         try:
             abs_path = os.path.abspath(str(stcm_path or "").strip())
@@ -3467,7 +4033,7 @@ class SchedulerNode:
                 if not old_created_at:
                     old_created_at = _format_ts_s(old_record.get("saved_at", 0))
             created_at = old_created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            self._map_registry[abs_path] = {
+            record = {
                 "map_id": map_id,
                 "name": name,
                 "path": abs_path,
@@ -3482,6 +4048,26 @@ class SchedulerNode:
                 "thumb_width": int(max(0, int(thumb_width or 0))),
                 "thumb_height": int(max(0, int(thumb_height or 0))),
             }
+            if isinstance(old_record, dict):
+                old_alignment = {
+                    "alignment_yaw_rad": old_record.get("alignment_yaw_rad"),
+                    "aligned_front_yaw_deg": old_record.get("aligned_front_yaw_deg"),
+                    "alignment_mode": old_record.get("alignment_mode"),
+                    "aligned_frame": old_record.get("aligned_frame"),
+                    "source_frame": old_record.get("source_frame"),
+                    "alignment_source": old_record.get("alignment_source"),
+                }
+                self._record_alignment_metadata(record, old_alignment, save_state=False)
+            self._record_alignment_metadata(record, alignment_metadata or {}, save_state=False)
+            for key, item in list((self._map_registry or {}).items()):
+                if not isinstance(item, dict):
+                    continue
+                old_map_id = str(item.get("map_id", "") or "").strip()
+                old_path = os.path.abspath(str(item.get("path", "") or key or "").strip())
+                if old_map_id == map_id and old_path != abs_path:
+                    self._map_registry.pop(key, None)
+            self._map_registry[abs_path] = record
+            self._normalize_map_registry(save_state=False)
             return name, map_id
         except Exception as exc:
             rospy.logwarn("Failed to register saved map metadata: %s", exc)
@@ -3492,7 +4078,22 @@ class SchedulerNode:
         if abs_path:
             self._map_registry.pop(abs_path, None)
 
+    def _unregister_saved_map_records(self, map_id="", target_path=""):
+        target_id = str(map_id or "").strip()
+        target_abs_path = os.path.abspath(str(target_path or "").strip()) if target_path else ""
+        removed = 0
+        for key, record in list((self._map_registry or {}).items()):
+            if not isinstance(record, dict):
+                continue
+            rec_id = str(record.get("map_id", "") or "").strip()
+            rec_path = os.path.abspath(str(record.get("path", "") or key or "").strip())
+            if (target_id and rec_id == target_id) or (target_abs_path and rec_path == target_abs_path):
+                self._map_registry.pop(key, None)
+                removed += 1
+        return removed
+
     def _find_recorded_map_by_id(self, map_id):
+        self._normalize_map_registry(save_state=False)
         target = str(map_id or "").strip()
         if not target:
             return None
@@ -3504,6 +4105,7 @@ class SchedulerNode:
         return None
 
     def _iter_recorded_maps(self, target_dir=""):
+        self._normalize_map_registry(save_state=True)
         target_dir = os.path.abspath(target_dir) if target_dir else ""
         exts = {".stcm"}
         entries = []
@@ -3557,11 +4159,18 @@ class SchedulerNode:
         except Exception as exc:
             rospy.logwarn("Task start blocked: failed to switch radar to localization mode: %s", exc)
             return False, "Failed to switch radar to localization mode: {}".format(exc)
+        self._sync_task_regions_from_overlay()
+        self._sync_task_map_binding(update_binding=True)
+        if self.current_path is not None and self.replan_requested:
+            self._mark_current_path_stale("task_start_replan_requested", clear_idle=True)
+        elif self.current_path is not None and self._current_path_config_signature:
+            current_signature = self._task_config_signature()
+            if current_signature != self._current_path_config_signature:
+                self._mark_current_path_stale("task_start_config_changed", clear_idle=True)
         if self.current_path is None and not self._plan_current_task():
             return False, "Failed to plan task"
         if self.current_path is None or not self.current_path.points:
             return False, "No planned path to execute"
-        self._sync_task_regions_from_overlay()
         self._exec_region_order = self._sorted_work_region_ids()
         active_id = (self.task_config.active_work_region_id or "").strip()
         if active_id and active_id in self._exec_region_order:
@@ -3609,6 +4218,10 @@ class SchedulerNode:
         return True, "Task paused"
 
     def _resume_execution(self):
+        if self.replan_requested:
+            rospy.loginfo("Task resume requested with stale path; replanning before resume")
+            if not self._plan_current_task():
+                return False, "Failed to replan task"
         if self.current_path is None or not self.current_path.points:
             return False, "No path to resume"
         self._set_chassis_enabled(True)
@@ -4518,6 +5131,187 @@ class SchedulerNode:
             rospy.logwarn("Failed to build saved-map thumbnail: %s", exc)
             return ("", "", 0, 0)
 
+    def _stable_numeric_map_id(self, map_id_text, fallback_data=b""):
+        text = str(map_id_text or "").strip()
+        value = zlib.crc32(text.encode("utf-8")) & 0xFFFFFFFF if text else 0
+        if value == 0 and fallback_data:
+            value = zlib.crc32(bytes(fallback_data)) & 0xFFFFFFFF
+        return int(value or 1)
+
+    def _recorded_map_thumbnail_payload(self, record, image_format="jpg", max_edge=PREVIEW_MAX_EDGE_CAP):
+        if not isinstance(record, dict):
+            return None
+        thumb_b64 = str(record.get("thumb_b64", "") or "").strip()
+        if not thumb_b64:
+            return None
+        try:
+            raw = base64.b64decode(thumb_b64.encode("ascii"), validate=False)
+            image = cv2.imdecode(np.frombuffer(raw, dtype=np.uint8), cv2.IMREAD_COLOR)
+            if image is None:
+                return None
+            edge = self._sanitize_preview_edge(max_edge, cap_edge=self._preview_max_edge_cap)
+            height, width = image.shape[:2]
+            scale = min(float(edge) / float(max(1, width, height)), 1.0)
+            if scale < 0.999:
+                image = cv2.resize(
+                    image,
+                    (max(1, int(round(width * scale))), max(1, int(round(height * scale)))),
+                    interpolation=cv2.INTER_AREA,
+                )
+            fmt = str(image_format or record.get("thumb_format", "") or "jpg").strip().lower()
+            if fmt == "jpeg":
+                fmt = "jpg"
+            if fmt not in ("jpg", "png"):
+                fmt = "jpg"
+            ext = ".png" if fmt == "png" else ".jpg"
+            params = []
+            if fmt == "jpg":
+                params = [int(cv2.IMWRITE_JPEG_QUALITY), 85]
+            ok, encoded = cv2.imencode(ext, image, params)
+            if not ok:
+                return None
+            return bytes(encoded.tobytes()), fmt, int(image.shape[1]), int(image.shape[0])
+        except Exception as exc:
+            rospy.logwarn("Failed to decode recorded map thumbnail: %s", exc)
+            return None
+
+    def _recorded_map_overlay_json(self, record, width, height):
+        map_id = str((record or {}).get("map_id", "") or "").strip()
+        yaw = 0.0
+        if self._is_finite_number((record or {}).get("alignment_yaw_rad")):
+            yaw = float((record or {}).get("alignment_yaw_rad"))
+        payload = {
+            "map_version": self._stable_numeric_map_id(map_id),
+            "updated_at": int(time.time()),
+            "preview_width_px": int(width),
+            "preview_height_px": int(height),
+            "raw_width": int(width),
+            "raw_height": int(height),
+            "preview_scale_x": 1.0,
+            "preview_scale_y": 1.0,
+            "frame_id": str((record or {}).get("aligned_frame", "") or self._live_map_aligned_frame),
+            "origin_x": 0.0,
+            "origin_y": 0.0,
+            "resolution": 0.0,
+            "alignment_yaw": float(yaw),
+            "robot_pose": {},
+            "regions": {},
+            "overlay_mask_png_base64": "",
+            "last_edit_message": "",
+            "map_id": map_id,
+            "map_name": str((record or {}).get("name", "") or ""),
+            "source": "saved_map_registry",
+            "preview_only": True,
+        }
+        return json.dumps(payload, ensure_ascii=False)
+
+    def _build_recorded_map_preview_response(self, response, record, request):
+        requested_edge = request.max_edge if request.max_edge > 0 else PREVIEW_MAX_EDGE_CAP
+        max_edge = self._sanitize_preview_edge(requested_edge, cap_edge=self._preview_max_edge_cap)
+        payload = self._recorded_map_thumbnail_payload(
+            record,
+            request.image_format or str(record.get("thumb_format", "") or "jpg"),
+            max_edge,
+        )
+        if payload is None:
+            return False
+        image_data, _image_format, width, height = payload
+        map_id = str(record.get("map_id", "") or "").strip()
+        response.result = self.sl_link_server.pb.RESULT_SUCCESS
+        response.message = "ok(saved_map_preview)"
+        response.map_version = self._stable_numeric_map_id(map_id, image_data)
+        response.width = int(width)
+        response.height = int(height)
+        response.resolution = 0.0
+        response.origin.x = 0.0
+        response.origin.y = 0.0
+        response.origin.heading_deg = 0.0
+        response.frame_id = str(record.get("aligned_frame", "") or self._live_map_aligned_frame)
+        response.image_data = image_data
+        response.overlay_json = self._recorded_map_overlay_json(record, width, height)
+        response.preview_scale_x = 1.0
+        response.preview_scale_y = 1.0
+        return True
+
+    def _build_recorded_map_thumbnail_chunks(self, pb, record, chunk_size):
+        payload = self._recorded_map_thumbnail_payload(record, "png", PREVIEW_MAX_EDGE_CAP)
+        if payload is None:
+            return []
+        image_data, _image_format, width, height = payload
+        map_id_text = str(record.get("map_id", "") or "").strip()
+        map_id = self._stable_numeric_map_id(map_id_text, image_data)
+        total = max(1, int(math.ceil(len(image_data) / float(chunk_size))))
+        now_utc = int(time.time())
+        outputs = []
+        for index in range(total):
+            chunk = pb.MapChunk()
+            chunk.map_id = map_id
+            chunk.utc_time = now_utc
+            chunk.encoding = pb.MAP_ENCODING_PNG
+            chunk.width = int(width)
+            chunk.height = int(height)
+            chunk.resolution = 0.0
+            chunk.origin.x = 0.0
+            chunk.origin.y = 0.0
+            chunk.origin.heading_deg = 0.0
+            chunk.frame_id = str(record.get("aligned_frame", "") or self._live_map_aligned_frame)
+            chunk.preview_scale_x = 1.0
+            chunk.preview_scale_y = 1.0
+            chunk.chunk_index = index
+            chunk.total_chunks = total
+            chunk.data = image_data[index * chunk_size : (index + 1) * chunk_size]
+            outputs.append((chunk.SerializeToString(), pb.MSG_ID_MAP_CHUNK, pb.COMP_MEDIA))
+        return outputs
+
+    def _ensure_active_recorded_map_loaded_to_aurora(self, reason=""):
+        map_id = self._current_map_id()
+        if map_id == self._live_map_id:
+            return True
+        if self._aurora_loaded_recorded_map_id == map_id:
+            raw_map = self._wait_for_raw_map_ready(
+                reason=reason or "recorded_map_already_loaded",
+                timeout_sec=1.0,
+                require_known_cells=True,
+            )
+            if raw_map is None:
+                raise RuntimeError("recorded map raw map is not ready: {}".format(map_id))
+            return True
+        record = self._find_recorded_map_by_id(map_id)
+        if not isinstance(record, dict):
+            raise RuntimeError("active recorded map not found: {}".format(map_id))
+        stcm_path = os.path.abspath(str(record.get("path", "") or "").strip())
+        if not os.path.isfile(stcm_path):
+            raise RuntimeError("active recorded map file not found: {}".format(stcm_path))
+        self._ensure_sync_proxies()
+        previous_stamp = self._raw_map_stamp_key(self.aurora_bridge.get_map())
+        try:
+            self.map_service.clear_raw_map(clear_regions=False)
+        except Exception:
+            pass
+        result = self._sync_set_proxy(mapfile=stcm_path)
+        if not bool(getattr(result, "success", False)):
+            raise RuntimeError(str(getattr(result, "message", "") or "sync_set_stcm failed"))
+        self._aurora_loaded_recorded_map_id = map_id
+        self._restore_recorded_map_alignment(map_id, reason=reason or "recorded_map_loaded")
+
+        raw_map = self._wait_for_raw_map_ready(
+            reason=reason or "recorded_map_loaded",
+            timeout_sec=self._recorded_map_ready_timeout_sec,
+            require_known_cells=True,
+            previous_stamp=previous_stamp,
+        )
+        if raw_map is None:
+            self._aurora_loaded_recorded_map_id = ""
+            raise RuntimeError("recorded map upload finished but raw map did not refresh: {}".format(map_id))
+        rospy.loginfo(
+            "Active recorded map loaded to Aurora: map_id=%s path=%s reason=%s raw_map_seen=true known_cells=%d",
+            map_id,
+            stcm_path,
+            str(reason or ""),
+            int(self._raw_map_known_cell_count(raw_map)),
+        )
+        return True
+
     def _set_error(self, message):
         self.last_error = message
         self._mark_current_region_repeat_done()
@@ -4770,6 +5564,7 @@ class SchedulerNode:
             )
             self._task_bindings[key] = record
             self._last_task_result = dict(record.get("task_result", {}) or {})
+            self._save_task_registry_state()
             self._save_local_state()
         except Exception as exc:
             rospy.logwarn("Failed to finalize task result: %s", exc)
@@ -5097,6 +5892,7 @@ class SchedulerNode:
         pb = self.sl_link_server.pb
         request = pb.TaskConfig()
         request.ParseFromString(payload)
+        previous_path_signature = self._current_path_config_signature
         map_id_ok, current_map_id = self._validate_requested_map_id(getattr(request, "map_id", ""), "TaskConfig")
         if not map_id_ok:
             response = pb.TaskConfigResponse()
@@ -5150,11 +5946,28 @@ class SchedulerNode:
             self.map_service.apply_edit({"operation": "UPSERT_OBSTACLE_REGION", "region": region})
         self._sync_task_regions_from_overlay()
         self._sync_task_map_binding(update_binding=True)
+        next_signature = self._task_config_signature()
+        message = "Task config accepted"
+        if self.current_path is not None and previous_path_signature and previous_path_signature == next_signature:
+            self._current_path_config_signature = next_signature
+            self.current_path.task_id = self.task_config.task_id or self.current_path.task_id
+            self.replan_requested = False
+            message = "Task config accepted; existing path reused"
+            rospy.loginfo("TaskConfig accepted without replanning: existing path signature matched")
+        elif self.current_path is not None:
+            self._mark_current_path_stale("task_config_changed", clear_idle=True)
+            message = "Task config accepted; planning_required"
+        else:
+            self.replan_requested = True
+            message = "Task config accepted; planning_required"
+
+        if self._task_config_auto_plan:
+            planned = self._plan_current_task()
+            message = "Task config accepted; auto_plan={}".format("ok" if planned else "failed")
         self._save_local_state()
-        self._plan_current_task()
         response = pb.TaskConfigResponse()
         response.result = pb.RESULT_SUCCESS
-        response.message = "Task config accepted"
+        response.message = message
         response.task_id = self.task_config.task_id
         return response.SerializeToString(), pb.MSG_ID_TASK_CONFIG_RESPONSE, pb.COMP_SCHEDULER
 
@@ -5241,14 +6054,40 @@ class SchedulerNode:
         pb = self.sl_link_server.pb
         request = pb.MapRequest()
         request.ParseFromString(payload)
-        raw_map = self.aurora_bridge.get_map()
-        if raw_map is None:
-            rospy.logwarn_throttle(2.0, "MapRequest received but raw map is unavailable")
-            return []
-
         # Keep chunk size compatible with legacy protocol max payload.
         chunk_size = int(request.max_chunk_size) if request.max_chunk_size else 512
         chunk_size = max(64, min(512, chunk_size))
+
+        active_map_id = self._current_map_id()
+        active_record = None
+        if active_map_id != self._live_map_id:
+            active_record = self._find_recorded_map_by_id(active_map_id)
+            try:
+                self._ensure_active_recorded_map_loaded_to_aurora(reason="map_request")
+            except Exception as exc:
+                rospy.logwarn(
+                    "MapRequest could not load recorded map: map_id=%s err=%s",
+                    active_map_id,
+                    exc,
+                )
+                return []
+
+        if active_map_id != self._live_map_id:
+            raw_map = self._wait_for_raw_map_ready(
+                reason="map_request",
+                timeout_sec=1.0,
+                require_known_cells=True,
+            )
+        else:
+            raw_map = self.aurora_bridge.get_map()
+            if self._should_ignore_raw_map_after_reset(raw_map):
+                raw_map = None
+        if raw_map is None:
+            rospy.logwarn_throttle(2.0, "MapRequest received but raw map is unavailable")
+            return []
+        if not self._is_raw_map_usable(raw_map, require_known_cells=False):
+            rospy.logwarn_throttle(2.0, "MapRequest received invalid raw map")
+            return []
 
         info = raw_map.info
         width = int(info.width)
@@ -5309,9 +6148,12 @@ class SchedulerNode:
             float(origin_y),
             float(yaw) if yaw is not None else 0.0,
         )
-        map_id = zlib.crc32("{}|{}".format(int(base_map_id), identity).encode("utf-8")) & 0xFFFFFFFF
-        if map_id == 0:
-            map_id = 1
+        if active_map_id != self._live_map_id:
+            map_id = self._stable_numeric_map_id(active_map_id, data)
+        else:
+            map_id = zlib.crc32("{}|{}".format(int(base_map_id), identity).encode("utf-8")) & 0xFFFFFFFF
+            if map_id == 0:
+                map_id = 1
         now_utc = int(time.time())
 
         outputs = []
@@ -5361,10 +6203,15 @@ class SchedulerNode:
                     raise RuntimeError(result.message or "sync_get_stcm failed")
                 if (not os.path.exists(stcm_path)) or os.path.getsize(stcm_path) <= 0:
                     raise RuntimeError("sync_get_stcm finished but file is empty: {}".format(stcm_path))
-                _saved_name, saved_map_id = self._register_saved_map(stcm_path, "")
+                _saved_name, saved_map_id = self._register_saved_map(
+                    stcm_path,
+                    "",
+                    alignment_metadata=self._current_alignment_metadata("map_sync_download"),
+                )
                 saved_name = _saved_name or ""
                 if saved_map_id:
                     self._set_active_map_id(saved_map_id, reason="map_sync_download", migrate_bindings=True)
+                    self._aurora_loaded_recorded_map_id = saved_map_id
                 response.message = "stcm_downloaded"
             elif req_op == op_upload:
                 self._ensure_sync_proxies()
@@ -5384,11 +6231,19 @@ class SchedulerNode:
                 result = self._sync_set_proxy(mapfile=stcm_path)
                 if not result.success:
                     raise RuntimeError(result.message or "sync_set_stcm failed")
+                if saved_map_id:
+                    self._aurora_loaded_recorded_map_id = saved_map_id
                 if not saved_map_id:
-                    _saved_name, saved_map_id = self._register_saved_map(stcm_path, "")
+                    _saved_name, saved_map_id = self._register_saved_map(
+                        stcm_path,
+                        "",
+                        alignment_metadata=self._current_alignment_metadata("map_sync_upload_register"),
+                    )
                     saved_name = saved_name or (_saved_name or "")
+                    self._aurora_loaded_recorded_map_id = saved_map_id
                 if saved_map_id:
                     self._set_active_map_id(saved_map_id, reason="map_sync_upload", migrate_bindings=False)
+                    self._restore_recorded_map_alignment(saved_map_id, reason="map_sync_upload")
                 response.message = "stcm_uploaded"
             else:
                 raise RuntimeError("unsupported map sync operation")
@@ -5492,6 +6347,7 @@ class SchedulerNode:
                 thumb_b64=thumb_b64,
                 thumb_width=thumb_width,
                 thumb_height=thumb_height,
+                alignment_metadata=self._current_alignment_metadata("map_save"),
             )
             if saved_map_id:
                 prev_map_id = self._current_map_id()
@@ -5499,6 +6355,8 @@ class SchedulerNode:
                 self._save_map_overlay_state_for_map(prev_map_id)
                 self._copy_map_overlay_state(prev_map_id, saved_map_id, overwrite=True)
                 self._set_active_map_id(saved_map_id, reason="map_save", migrate_bindings=True)
+                self._aurora_loaded_recorded_map_id = saved_map_id
+                self._restore_recorded_map_alignment(saved_map_id, reason="map_save")
                 # After saving from LIVE_MAP, clear LIVE_MAP overlay regions.
                 # This ensures next time LIVE_MAP is entered, it starts with empty regions.
                 if prev_map_id == self._live_map_id:
@@ -5714,9 +6572,13 @@ class SchedulerNode:
                         self._set_map_update_pub.publish(msg)
                         rospy.sleep(0.15)
                     self._set_active_map_id(self._live_map_id, reason="map_mode_mapping_on", migrate_bindings=False)
+                    self.map_service.reset_overlay_regions()
+                    self._request_aurora_map_reset(reason="map_mode_mapping_on")
+                    self._sync_task_regions_from_overlay()
+                    self._save_local_state()
                     response.map_kind = kind_value
                     response.result = pb.RESULT_SUCCESS
-                    response.message = "mapping_mode_command_published enabled=1 subscribers={}".format(conn)
+                    response.message = "mapping_mode_command_published enabled=1 reset_requested=1 subscribers={}".format(conn)
                 else:
                     if self._set_map_update_pub is None or SetMapUpdateRequest is None:
                         raise RuntimeError("set_map_update publisher is unavailable")
@@ -5754,17 +6616,34 @@ class SchedulerNode:
             elif request.mode == pb.MAP_MODE_LOCALIZATION:
                 if self._set_map_localization_pub is None or SetMapLocalizationRequest is None:
                     raise RuntimeError("set_map_localization publisher is unavailable")
-                conn = int(self._set_map_localization_pub.get_num_connections())
-                if conn <= 0:
+                localization_conn = int(self._set_map_localization_pub.get_num_connections())
+                if localization_conn <= 0:
                     raise RuntimeError("set_map_localization has no subscribers; check slamware_ros_sdk node")
-                msg = SetMapLocalizationRequest()
-                msg.enabled = bool(request.enabled)
+                update_msg = None
+                update_conn = 0
+                if bool(request.enabled):
+                    if self._set_map_update_pub is None or SetMapUpdateRequest is None:
+                        raise RuntimeError("set_map_update publisher is unavailable")
+                    update_conn = int(self._set_map_update_pub.get_num_connections())
+                    if update_conn <= 0:
+                        raise RuntimeError("set_map_update has no subscribers; check slamware_ros_sdk node")
+                    update_msg = SetMapUpdateRequest()
+                    update_msg.enabled = False
+                    if MapKind is not None:
+                        update_msg.kind.kind = int(MapKind.EXPLORERMAP)
+                localization_msg = SetMapLocalizationRequest()
+                localization_msg.enabled = bool(request.enabled)
                 for _ in range(12):
-                    self._set_map_localization_pub.publish(msg)
+                    if update_msg is not None:
+                        self._set_map_update_pub.publish(update_msg)
+                    self._set_map_localization_pub.publish(localization_msg)
                     rospy.sleep(0.15)
                 response.result = pb.RESULT_SUCCESS
-                response.message = "localization_mode_command_published enabled={} subscribers={}".format(
-                    int(bool(request.enabled)), conn
+                response.message = "localization_mode_command_published enabled={} set_map_update_false={} localization_subscribers={} update_subscribers={}".format(
+                    int(bool(request.enabled)),
+                    int(update_msg is not None),
+                    localization_conn,
+                    update_conn,
                 )
             else:
                 response.result = pb.RESULT_INVALID_PARAM
@@ -5839,13 +6718,34 @@ class SchedulerNode:
                 raise RuntimeError("map_id is empty")
             record = self._find_recorded_map_by_id(requested_map_id)
             if record is None:
-                raise RuntimeError("map_id not found: {}".format(requested_map_id))
+                removed = self._unregister_saved_map_records(map_id=requested_map_id)
+                self._remove_map_overlay_state_for_map(requested_map_id)
+                prefix = "{}::".format(requested_map_id)
+                removed_task_bindings = 0
+                for key in list(self._task_bindings.keys()):
+                    if str(key).startswith(prefix):
+                        self._task_bindings.pop(key, None)
+                        removed_task_bindings += 1
+                if self._current_map_id() == requested_map_id:
+                    self._set_active_map_id(self._live_map_id, reason="map_delete_missing_record", migrate_bindings=False)
+                self._save_local_state()
+                if hasattr(response, "map_id"):
+                    response.map_id = requested_map_id
+                response.deleted = True
+                response.result = pb.RESULT_SUCCESS
+                response.message = "already_deleted_or_missing"
+                rospy.logwarn(
+                    "MapDelete idempotent cleanup: map_id=%s registry_removed=%d task_bindings_removed=%d",
+                    requested_map_id,
+                    removed,
+                    removed_task_bindings,
+                )
+                return response.SerializeToString(), pb.MSG_ID_MAP_DELETE_RESPONSE, pb.COMP_SCHEDULER
             target_path = os.path.abspath(str(record.get("path", "")).strip())
             if not target_path:
                 raise RuntimeError("map_id found but path is empty: {}".format(requested_map_id))
-            if not os.path.exists(target_path):
-                raise RuntimeError("map file not found: {}".format(target_path))
-            if not os.path.isfile(target_path):
+            file_existed = os.path.exists(target_path)
+            if file_existed and not os.path.isfile(target_path):
                 raise RuntimeError("target is not a file: {}".format(target_path))
             record_name, record_id = self._split_map_name_and_id_from_path(target_path)
             for rec in (self._map_registry or {}).values():
@@ -5855,12 +6755,14 @@ class SchedulerNode:
                     if str(rec.get("name", "")).strip():
                         record_name = str(rec.get("name", "")).strip()
                     break
-            os.remove(target_path)
-            self._unregister_saved_map(target_path)
-            self._remove_map_overlay_state_for_map(record_id or requested_map_id)
+            if file_existed:
+                os.remove(target_path)
+            target_map_id = str(record_id or requested_map_id or "").strip()
+            was_loaded_in_aurora = self._aurora_loaded_recorded_map_id == target_map_id
+            self._unregister_saved_map_records(map_id=target_map_id, target_path=target_path)
+            self._remove_map_overlay_state_for_map(target_map_id)
             # Also remove task bindings associated with this map_id.
             removed_task_bindings = 0
-            target_map_id = str(record_id or requested_map_id or "").strip()
             if target_map_id:
                 prefix = "{}::".format(target_map_id)
                 for key in list(self._task_bindings.keys()):
@@ -5873,6 +6775,11 @@ class SchedulerNode:
                         target_map_id,
                         removed_task_bindings,
                     )
+            if self._current_map_id() == target_map_id:
+                self._set_active_map_id(self._live_map_id, reason="map_delete", migrate_bindings=False)
+            if was_loaded_in_aurora:
+                self._aurora_loaded_recorded_map_id = ""
+                self._request_aurora_map_reset(reason="map_delete_loaded_recorded_map")
             self._save_local_state()
             if hasattr(response, "map_id"):
                 response.map_id = record_id
@@ -5880,7 +6787,7 @@ class SchedulerNode:
                 response.map_name = record_name
             response.deleted = True
             response.result = pb.RESULT_SUCCESS
-            response.message = "deleted"
+            response.message = "deleted" if file_existed else "metadata_deleted_file_missing"
         except Exception as exc:
             response.result = pb.RESULT_FAILED
             response.message = str(exc)
@@ -5909,6 +6816,9 @@ class SchedulerNode:
                 self._clear_live_map_files()
 
             self._set_active_map_id(self._live_map_id, reason="live_map_cache_clear", migrate_bindings=False)
+            self._request_aurora_map_reset(reason="live_map_cache_clear")
+            self._sync_task_regions_from_overlay()
+            self._save_local_state()
             response.message = "cleared(mode={})".format(self._live_map_cache_clear_mode)
         except Exception as exc:
             response.result = pb.RESULT_FAILED
@@ -5922,19 +6832,50 @@ class SchedulerNode:
         response = pb.MapPreviewResponse()
         try:
             requested_map_id = str(getattr(request, "map_id", "") or "").strip()
+            previous_map_id = self._current_map_id()
+            self._normalize_map_registry(save_state=True)
             has_saved_maps = any(isinstance(item, dict) for item in (self._map_registry or {}).values())
+            active_record = None
+            active_map_id = self._current_map_id()
             # If there is no saved map at all, always fallback to LIVE_MAP preview.
             # This avoids UI preview failure when APP still carries an old/non-live map_id.
             if has_saved_maps:
-                map_id_ok, _ = self._validate_requested_map_id(requested_map_id, "MapPreviewRequest")
+                map_id_ok, active_map_id = self._validate_requested_map_id(
+                    requested_map_id,
+                    "MapPreviewRequest",
+                    keep_current_on_empty=True,
+                )
                 if not map_id_ok:
                     raise RuntimeError("map_id mismatch with current map")
+                if active_map_id != self._live_map_id:
+                    active_record = self._find_recorded_map_by_id(active_map_id)
+                elif requested_map_id == self._live_map_id and (
+                    previous_map_id != self._live_map_id or bool(self._aurora_loaded_recorded_map_id)
+                ):
+                    self._request_aurora_map_reset(reason="map_preview_live_map_selected")
             else:
                 if requested_map_id and requested_map_id not in (self._live_map_id, DEFAULT_LIVE_MAP_ID):
                     rospy.loginfo(
                         "MapPreviewRequest fallback to LIVE_MAP: no saved map available, requested_map_id=%s",
                         requested_map_id,
                     )
+                if requested_map_id in (self._live_map_id, DEFAULT_LIVE_MAP_ID) and (
+                    previous_map_id != self._live_map_id or bool(self._aurora_loaded_recorded_map_id)
+                ):
+                    self._request_aurora_map_reset(reason="map_preview_live_map_no_saved_maps")
+            load_error = ""
+            if isinstance(active_record, dict):
+                try:
+                    self._ensure_active_recorded_map_loaded_to_aurora(reason="map_preview")
+                except Exception as exc:
+                    load_error = str(exc)
+                    rospy.logwarn(
+                        "MapPreviewRequest could not load recorded map before preview: map_id=%s err=%s",
+                        active_map_id,
+                        load_error,
+                    )
+                if load_error:
+                    raise RuntimeError("saved map preview unavailable; {}".format(load_error))
             requested_edge = request.max_edge if request.max_edge > 0 else PREVIEW_MAX_EDGE_CAP
             max_edge = self._sanitize_preview_edge(requested_edge, cap_edge=self._preview_max_edge_cap)
             snapshot = self.map_service.create_preview(
@@ -5967,7 +6908,11 @@ class SchedulerNode:
         pb = self.sl_link_server.pb
         request = pb.MapEditCommand()
         request.ParseFromString(payload)
-        map_id_ok, _ = self._validate_requested_map_id(getattr(request, "map_id", ""), "MapEditCommand")
+        map_id_ok, _ = self._validate_requested_map_id(
+            getattr(request, "map_id", ""),
+            "MapEditCommand",
+            keep_current_on_empty=True,
+        )
         if not map_id_ok:
             response = pb.MapEditResponse()
             response.result = pb.RESULT_INVALID_PARAM
@@ -5975,6 +6920,16 @@ class SchedulerNode:
             map_info = self.map_service.get_map_info()
             response.map_version = int(map_info.get("map_version", 0)) if map_info else 0
             return response.SerializeToString(), pb.MSG_ID_MAP_EDIT_RESPONSE, pb.COMP_SCHEDULER
+        if self._current_map_id() != self._live_map_id:
+            try:
+                self._ensure_active_recorded_map_loaded_to_aurora(reason="map_edit")
+            except Exception as exc:
+                response = pb.MapEditResponse()
+                response.result = pb.RESULT_FAILED
+                response.message = "failed to load recorded map: {}".format(exc)
+                map_info = self.map_service.get_map_info()
+                response.map_version = int(map_info.get("map_version", 0)) if map_info else 0
+                return response.SerializeToString(), pb.MSG_ID_MAP_EDIT_RESPONSE, pb.COMP_SCHEDULER
         region_points = [{"x": p.x, "y": p.y} for p in request.region.points]
         polygon_points = [{"x": p.x, "y": p.y} for p in request.polygon]
         operation_map = {
@@ -6026,6 +6981,18 @@ class SchedulerNode:
                 self._live_map_aligned_frame,
                 self._live_map_source_frame,
                 float(edit_alignment_yaw),
+            )
+        region_points, region_points_clamped = self._clamp_source_points_to_map_bounds(region_points)
+        polygon_points, polygon_points_clamped = self._clamp_source_points_to_map_bounds(polygon_points)
+        request_start_pose, start_pose_clamped = self._clamp_source_pose_to_map_bounds(request_start_pose)
+        request_end_pose, end_pose_clamped = self._clamp_source_pose_to_map_bounds(request_end_pose)
+        if region_points_clamped or polygon_points_clamped or start_pose_clamped or end_pose_clamped:
+            rospy.logwarn(
+                "MapEdit coordinates clamped to source map bounds: region_points=%s polygon_points=%s start_pose=%s end_pose=%s",
+                str(bool(region_points_clamped)).lower(),
+                str(bool(polygon_points_clamped)).lower(),
+                str(bool(start_pose_clamped)).lower(),
+                str(bool(end_pose_clamped)).lower(),
             )
 
         def _format_points(points, max_points=64):
@@ -6145,10 +7112,18 @@ class SchedulerNode:
                         self.task_config.active_work_region_id = ""
             # Keep task_config cache consistent with overlay source-of-truth immediately.
             self._sync_task_regions_from_overlay()
-        if success and self.state in (SchedulerState.READY, SchedulerState.PLANNING):
-            self._plan_current_task()
-        elif success and self.state == SchedulerState.RUNNING:
-            self.replan_requested = True
+        planner_status_message = message
+        if success:
+            if self.state == SchedulerState.RUNNING:
+                self._mark_current_path_stale("map_edit:{}".format(operation_name), clear_idle=False)
+                planner_status_message = "planner_refresh_requested"
+            elif self._map_edit_auto_plan_when_idle and self.state in (SchedulerState.READY, SchedulerState.PLANNING):
+                self._mark_current_path_stale("map_edit:{}".format(operation_name), clear_idle=True)
+                planned = self._plan_current_task()
+                planner_status_message = "planner_refreshed" if planned else "planning_failed"
+            else:
+                self._mark_current_path_stale("map_edit:{}".format(operation_name), clear_idle=True)
+                planner_status_message = "planning_required"
         if success:
             self._save_local_state()
             rospy.loginfo(
@@ -6174,7 +7149,7 @@ class SchedulerNode:
         status = pb.MapEditStatusReport()
         status.map_version = map_version
         status.applied_to_planner = success
-        status.message = "planner_refresh_requested" if self.replan_requested else message
+        status.message = planner_status_message if success else message
 
         return [
             (response.SerializeToString(), pb.MSG_ID_MAP_EDIT_RESPONSE, pb.COMP_SCHEDULER),
@@ -6229,6 +7204,17 @@ class SchedulerNode:
             response.message = "map_id mismatch with current map"
             response.planned = False
             return response.SerializeToString(), pb.MSG_ID_PATH_PLAN_RESPONSE, pb.COMP_SCHEDULER
+        if current_map_id != self._live_map_id:
+            try:
+                self._ensure_active_recorded_map_loaded_to_aurora(reason="path_plan")
+            except Exception as exc:
+                response = pb.PathPlanResponse()
+                response.request_id = request.request_id
+                response.task_id = self.task_config.task_id
+                response.result = pb.RESULT_FAILED
+                response.message = "failed to load recorded map: {}".format(exc)
+                response.planned = False
+                return response.SerializeToString(), pb.MSG_ID_PATH_PLAN_RESPONSE, pb.COMP_SCHEDULER
 
         if request.task_id:
             self.task_config.task_id = request.task_id

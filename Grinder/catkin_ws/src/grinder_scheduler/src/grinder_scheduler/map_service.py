@@ -904,6 +904,18 @@ class MapService:
             self._crop_region = None
             self._last_edit_message = ""
 
+    def clear_raw_map(self, clear_regions=False):
+        with self._lock:
+            self._raw_msg = None
+            self._overlay = None
+            self._pending_overlay = None
+            self._map_version = 0
+            if clear_regions:
+                self._work_regions = {}
+                self._obstacle_regions = {}
+                self._crop_region = None
+                self._last_edit_message = "raw_map_cleared"
+
     def reset_overlay_regions(self):
         """仅清空区域覆盖层（工作区/障碍区/裁剪区），不影响原始底图缓存。"""
         with self._lock:

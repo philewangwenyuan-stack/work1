@@ -87,6 +87,7 @@ namespace slamware_ros_sdk
         uint64_t lastTimestamp_;
         bool hasMapYawAlignment_;
         double initialMapYaw_;
+        double mapAlignmentYaw_;
     };
 
     //////////////////////////////////////////////////////////////////////////

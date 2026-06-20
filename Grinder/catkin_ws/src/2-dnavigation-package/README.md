@@ -51,3 +51,21 @@ roslaunch grinder_scheduler grinder_system.launch
 ```bash
 roslaunch teb_local_planner_tutorials robot_diff_drive.launch
 ```
+
+## Coordinate-frame policy
+
+The project keeps the existing Aurora-compatible TF chain and treats
+`map_aligned` as the public map frame. `map` is the raw Aurora map frame,
+`/odom` is still Aurora-provided odometry, and chassis wheel feedback is not used
+as a navigation odometry source.
+
+`map_aligned` is produced by exact-front alignment:
+
+```text
+alignment_yaw = radians(aligned_front_yaw_deg) - initial_yaw
+```
+
+With the default `aligned_front_yaw_deg=90.0`, the first valid robot heading is
+rotated to point toward the top of the tablet/RViz map. Saved STCM map records
+persist this alignment so old maps load with a stable direction instead of being
+re-oriented by the next random IMU startup heading.

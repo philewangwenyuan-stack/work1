@@ -1,0 +1,7 @@
+bool enabled
+float64 yaw_rad
+float64 aligned_front_yaw_deg
+string source
+---
+bool accepted
+string message

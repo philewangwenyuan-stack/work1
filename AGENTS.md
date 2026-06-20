@@ -14,6 +14,7 @@
 
 ## Context Rules
 
+- Default replies for this project should be concise Chinese, following the user's requested caveman-style brevity: keep technical accuracy, drop filler, prefer short direct fragments, and expand only when precision or safety needs it.
 - Prefer reading source files under `Grinder/catkin_ws/src/grinder_scheduler` and `Grinder/catkin_ws/src/grinder_chassis_driver` before searching the whole repository.
 - Treat `build`, `devel`, `install`, `logs`, `temp`, `__pycache__`, and generated media files as noise unless the task is explicitly about build output, runtime logs, or generated artifacts.
 - Do not inspect large archives, binaries, `.docx`, `.xlsx`, images, or videos unless the user asks about those assets.

@@ -138,6 +138,7 @@ add_message_files(
 add_service_files(
   FILES
   RelocalizationRequest.srv
+  SetMapAlignment.srv
   SyncGetStcm.srv
   SyncSetStcm.srv
 )

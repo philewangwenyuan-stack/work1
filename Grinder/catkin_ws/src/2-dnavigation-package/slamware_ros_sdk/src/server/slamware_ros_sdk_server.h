@@ -15,6 +15,7 @@
 #include <slamware_ros_sdk/SyncGetStcm.h>
 #include <slamware_ros_sdk/SyncSetStcm.h>
 #include <slamware_ros_sdk/RelocalizationRequest.h>
+#include <slamware_ros_sdk/SetMapAlignment.h>
 #include <slamware_ros_sdk/RelocalizationCancelRequest.h>
 #include <slamware_ros_sdk/SyncMapRequest.h>
 #include <slamware_ros_sdk/ClearMapRequest.h>
@@ -170,6 +171,7 @@ namespace slamware_ros_sdk
 
         bool srvCbSyncGetStcm_(SyncGetStcm::Request &req, SyncGetStcm::Response &resp);
         bool srvCbSyncSetStcm_(SyncSetStcm::Request &req, SyncSetStcm::Response &resp);
+        bool srvCbSetMapAlignment_(SetMapAlignment::Request &req, SetMapAlignment::Response &resp);
 
         bool srvCbRelocalizationRequest_(slamware_ros_sdk::RelocalizationRequest::Request &req, slamware_ros_sdk::RelocalizationRequest::Response &resp);
 
@@ -208,6 +210,7 @@ namespace slamware_ros_sdk
         // services
         ros::ServiceServer srvSyncGetStcm_;
         ros::ServiceServer srvSyncSetStcm_;
+        ros::ServiceServer srvSetMapAlignment_;
         ros::ServiceServer relocalization_request_srv_;
 
         std::thread workThread_;

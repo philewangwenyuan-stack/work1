@@ -198,7 +198,8 @@ namespace slamware_ros_sdk
         : ServerWorkerBase(pRosSdkServer, wkName, triggerInterval),
           lastTimestamp_(0),
           hasMapYawAlignment_(false),
-          initialMapYaw_(0.0)
+          initialMapYaw_(0.0),
+          mapAlignmentYaw_(0.0)
     {
         const auto &srvParams = serverParams();
         auto &nhRos = rosNodeHandle();
@@ -262,20 +263,47 @@ namespace slamware_ros_sdk
 
         if (srvParams.align_map_to_initial_yaw && srvParams.aligned_map_frame != srvParams.map_frame)
         {
-            if (!hasMapYawAlignment_)
+            const bool externalAlignmentReady = wkDat->hasMapYawAlignment.load();
+            if (!hasMapYawAlignment_ && externalAlignmentReady)
             {
-                initialMapYaw_ = tf::getYaw(robotPoseTransform.getRotation());
+                mapAlignmentYaw_ = wkDat->mapYawAlignmentYaw.load();
+                initialMapYaw_ = wkDat->mapYawAlignmentInitialYaw.load();
                 hasMapYawAlignment_ = true;
-                wkDat->mapYawAlignmentYaw.store(-initialMapYaw_);
-                wkDat->hasMapYawAlignment.store(true);
-                ROS_INFO("Map yaw alignment initialized: %s -> %s yaw %.6f rad",
+                ROS_INFO("Map yaw alignment restored: mode=%s source=external %s -> %s alignment_yaw_rad=%.6f initial_yaw_rad=%.6f aligned_front_yaw_deg=%.3f",
+                         srvParams.map_alignment_mode.c_str(),
                          srvParams.aligned_map_frame.c_str(),
                          srvParams.map_frame.c_str(),
-                         -initialMapYaw_);
+                         mapAlignmentYaw_,
+                         initialMapYaw_,
+                         wkDat->mapYawAlignmentFrontYawDeg.load());
+            }
+            else if (!hasMapYawAlignment_)
+            {
+                initialMapYaw_ = tf::getYaw(robotPoseTransform.getRotation());
+                const double frontYawRad = srvParams.aligned_front_yaw_deg * M_PI / 180.0;
+                mapAlignmentYaw_ = frontYawRad - initialMapYaw_;
+                hasMapYawAlignment_ = true;
+                wkDat->mapYawAlignmentYaw.store(mapAlignmentYaw_);
+                wkDat->mapYawAlignmentInitialYaw.store(initialMapYaw_);
+                wkDat->mapYawAlignmentFrontYawDeg.store(srvParams.aligned_front_yaw_deg);
+                wkDat->hasMapYawAlignment.store(true);
+                ROS_INFO("Map yaw alignment initialized: mode=%s source=auto_initial_pose %s -> %s alignment_yaw_rad=%.6f initial_yaw_rad=%.6f aligned_front_yaw_deg=%.3f",
+                         srvParams.map_alignment_mode.c_str(),
+                         srvParams.aligned_map_frame.c_str(),
+                         srvParams.map_frame.c_str(),
+                         mapAlignmentYaw_,
+                         initialMapYaw_,
+                         srvParams.aligned_front_yaw_deg);
+            }
+            else if (wkDat->hasMapYawAlignment.load())
+            {
+                mapAlignmentYaw_ = wkDat->mapYawAlignmentYaw.load();
             }
             else if (!wkDat->hasMapYawAlignment.load())
             {
-                wkDat->mapYawAlignmentYaw.store(-initialMapYaw_);
+                wkDat->mapYawAlignmentYaw.store(mapAlignmentYaw_);
+                wkDat->mapYawAlignmentInitialYaw.store(initialMapYaw_);
+                wkDat->mapYawAlignmentFrontYawDeg.store(srvParams.aligned_front_yaw_deg);
                 wkDat->hasMapYawAlignment.store(true);
             }
 
@@ -286,7 +314,7 @@ namespace slamware_ros_sdk
             alignedMapTrans.transform.translation.x = 0.0;
             alignedMapTrans.transform.translation.y = 0.0;
             alignedMapTrans.transform.translation.z = 0.0;
-            alignedMapTrans.transform.rotation = tf::createQuaternionMsgFromYaw(-initialMapYaw_);
+            alignedMapTrans.transform.rotation = tf::createQuaternionMsgFromYaw(mapAlignmentYaw_);
             tfBroadcaster().sendTransform(alignedMapTrans);
         }
 

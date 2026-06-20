@@ -9,8 +9,10 @@ mkdir -p "${LOG_DIR}"
 # Runtime options (can be overridden by env before running this script)
 AURORA_IP="${AURORA_IP:-192.168.11.1}"
 START_NAV="${START_NAV:-1}"
+START_RVIZ="${START_RVIZ:-0}"
 START_CHASSIS="${START_CHASSIS:-1}"
 RESET_STATE="${RESET_STATE:-0}"
+SL_LINKA_TRACE_REQUESTS="${SL_LINKA_TRACE_REQUESTS:-0}"
 NAV_MAP_YAML="${NAV_MAP_YAML:-${WORKSPACE}/src/2-dnavigation-package/2dnavigation/teb_local_planner_tutorials/maps/map.yaml}"
 HOST_ARCH="$(uname -m)"
 MEDIAMTX_BIN="${MEDIAMTX_BIN:-}"
@@ -105,9 +107,9 @@ else
 fi
 
 if [[ "${START_NAV}" == "1" ]]; then
-  launch_bg "grinder_system" "roslaunch grinder_scheduler grinder_system.launch aurora_ip_address:=${AURORA_IP} ${CHASSIS_ARG} start_navigation:=true navigation_map_yaml_path:=${NAV_MAP_YAML} local_rtsp_mediamtx_path:=${SELECTED_MEDIAMTX}"
+  launch_bg "grinder_system" "roslaunch grinder_scheduler grinder_system.launch aurora_ip_address:=${AURORA_IP} ${CHASSIS_ARG} start_navigation:=true start_rviz:=${START_RVIZ} sl_linka_trace_requests:=${SL_LINKA_TRACE_REQUESTS} navigation_map_yaml_path:=${NAV_MAP_YAML} local_rtsp_mediamtx_path:=${SELECTED_MEDIAMTX}"
 else
-  launch_bg "grinder_system" "roslaunch grinder_scheduler grinder_system.launch aurora_ip_address:=${AURORA_IP} ${CHASSIS_ARG} start_navigation:=false navigation_map_yaml_path:=${NAV_MAP_YAML} local_rtsp_mediamtx_path:=${SELECTED_MEDIAMTX}"
+  launch_bg "grinder_system" "roslaunch grinder_scheduler grinder_system.launch aurora_ip_address:=${AURORA_IP} ${CHASSIS_ARG} start_navigation:=false start_rviz:=${START_RVIZ} sl_linka_trace_requests:=${SL_LINKA_TRACE_REQUESTS} navigation_map_yaml_path:=${NAV_MAP_YAML} local_rtsp_mediamtx_path:=${SELECTED_MEDIAMTX}"
 fi
 
 echo

@@ -4,6 +4,7 @@
   <arg name="aurora_raw_image_on" default="true" />
   <arg name="aurora_no_preview_image" default="false" />
   <arg name="start_navigation" default="true" />
+  <arg name="start_rviz" default="false" />
   <arg name="start_chassis_driver" default="false" />
   <arg name="navigation_map_yaml_path" default="$(find teb_local_planner_tutorials)/maps/map.yaml" />
   <arg name="local_rtsp_mediamtx_path" default="tools/mediamtx/mediamtx" />
@@ -20,12 +21,15 @@
   <arg name="slam_pose_is_laser_frame" default="false" />
   <arg name="publish_laser_pose_tf" default="false" />
   <arg name="align_map_to_initial_yaw" default="true" />
+  <arg name="map_alignment_mode" default="exact_front" />
+  <arg name="aligned_front_yaw_deg" default="90.0" />
   <arg name="aligned_map_frame" default="map_aligned" />
   <arg name="aurora_pose_augmentation_enabled" default="true" />
   <arg name="aurora_pose_augmentation_frequency_hz" default="50" />
   <arg name="aurora_pose_augmentation_mode" default="imu_vision_mixed" />
   <arg name="aurora_pose_augmentation_smoothing_enabled" default="false" />
   <arg name="aurora_pose_augmentation_smoothing_factor" default="0.3" />
+  <arg name="sl_linka_trace_requests" default="false" />
   
 
   <!-- 1) Aurora driver: start independently in the system launch -->
@@ -40,6 +44,8 @@
     <arg name="slam_pose_is_laser_frame" value="$(arg slam_pose_is_laser_frame)" />
     <arg name="publish_laser_pose_tf" value="$(arg publish_laser_pose_tf)" />
     <arg name="align_map_to_initial_yaw" value="$(arg align_map_to_initial_yaw)" />
+    <arg name="map_alignment_mode" value="$(arg map_alignment_mode)" />
+    <arg name="aligned_front_yaw_deg" value="$(arg aligned_front_yaw_deg)" />
     <arg name="aligned_map_frame" value="$(arg aligned_map_frame)" />
     <arg name="pose_augmentation_enabled" value="$(arg aurora_pose_augmentation_enabled)" />
     <arg name="pose_augmentation_frequency_hz" value="$(arg aurora_pose_augmentation_frequency_hz)" />
@@ -62,9 +68,14 @@
     <arg name="odom_topic" value="$(arg odom_topic)" />
     <arg name="left_image_topic" value="$(arg left_image_topic)" />
     <arg name="right_image_topic" value="$(arg right_image_topic)" />
+    <arg name="map_alignment_mode" value="$(arg map_alignment_mode)" />
+    <arg name="aligned_front_yaw_deg" value="$(arg aligned_front_yaw_deg)" />
+    <arg name="sl_linka_trace_requests" value="$(arg sl_linka_trace_requests)" />
   </include>
 
   <!-- 4) navigation stack -->
   <include if="$(arg start_navigation)"
-           file="$(find teb_local_planner_tutorials)/launch/robot_diff_drive.launch" />
+           file="$(find teb_local_planner_tutorials)/launch/robot_diff_drive.launch">
+    <arg name="start_rviz" value="$(arg start_rviz)" />
+  </include>
 </launch>

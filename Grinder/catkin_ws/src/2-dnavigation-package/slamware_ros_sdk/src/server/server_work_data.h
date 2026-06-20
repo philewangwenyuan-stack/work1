@@ -25,6 +25,8 @@ namespace slamware_ros_sdk
         std::atomic<bool> syncMapRequested;
         std::atomic<bool> hasMapYawAlignment;
         std::atomic<double> mapYawAlignmentYaw;
+        std::atomic<double> mapYawAlignmentInitialYaw;
+        std::atomic<double> mapYawAlignmentFrontYawDeg;
         ServerMapHolder exploreMapHolder;
 
         bool hasAugmentedPose;

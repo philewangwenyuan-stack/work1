@@ -87,7 +87,10 @@ live_map_cache_clear_mode: all
 live_map_align_to_initial_yaw: true
 live_map_source_frame: map
 live_map_aligned_frame: map_aligned
+map_alignment_mode: exact_front
+aligned_front_yaw_deg: 90.0
 live_map_align_yaw_timeout: 0.05
+set_map_alignment_service: /slamware_ros_sdk_server_node/set_map_alignment
 # SL 平板 status 的朝向角约定。true 表示把 ROS 逆时针为正的 yaw
 # 转成平板/屏幕常用的顺时针为正，修正“RViz 往左、平板往右”的显示反向。
 sl_status_heading_clockwise: true
@@ -110,6 +113,17 @@ change_map_service: /change_map
 set_map_update_topic: /slamware_ros_sdk_server_node/set_map_update
 # 设置雷达定位模式话题
 set_map_localization_topic: /slamware_ros_sdk_server_node/set_map_localization
+
+# Aurora clear-map topic. Used when switching back to LIVE_MAP/new mapping
+# so a previously uploaded STCM does not remain active inside the device.
+clear_map_topic: /slamware_ros_sdk_server_node/clear_map
+aurora_map_reset_retries: 5
+aurora_map_reset_retry_interval_sec: 0.15
+aurora_map_reset_ignore_same_stamp_sec: 1.5
+# After uploading an old STCM, wait for a refreshed non-empty raw map before
+# serving MapPreviewRequest/MapRequest/edit/plan.
+recorded_map_ready_timeout_sec: 5.0
+recorded_map_min_known_cells: 16
 
 # 路径规划脚本路径
 planner_script_path: third_party/path_planner/mst25.py
@@ -207,6 +221,14 @@ disc_switch_min_interval: 2.0
 disc_cmd_vel_stale_sec: 1.0
 # PathPlanRequest 是否按“所有已选区域”规划（true=有几个区域规划几次；false=仅按当前激活区域）
 path_plan_request_use_all_regions: true
+# Default false: TaskConfig only updates/saves regions; PathPlanRequest generates the bow path.
+task_config_auto_plan: false
+# Default false: MapEdit marks the current path stale; explicit PathPlanRequest refreshes it.
+map_edit_auto_plan_when_idle: false
+# Default false: obstacle/avoidance regions only affect inter-region connectors, not bow coverage lines.
+obstacle_regions_affect_coverage: false
+# Default false: robot pose only seeds connector-to-first-region, not internal bow coverage start.
+current_pose_seeds_task_coverage: false
 # 手动控制换向保护时间（秒）：前进/后退/左右切换时先发 0 速，避免驱动瞬时反转报错
 manual_reverse_guard_sec: 1.0
 

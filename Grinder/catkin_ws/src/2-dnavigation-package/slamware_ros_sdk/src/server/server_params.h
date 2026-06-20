@@ -83,6 +83,8 @@ namespace slamware_ros_sdk
         bool slam_pose_is_laser_frame;
         bool publish_laser_pose_tf;
         bool align_map_to_initial_yaw;
+        std::string map_alignment_mode;
+        double aligned_front_yaw_deg;
         std::string aligned_map_frame;
         std::string aligned_map_topic;
         std::string aligned_map_info_topic;

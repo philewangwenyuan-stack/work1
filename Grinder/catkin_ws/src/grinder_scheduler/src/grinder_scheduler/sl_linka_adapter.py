@@ -12,7 +12,7 @@ except Exception:
 
 
 class SlLinkAServer:
-    def __init__(self, sdk_dir, host, port, callback_handler):
+    def __init__(self, sdk_dir, host, port, callback_handler, trace_requests=False):
         ensure_sl_linka_sdk_on_path(sdk_dir)
         from sl_link.frame import SL_PROTOCOL_VERSION, SlFrame, SlFrameParser
         from sl_link.message_gen import sl_link_pb2 as pb
@@ -27,6 +27,18 @@ class SlLinkAServer:
         self._server = None
         self._thread = None
         self._seq = 0
+        self._trace_requests = bool(trace_requests)
+
+    def _msg_name(self, msg_id):
+        try:
+            enum_desc = self.pb.DESCRIPTOR.enum_types_by_name.get("MessageId")
+            if enum_desc is not None:
+                value = enum_desc.values_by_number.get(int(msg_id))
+                if value is not None:
+                    return value.name
+        except Exception:
+            pass
+        return "0x%04X" % int(msg_id)
 
     def start(self):
         outer = self
@@ -114,6 +126,16 @@ class SlLinkAServer:
 
     def _dispatch_frame(self, request_handler, frame):
         pb = self.pb
+        if self._trace_requests and rospy is not None:
+            rospy.loginfo(
+                "SL-LinkA RX %s seq=%d ack=%d src=%d dst=%d payload_len=%d",
+                self._msg_name(frame.msg_id),
+                int(frame.seq),
+                int(frame.ack_seq),
+                int(frame.src_id),
+                int(frame.dst_id),
+                len(frame.payload or b""),
+            )
         if frame.msg_id == pb.MSG_ID_SETTINGS_READ_REQUEST:
             payload, msg_id, comp_id = self._handler.handle_settings_read_request(frame.payload)
             request_handler._send_payload(payload, msg_id, comp_id=comp_id, ack_seq=frame.seq)

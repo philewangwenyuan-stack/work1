@@ -8,6 +8,9 @@
   <arg name="odom_topic" default="/odom" />
   <arg name="left_image_topic" default="/slamware_ros_sdk_server_node/left_image_raw" />
   <arg name="right_image_topic" default="/slamware_ros_sdk_server_node/right_image_raw" />
+  <arg name="map_alignment_mode" default="exact_front" />
+  <arg name="aligned_front_yaw_deg" default="90.0" />
+  <arg name="sl_linka_trace_requests" default="false" />
 
   <node pkg="grinder_scheduler"
         type="scheduler_node.py"
@@ -23,5 +26,8 @@
     <param name="odom_topic" value="$(arg odom_topic)" />
     <param name="left_image_topic" value="$(arg left_image_topic)" />
     <param name="right_image_topic" value="$(arg right_image_topic)" />
+    <param name="map_alignment_mode" value="$(arg map_alignment_mode)" />
+    <param name="aligned_front_yaw_deg" value="$(arg aligned_front_yaw_deg)" />
+    <param name="sl_linka_trace_requests" value="$(arg sl_linka_trace_requests)" />
   </node>
 </launch>

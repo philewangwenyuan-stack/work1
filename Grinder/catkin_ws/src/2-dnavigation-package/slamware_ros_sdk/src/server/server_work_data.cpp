@@ -14,6 +14,8 @@ namespace slamware_ros_sdk
         : syncMapRequested(true),
           hasMapYawAlignment(false),
           mapYawAlignmentYaw(0.0),
+          mapYawAlignmentInitialYaw(0.0),
+          mapYawAlignmentFrontYawDeg(90.0),
           hasAugmentedPose(false),
           augmentedPoseTimestampNs(0),
           augmentedPoseMode(SLAMTEC_AURORA_SDK_POSE_AUGMENTATION_MODE_VISUAL_ONLY),

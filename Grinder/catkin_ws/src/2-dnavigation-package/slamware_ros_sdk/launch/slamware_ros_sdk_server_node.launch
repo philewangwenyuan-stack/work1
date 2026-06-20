@@ -11,6 +11,8 @@
   <arg name="slam_pose_is_laser_frame" default="false" />
   <arg name="publish_laser_pose_tf" default="false" />
   <arg name="align_map_to_initial_yaw" default="true" />
+  <arg name="map_alignment_mode" default="exact_front" />
+  <arg name="aligned_front_yaw_deg" default="90.0" />
   <arg name="aligned_map_frame" default="map_aligned" />
   <arg name="pose_augmentation_enabled" default="true" />
   <arg name="pose_augmentation_frequency_hz" default="50" />
@@ -34,6 +36,8 @@
     <param name="slam_pose_is_laser_frame" value="$(arg slam_pose_is_laser_frame)"/>
     <param name="publish_laser_pose_tf"    value="$(arg publish_laser_pose_tf)"/>
     <param name="align_map_to_initial_yaw" value="$(arg align_map_to_initial_yaw)"/>
+    <param name="map_alignment_mode"       value="$(arg map_alignment_mode)"/>
+    <param name="aligned_front_yaw_deg"    value="$(arg aligned_front_yaw_deg)"/>
     <param name="aligned_map_frame"        value="$(arg aligned_map_frame)"/>
     <param name="aligned_map_topic"        value="/map_aligned"/>
     <param name="aligned_map_info_topic"   value="/map_aligned_metadata"/>

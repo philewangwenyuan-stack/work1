@@ -525,6 +525,10 @@ namespace slamware_ros_sdk
                 "sync_set_stcm",
                 &SlamwareRosSdkServer::srvCbSyncSetStcm_, this);
 
+            srvSetMapAlignment_ = nh_.advertiseService(
+                "set_map_alignment",
+                &SlamwareRosSdkServer::srvCbSetMapAlignment_, this);
+
             relocalization_request_srv_ = nh_.advertiseService(
                 "relocalization",
                 &SlamwareRosSdkServer::srvCbRelocalizationRequest_, this);
@@ -543,6 +547,7 @@ namespace slamware_ros_sdk
         {
             srvSyncGetStcm_ = ros::ServiceServer();
             srvSyncSetStcm_ = ros::ServiceServer();
+            srvSetMapAlignment_ = ros::ServiceServer();
             relocalization_request_srv_ = ros::ServiceServer();
         }
 
@@ -779,8 +784,19 @@ namespace slamware_ros_sdk
     void SlamwareRosSdkServer::msgCbClearMap_(
         const ClearMapRequest::ConstPtr &msg)
     {
+        (void)msg;
         auto aurora = safeGetAuroraSdk();
-        aurora->controller.requireMapReset();
+        if (!aurora)
+        {
+            ROS_WARN("Clear map requested but Aurora SDK is not available");
+            return;
+        }
+        if (!aurora->controller.requireMapReset())
+        {
+            ROS_WARN("Failed to request Aurora map reset");
+            return;
+        }
+        ROS_INFO("Aurora map reset requested");
     }
 
     void SlamwareRosSdkServer::msgCbSetMapUpdate_(
@@ -1186,6 +1202,63 @@ namespace slamware_ros_sdk
 
         cancel_requested_.store(true);
         relocalization_active_.store(false);
+    }
+
+    bool SlamwareRosSdkServer::srvCbSetMapAlignment_(
+        SetMapAlignment::Request &req,
+        SetMapAlignment::Response &resp)
+    {
+        if (!params_.align_map_to_initial_yaw)
+        {
+            resp.accepted = false;
+            resp.message = "align_map_to_initial_yaw is disabled";
+            return true;
+        }
+
+        std::lock_guard<std::mutex> lkGuard(workDatLock_);
+        if (!workDat_)
+        {
+            resp.accepted = false;
+            resp.message = "work data unavailable";
+            return true;
+        }
+
+        if (!req.enabled)
+        {
+            workDat_->hasMapYawAlignment.store(false);
+            workDat_->mapYawAlignmentYaw.store(0.0);
+            workDat_->mapYawAlignmentInitialYaw.store(0.0);
+            workDat_->mapYawAlignmentFrontYawDeg.store(params_.aligned_front_yaw_deg);
+            resp.accepted = true;
+            resp.message = "map alignment disabled";
+            ROS_WARN("Map yaw alignment disabled by service request: source=%s", req.source.c_str());
+            return true;
+        }
+
+        if (!std::isfinite(req.yaw_rad))
+        {
+            resp.accepted = false;
+            resp.message = "yaw_rad is not finite";
+            return true;
+        }
+
+        const double frontYawDeg = std::isfinite(req.aligned_front_yaw_deg)
+            ? req.aligned_front_yaw_deg
+            : params_.aligned_front_yaw_deg;
+        workDat_->mapYawAlignmentYaw.store(req.yaw_rad);
+        workDat_->mapYawAlignmentInitialYaw.store(frontYawDeg * M_PI / 180.0 - req.yaw_rad);
+        workDat_->mapYawAlignmentFrontYawDeg.store(frontYawDeg);
+        workDat_->hasMapYawAlignment.store(true);
+
+        resp.accepted = true;
+        resp.message = "map alignment accepted";
+        ROS_INFO("Map yaw alignment set by service: mode=%s source=%s alignment_yaw_rad=%.6f initial_yaw_rad=%.6f aligned_front_yaw_deg=%.3f",
+                 params_.map_alignment_mode.c_str(),
+                 req.source.c_str(),
+                 req.yaw_rad,
+                 workDat_->mapYawAlignmentInitialYaw.load(),
+                 frontYawDeg);
+        return true;
     }
 
     bool SlamwareRosSdkServer::srvCbRelocalizationRequest_(

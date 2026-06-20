@@ -1,2 +1,1 @@
-
-MapKind kind
+# Empty request: clear the Aurora device map.

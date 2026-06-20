@@ -33,6 +33,8 @@ class PlannerAdapter:
             self._hybrid_import_error = exc
             rospy.logwarn("Hybrid connector module import failed, falling back to legacy connector: %s", exc)
         self._path_version = 0
+        self._obstacle_regions_affect_coverage = bool(rospy.get_param("~obstacle_regions_affect_coverage", False))
+        self._current_pose_seeds_task_coverage = bool(rospy.get_param("~current_pose_seeds_task_coverage", False))
 
     def _load_planner_module(self, script_path):
         spec = importlib.util.spec_from_file_location("grinder_mst25", str(script_path))
@@ -97,6 +99,18 @@ class PlannerAdapter:
         grid_map = np.where(composed_grid != 0, 1, 0).astype(int)
         self._apply_crop_region_to_grid_map(grid_map, map_info, getattr(task_config, "crop_region", {}))
         self._apply_erase_regions_to_grid_map(grid_map, map_info, getattr(task_config, "erase_regions", []))
+        coverage_grid_map = grid_map.copy()
+        if not self._obstacle_regions_affect_coverage:
+            cleared = self._clear_obstacle_regions_from_grid_map(
+                coverage_grid_map,
+                map_info,
+                getattr(task_config, "obstacle_regions", []),
+            )
+            if cleared > 0:
+                rospy.loginfo(
+                    "Coverage planner ignores obstacle regions: cleared_regions=%d connectors_still_avoid_obstacles=true",
+                    cleared,
+                )
 
         robot_config = module.RobotConfig(
             width=max(0.1, float(getattr(task_config, "vehicle_width", 0.5))),
@@ -176,7 +190,7 @@ class PlannerAdapter:
                     int(start_point.row),
                     int(start_point.col),
                 )
-            elif self._world_point_in_region(robot_x, robot_y, region):
+            elif (not has_task_info or self._current_pose_seeds_task_coverage) and self._world_point_in_region(robot_x, robot_y, region):
                 start_point = self._world_to_point(module, robot_x, robot_y, map_info, ratio)
                 start_source = "current_pose"
                 rospy.loginfo(
@@ -251,7 +265,7 @@ class PlannerAdapter:
                 )
             with contextlib.redirect_stdout(io.StringIO()):
                 region_points = planner.plan(
-                    grid_map.copy(),
+                    coverage_grid_map.copy(),
                     boundary,
                     [single_stage],
                     ratio,
@@ -780,6 +794,34 @@ class PlannerAdapter:
                 cv2.fillPoly(erase_mask, [np.array(polygon, dtype=np.int32)], 255)
         if int(np.count_nonzero(erase_mask)) > 0:
             grid_map[erase_mask > 0] = 0
+
+    def _clear_obstacle_regions_from_grid_map(self, grid_map, map_info, obstacle_regions):
+        if grid_map is None or not obstacle_regions:
+            return 0
+        height = int(map_info["height"])
+        width = int(map_info["width"])
+        resolution = float(map_info["resolution"])
+        origin_x = float(map_info["origin_x"])
+        origin_y = float(map_info["origin_y"])
+        mask = np.zeros((height, width), dtype=np.uint8)
+        cleared = 0
+        for region in obstacle_regions:
+            points = region.get("points", []) if isinstance(region, dict) else []
+            if len(points) < 3:
+                continue
+            polygon = []
+            for pt in points:
+                col = int(round((float(pt["x"]) - origin_x) / max(resolution, 1e-6)))
+                row = int(round((float(pt["y"]) - origin_y) / max(resolution, 1e-6)))
+                col = max(0, min(width - 1, col))
+                row = max(0, min(height - 1, row))
+                polygon.append([col, row])
+            if len(polygon) >= 3:
+                cv2.fillPoly(mask, [np.array(polygon, dtype=np.int32)], 255)
+                cleared += 1
+        if cleared > 0 and int(np.count_nonzero(mask)) > 0:
+            grid_map[mask > 0] = 0
+        return cleared
 
     def _apply_crop_region_to_grid_map(self, grid_map, map_info, crop_region):
         if grid_map is None or not isinstance(crop_region, dict):

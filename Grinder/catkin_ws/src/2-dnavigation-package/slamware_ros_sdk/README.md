@@ -83,3 +83,28 @@ rostopic echo /slamware_ros_sdk_server_node/pose_quality
 rostopic echo /slamware_ros_sdk_server_node/system_status
 rostopic echo /slamware_ros_sdk_server_node/relocalization_status
 ```
+
+## map_aligned exact-front alignment
+
+`map_aligned` is the project-facing map frame. The raw Aurora map remains in
+`map`; the aligned map is rotated into `map_aligned` so the robot heading at the
+first valid pose points to the configured screen/front direction.
+
+Defaults:
+
+- `align_map_to_initial_yaw: true`
+- `map_alignment_mode: exact_front`
+- `aligned_front_yaw_deg: 90.0`
+
+The alignment formula is:
+
+```text
+alignment_yaw = radians(aligned_front_yaw_deg) - initial_yaw
+```
+
+The node keeps the existing compatibility TF chain and `/odom` source. `/odom`
+is still provided by Aurora, not by chassis wheel feedback.
+
+The service `~/set_map_alignment` (`slamware_ros_sdk/SetMapAlignment`) lets the
+scheduler restore a saved `alignment_yaw_rad` from its map registry, so a saved
+map keeps the same `map_aligned` direction after reboot.
