@@ -7040,7 +7040,16 @@ class SchedulerNode:
                 self._live_map_source_frame,
                 float(edit_alignment_yaw),
             )
-        region_points, region_points_clamped = self._clamp_source_points_to_map_bounds(region_points)
+        preserve_region_shape = edit_alignment_yaw is not None and operation_name in (
+            "UPSERT_WORK_REGION",
+            "UPSERT_OBSTACLE_REGION",
+            "UPSERT_ERASE_REGION",
+            "UPSERT_CROP_REGION",
+        )
+        if preserve_region_shape:
+            region_points_clamped = False
+        else:
+            region_points, region_points_clamped = self._clamp_source_points_to_map_bounds(region_points)
         polygon_points, polygon_points_clamped = self._clamp_source_points_to_map_bounds(polygon_points)
         request_start_pose, start_pose_clamped = self._clamp_source_pose_to_map_bounds(request_start_pose)
         request_end_pose, end_pose_clamped = self._clamp_source_pose_to_map_bounds(request_end_pose)
