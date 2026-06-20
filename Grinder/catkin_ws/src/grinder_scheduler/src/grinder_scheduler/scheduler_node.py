@@ -156,6 +156,7 @@ class SchedulerNode:
         self._task_config_auto_plan = bool(rospy.get_param("~task_config_auto_plan", False))
         self._map_edit_auto_plan_when_idle = bool(rospy.get_param("~map_edit_auto_plan_when_idle", False))
         self._current_path_config_signature = ""
+        self._current_path_plan_request_signature = ""
         self._exec_goal_reach_dist = max(0.05, float(rospy.get_param("~path_goal_reach_dist", 0.12)))
         self._exec_goal_interval = max(0.1, float(rospy.get_param("~path_goal_interval", 1.0)))
         self._exec_segment_timeout = max(2.0, float(rospy.get_param("~path_segment_timeout", 10.0)))
@@ -685,9 +686,25 @@ class SchedulerNode:
             ensure_ascii=True,
         )
 
+    def _path_plan_request_signature(self, use_all, request_start_pose, request_end_pose, request_global_direction):
+        payload = {
+            "task": json.loads(self._task_config_signature()),
+            "use_all_regions": bool(use_all),
+            "start_pose": request_start_pose or {},
+            "end_pose": request_end_pose or {},
+            "global_direction": str(request_global_direction or "").strip().lower(),
+        }
+        return json.dumps(
+            self._normalize_for_signature(payload),
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=True,
+        )
+
     def _mark_current_path_stale(self, reason, clear_idle=True):
         reason_text = str(reason or "unknown").strip() or "unknown"
         self._current_path_config_signature = ""
+        self._current_path_plan_request_signature = ""
         self.replan_requested = True
         should_clear = bool(clear_idle) and self.state not in (SchedulerState.RUNNING,)
         if should_clear and self.current_path is not None:
@@ -1771,6 +1788,8 @@ class SchedulerNode:
             record = self._find_recorded_map_by_id(current_map_id)
             if isinstance(record, dict) and self._is_finite_number(record.get("alignment_yaw_rad")):
                 return float(record.get("alignment_yaw_rad"))
+        if current_map_id == self._live_map_id and self._initial_pose_alignment_yaw is not None:
+            return float(self._initial_pose_alignment_yaw)
         if self._tf_buffer is not None:
             try:
                 transform = self._tf_buffer.lookup_transform(
@@ -1817,6 +1836,27 @@ class SchedulerNode:
             self._aligned_front_yaw_deg,
         )
         return self._initial_pose_alignment_yaw
+
+    def _reset_live_map_alignment_from_current_pose(self, reason=""):
+        if not self._live_map_align_to_initial_yaw:
+            return False
+        bridge = getattr(self, "aurora_bridge", None)
+        if bridge is None:
+            return False
+        self._initial_pose_alignment_yaw = None
+        yaw = self._initial_pose_alignment_yaw_from_pose(bridge.get_pose())
+        applied = self._apply_map_alignment_to_sdk(
+            yaw,
+            "live_map_reset:{}".format(str(reason or "unknown")),
+            aligned_front_yaw_deg=self._aligned_front_yaw_deg,
+        )
+        rospy.loginfo(
+            "Live map alignment reset from current pose: reason=%s alignment_yaw_rad=%.6f sdk_applied=%s",
+            str(reason or ""),
+            float(yaw),
+            str(applied).lower(),
+        )
+        return True
 
     def _map_preview_alignment_kwargs(self):
         if not self._live_map_align_to_initial_yaw:
@@ -2297,6 +2337,7 @@ class SchedulerNode:
         for _ in range(self._aurora_map_reset_retries):
             self._clear_map_pub.publish(msg)
             rospy.sleep(self._aurora_map_reset_retry_interval_sec)
+        self._reset_live_map_alignment_from_current_pose(reason=reason or "aurora_map_reset")
         rospy.loginfo(
             "Aurora live map clear requested: reason=%s topic=%s subscribers=%d previous_stamp=%s",
             str(reason or ""),
@@ -5096,6 +5137,19 @@ class SchedulerNode:
             )
         return metrics
 
+    def _refresh_current_recorded_map_metrics(self):
+        map_id = self._current_map_id()
+        if map_id == self._live_map_id:
+            return False
+        record = self._find_recorded_map_by_id(map_id)
+        if not isinstance(record, dict):
+            return False
+        total_work_area_m2, estimated_time_s = self._compute_saved_map_metrics()
+        record["total_work_area_m2"] = float(max(0.0, total_work_area_m2))
+        record["estimated_time_s"] = float(estimated_time_s)
+        record["region_metrics"] = self._compute_saved_region_metrics(estimated_time_s)
+        return True
+
     def _build_saved_map_thumbnail(self):
         """Return (image_format, image_b64, width, height) for saved-map metadata."""
         try:
@@ -5945,6 +5999,7 @@ class SchedulerNode:
         for region in self.task_config.obstacle_regions:
             self.map_service.apply_edit({"operation": "UPSERT_OBSTACLE_REGION", "region": region})
         self._sync_task_regions_from_overlay()
+        self._refresh_current_recorded_map_metrics()
         self._sync_task_map_binding(update_binding=True)
         next_signature = self._task_config_signature()
         message = "Task config accepted"
@@ -6801,6 +6856,11 @@ class SchedulerNode:
         response.result = pb.RESULT_SUCCESS
         response.message = "cleared"
         try:
+            # Clear only LIVE_MAP state. If a recorded map is active, switch first so
+            # its overlay is saved before the live-map cache reset touches memory.
+            if self._current_map_id() != self._live_map_id:
+                self._set_active_map_id(self._live_map_id, reason="live_map_cache_clear", migrate_bindings=False)
+            self._request_aurora_map_reset(reason="live_map_cache_clear")
             # Request has no parameters by design.
             # Cleanup scope is decided by scheduler local policy.
             if self._live_map_cache_clear_mode == "memory_only":
@@ -6815,8 +6875,6 @@ class SchedulerNode:
                 self._save_local_state()
                 self._clear_live_map_files()
 
-            self._set_active_map_id(self._live_map_id, reason="live_map_cache_clear", migrate_bindings=False)
-            self._request_aurora_map_reset(reason="live_map_cache_clear")
             self._sync_task_regions_from_overlay()
             self._save_local_state()
             response.message = "cleared(mode={})".format(self._live_map_cache_clear_mode)
@@ -7112,6 +7170,7 @@ class SchedulerNode:
                         self.task_config.active_work_region_id = ""
             # Keep task_config cache consistent with overlay source-of-truth immediately.
             self._sync_task_regions_from_overlay()
+            self._refresh_current_recorded_map_metrics()
         planner_status_message = message
         if success:
             if self.state == SchedulerState.RUNNING:
@@ -7294,12 +7353,37 @@ class SchedulerNode:
                 float(request_end_pose.get("y", 0.0)),
                 float(request_end_pose.get("heading_deg", 0.0)),
             )
-        planned = self._plan_current_task(
-            force_use_all_regions=use_all,
-            request_start_pose=request_start_pose,
-            request_end_pose=request_end_pose,
-            request_global_direction=request_global_direction,
+        plan_request_signature = self._path_plan_request_signature(
+            use_all,
+            request_start_pose,
+            request_end_pose,
+            request_global_direction,
         )
+        can_reuse_current_path = (
+            self.current_path is not None
+            and bool(self.current_path.points)
+            and (not bool(request.force_replan))
+            and (not bool(self.replan_requested))
+            and self._current_path_config_signature == self._task_config_signature()
+            and self._current_path_plan_request_signature == plan_request_signature
+        )
+        if can_reuse_current_path:
+            planned = True
+            rospy.loginfo(
+                "PathPlanRequest reused current path: task_id=%s path_version=%s points=%d",
+                self.task_config.task_id or "task",
+                int(self.current_path.path_version),
+                len(self.current_path.points),
+            )
+        else:
+            planned = self._plan_current_task(
+                force_use_all_regions=use_all,
+                request_start_pose=request_start_pose,
+                request_end_pose=request_end_pose,
+                request_global_direction=request_global_direction,
+            )
+            if planned and self.current_path is not None:
+                self._current_path_plan_request_signature = plan_request_signature
 
         response = pb.PathPlanResponse()
         response.request_id = request.request_id
