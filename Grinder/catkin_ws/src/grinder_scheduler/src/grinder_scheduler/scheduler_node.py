@@ -3149,6 +3149,13 @@ class SchedulerNode:
             json.dumps(repeat_cfg, ensure_ascii=False, sort_keys=True),
         )
 
+    def _task_binding_exists(self, map_id, task_id):
+        map_id_text = str(map_id or "").strip()
+        task_id_text = str(task_id or "").strip()
+        if not map_id_text or not task_id_text:
+            return False
+        return isinstance(self._task_bindings.get("{}::{}".format(map_id_text, task_id_text)), dict)
+
     def _validate_requested_map_id(self, requested_map_id, op_name, keep_current_on_empty=False):
         req = str(requested_map_id or "").strip()
         current = self._current_map_id()
@@ -3459,11 +3466,31 @@ class SchedulerNode:
         ).strip().lower()
         if effective_global_direction not in ("x", "y"):
             effective_global_direction = "x"
-        if has_requested_direction or self._task_global_direction_explicit:
-            selected_work_regions = [
-                dict(region, global_direction=effective_global_direction) if isinstance(region, dict) else region
-                for region in selected_work_regions
-            ]
+        defaulted_region_directions = []
+        for region in selected_work_regions:
+            if not isinstance(region, dict):
+                defaulted_region_directions.append(region)
+                continue
+            region_direction = str(region.get("global_direction", "") or "").strip().lower()
+            if region_direction in ("x", "y"):
+                defaulted_region_directions.append(region)
+            else:
+                defaulted_region_directions.append(dict(region, global_direction=effective_global_direction))
+        selected_work_regions = defaulted_region_directions
+        rospy.loginfo(
+            "Planning region directions: default=%s regions=%s",
+            effective_global_direction,
+            ",".join(
+                [
+                    "{}:{}".format(
+                        str(region.get("region_id", "") or "<empty>"),
+                        str(region.get("global_direction", "") or "<empty>"),
+                    )
+                    for region in selected_work_regions
+                    if isinstance(region, dict)
+                ]
+            ) or "<empty>",
+        )
         if self._current_map_id() != self._live_map_id:
             try:
                 self._ensure_active_recorded_map_loaded_to_aurora(reason="plan_current_task")
@@ -6102,8 +6129,24 @@ class SchedulerNode:
         request.ParseFromString(payload)
         response = pb.TaskCommandResponse()
         response.task_id = request.task_id or self.task_config.task_id
-        if request.task_id:
-            self.task_config.task_id = request.task_id
+        requested_task_id = str(getattr(request, "task_id", "") or "").strip()
+        current_task_id_before = str(self.task_config.task_id or "").strip()
+        if (
+            request.command == pb.TASK_CMD_START
+            and requested_task_id
+            and requested_task_id != current_task_id_before
+            and not self._task_binding_exists(self._current_map_id(), requested_task_id)
+        ):
+            rospy.logwarn(
+                "TaskCommand START rejected: task_id=%s has no TaskConfig binding on map_id=%s",
+                requested_task_id,
+                self._current_map_id(),
+            )
+            response.result = pb.RESULT_FAILED
+            response.message = "task_config_required_before_task_start"
+            return response.SerializeToString(), pb.MSG_ID_TASK_COMMAND_RESPONSE, pb.COMP_SCHEDULER
+        if requested_task_id:
+            self.task_config.task_id = requested_task_id
         try:
             if request.command == pb.TASK_CMD_START:
                 success, message = self._start_execution()
@@ -7359,8 +7402,31 @@ class SchedulerNode:
                 response.planned = False
                 return response.SerializeToString(), pb.MSG_ID_PATH_PLAN_RESPONSE, pb.COMP_SCHEDULER
 
-        if request.task_id:
-            self.task_config.task_id = request.task_id
+        requested_task_id = str(getattr(request, "task_id", "") or "").strip()
+        current_task_id_before = str(self.task_config.task_id or "").strip()
+        if (
+            requested_task_id
+            and requested_task_id != current_task_id_before
+            and not self._task_binding_exists(current_map_id, requested_task_id)
+        ):
+            rospy.logwarn(
+                "PathPlanRequest rejected: task_id=%s has no TaskConfig binding on map_id=%s; send TaskConfig before PathPlanRequest",
+                requested_task_id,
+                current_map_id,
+            )
+            response = pb.PathPlanResponse()
+            response.request_id = request.request_id
+            response.task_id = requested_task_id
+            response.result = pb.RESULT_FAILED
+            response.message = "task_config_required_before_path_plan"
+            response.planned = False
+            map_info = self.map_service.get_map_info()
+            response.map_version = map_info["map_version"] if map_info else 0
+            if map_info:
+                self._apply_response_map_info(response, map_info)
+            return response.SerializeToString(), pb.MSG_ID_PATH_PLAN_RESPONSE, pb.COMP_SCHEDULER
+        if requested_task_id:
+            self.task_config.task_id = requested_task_id
         self.task_config.map_id = current_map_id
 
         # Restore task selection before refreshing overlay geometry. A PathPlanRequest
