@@ -176,6 +176,18 @@ class PlannerAdapter:
                     int(start_point.row),
                     int(start_point.col),
                 )
+            elif (not has_request_start) and self._world_point_in_region(robot_x, robot_y, region):
+                start_point = self._world_to_point(module, robot_x, robot_y, map_info, ratio)
+                start_source = "current_pose"
+                rospy.loginfo(
+                    "Region planning start from robot pose: region_idx=%d region_id=%s robot=(%.3f,%.3f) start_grid=(%d,%d)",
+                    index,
+                    region_id or "<empty>",
+                    robot_x,
+                    robot_y,
+                    int(start_point.row),
+                    int(start_point.col),
+                )
             elif region_start_pose and self._world_point_in_region(float(region_start_pose.get("x", 0.0)), float(region_start_pose.get("y", 0.0)), region):
                 sx = float(region_start_pose.get("x", 0.0))
                 sy = float(region_start_pose.get("y", 0.0))
@@ -187,18 +199,6 @@ class PlannerAdapter:
                     region_id or "<empty>",
                     sx,
                     sy,
-                    int(start_point.row),
-                    int(start_point.col),
-                )
-            elif (not has_task_info or self._current_pose_seeds_task_coverage) and self._world_point_in_region(robot_x, robot_y, region):
-                start_point = self._world_to_point(module, robot_x, robot_y, map_info, ratio)
-                start_source = "current_pose"
-                rospy.loginfo(
-                    "Region planning start from robot pose: region_idx=%d region_id=%s robot=(%.3f,%.3f) start_grid=(%d,%d)",
-                    index,
-                    region_id or "<empty>",
-                    robot_x,
-                    robot_y,
                     int(start_point.row),
                     int(start_point.col),
                 )

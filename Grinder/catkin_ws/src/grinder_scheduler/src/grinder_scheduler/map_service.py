@@ -128,23 +128,23 @@ class MapService:
             "closed": bool(region.get("closed", existing.get("closed", True))),
             "region_type": int(region.get("region_type", existing.get("region_type", default_type))),
         }
-        region_direction = str(region.get("global_direction", existing.get("global_direction", "x")) or "x").strip().lower()
-        if region_direction not in ("x", "y"):
-            region_direction = "x"
-        normalized["global_direction"] = region_direction
-        default_start, default_end = self._default_region_start_end(points)
-        start_pose = region.get("start_pose", existing.get("start_pose", {})) or {}
-        end_pose = region.get("end_pose", existing.get("end_pose", {})) or {}
-        normalized["start_pose"] = {
-            "x": float(start_pose.get("x", default_start["x"])),
-            "y": float(start_pose.get("y", default_start["y"])),
-            "heading_deg": float(start_pose.get("heading_deg", 0.0)),
-        }
-        normalized["end_pose"] = {
-            "x": float(end_pose.get("x", default_end["x"])),
-            "y": float(end_pose.get("y", default_end["y"])),
-            "heading_deg": float(end_pose.get("heading_deg", 0.0)),
-        }
+        region_direction = str(region.get("global_direction", existing.get("global_direction", "")) or "").strip().lower()
+        if region_direction in ("x", "y"):
+            normalized["global_direction"] = region_direction
+        start_pose = region.get("start_pose", existing.get("start_pose", None))
+        end_pose = region.get("end_pose", existing.get("end_pose", None))
+        if isinstance(start_pose, dict) and start_pose:
+            normalized["start_pose"] = {
+                "x": float(start_pose.get("x", 0.0)),
+                "y": float(start_pose.get("y", 0.0)),
+                "heading_deg": float(start_pose.get("heading_deg", 0.0)),
+            }
+        if isinstance(end_pose, dict) and end_pose:
+            normalized["end_pose"] = {
+                "x": float(end_pose.get("x", 0.0)),
+                "y": float(end_pose.get("y", 0.0)),
+                "heading_deg": float(end_pose.get("heading_deg", 0.0)),
+            }
         previous_points = existing.get("points", [])
         region_map[region_id] = normalized
         return normalized, previous_points
@@ -907,7 +907,7 @@ class MapService:
             self._crop_region = None
             for index, item in enumerate(regions.get("work_regions", [])):
                 region_id = (item.get("region_id") or "").strip() or "work_region_{}".format(index + 1)
-                self._work_regions[region_id] = {
+                normalized = {
                     "name": item.get("name", "work_region_{}".format(index + 1)),
                     "points": item.get("points", []),
                     "region_id": region_id,
@@ -916,10 +916,13 @@ class MapService:
                     "color_argb": int(item.get("color_argb", 0)),
                     "closed": bool(item.get("closed", True)),
                     "region_type": int(item.get("region_type", 1)),
-                    "global_direction": str(item.get("global_direction", "x") or "x").strip().lower(),
                     "start_pose": dict(item.get("start_pose", {}) or {}),
                     "end_pose": dict(item.get("end_pose", {}) or {}),
                 }
+                region_direction = str(item.get("global_direction", "") or "").strip().lower()
+                if region_direction in ("x", "y"):
+                    normalized["global_direction"] = region_direction
+                self._work_regions[region_id] = normalized
             for index, item in enumerate(regions.get("obstacle_regions", [])):
                 region_id = (item.get("region_id") or "").strip() or "obstacle_region_{}".format(index + 1)
                 self._obstacle_regions[region_id] = {

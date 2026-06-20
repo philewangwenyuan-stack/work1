@@ -157,6 +157,7 @@ class SchedulerNode:
         self._map_edit_auto_plan_when_idle = bool(rospy.get_param("~map_edit_auto_plan_when_idle", False))
         self._current_path_config_signature = ""
         self._current_path_plan_request_signature = ""
+        self._task_global_direction_explicit = False
         self._exec_goal_reach_dist = max(0.05, float(rospy.get_param("~path_goal_reach_dist", 0.12)))
         self._exec_goal_interval = max(0.1, float(rospy.get_param("~path_goal_interval", 1.0)))
         self._exec_segment_timeout = max(2.0, float(rospy.get_param("~path_segment_timeout", 10.0)))
@@ -451,6 +452,7 @@ class SchedulerNode:
         self._set_map_alignment_proxy = None
         self._change_map_proxy = None
         self._aurora_loaded_recorded_map_id = ""
+        self._pure_localization_requested_map_id = ""
         self._aurora_map_reset_previous_stamp = None
         self._aurora_map_reset_ignore_until = 0.0
 
@@ -693,6 +695,7 @@ class SchedulerNode:
             "start_pose": request_start_pose or {},
             "end_pose": request_end_pose or {},
             "global_direction": str(request_global_direction or "").strip().lower(),
+            "global_direction_explicit": bool(self._task_global_direction_explicit),
         }
         return json.dumps(
             self._normalize_for_signature(payload),
@@ -2315,6 +2318,8 @@ class SchedulerNode:
 
     def _request_aurora_map_reset(self, reason=""):
         self._aurora_loaded_recorded_map_id = ""
+        self._pure_localization_requested_map_id = ""
+        self._task_global_direction_explicit = False
         previous_raw = self.aurora_bridge.get_map()
         self._aurora_map_reset_previous_stamp = self._raw_map_stamp_key(previous_raw)
         self._aurora_map_reset_ignore_until = time.time() + self._aurora_map_reset_ignore_same_stamp_sec
@@ -2937,7 +2942,7 @@ class SchedulerNode:
             self._disc_last_switch_time = now
             rospy.loginfo("Disc stopped by cmd_vel idle: stale=%s linear=%.3f angular=%.3f", stale, linear, angular)
 
-    def _sync_task_regions_from_overlay(self):
+    def _sync_task_regions_from_overlay(self, update_binding=True):
         overlay_regions = self.map_service.get_overlay_regions() or {}
         crop_region = overlay_regions.get("crop_region")
         if isinstance(crop_region, dict) and bool(crop_region.get("enabled", True)):
@@ -2968,13 +2973,15 @@ class SchedulerNode:
                     "region_id": item.get("region_id", ""),
                     "name": item.get("name", ""),
                     "points": points,
-                    "global_direction": str(item.get("global_direction", "x") or "x").strip().lower(),
                     "start_pose": dict(item.get("start_pose", {}) or {}),
                     "end_pose": dict(item.get("end_pose", {}) or {}),
                     "order_index": int(item.get("order_index", 0)),
                     "region_type": region_type,
                 }
             )
+            region_direction = str(item.get("global_direction", "") or "").strip().lower()
+            if region_direction in ("x", "y"):
+                self.task_config.work_regions[-1]["global_direction"] = region_direction
         self.task_config.obstacle_regions = []
         self.task_config.erase_regions = []
         for item in overlay_regions.get("obstacle_regions", []):
@@ -3024,7 +3031,8 @@ class SchedulerNode:
         if self._plan_use_all_work_regions:
             self._plan_use_all_work_regions = False
             rospy.logwarn("Forced single-region planning mode: plan_use_all_work_regions=false")
-        self._sync_task_map_binding(update_binding=True)
+        if update_binding:
+            self._sync_task_map_binding(update_binding=True)
 
     def _current_map_id(self):
         return str(self._active_map_id or self._live_map_id).strip() or self._live_map_id
@@ -3036,10 +3044,13 @@ class SchedulerNode:
             self.task_config.map_id = next_map_id
             if next_map_id == self._live_map_id:
                 self._aurora_loaded_recorded_map_id = ""
+                self._pure_localization_requested_map_id = ""
+                self._task_global_direction_explicit = False
             self._restore_recorded_map_alignment(next_map_id, reason=reason or "active_map_unchanged")
             return
 
         self._save_map_overlay_state_for_map(prev_map_id)
+        self._task_global_direction_explicit = False
 
         if migrate_bindings:
             moved = 0
@@ -3067,6 +3078,7 @@ class SchedulerNode:
         self.task_config.map_id = next_map_id
         if next_map_id == self._live_map_id:
             self._aurora_loaded_recorded_map_id = ""
+            self._pure_localization_requested_map_id = ""
         self._load_map_overlay_state_for_map(next_map_id)
         self._restore_recorded_map_alignment(next_map_id, reason=reason or "active_map_switch")
         # Force one-shot map switch sync in next tick.
@@ -3103,6 +3115,12 @@ class SchedulerNode:
             return
         binding = self._task_bindings.get(key)
         if not isinstance(binding, dict):
+            rospy.logwarn(
+                "Task binding not found: map_id=%s task_id=%s; keep current selected regions=%s",
+                map_id,
+                task_id,
+                ",".join(list(self.task_config.selected_work_region_ids or [])) or "<empty>",
+            )
             return
         selected = []
         for rid in list(binding.get("selected_work_region_ids", []) or []):
@@ -3123,6 +3141,13 @@ class SchedulerNode:
         active = str(binding.get("active_work_region_id", "")).strip()
         if active:
             self.task_config.active_work_region_id = active
+        rospy.loginfo(
+            "Task binding restored: map_id=%s task_id=%s selected_regions=%s repeat=%s",
+            map_id,
+            task_id,
+            ",".join(selected) if selected else "<empty>",
+            json.dumps(repeat_cfg, ensure_ascii=False, sort_keys=True),
+        )
 
     def _validate_requested_map_id(self, requested_map_id, op_name, keep_current_on_empty=False):
         req = str(requested_map_id or "").strip()
@@ -3205,13 +3230,23 @@ class SchedulerNode:
             if rid and rid not in region_by_id:
                 region_by_id[rid] = region
         if force_use_all_regions:
-            selected_ids = [str(region.get("region_id", "")).strip() for region in regions if str(region.get("region_id", "")).strip()]
+            selected_ids = []
+            for rid in list(self.task_config.selected_work_region_ids or []):
+                rid_text = str(rid).strip()
+                if rid_text and rid_text in region_by_id and rid_text not in selected_ids:
+                    selected_ids.append(rid_text)
+            if not selected_ids:
+                selected_ids = [
+                    str(region.get("region_id", "")).strip()
+                    for region in regions
+                    if str(region.get("region_id", "")).strip()
+                ]
         else:
             selected_ids = self._effective_selected_work_region_ids(regions)
         selected_set = set(selected_ids)
         filtered = [region for region in regions if str(region.get("region_id", "")).strip() in selected_set]
         # If task explicitly provides selected_work_region_ids, respect that exact order.
-        if (not force_use_all_regions) and selected_ids:
+        if selected_ids:
             ordered = []
             seen = set()
             for rid in selected_ids:
@@ -3230,6 +3265,26 @@ class SchedulerNode:
         # Repeat expansion is handled centrally in planner_adapter by region_repeat_config.
         # If we rewrite IDs to "__lap_n" here, selected_work_region_ids matching may fail.
         return filtered
+
+    def _world_point_in_region(self, x, y, region):
+        points = region.get("points", []) if isinstance(region, dict) else []
+        if len(points) < 3:
+            return False
+        try:
+            poly = np.array([[float(p["x"]), float(p["y"])] for p in points], dtype=np.float32)
+            return cv2.pointPolygonTest(poly, (float(x), float(y)), False) >= 0
+        except Exception:
+            return False
+
+    def _pose_inside_any_region(self, pose, regions):
+        if not isinstance(pose, dict):
+            return False
+        try:
+            x = float(pose.get("x", 0.0))
+            y = float(pose.get("y", 0.0))
+        except Exception:
+            return False
+        return any(self._world_point_in_region(x, y, region) for region in list(regions or []))
 
     def _sorted_work_region_ids(self):
         regions = list(self.task_config.work_regions or [])
@@ -3404,7 +3459,7 @@ class SchedulerNode:
         ).strip().lower()
         if effective_global_direction not in ("x", "y"):
             effective_global_direction = "x"
-        if has_requested_direction:
+        if has_requested_direction or self._task_global_direction_explicit:
             selected_work_regions = [
                 dict(region, global_direction=effective_global_direction) if isinstance(region, dict) else region
                 for region in selected_work_regions
@@ -3431,13 +3486,16 @@ class SchedulerNode:
             float(map_info.get("resolution", 0.0)),
         )
         self.state = SchedulerState.PLANNING
+        current_pose_inside_selected_region = False
         try:
             current_pose = self.aurora_bridge.get_pose()
+            current_pose_inside_selected_region = self._pose_inside_any_region(current_pose, selected_work_regions)
             rospy.loginfo(
-                "Plan request poses: current_pose=(%.3f, %.3f, %.1fdeg) request_start=(%s) request_end=(%s)",
+                "Plan request poses: current_pose=(%.3f, %.3f, %.1fdeg) current_pose_inside_selected_region=%s request_start=(%s) request_end=(%s)",
                 float(current_pose.get("x", 0.0)),
                 float(current_pose.get("y", 0.0)),
                 float(current_pose.get("heading_deg", 0.0)),
+                str(bool(current_pose_inside_selected_region)).lower(),
                 (
                     "{:.3f}, {:.3f}, {:.1f}deg".format(
                         float((request_start_pose or {}).get("x", 0.0)),
@@ -3541,7 +3599,10 @@ class SchedulerNode:
         # For pure area preview planning (no task info), keep regions disconnected
         # from robot pose to avoid a fake line from current position.
         if has_task_info and not request_start_pose:
-            self._prepend_current_pose_as_start_point(map_info)
+            if current_pose_inside_selected_region:
+                rospy.loginfo("Skip prepending current pose point because planner seeded selected region from current pose")
+            else:
+                self._prepend_current_pose_as_start_point(map_info)
         elif request_start_pose:
             rospy.loginfo("Skip prepending current pose point because request_start_pose is provided")
         else:
@@ -4195,13 +4256,13 @@ class SchedulerNode:
 
     def _start_execution(self):
         try:
-            self._switch_to_localization_mode_after_map_save()
+            self._request_pure_localization_mode(reason="task_start", force=True)
             rospy.loginfo("Task start pre-check: requested radar pure localization mode")
         except Exception as exc:
             rospy.logwarn("Task start blocked: failed to switch radar to localization mode: %s", exc)
             return False, "Failed to switch radar to localization mode: {}".format(exc)
-        self._sync_task_regions_from_overlay()
-        self._sync_task_map_binding(update_binding=True)
+        self._sync_task_map_binding(update_binding=False)
+        self._sync_task_regions_from_overlay(update_binding=False)
         if self.current_path is not None and self.replan_requested:
             self._mark_current_path_stale("task_start_replan_requested", clear_idle=True)
         elif self.current_path is not None and self._current_path_config_signature:
@@ -5035,9 +5096,10 @@ class SchedulerNode:
             area2 += (x1 * y2 - x2 * y1)
         return abs(area2) * 0.5
 
-    def _total_work_area_m2(self):
+    def _total_work_area_m2(self, regions=None):
         total = 0.0
-        for region in list(self.task_config.work_regions or []):
+        region_list = self.task_config.work_regions if regions is None else regions
+        for region in list(region_list or []):
             if not isinstance(region, dict):
                 continue
             points = region.get("points", []) or []
@@ -5329,6 +5391,10 @@ class SchedulerNode:
             )
             if raw_map is None:
                 raise RuntimeError("recorded map raw map is not ready: {}".format(map_id))
+            self._request_pure_localization_mode(
+                reason="recorded_map_already_loaded:{}".format(str(reason or "")),
+                map_id=map_id,
+            )
             return True
         record = self._find_recorded_map_by_id(map_id)
         if not isinstance(record, dict):
@@ -5347,6 +5413,10 @@ class SchedulerNode:
             raise RuntimeError(str(getattr(result, "message", "") or "sync_set_stcm failed"))
         self._aurora_loaded_recorded_map_id = map_id
         self._restore_recorded_map_alignment(map_id, reason=reason or "recorded_map_loaded")
+        self._request_pure_localization_mode(
+            reason="recorded_map_loaded:{}".format(str(reason or "")),
+            map_id=map_id,
+        )
 
         raw_map = self._wait_for_raw_map_ready(
             reason=reason or "recorded_map_loaded",
@@ -6032,14 +6102,21 @@ class SchedulerNode:
         request.ParseFromString(payload)
         response = pb.TaskCommandResponse()
         response.task_id = request.task_id or self.task_config.task_id
-        if request.command == pb.TASK_CMD_START:
-            success, message = self._start_execution()
-        elif request.command == pb.TASK_CMD_PAUSE:
-            success, message = self._pause_execution()
-        elif request.command == pb.TASK_CMD_RESUME:
-            success, message = self._resume_execution()
-        else:
-            success, message = self._stop_execution()
+        if request.task_id:
+            self.task_config.task_id = request.task_id
+        try:
+            if request.command == pb.TASK_CMD_START:
+                success, message = self._start_execution()
+            elif request.command == pb.TASK_CMD_PAUSE:
+                success, message = self._pause_execution()
+            elif request.command == pb.TASK_CMD_RESUME:
+                success, message = self._resume_execution()
+            else:
+                success, message = self._stop_execution()
+        except Exception as exc:
+            rospy.logerr("TaskCommand failed: task_id=%s command=%s err=%s", response.task_id or "<empty>", str(request.command), exc)
+            success = False
+            message = "Task command failed: {}".format(exc)
         response.result = pb.RESULT_SUCCESS if success else pb.RESULT_FAILED
         response.message = message
         return response.SerializeToString(), pb.MSG_ID_TASK_COMMAND_RESPONSE, pb.COMP_SCHEDULER
@@ -6572,7 +6649,15 @@ class SchedulerNode:
 
         return response.SerializeToString(), pb.MSG_ID_TASK_RESULT_RESPONSE, pb.COMP_SCHEDULER
 
-    def _switch_to_localization_mode_after_map_save(self):
+    def _request_pure_localization_mode(self, reason="", map_id="", force=False):
+        target_map_id = str(map_id or self._current_map_id() or "").strip()
+        if (
+            target_map_id
+            and target_map_id != self._live_map_id
+            and (not bool(force))
+            and self._pure_localization_requested_map_id == target_map_id
+        ):
+            return True
         if self._set_map_update_pub is None or SetMapUpdateRequest is None:
             raise RuntimeError("set_map_update publisher is unavailable")
         if self._set_map_localization_pub is None or SetMapLocalizationRequest is None:
@@ -6593,11 +6678,19 @@ class SchedulerNode:
             self._set_map_update_pub.publish(update_msg)
             self._set_map_localization_pub.publish(localization_msg)
             rospy.sleep(0.15)
+        if target_map_id and target_map_id != self._live_map_id:
+            self._pure_localization_requested_map_id = target_map_id
         rospy.loginfo(
-            "Pure localization mode requested: set_map_update=false subscribers=%d, set_map_localization=true subscribers=%d",
+            "Pure localization mode requested: reason=%s map_id=%s set_map_update=false subscribers=%d, set_map_localization=true subscribers=%d",
+            str(reason or ""),
+            target_map_id or "<empty>",
             update_conn,
             localization_conn,
         )
+        return True
+
+    def _switch_to_localization_mode_after_map_save(self):
+        return self._request_pure_localization_mode(reason="map_save", force=True)
 
     def handle_map_mode_request(self, payload):
         pb = self.sl_link_server.pb
@@ -6688,6 +6781,8 @@ class SchedulerNode:
                         update_msg.kind.kind = int(MapKind.EXPLORERMAP)
                 localization_msg = SetMapLocalizationRequest()
                 localization_msg.enabled = bool(request.enabled)
+                if not bool(request.enabled):
+                    self._pure_localization_requested_map_id = ""
                 for _ in range(12):
                     if update_msg is not None:
                         self._set_map_update_pub.publish(update_msg)
@@ -7111,23 +7206,6 @@ class SchedulerNode:
                 )
             else:
                 rospy.loginfo("MapEdit work_region end_pose: <empty>")
-        if request.operation == pb.MAP_EDIT_OP_UPSERT_WORK_REGION and region_points:
-            if (not request_start_pose) or (not request_end_pose):
-                xs = [float(item.get("x", 0.0)) for item in region_points]
-                ys = [float(item.get("y", 0.0)) for item in region_points]
-                min_x, max_x = min(xs), max(xs)
-                min_y, max_y = min(ys), max(ys)
-                if not request_start_pose:
-                    request_start_pose = {"x": min_x, "y": max_y, "heading_deg": 0.0}
-                if not request_end_pose:
-                    request_end_pose = {"x": max_x, "y": min_y, "heading_deg": 0.0}
-                rospy.loginfo(
-                    "MapEdit UPSERT_WORK auto-fill start/end: start=(%.3f,%.3f) end=(%.3f,%.3f)",
-                    float(request_start_pose.get("x", 0.0)),
-                    float(request_start_pose.get("y", 0.0)),
-                    float(request_end_pose.get("x", 0.0)),
-                    float(request_end_pose.get("y", 0.0)),
-                )
         # Region-level planning direction:
         # do not auto-infer; consume direction from request if protocol provides it.
         # If absent, keep existing region direction (MapService upsert fallback), or default x for new region.
@@ -7136,6 +7214,7 @@ class SchedulerNode:
             candidate = str(getattr(request.region, "global_direction", "") or "").strip().lower()
             if candidate in ("x", "y"):
                 region_global_direction = candidate
+                self._task_global_direction_explicit = False
         except Exception:
             region_global_direction = ""
 
@@ -7185,10 +7264,6 @@ class SchedulerNode:
             if self.state == SchedulerState.RUNNING:
                 self._mark_current_path_stale("map_edit:{}".format(operation_name), clear_idle=False)
                 planner_status_message = "planner_refresh_requested"
-            elif self._map_edit_auto_plan_when_idle and self.state in (SchedulerState.READY, SchedulerState.PLANNING):
-                self._mark_current_path_stale("map_edit:{}".format(operation_name), clear_idle=True)
-                planned = self._plan_current_task()
-                planner_status_message = "planner_refreshed" if planned else "planning_failed"
             else:
                 self._mark_current_path_stale("map_edit:{}".format(operation_name), clear_idle=True)
                 planner_status_message = "planning_required"
@@ -7288,11 +7363,13 @@ class SchedulerNode:
             self.task_config.task_id = request.task_id
         self.task_config.map_id = current_map_id
 
+        # Restore task selection before refreshing overlay geometry. A PathPlanRequest
+        # commonly carries only task_id; overlay sync must not overwrite that binding.
+        self._sync_task_map_binding(update_binding=False)
         # PathPlanRequest planning scope:
         # True  -> plan all configured/selected regions in order
         # False -> plan by current selected/active policy
-        self._sync_task_regions_from_overlay()
-        self._sync_task_map_binding(update_binding=False)
+        self._sync_task_regions_from_overlay(update_binding=False)
         total_regions = len(self.task_config.work_regions or [])
         selected_ids = self._effective_selected_work_region_ids(
             sorted(
@@ -7304,9 +7381,16 @@ class SchedulerNode:
         request_start_pose = {}
         request_end_pose = {}
         request_global_direction = str(getattr(request, "global_direction", "") or "").strip().lower()
-        if request_global_direction not in ("x", "y"):
-            request_global_direction = "x"
-        self.task_config.global_direction = request_global_direction
+        if request_global_direction in ("x", "y"):
+            self.task_config.global_direction = request_global_direction
+            self._task_global_direction_explicit = True
+        else:
+            request_global_direction = ""
+        effective_request_global_direction = request_global_direction or str(
+            self.task_config.global_direction or "x"
+        ).strip().lower()
+        if effective_request_global_direction not in ("x", "y"):
+            effective_request_global_direction = "x"
         if request.HasField("start_pose"):
             request_start_pose = {
                 "x": float(request.start_pose.x),
@@ -7330,7 +7414,7 @@ class SchedulerNode:
                 float(plan_alignment_yaw),
             )
         rospy.loginfo(
-            "PathPlanRequest: request_id=%s active_work_region_id=%s force_replan=%s use_all_regions=%s work_region_count=%d has_start=%s has_end=%s global_direction=%s",
+            "PathPlanRequest: request_id=%s active_work_region_id=%s force_replan=%s use_all_regions=%s work_region_count=%d has_start=%s has_end=%s global_direction=%s effective_global_direction=%s",
             request.request_id or "<empty>",
             self.task_config.active_work_region_id or "<empty>",
             str(bool(request.force_replan)).lower(),
@@ -7338,7 +7422,8 @@ class SchedulerNode:
             int(total_regions),
             str(bool(request_start_pose)).lower(),
             str(bool(request_end_pose)).lower(),
-            request_global_direction,
+            request_global_direction or "<empty>",
+            effective_request_global_direction,
         )
         rospy.loginfo(
             "PathPlanRequest selection: requested_map_id=%s map_id=%s task_id=%s selected_regions=%s region_repeat_config=%s",
@@ -7366,7 +7451,7 @@ class SchedulerNode:
             use_all,
             request_start_pose,
             request_end_pose,
-            request_global_direction,
+            effective_request_global_direction,
         )
         can_reuse_current_path = (
             self.current_path is not None
@@ -7411,7 +7496,8 @@ class SchedulerNode:
             response.frame_id = ""
         response.preview_scale_x = 0.0
         response.preview_scale_y = 0.0
-        total_area = self._total_work_area_m2()
+        response_work_regions = self._resolve_plan_work_regions(force_use_all_regions=use_all)
+        total_area = self._total_work_area_m2(response_work_regions)
         response.total_work_area_m2 = float(total_area)
         response.estimated_time_s = -1.0
         response.planned = planned
