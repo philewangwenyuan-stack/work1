@@ -484,7 +484,7 @@ class MapService:
             cv2.circle(mask, (col, row), radius_px, 255, thickness=-1)
             return mask
         polygon = np.array(
-            [[self._world_to_grid(pt["x"], pt["y"])[1], self._world_to_grid(pt["x"], pt["y"])[0]] for pt in polygon_points],
+            [[self._world_to_grid_unclamped(pt["x"], pt["y"])[1], self._world_to_grid_unclamped(pt["x"], pt["y"])[0]] for pt in polygon_points],
             dtype=np.int32,
         )
         cv2.fillPoly(mask, [polygon], 255)
@@ -523,13 +523,20 @@ class MapService:
     def _fill_polygon(self, world_points, value):
         if self._overlay is None or not world_points:
             return
-        polygon = np.array([[self._world_to_grid(pt["x"], pt["y"])[1], self._world_to_grid(pt["x"], pt["y"])[0]] for pt in world_points], dtype=np.int32)
+        polygon = np.array(
+            [[self._world_to_grid_unclamped(pt["x"], pt["y"])[1], self._world_to_grid_unclamped(pt["x"], pt["y"])[0]] for pt in world_points],
+            dtype=np.int32,
+        )
         cv2.fillPoly(self._overlay, [polygon], int(value))
 
-    def _world_to_grid(self, x, y):
+    def _world_to_grid_unclamped(self, x, y):
         info = self._raw_msg.info
         col = int(round((x - info.origin.position.x) / max(info.resolution, 1e-6)))
         row = int(round((y - info.origin.position.y) / max(info.resolution, 1e-6)))
+        return row, col
+
+    def _world_to_grid(self, x, y):
+        row, col = self._world_to_grid_unclamped(x, y)
         info = self._raw_msg.info
         col = max(0, min(info.width - 1, col))
         row = max(0, min(info.height - 1, row))
@@ -589,8 +596,8 @@ class MapService:
         polygon = np.array(
             [
                 [
-                    self._world_to_grid_for(pt["x"], pt["y"], origin_x, origin_y, resolution, width, height, alignment_yaw)[1],
-                    self._world_to_grid_for(pt["x"], pt["y"], origin_x, origin_y, resolution, width, height, alignment_yaw)[0],
+                    self._world_to_grid_for_unclamped(pt["x"], pt["y"], origin_x, origin_y, resolution, width, height, alignment_yaw)[1],
+                    self._world_to_grid_for_unclamped(pt["x"], pt["y"], origin_x, origin_y, resolution, width, height, alignment_yaw)[0],
                 ]
                 for pt in points
             ],
@@ -756,14 +763,20 @@ class MapService:
     def _world_to_grid_for(self, x, y, origin_x=None, origin_y=None, resolution=None, width=None, height=None, alignment_yaw=None):
         if origin_x is None or origin_y is None or resolution is None or width is None or height is None:
             return self._world_to_grid(x, y)
+        row, col = self._world_to_grid_for_unclamped(x, y, origin_x, origin_y, resolution, width, height, alignment_yaw)
+        col = max(0, min(int(width) - 1, col))
+        row = max(0, min(int(height) - 1, row))
+        return row, col
+
+    def _world_to_grid_for_unclamped(self, x, y, origin_x=None, origin_y=None, resolution=None, width=None, height=None, alignment_yaw=None):
+        if origin_x is None or origin_y is None or resolution is None:
+            return self._world_to_grid_unclamped(x, y)
         display_yaw = self._sanitize_alignment_yaw(alignment_yaw)
         if display_yaw is not None:
             x, y = self._transform_map_point_to_aligned(x, y, display_yaw)
         resolution = max(float(resolution), 1e-6)
         col = int(round((float(x) - float(origin_x)) / resolution))
         row = int(round((float(y) - float(origin_y)) / resolution))
-        col = max(0, min(int(width) - 1, col))
-        row = max(0, min(int(height) - 1, row))
         return row, col
 
     @staticmethod
