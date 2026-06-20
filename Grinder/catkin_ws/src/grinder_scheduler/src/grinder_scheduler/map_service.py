@@ -258,7 +258,7 @@ class MapService:
                 if len(points) >= 3:
                     crop_mask = np.zeros(raw.shape, dtype=np.uint8)
                     polygon = np.array(
-                        [[self._world_to_grid(pt["x"], pt["y"])[1], self._world_to_grid(pt["x"], pt["y"])[0]] for pt in points],
+                        [[self._world_to_grid_unclamped(pt["x"], pt["y"])[1], self._world_to_grid_unclamped(pt["x"], pt["y"])[0]] for pt in points],
                         dtype=np.int32,
                     )
                     cv2.fillPoly(crop_mask, [polygon], 255)
@@ -269,10 +269,47 @@ class MapService:
         if grid is None or not world_points:
             return
         polygon = np.array(
-            [[self._world_to_grid(pt["x"], pt["y"])[1], self._world_to_grid(pt["x"], pt["y"])[0]] for pt in world_points],
+            [[self._world_to_grid_unclamped(pt["x"], pt["y"])[1], self._world_to_grid_unclamped(pt["x"], pt["y"])[0]] for pt in world_points],
             dtype=np.int32,
         )
         cv2.fillPoly(grid, [polygon], int(value))
+
+    def _fill_polygon_on_grid_for(self, grid, world_points, value, origin_x, origin_y, resolution, alignment_yaw=None):
+        if grid is None or not world_points:
+            return
+        height, width = grid.shape[:2]
+        polygon = np.array(
+            [
+                [
+                    self._world_to_grid_for_unclamped(pt["x"], pt["y"], origin_x, origin_y, resolution, width, height, alignment_yaw)[1],
+                    self._world_to_grid_for_unclamped(pt["x"], pt["y"], origin_x, origin_y, resolution, width, height, alignment_yaw)[0],
+                ]
+                for pt in world_points
+            ],
+            dtype=np.int32,
+        )
+        cv2.fillPoly(grid, [polygon], int(value))
+
+    def _apply_region_edits_to_grid_for(self, grid, origin_x, origin_y, resolution, alignment_yaw=None):
+        if grid is None:
+            return
+        for region in sorted(self._obstacle_regions.values(), key=lambda item: int(item.get("order_index", 0))):
+            if not bool(region.get("enabled", True)):
+                continue
+            points = region.get("points", []) or []
+            if len(points) < 3:
+                continue
+            region_type = int(region.get("region_type", 2))
+            if region_type == 2:
+                self._fill_polygon_on_grid_for(grid, points, 100, origin_x, origin_y, resolution, alignment_yaw)
+            elif region_type == 3:
+                self._fill_polygon_on_grid_for(grid, points, 0, origin_x, origin_y, resolution, alignment_yaw)
+        if self._crop_region is not None and bool(self._crop_region.get("enabled", True)):
+            points = self._crop_region.get("points", []) or []
+            if len(points) >= 3:
+                crop_mask = np.zeros(grid.shape, dtype=np.uint8)
+                self._fill_polygon_on_grid_for(crop_mask, points, 255, origin_x, origin_y, resolution, alignment_yaw)
+                grid[crop_mask == 0] = -1
 
     def apply_edit(self, command):
         with self._lock:
@@ -420,9 +457,14 @@ class MapService:
             display_grid = composed
             if display_yaw is not None:
                 display_grid, origin_x, origin_y = self._rotate_grid_to_aligned_frame(
-                    composed, origin_x, origin_y, resolution, display_yaw
+                    np.array(self._raw_msg.data, dtype=np.int16).reshape((self._raw_msg.info.height, self._raw_msg.info.width)),
+                    origin_x,
+                    origin_y,
+                    resolution,
+                    display_yaw,
                 )
                 height, width = display_grid.shape[:2]
+                self._apply_region_edits_to_grid_for(display_grid, origin_x, origin_y, resolution, display_yaw)
             if has_alignment:
                 frame_id = str(aligned_frame_id or frame_id)
 
@@ -665,18 +707,27 @@ class MapService:
         alignment_yaw=None,
         robot_pose=None,
     ):
-        overlay_mask = np.where(self._overlay == UNKNOWN_MASK_VALUE, 0, 255).astype(np.uint8)
         raw_info = self._raw_msg.info if self._raw_msg is not None else None
         display_yaw = self._sanitize_alignment_yaw(alignment_yaw)
         if display_yaw is not None and raw_info is not None:
-            overlay_mask, _, _ = self._rotate_grid_to_aligned_frame(
-                overlay_mask,
-                float(raw_info.origin.position.x),
-                float(raw_info.origin.position.y),
-                float(raw_info.resolution),
-                display_yaw,
-                fill_value=0,
-            )
+            overlay_mask = np.zeros((int(raw_height), int(raw_width)), dtype=np.uint8)
+            for region in sorted(self._obstacle_regions.values(), key=lambda item: int(item.get("order_index", 0))):
+                if bool(region.get("enabled", True)) and len(region.get("points", []) or []) >= 3:
+                    self._fill_polygon_on_grid_for(
+                        overlay_mask,
+                        region.get("points", []) or [],
+                        255,
+                        origin_x,
+                        origin_y,
+                        resolution,
+                        display_yaw,
+                    )
+            if self._crop_region is not None and bool(self._crop_region.get("enabled", True)):
+                points = self._crop_region.get("points", []) or []
+                if len(points) >= 3:
+                    self._fill_polygon_on_grid_for(overlay_mask, points, 255, origin_x, origin_y, resolution, display_yaw)
+        else:
+            overlay_mask = np.where(self._overlay == UNKNOWN_MASK_VALUE, 0, 255).astype(np.uint8)
         overlay_mask = cv2.flip(overlay_mask, 0)
         overlay_mask = self._resize_with_aspect(overlay_mask, max(preview_width, preview_height))
         ok, buffer = cv2.imencode(".png", overlay_mask)
