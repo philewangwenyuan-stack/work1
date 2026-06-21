@@ -101,3 +101,97 @@ Compatibility switches are available but default to `false`:
 - `map_edit_auto_plan_when_idle`
 - `obstacle_regions_affect_coverage`
 - `current_pose_seeds_task_coverage`
+
+
+
+终端1
+source /opt/ros/noetic/setup.bash
+source /home/neardi/work/Grinder/catkin_ws/devel/setup.bash
+roscore
+终端2
+sudo pkill -9 -f scheduler_node.py
+sudo pkill -f roslaunch
+sudo pkill -f rosmaster
+sleep 2
+source /opt/ros/noetic/setup.bash
+source /home/neardi/work/Grinder/catkin_ws/devel/setup.bash
+cd /home/neardi/work/Grinder/catkin_ws
+sudo AURORA_IP=192.168.11.1 ./start_grinder_stack.sh
+
+
+端口监听
+cd /home/neardi/work/Grinder/third_party/sl_linka/sdk/python/tools
+sudo python3 sl_link_trace.py \
+  --iface eth1 \
+  --sdk /home/neardi/work/Grinder/third_party/sl_linka/sdk/python
+终端4
+source /opt/ros/noetic/setup.bash
+source /home/neardi/work/Grinder/catkin_ws/devel/setup.bash
+cd /home/neardi/work/Grinder/third_party/sl_linka/sdk/python/tools
+sudo python3 ./sl_linka_pyqt_debugger.py
+
+rviz
+source /opt/ros/noetic/setup.bash
+source devel/setup.bash
+rviz
+
+chmod +x ~/bin/rviz-fixed
+~/bin/rviz-fixed
+
+v w
+rostopic echo /cmd_vel
+v w频率
+rostopic hz /cmd_vel
+rostopic hz /move_base/TebLocalPlannerROS/local_plan
+top -H -p $(pgrep -n -f 'move_base/move_base')
+
+日志
+
+mkdir -p ~/bags
+
+rosbag record -O ~/bags/track_debug_$(date +%Y%m%d_%H%M%S).bag \
+  /tf /tf_static \
+  /slamware_ros_sdk_server_node/robot_pose \
+  /odom \
+  /slamware_ros_sdk_server_node/odom \
+  /slamware_ros_sdk_server_node/robot_pose \
+  /scan \
+  /cmd_vel \
+  /chassis/cmd_vel \
+  /chassis/wheel_speed_state \
+  /chassis/status \
+  /move_base_simple/goal \
+  /move_base/status \
+  /move_base/result \
+  /move_base/TebLocalPlannerROS/local_plan \
+  /move_base/TebLocalPlannerROS/global_plan \
+  /grinder/GlobalPlanner/plan \
+  /scheduler/status \
+  /diagnostics \
+  /rosout
+
+配置查询
+rosparam get /move_base/TebLocalPlannerROS/costmap_converter_plugin
+重载配置
+source /opt/ros/noetic/setup.bash
+source /home/neardi/work/Grinder/catkin_ws/devel/setup.bash
+rosparam load /home/neardi/work/Grinder/catkin_ws/src/2-dnavigation-package/2dnavigation/teb_local_planner_tutorials/cfg/diff_drive/teb_local_planner_params.yaml /move_base
+
+rosparam load /home/neardi/work/Grinder/catkin_ws/src/2-dnavigation-package/2dnavigation/teb_local_planner_tutorials/cfg/diff_drive/costmap_converter_params.yaml /move_base
+重启进程
+rosnode kill /move_base
+
+重新编译teb_local_planner
+cd /home/neardi/work/Grinder/catkin_ws
+source /opt/ros/noetic/setup.bash
+catkin_make --pkg teb_local_planner -DCMAKE_BUILD_TYPE=Release
+source devel/setup.bash
+
+source /opt/ros/noetic/setup.bash
+catkin_make --pkg slamware_ros_sdk
+source devel/setup.bash
+BYOJRC4UVOBUX1HPZS
+
+sudo python3 sl_link_trace.py \
+  --iface ETH1 \
+  --sdk /home/neardi/work/Grinder/third_party/sl_linka/sdk/python

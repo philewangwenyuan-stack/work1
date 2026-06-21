@@ -89,3 +89,7 @@ roslaunch grinder_chassis_driver chassis_driver.launch
 - `localization_watchdog_disc_speed_scale`
 - `disc_speed_max_step`
 - `manual_override_cancel_navigation`
+
+## 运行 看门狗配置
+[Grinder/catkin_ws/src/grinder_chassis_driver/config/chassis_driver.yaml (line 74)](/E:/work1/Grinder/catkin_ws/src/grinder_chassis_driver/config/chassis_driver.yaml:74)
+[Grinder/catkin_ws/src/2-dnavigation-package/slamware_ros_sdk/launch/slamware_ros_sdk_server_node.launch (line 53)](/E:/work1/Grinder/catkin_ws/src/2-dnavigation-package/slamware_ros_sdk/launch/slamware_ros_sdk_server_node.launch:53)
