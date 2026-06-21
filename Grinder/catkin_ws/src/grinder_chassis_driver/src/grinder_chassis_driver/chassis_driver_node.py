@@ -1221,6 +1221,8 @@ class ChassisDriverNode:
                 block[1] = 0
                 block[2] = 0
                 block[3] = DISC_ENABLE_OFF
+            sent_left_wheel_speed = 0 if not self.enabled else int(self.command.left_wheel_speed)
+            sent_right_wheel_speed = 0 if not self.enabled else int(self.command.right_wheel_speed)
             target_disc_speed = 0 if not self.enabled else clamp(self.command.disc_speed, self.disc_speed_min, self.disc_speed_max)
             disc_speed = self._apply_disc_ramp_limit(target_disc_speed, self.last_sent_disc_speed)
             block[2] = disc_speed & 0xFFFF
@@ -1230,8 +1232,8 @@ class ChassisDriverNode:
         self.transport.write_register_block(READ_BLOCK_START, block)
         with self._lock:
             self._last_written_block = block_tuple
-            self.last_sent_left_wheel_speed = int(block[0])
-            self.last_sent_right_wheel_speed = int(block[1])
+            self.last_sent_left_wheel_speed = sent_left_wheel_speed
+            self.last_sent_right_wheel_speed = sent_right_wheel_speed
             self.last_sent_disc_speed = int(disc_speed)
             for index, value in enumerate(block):
                 self._last_written_registers[READ_BLOCK_START + index] = int(value)
