@@ -12,6 +12,7 @@ try:
 except Exception:
     rospy = None
 
+from grinder_scheduler import map_render_core
 from grinder_scheduler.models import MapSnapshot
 
 
@@ -31,6 +32,11 @@ class MapService:
         self._last_edit_message = ""
         self._draw_region_id_on_preview = True
         self._draw_region_label_on_preview = True
+        self._map_render_core_enabled = True
+
+    def set_map_render_core_enabled(self, enabled):
+        self._map_render_core_enabled = bool(enabled)
+        map_render_core.configure(self._map_render_core_enabled)
 
     def set_draw_region_id_on_preview(self, enabled):
         self._draw_region_id_on_preview = bool(enabled)
@@ -487,9 +493,7 @@ class MapService:
                 self._pose_to_display_pose(pose, display_yaw),
             )
             encode_ext = ".png" if image_format.lower() == "png" else ".jpg"
-            ok, buffer = cv2.imencode(encode_ext, preview)
-            if not ok:
-                raise RuntimeError("Failed to encode map preview image")
+            preview_data = self._encode_image(preview, encode_ext)
             return MapSnapshot(
                 map_version=self._map_version,
                 frame_id=frame_id,
@@ -498,7 +502,7 @@ class MapService:
                 height=height,
                 origin_x=origin_x,
                 origin_y=origin_y,
-                preview_data=buffer.tobytes(),
+                preview_data=preview_data,
                 preview_format=encode_ext.lstrip("."),
                 overlay_json=overlay_json,
             )
@@ -585,6 +589,10 @@ class MapService:
         return row, col
 
     def _occupancy_to_bgr(self, grid):
+        if self._map_render_core_enabled:
+            image = map_render_core.occupancy_to_bgr(grid)
+            if image is not None:
+                return image
         image = np.zeros((grid.shape[0], grid.shape[1], 3), dtype=np.uint8)
         image[grid == 0] = (245, 245, 245)
         image[grid == 100] = (45, 45, 45)
@@ -678,6 +686,20 @@ class MapService:
             return image
         return cv2.resize(image, new_size, interpolation=cv2.INTER_AREA)
 
+    def _encode_image(self, image, encode_ext):
+        if self._map_render_core_enabled:
+            encoded = map_render_core.resize_and_encode(
+                image,
+                max(int(image.shape[0]), int(image.shape[1])),
+                encode_ext,
+            )
+            if encoded is not None:
+                return encoded[0]
+        ok, buffer = cv2.imencode(encode_ext, image)
+        if not ok:
+            raise RuntimeError("Failed to encode map preview image")
+        return buffer.tobytes()
+
     def _serialize_regions(self, alignment_yaw=None):
         work_regions = sorted(self._work_regions.values(), key=lambda item: int(item.get("order_index", 0)))
         obstacle_regions = sorted(self._obstacle_regions.values(), key=lambda item: int(item.get("order_index", 0)))
@@ -730,8 +752,11 @@ class MapService:
             overlay_mask = np.where(self._overlay == UNKNOWN_MASK_VALUE, 0, 255).astype(np.uint8)
         overlay_mask = cv2.flip(overlay_mask, 0)
         overlay_mask = self._resize_with_aspect(overlay_mask, max(preview_width, preview_height))
-        ok, buffer = cv2.imencode(".png", overlay_mask)
-        mask_b64 = base64.b64encode(buffer.tobytes()).decode("ascii") if ok else ""
+        try:
+            mask_bytes = self._encode_image(overlay_mask, ".png")
+        except Exception:
+            mask_bytes = b""
+        mask_b64 = base64.b64encode(mask_bytes).decode("ascii") if mask_bytes else ""
         scale_x = float(preview_width) / float(max(1, raw_width))
         scale_y = float(preview_height) / float(max(1, raw_height))
         payload = {
@@ -835,6 +860,9 @@ class MapService:
         height, width = grid.shape[:2]
         if height <= 0 or width <= 0:
             return grid, origin_x, origin_y
+        rotated = map_render_core.rotate_grid(grid, origin_x, origin_y, resolution, yaw, fill_value)
+        if rotated is not None:
+            return rotated
 
         resolution = max(float(resolution), 1e-12)
         cos_yaw = math.cos(yaw)

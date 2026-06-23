@@ -34,6 +34,7 @@ except Exception:
 
 from grinder_scheduler.aurora_bridge import AuroraBridge
 from grinder_scheduler.local_rtsp_server import LocalRtspStreamServer
+from grinder_scheduler import map_render_core
 from grinder_scheduler.map_service import MapService
 from grinder_scheduler.media_streamer import FFmpegMediaStreamer
 from grinder_scheduler.map_catalog_response import fill_map_catalog_response
@@ -456,7 +457,12 @@ class SchedulerNode:
         self._aurora_map_reset_previous_stamp = None
         self._aurora_map_reset_ignore_until = 0.0
 
+        self._map_render_core_enabled = bool(rospy.get_param("~map_render_core_enabled", True))
+        map_render_core.configure(self._map_render_core_enabled)
+        if self._map_render_core_enabled:
+            map_render_core.is_available()
         self.map_service = MapService()
+        self.map_service.set_map_render_core_enabled(self._map_render_core_enabled)
         self.map_service.set_draw_region_id_on_preview(
             bool(rospy.get_param("~draw_region_id_on_preview", True))
         )
@@ -1759,15 +1765,15 @@ class SchedulerNode:
                     height,
                     self._live_map_crop_margin_m,
                 )
-        image = np.full((height, width), 205, dtype=np.uint8)
-        image[grid == 0] = 254
-        image[grid >= 100] = 0
-        image = np.flipud(image)
-
         image_path = os.path.join(out_dir, image_name)
         yaml_path = os.path.join(out_dir, yaml_name)
-        if not cv2.imwrite(image_path, image):
-            raise RuntimeError("Failed to write map image: {}".format(image_path))
+        if not (self._map_render_core_enabled and map_render_core.write_map_image(grid, image_path)):
+            image = np.full((height, width), 205, dtype=np.uint8)
+            image[grid == 0] = 254
+            image[grid >= 100] = 0
+            image = np.flipud(image)
+            if not cv2.imwrite(image_path, image):
+                raise RuntimeError("Failed to write map image: {}".format(image_path))
         yaml_text = "\n".join(
             [
                 "image: {}".format(image_name),
@@ -2173,6 +2179,9 @@ class SchedulerNode:
             return grid, origin_x, origin_y
         if abs(float(yaw)) <= 1e-12:
             return grid, origin_x, origin_y
+        rotated = map_render_core.rotate_grid(grid, origin_x, origin_y, resolution, yaw, -1)
+        if rotated is not None:
+            return rotated
 
         cos_yaw = math.cos(yaw)
         sin_yaw = math.sin(yaw)
@@ -6288,18 +6297,20 @@ class SchedulerNode:
             data = grid.astype(np.int8).tobytes()
         else:
             encoding = pb.MAP_ENCODING_PNG
-            image = np.zeros((grid.shape[0], grid.shape[1], 3), dtype=np.uint8)
-            image[:, :] = (180, 180, 180)
-            image[grid == 0] = (245, 245, 245)
-            image[grid >= 100] = (45, 45, 45)
-            image = cv2.flip(image, 0)
-            ok, buffer = cv2.imencode(".png", image)
-            if not ok:
+            data = map_render_core.encode_map_png(grid) if self._map_render_core_enabled else None
+            if data is None:
+                image = np.zeros((grid.shape[0], grid.shape[1], 3), dtype=np.uint8)
+                image[:, :] = (180, 180, 180)
+                image[grid == 0] = (245, 245, 245)
+                image[grid >= 100] = (45, 45, 45)
+                image = cv2.flip(image, 0)
+                ok, buffer = cv2.imencode(".png", image)
+                if ok:
+                    data = buffer.tobytes()
+            if data is None:
                 rospy.logwarn("MapRequest PNG encode failed, fallback to OccupancyGrid bytes")
                 encoding = pb.MAP_ENCODING_OCCUPANCY_GRID
                 data = grid.astype(np.int8).tobytes()
-            else:
-                data = buffer.tobytes()
         total = max(1, int(math.ceil(len(data) / float(chunk_size))))
         map_info = self.map_service.get_map_info() or {}
         map_version = int(map_info.get("map_version", 0))

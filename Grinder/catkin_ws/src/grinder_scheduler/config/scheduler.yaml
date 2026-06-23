@@ -32,6 +32,8 @@ save_first_frame_on_startup: false
 initial_map_preview_dir: temp
 # 预览图最大边长上限（像素，所有 preview 类请求都会受此限制）
 preview_max_edge_cap: 640
+# C++ map preview/render acceleration switch. false => Python/OpenCV fallback.
+map_render_core_enabled: true
 # 初始地图预览图最大边长（像素）
 initial_map_preview_max_edge: 640
 # 初始地图预览图格式（jpg/png）
